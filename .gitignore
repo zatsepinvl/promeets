@@ -40,6 +40,7 @@ atlassian-ide-plugin.xml
 # NetBeans artifacts
 nbproject/private/
 build/
+logs/
 nbbuild/
 dist/
 nbdist/
