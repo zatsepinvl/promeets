@@ -1,0 +1,10 @@
+2016-01-27 13:22:37 INFO  DispatcherServlet:489 - FrameworkServlet 'despatcher': initialization started
+2016-01-27 13:22:37 INFO  XmlWebApplicationContext:578 - Refreshing WebApplicationContext for namespace 'despatcher-servlet': startup date [Wed Jan 27 13:22:37 MSK 2016]; root of context hierarchy
+2016-01-27 13:22:37 INFO  XmlBeanDefinitionReader:317 - Loading XML bean definitions from ServletContext resource [/WEB-INF/despatcher-servlet.xml]
+2016-01-27 13:22:38 INFO  DefaultAnnotationHandlerMapping:341 - Mapped URL path [/index] onto handler 'helloController'
+2016-01-27 13:22:38 INFO  DefaultAnnotationHandlerMapping:341 - Mapped URL path [/index.*] onto handler 'helloController'
+2016-01-27 13:22:38 INFO  DefaultAnnotationHandlerMapping:341 - Mapped URL path [/index/] onto handler 'helloController'
+2016-01-27 13:22:38 INFO  DispatcherServlet:508 - FrameworkServlet 'despatcher': initialization completed in 591 ms
+2016-01-27 13:22:40 INFO  HelloController:27 - Это информационное сообщение!
+2016-01-27 13:22:40 ERROR HelloController:28 - Это ошибочка!
+2016-01-27 13:32:51 INFO  XmlWebApplicationContext:960 - Closing WebApplicationContext for namespace 'despatcher-servlet': startup date [Wed Jan 27 13:22:37 MSK 2016]; root of context hierarchy
