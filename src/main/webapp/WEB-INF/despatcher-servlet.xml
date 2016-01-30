@@ -19,5 +19,34 @@
       <property name="prefix" value="/WEB-INF/views/" />
       <property name="suffix" value=".jsp" />
    </bean>
-   
+
+    <!--Hibernate-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db"/>
+        <property name="username" value="pmadmin"/>
+        <property name="password" value="pm_admin"/>
+    </bean>
+
+    <bean id="hibernate5AnnotatedSessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedPackages">
+            <list>
+                <value>ru.unc6.promeets.models.entities</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect
+                </prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="hibernate5AnnotatedSessionFactory"/>
+    </bean>
 </beans>
