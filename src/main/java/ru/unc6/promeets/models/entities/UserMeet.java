@@ -1,5 +1,6 @@
 package ru.unc6.promeets.models.entities;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,14 +10,15 @@ import java.util.List;
 @Entity
 @Table(name = "user_meets", schema = "public", catalog = "promeets_db")
 @IdClass(UserMeetsPK.class)
-public class UserMeet {
+public class UserMeet implements Serializable {
     private long userId;
     private long meetId;
     private short editBoardPermission;
-    private List<User> users;
 
     @Id
     @Column(name = "user_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     public long getUserId() {
         return userId;
     }
@@ -27,6 +29,8 @@ public class UserMeet {
 
     @Id
     @Column(name = "meet_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "meet_id")
     public long getMeetId() {
         return meetId;
     }
@@ -67,12 +71,4 @@ public class UserMeet {
         return result;
     }
 
-    @ManyToMany(mappedBy = "meets")
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 }

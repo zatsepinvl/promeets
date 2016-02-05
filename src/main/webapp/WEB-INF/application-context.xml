@@ -1,13 +1,63 @@
 <beans 
     xmlns="http://www.springframework.org/schema/beans" 
-    xmlns:context="http://www.springframework.org/schema/context" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jpa="http://www.springframework.org/schema/data/jpa" 
     xsi:schemaLocation=" 
-http://www.springframework.org/schema/beans 
-http://www.springframework.org/schema/beans/spring-beans.xsd 
-http://www.springframework.org/schema/context 
-http://www.springframework.org/schema/context/spring-context.xsd ">
+    http://www.springframework.org/schema/beans 
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx.xsd
+   http://www.springframework.org/schema/data/jpa
+   http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+   http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+    
+    <!-- JPA + Hibirnate -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    
+     <bean id="mydataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db"/>
+        <property name="username" value="pmadmin"/>
+        <property name="password" value="pm_admin"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="item-manager" />
+        <property name="dataSource" ref="mydataSource" />
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</prop>
+                <prop key="hibernate.max_fetch_depth">3</prop>
+                <prop key="hibernate.jdЬc.fetch_size">50</prop>
+                <prop key="hibernate.jdbc.batch_size">10</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+    
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+      <property name="entityManagerFactory" ref="entityManagerFactory" />
+      <property name="dataSource" ref="mydataSource" />
+    </bean>
+    
+    <jpa:repositories 
+        base-package="ru.unc6.promeets"
+        entity-manager-factory-ref="entityManagerFactory"
+        transaction-manager-ref="transactionManager"/>
     
     <context:annotation-config/>
+    <tx:annotation-driven />
+    <context:component-scan base-package="ru.unc6.promeets.service" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
     
 </beans>

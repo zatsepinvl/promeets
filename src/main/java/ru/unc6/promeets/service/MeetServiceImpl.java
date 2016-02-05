@@ -10,11 +10,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.models.entities.Meet;
-import ru.unc6.promeets.util.HibernateUtil;
 
 /**
  *
@@ -28,15 +28,14 @@ public class MeetServiceImpl implements MeetService
 {
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
-    //@PersistenceContext
-    private EntityManager em;
+    
+    @PersistenceContext
+    private EntityManager entityManager;
     
     @Override
     public Meet getById(long id) 
     {
-        em = HibernateUtil.getEntityManager();
-        Meet meet = em.find(Meet.class, 1L);
-        return meet;
+       return entityManager.find(Meet.class, id);
     }
 
 

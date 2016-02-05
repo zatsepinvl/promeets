@@ -1,12 +1,14 @@
 package ru.unc6.promeets.models.entities;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "files")
+@XmlRootElement
 public class File {
     private long fileId;
     private String url;

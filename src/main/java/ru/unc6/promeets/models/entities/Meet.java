@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "meets")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="meetId")
+@XmlRootElement
 public class Meet {
     private long meetId;
     private String name;
