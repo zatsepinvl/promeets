@@ -9,20 +9,24 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.unc6.promeets.model.entity.BaseDAO;
+import ru.unc6.promeets.model.entity.User;
+
+import java.util.List;
 
 /**
- *
  * @author MDay
  */
 
-@Controller
-public class HelloController 
-{
+@RestController
+public class HelloController {
     private static final Logger log = Logger.getLogger(HelloController.class);
-    
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-   public String employee() 
-   {
-        return "index";
-   }
+    @ResponseBody
+    public List employee() {
+        return new BaseDAO().getAll(User.class);
+    }
 }

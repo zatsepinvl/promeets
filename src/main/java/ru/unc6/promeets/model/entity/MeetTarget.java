@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +16,7 @@ public class MeetTarget {
 
     @Id
     @Column(name = "target_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getTargetId() {
         return targetId;
     }

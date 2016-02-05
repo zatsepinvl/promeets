@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +13,6 @@ public class UserMeet {
     private long userId;
     private long meetId;
     private short editBoardPermission;
-    private List<User> users;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -67,12 +66,4 @@ public class UserMeet {
         return result;
     }
 
-    @ManyToMany(mappedBy = "meets")
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 }

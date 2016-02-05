@@ -1,20 +1,18 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
-@Entity
-@Table(name = "user_chats", schema = "public", catalog = "promeets_db")
-@IdClass(ChatUserPK.class)
-public class ChatUser {
+public class ChatUserPK implements Serializable {
     private long chatId;
     private long userId;
 
-    @Id
     @Column(name = "chat_id", nullable = false)
+    @Id
     public long getChatId() {
         return chatId;
     }
@@ -23,8 +21,8 @@ public class ChatUser {
         this.chatId = chatId;
     }
 
-    @Id
     @Column(name = "user_id", nullable = false)
+    @Id
     public long getUserId() {
         return userId;
     }
@@ -38,10 +36,10 @@ public class ChatUser {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ChatUser chatUser = (ChatUser) o;
+        ChatUserPK that = (ChatUserPK) o;
 
-        if (chatId != chatUser.chatId) return false;
-        if (userId != chatUser.userId) return false;
+        if (chatId != that.chatId) return false;
+        if (userId != that.userId) return false;
 
         return true;
     }
@@ -52,6 +50,4 @@ public class ChatUser {
         result = 31 * result + (int) (userId ^ (userId >>> 32));
         return result;
     }
-
-
 }

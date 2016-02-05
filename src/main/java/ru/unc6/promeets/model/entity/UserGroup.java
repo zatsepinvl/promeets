@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 

@@ -65,6 +65,7 @@
             <version>1.1</version>
         </dependency>
 
+
         <!-- Apache Commons DBCP -->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -79,18 +80,20 @@
             <version>4.2.4.RELEASE</version>
         </dependency>
 
-        <!-- AspectJ -->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.8.8</version>
-        </dependency>
-
+        <!-- Postgres-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1206-jdbc42</version>
         </dependency>
+
+        <!-- JUnit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

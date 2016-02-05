@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db</property>
+        <property name="hibernate.connection.username">pmadmin</property>
+        <property name="hibernate.connection.password">pm_admin</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL9Dialect</property>
+        <property name="show_sql">true</property>
+        <mapping class="ru.unc6.promeets.model.entity.User"/>
+        <mapping class="ru.unc6.promeets.model.entity.UserMeet"/>
+        <mapping class="ru.unc6.promeets.model.entity.ChatUser"/>
+        <mapping class="ru.unc6.promeets.model.entity.UserGroup"/>
+        <mapping class="ru.unc6.promeets.model.entity.Meet"/>
+        <mapping class="ru.unc6.promeets.model.entity.Group"/>
+        <mapping class="ru.unc6.promeets.model.entity.File"/>
+        <mapping class="ru.unc6.promeets.model.entity.MeetTarget"/>
+        <mapping class="ru.unc6.promeets.model.entity.MeetNote"/>
+        <mapping class="ru.unc6.promeets.model.entity.Board"/>
+        <mapping class="ru.unc6.promeets.model.entity.BoardItem"/>
+        <mapping class="ru.unc6.promeets.model.entity.BoardPage"/>
+        <mapping class="ru.unc6.promeets.model.entity.GroupType"/>
+        <mapping class="ru.unc6.promeets.model.entity.Message"/>
+        <mapping class="ru.unc6.promeets.model.entity.Chat"/>
+
+    </session-factory>
+</hibernate-configuration>

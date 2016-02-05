@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -7,9 +7,9 @@ import java.io.Serializable;
 /**
  * Created by Vladimir on 30.01.2016.
  */
-public class UserGroupsPK implements Serializable {
+public class UserMeetsPK implements Serializable {
     private long userId;
-    private long groupId;
+    private long meetId;
 
     @Column(name = "user_id", nullable = false)
     @Id
@@ -21,14 +21,14 @@ public class UserGroupsPK implements Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "group_id", nullable = false)
+    @Column(name = "meet_id", nullable = false)
     @Id
-    public long getGroupId() {
-        return groupId;
+    public long getMeetId() {
+        return meetId;
     }
 
-    public void setGroupId(long groupId) {
-        this.groupId = groupId;
+    public void setMeetId(long meetId) {
+        this.meetId = meetId;
     }
 
     @Override
@@ -36,10 +36,10 @@ public class UserGroupsPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserGroupsPK that = (UserGroupsPK) o;
+        UserMeetsPK that = (UserMeetsPK) o;
 
         if (userId != that.userId) return false;
-        if (groupId != that.groupId) return false;
+        if (meetId != that.meetId) return false;
 
         return true;
     }
@@ -47,7 +47,7 @@ public class UserGroupsPK implements Serializable {
     @Override
     public int hashCode() {
         int result = (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (int) (groupId ^ (groupId >>> 32));
+        result = 31 * result + (int) (meetId ^ (meetId >>> 32));
         return result;
     }
 }

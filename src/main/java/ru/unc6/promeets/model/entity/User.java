@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="userId")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "userId")
 public class User {
     private long userId;
     private String email;
@@ -26,9 +26,11 @@ public class User {
     private File image;
     private List<Group> groups;
     private List<Chat> chats;
+    private List<UserMeet> meetSettings;
 
     @Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getUserId() {
         return userId;
     }
@@ -48,7 +50,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "phone", nullable = false, length = -1)
+    @Column(name = "phone", length = -1)
     public String getPhone() {
         return phone;
     }
@@ -88,7 +90,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "address", nullable = false, length = -1)
+    @Column(name = "address", length = -1)
     public String getAddress() {
         return address;
     }
@@ -98,7 +100,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "company", nullable = false, length = -1)
+    @Column(name = "company", length = -1)
     public String getCompany() {
         return company;
     }
@@ -108,7 +110,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "position", nullable = false, length = -1)
+    @Column(name = "position", length = -1)
     public String getPosition() {
         return position;
     }
@@ -162,7 +164,7 @@ public class User {
     }
 
     @ManyToOne
-    @JoinColumn(name = "image_id", referencedColumnName = "file_id", nullable = false)
+    @JoinColumn(name = "image_id", referencedColumnName = "file_id")
     public File getImage() {
         return image;
     }
@@ -182,7 +184,7 @@ public class User {
     }
 
     @ManyToMany
-    @JoinTable(name = "chat_user", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false))
+    @JoinTable(name = "user_chats", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false))
     public List<Chat> getChats() {
         return chats;
     }
@@ -190,4 +192,14 @@ public class User {
     public void setChats(List<Chat> chats) {
         this.chats = chats;
     }
+
+    /*@OneToMany
+    public List<UserMeet> getMeetSettings() {
+        return meetSettings;
+    }
+
+    public void setMeetSettings(List<UserMeet> meetSettings) {
+        meetSettings = meetSettings;
+    }
+    */
 }

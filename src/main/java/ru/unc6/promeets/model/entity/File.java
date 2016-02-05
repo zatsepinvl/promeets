@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 
@@ -13,6 +13,7 @@ public class File {
 
     @Id
     @Column(name = "file_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getFileId() {
         return fileId;
     }

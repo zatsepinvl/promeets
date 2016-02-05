@@ -1,14 +1,14 @@
 CREATE TABLE Users (
-	user_id bigint NOT NULL,
+	user_id bigserial NOT NULL,
 	email TEXT NOT NULL,
-	phone TEXT NOT NULL,
+	phone TEXT,
 	password TEXT NOT NULL,
 	first_name TEXT NOT NULL,
 	last_name TEXT NOT NULL,
-	address TEXT NOT NULL,
-	company TEXT NOT NULL,
-	position TEXT NOT NULL,
-	image_id bigint NOT NULL,
+	address TEXT,
+	company TEXT,
+	position TEXT,
+	image_id bigint,
 	CONSTRAINT Users_pk PRIMARY KEY (user_id)
 ) WITH (
   OIDS=FALSE
@@ -17,7 +17,7 @@ CREATE TABLE Users (
 
 
 CREATE TABLE Files (
-	file_id bigint NOT NULL,
+	file_id bigserial NOT NULL,
 	url TEXT NOT NULL,
 	CONSTRAINT Files_pk PRIMARY KEY (file_id)
 ) WITH (
@@ -27,8 +27,8 @@ CREATE TABLE Files (
 
 
 CREATE TABLE Chats (
-	chat_id bigint NOT NULL,
-	name TEXT NOT NULL,
+	chat_id bigserial NOT NULL,
+	name TEXT,
 	CONSTRAINT Chats_pk PRIMARY KEY (chat_id)
 ) WITH (
   OIDS=FALSE
@@ -36,7 +36,7 @@ CREATE TABLE Chats (
 
 
 
-CREATE TABLE Chat_user (
+CREATE TABLE User_chats (
 	chat_id bigint NOT NULL,
 	user_id bigint NOT NULL,
 	CONSTRAINT Chat_user_pk PRIMARY KEY (chat_id,user_id)
@@ -47,7 +47,7 @@ CREATE TABLE Chat_user (
 
 
 CREATE TABLE Messages (
-	message_id bigint NOT NULL,
+	message_id bigserial NOT NULL,
 	chat_id bigint NOT NULL,
 	text TEXT NOT NULL,
 	CONSTRAINT Messages_pk PRIMARY KEY (message_id)
@@ -58,14 +58,14 @@ CREATE TABLE Messages (
 
 
 CREATE TABLE Groups (
-	group_id bigint NOT NULL,
+	group_id bigserial NOT NULL,
 	name TEXT NOT NULL,
-	status TEXT NOT NULL,
+	status TEXT,
 	created_time TIMESTAMP NOT NULL,
 	type_id bigint NOT NULL,
 	admin_id bigint NOT NULL,
 	chat_id bigint NOT NULL,
-	image_id bigint NOT NULL,
+	image_id bigint,
 	CONSTRAINT Groups_pk PRIMARY KEY (group_id)
 ) WITH (
   OIDS=FALSE
@@ -74,7 +74,7 @@ CREATE TABLE Groups (
 
 
 CREATE TABLE Group_types (
-	type_id bigint NOT NULL,
+	type_id bigserial NOT NULL,
 	name TEXT NOT NULL,
 	CONSTRAINT Group_types_pk PRIMARY KEY (type_id)
 ) WITH (
@@ -84,11 +84,15 @@ CREATE TABLE Group_types (
 
 
 CREATE TABLE Meets (
-	meet_id bigint NOT NULL,
+	meet_id bigserial NOT NULL,
 	name TEXT NOT NULL,
 	admin_id bigint NOT NULL,
 	time TIMESTAMP NOT NULL,
-	board_id bigint NOT NULL,
+	board_id bigint,
+	image_id bigint,
+	location TEXT,
+	description TEXT,
+	type_id bigint NOT NULL,
 	CONSTRAINT Meets_pk PRIMARY KEY (meet_id)
 ) WITH (
   OIDS=FALSE
@@ -97,8 +101,8 @@ CREATE TABLE Meets (
 
 
 CREATE TABLE Boards (
-	board_id bigint NOT NULL,
-	name TEXT NOT NULL,
+	board_id bigserial NOT NULL,
+	name TEXT,
 	CONSTRAINT Boards_pk PRIMARY KEY (board_id)
 ) WITH (
   OIDS=FALSE
@@ -107,7 +111,7 @@ CREATE TABLE Boards (
 
 
 CREATE TABLE Meet_targets (
-	target_id bigint NOT NULL,
+	target_id bigserial NOT NULL,
 	meet_id bigint NOT NULL,
 	text TEXT NOT NULL,
 	CONSTRAINT Meet_targets_pk PRIMARY KEY (target_id)
@@ -118,7 +122,7 @@ CREATE TABLE Meet_targets (
 
 
 CREATE TABLE Meet_notes (
-	note_id bigint NOT NULL,
+	note_id bigserial NOT NULL,
 	meet_id bigint NOT NULL,
 	target_id bigint,
 	text TEXT NOT NULL,
@@ -130,10 +134,10 @@ CREATE TABLE Meet_notes (
 
 
 CREATE TABLE Board_pages (
-	page_id bigint NOT NULL,
+	page_id bigserial NOT NULL,
 	board_id bigint NOT NULL,
 	number smallint NOT NULL,
-	name TEXT NOT NULL,
+	name TEXT,
 	CONSTRAINT Board_pages_pk PRIMARY KEY (page_id)
 ) WITH (
   OIDS=FALSE
@@ -142,7 +146,7 @@ CREATE TABLE Board_pages (
 
 
 CREATE TABLE Board_items (
-	item_id bigint NOT NULL,
+	item_id bigserial NOT NULL,
 	board_page_id bigint NOT NULL,
 	target_id bigint,
 	file_id bigint,
@@ -177,12 +181,22 @@ CREATE TABLE User_meets (
 
 
 
+CREATE TABLE Meet_types (
+	type_id bigserial NOT NULL,
+	name TEXT NOT NULL,
+	CONSTRAINT Meet_types_pk PRIMARY KEY (type_id)
+) WITH (
+  OIDS=FALSE
+);
+
+
+
 ALTER TABLE Users ADD CONSTRAINT Users_fk0 FOREIGN KEY (image_id) REFERENCES Files(file_id);
 
 
 
-ALTER TABLE Chat_user ADD CONSTRAINT Chat_user_fk0 FOREIGN KEY (chat_id) REFERENCES Chats(chat_id);
-ALTER TABLE Chat_user ADD CONSTRAINT Chat_user_fk1 FOREIGN KEY (user_id) REFERENCES Users(user_id);
+ALTER TABLE User_chats ADD CONSTRAINT User_chats_fk0 FOREIGN KEY (chat_id) REFERENCES Chats(chat_id);
+ALTER TABLE User_chats ADD CONSTRAINT User_chats_fk1 FOREIGN KEY (user_id) REFERENCES Users(user_id);
 
 ALTER TABLE Messages ADD CONSTRAINT Messages_fk0 FOREIGN KEY (chat_id) REFERENCES Chats(chat_id);
 
@@ -194,6 +208,8 @@ ALTER TABLE Groups ADD CONSTRAINT Groups_fk3 FOREIGN KEY (image_id) REFERENCES F
 
 ALTER TABLE Meets ADD CONSTRAINT Meets_fk0 FOREIGN KEY (admin_id) REFERENCES Users(user_id);
 ALTER TABLE Meets ADD CONSTRAINT Meets_fk1 FOREIGN KEY (board_id) REFERENCES Boards(board_id);
+ALTER TABLE Meets ADD CONSTRAINT Meets_fk2 FOREIGN KEY (image_id) REFERENCES Files(file_id);
+ALTER TABLE Meets ADD CONSTRAINT Meets_fk3 FOREIGN KEY (type_id) REFERENCES Meet_types(type_id);
 
 
 ALTER TABLE Meet_targets ADD CONSTRAINT Meet_targets_fk0 FOREIGN KEY (meet_id) REFERENCES Meets(meet_id);
@@ -212,5 +228,6 @@ ALTER TABLE User_groups ADD CONSTRAINT User_groups_fk1 FOREIGN KEY (group_id) RE
 
 ALTER TABLE User_meets ADD CONSTRAINT User_meets_fk0 FOREIGN KEY (user_id) REFERENCES Users(user_id);
 ALTER TABLE User_meets ADD CONSTRAINT User_meets_fk1 FOREIGN KEY (meet_id) REFERENCES Meets(meet_id);
+
 
 

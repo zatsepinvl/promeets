@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -20,9 +20,11 @@ public class Meet {
     private List<MeetNote> notes;
     private User admin;
     private Board board;
+    private List<UserMeet> userSettings;
 
     @Id
     @Column(name = "meet_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getMeetId() {
         return meetId;
     }
@@ -100,5 +102,14 @@ public class Meet {
 
     public void setBoard(Board board) {
         this.board = board;
+    }
+
+    @OneToMany
+    public List<UserMeet> getUserSettings() {
+        return userSettings;
+    }
+
+    public void setUserSettings(List<UserMeet> userSettings) {
+        this.userSettings = userSettings;
     }
 }

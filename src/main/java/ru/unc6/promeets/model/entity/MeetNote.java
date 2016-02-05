@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 
@@ -15,6 +15,7 @@ public class MeetNote {
 
     @Id
     @Column(name = "note_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getNoteId() {
         return noteId;
     }

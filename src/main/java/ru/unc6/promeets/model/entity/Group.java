@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -25,6 +25,7 @@ public class Group {
 
     @Id
     @Column(name = "group_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getGroupId() {
         return groupId;
     }

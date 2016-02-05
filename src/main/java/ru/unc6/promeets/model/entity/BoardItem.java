@@ -1,4 +1,4 @@
-package ru.unc6.promeets.models.entities;
+package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 
@@ -16,6 +16,7 @@ public class BoardItem {
 
     @Id
     @Column(name = "item_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getItemId() {
         return itemId;
     }
