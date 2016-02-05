@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -30,7 +31,7 @@ public class User {
 
     @Id
     @Column(name = "user_id")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getUserId() {
         return userId;
     }

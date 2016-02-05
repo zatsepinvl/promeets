@@ -26,6 +26,5 @@
         <mapping class="ru.unc6.promeets.model.entity.GroupType"/>
         <mapping class="ru.unc6.promeets.model.entity.Message"/>
         <mapping class="ru.unc6.promeets.model.entity.Chat"/>
-
     </session-factory>
 </hibernate-configuration>

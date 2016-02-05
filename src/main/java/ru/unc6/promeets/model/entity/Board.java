@@ -1,12 +1,14 @@
 package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "boards")
+@XmlRootElement
 public class Board {
     private long boardId;
     private String name;
@@ -24,7 +26,7 @@ public class Board {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "name")
     public String getName() {
         return name;
     }

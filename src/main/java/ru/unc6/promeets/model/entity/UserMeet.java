@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "user_meets", schema = "public", catalog = "promeets_db")
 @IdClass(UserMeetsPK.class)
-public class UserMeet {
+public class UserMeet implements Serializable {
     private long userId;
     private long meetId;
     private short editBoardPermission;
