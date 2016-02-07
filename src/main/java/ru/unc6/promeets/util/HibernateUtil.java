@@ -8,7 +8,7 @@ package ru.unc6.promeets.util;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+
 import org.apache.log4j.Logger;
 
 

@@ -13,6 +13,7 @@ public class MeetTarget {
     private String text;
     private List<BoardItem> boardItems;
     private List<MeetNote> notes;
+    private Meet meet;
 
     @Id
     @Column(name = "target_id", nullable = false)
@@ -71,5 +72,15 @@ public class MeetTarget {
 
     public void setNotes(List<MeetNote> notes) {
         this.notes = notes;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
+    public Meet getMeet() {
+        return meet;
+    }
+
+    public void setMeet(Meet meet) {
+        this.meet = meet;
     }
 }

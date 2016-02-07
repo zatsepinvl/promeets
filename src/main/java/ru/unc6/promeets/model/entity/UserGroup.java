@@ -7,31 +7,18 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user_groups", schema = "public", catalog = "promeets_db")
-@IdClass(UserGroupsPK.class)
 public class UserGroup {
-    private long userId;
-    private long groupId;
+    private UserGroupPK userGroupPK;
     private short createMeetPermission;
     private short invitePermission;
 
-    @Id
-    @Column(name = "user_id", nullable = false)
-    public long getUserId() {
-        return userId;
+    @EmbeddedId
+    public UserGroupPK getUserGroupPK() {
+        return userGroupPK;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    @Id
-    @Column(name = "group_id", nullable = false)
-    public long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(long groupId) {
-        this.groupId = groupId;
+    public void setUserGroupPK(UserGroupPK userGroupPK) {
+        this.userGroupPK = userGroupPK;
     }
 
     @Basic
@@ -54,27 +41,22 @@ public class UserGroup {
         this.invitePermission = invitePermission;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserGroup that = (UserGroup) o;
-
-        if (userId != that.userId) return false;
-        if (groupId != that.groupId) return false;
-        if (createMeetPermission != that.createMeetPermission) return false;
-        if (invitePermission != that.invitePermission) return false;
-
-        return true;
+    @Transient
+    public User getUser() {
+        return userGroupPK.getUser();
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (int) (groupId ^ (groupId >>> 32));
-        result = 31 * result + (int) createMeetPermission;
-        result = 31 * result + (int) invitePermission;
-        return result;
+    public void setUser(User user) {
+        userGroupPK.setUser(user);
     }
+
+    @Transient
+    public Group getGroup() {
+        return userGroupPK.getGroup();
+    }
+
+    public void setGroup(Group group) {
+        userGroupPK.setGroup(group);
+    }
+
 }

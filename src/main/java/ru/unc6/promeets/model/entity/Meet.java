@@ -1,6 +1,8 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -13,16 +15,20 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "meets")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="meetId")
-@XmlRootElement
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "meetId")
 public class Meet {
     private long meetId;
     private String name;
     private Timestamp time;
+    private List<MeetTarget> targets;
     private List<MeetNote> notes;
     private User admin;
     private Board board;
-    private List<UserMeet> userSettings;
+    private List<UserMeet> users;
+    private String location;
+    private String description;
+    private MeetType type;
+    private Group group;
 
     @Id
     @Column(name = "meet_id", nullable = false)
@@ -77,6 +83,7 @@ public class Meet {
         return result;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "meet")
     public List<MeetNote> getNotes() {
         return notes;
@@ -97,7 +104,7 @@ public class Meet {
     }
 
     @OneToOne
-    @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
+    @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     public Board getBoard() {
         return board;
     }
@@ -106,12 +113,63 @@ public class Meet {
         this.board = board;
     }
 
-    @OneToMany
-    public List<UserMeet> getUserSettings() {
-        return userSettings;
+    @JsonIgnore
+    @OneToMany(mappedBy = "userMeetPK.meet", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<UserMeet> getUsers() {
+        return users;
     }
 
-    public void setUserSettings(List<UserMeet> userSettings) {
-        this.userSettings = userSettings;
+    public void setUsers(List<UserMeet> users) {
+        this.users = users;
+    }
+
+    @Basic
+    @Column(name = "location")
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    @Basic
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "type_id", referencedColumnName = "type_id")
+    public MeetType getType() {
+        return type;
+    }
+
+    public void setType(MeetType type) {
+        this.type = type;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id")
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "meet")
+    public List<MeetTarget> getTargets() {
+        return targets;
+    }
+
+    public void setTargets(List<MeetTarget> targets) {
+        this.targets = targets;
     }
 }

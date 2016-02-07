@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Group {
     private String name;
     private String status;
     private Timestamp createdTime;
-    private List<User> users;
+    private List<UserGroup> users;
     private GroupType type;
     private File image;
     private User admin;
@@ -88,12 +89,13 @@ public class Group {
         return result;
     }
 
-    @ManyToMany(mappedBy = "groups")
-    public List<User> getUsers() {
+    @JsonIgnore
+    @OneToMany(mappedBy = "userGroupPK.group")
+    public List<UserGroup> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(List<UserGroup> users) {
         this.users = users;
     }
 

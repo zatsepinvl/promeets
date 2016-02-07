@@ -1,11 +1,11 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -23,11 +23,10 @@ public class User {
     private String address;
     private String company;
     private String position;
-    private List<Meet> meets;
+    private List<UserMeet> meets;
     private File image;
-    private List<Group> groups;
+    private List<UserGroup> groups;
     private List<Chat> chats;
-    private List<UserMeet> meetSettings;
 
     @Id
     @Column(name = "user_id")
@@ -154,13 +153,13 @@ public class User {
         return result;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_meets", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false))
-    public List<Meet> getMeets() {
+    @JsonIgnore
+    @OneToMany(mappedBy = "userMeetPK.user")
+    public List<UserMeet> getMeets() {
         return meets;
     }
 
-    public void setMeets(List<Meet> meets) {
+    public void setMeets(List<UserMeet> meets) {
         this.meets = meets;
     }
 
@@ -174,16 +173,17 @@ public class User {
         this.image = image;
     }
 
-    @ManyToMany
-    @JoinTable(name = "user_groups", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "group_id", nullable = false))
-    public List<Group> getGroups() {
+    @JsonIgnore
+    @OneToMany(mappedBy = "userGroupPK.user")
+    public List<UserGroup> getUserGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setUserGroups(List<UserGroup> groups) {
         this.groups = groups;
     }
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_chats", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false))
     public List<Chat> getChats() {
@@ -193,14 +193,4 @@ public class User {
     public void setChats(List<Chat> chats) {
         this.chats = chats;
     }
-
-    /*@OneToMany
-    public List<UserMeet> getMeetSettings() {
-        return meetSettings;
-    }
-
-    public void setMeetSettings(List<UserMeet> meetSettings) {
-        meetSettings = meetSettings;
-    }
-    */
 }
