@@ -30,6 +30,7 @@ public class GeneralEntityTest extends BaseDatabaseTest {
 
     @Test
     public void test() {
+
     }
 
 }

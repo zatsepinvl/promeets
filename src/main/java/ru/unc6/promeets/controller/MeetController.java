@@ -6,6 +6,8 @@
 package ru.unc6.promeets.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.dao.MeetDAO;
 import ru.unc6.promeets.model.repository.MeetRepository;
@@ -23,6 +25,7 @@ public class MeetController {
     public void setMeetRepository(MeetRepository meetRepository) {
         this.meetRepository = meetRepository;
     }
+
     @Autowired
     public void setMeetDAO(MeetDAO meetDAO) {
         this.meetDAO = meetDAO;
@@ -41,5 +44,10 @@ public class MeetController {
         return (List) meetRepository.getAllUserMeetsByMeetId(id);
     }
 
+    @RequestMapping(value = "/meet/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteMeet(@PathVariable("id") long id) {
+        meetRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
