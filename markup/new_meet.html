@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html ng-app="creatingNewMeet">
+<head>
+    <title>Promeets</title>
+    <link rel="stylesheet" href="css/main_style.css">
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+	<link rel="stylesheet" type="text/css" href="css/easydropdown.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css"/>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.structure.min.css"/>
+	<script src = "js/jquery.easydropdown.js" type="text/javascript"></script>
+	<script src="angular/angular.min.js"></script>
+	<script src="js/angular_script.js"></script>
+	<script src="js/validation_script.js"></script>
+	<script>
+	$(document).ready(function(){
+
+		$("#datepicker").datepicker({
+		inline: true
+		});
+		$('#text_goal,#btn_ok').hide();
+		$('#btn_add_goal').click(function(){
+			$('#div_for_select_goals').hide();
+			$('#text_goal,#btn_ok').show();
+			$(this).hide(); 
+		});
+		$('#btn_ok').click(function(){
+			$('#text_goal,#btn_ok').hide();
+			$('#btn_add_goal').show();
+			var newGoal = '<li class="mdl-list__item goal_item"><i class="material-icons mdl-list__item-icon" style="color:green;">grade</i>' + protectHTML($('#text_goal').val()) + 
+			'<i class="material-icons mdl-list__item-icon remove" style="vertical-align:top;cursor:pointer;font-size:12px;" ng-click="removeGoal()">clear</i></li>';
+			$('#meet_goal').prepend(newGoal);
+			$('#text_goal').val('');
+			
+			$('.remove').click(function(){
+				$(this).parent().remove();
+			});
+		});
+		$('#meet_type').change(function(){
+			if ($(this).val() == 'Remote') $('#tr_for_address').hide();
+			else $('#tr_for_address').show();
+		});
+	
+	});
+	</script>
+</head>
+<body ng-controller="creatingNewMeetCtrl">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header mdl-layout__header--scroll" style="background: #2e7d32">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Promeets</span>
+
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link " href=""> <i class="material-icons"
+                                                             style=" line-height:64px;vertical-align: middle; margin-bottom: 4px">face</i>
+                </a>
+                <a class="mdl-navigation__link " href=""> <i class="material-icons"
+                                                             style=" line-height:64px;vertical-align: middle; margin-bottom: 4px">settings</i>
+                    <span class="mdl-layout--large-screen-only">Settings</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+
+            <div class="mdl-grid">
+
+                <!-- Navigation menu-->
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div class="mdl-grid" style="padding: 0">
+                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                            <a href="#" style="text-decoration: none;">
+                                <div class="menu_item mdl-shadow--2dp">
+                                    Profile
+                                </div>
+                            </a>
+                        </div>
+                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                            <a href="#" style="text-decoration: none;">
+                                <div class="menu_item mdl-shadow--2dp">
+                                    Groups
+                                </div>
+                            </a>
+                        </div>
+                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                            <a href="#" style="text-decoration: none;">
+                                <div class="menu_item mdl-shadow--2dp">
+                                    Calendar
+                                </div>
+                            </a>
+                        </div>
+                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                            <a href="#" style="text-decoration: none;">
+                                <div class="menu_item mdl-shadow--2dp">
+                                    Messages
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content container-->
+                <div class="mdl-cell mdl-cell--8-col mdl-cell--10-col-tablet mdl-cell--5-col-phone">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+                        <!-- Group header-->
+                        <div class="mdl-grid" style="width: 100%;">
+                            <!-- Group name and description-->
+                            <div class="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+                                <div class="mdl-grid" style="padding: 0;">
+                                    <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                                        <div style="font-size: 26px; font-weight: 200">NetCracker
+                                        </div>
+                                    </div>
+                                    <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                                        Super puper group for everybody.
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Group logo-->
+                            <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
+                                <img style="width: 96%; margin: auto" src="images/group_image.jpg"/>
+                            </div>
+                        </div>
+                       
+						<!-- Здесь основные данные-->
+						<div class="mdl-grid" style="width: 100%; margin:0px;">
+						 <!-- Current meet-->
+                        <div class="current_meet mdl-cell mdl-cell--12-col">
+                            <i class="material-icons"
+                               style=" margin-bottom:4px; line-height: 40px; vertical-align: middle">group</i>
+                            New meet
+                        </div>
+					    <div class="mdl-cell mdl-cell--3-col">
+						<div class="demo-card-image mdl-card mdl-shadow--2dp" style="border-radius:0px;">
+						<div class="mdl-card__title mdl-card--expand"></div>
+						<div class="mdl-card__actions">
+						<span class="demo-card-image__filename" style="font-family:Roboto;"></span>
+						</div>
+						<form  name="MeetInfoForm" novalidate>
+						<button style="width: 100%;">
+						<i class="material-icons"
+                        style="vertical-align: middle; color:white;">add</i>Add image</button>
+						</div>
+						</div>
+						<div class="mdl-cell mdl-cell--9-col">
+						 <table>
+						 <tr><td>Name:
+						 </td>
+						 <td style="width:100%;">
+						 <input type="text" class="mdl-textfield__input" id="meet_name" 
+						 style="width:98%; margin-top: 5px;" ng-model="txtName"  name="Name"/>
+						 <label class="error" for = "meet_name">This field is required</label>
+						 </td>
+						 </tr>
+						 <tr><td>Description:</td>
+						 <td style="width:100%;">
+						 <textarea class="mdl-textfield__input" type="text" id="meet_descr" rows="5" style="width:98%; margin-top: 5px;" ng-model="txtDescr" required></textarea>
+						 <label class="error" for = "meet_descr">This field is required</label>
+						 </td></tr>
+						 </table>
+						</div>
+						<div class="mdl-cell mdl-cell--12-col" style="height: auto;">
+						<br>
+						<table style="width:98%;">
+						<tr><td>Type</td>
+							<td>
+							<select class="dropdown" id="meet_type" ng-model = "selType">
+							<option class="label">select...</option>
+							<option>Remote</option>
+							<option>Real</option>
+							</select>
+							</td></tr>
+						<tr><td>Date & Time </td>
+						<td>
+						<table style="border-spacing: 10px 0px; margin-left: -10px;"><tr>
+						<td>
+						<input id ="datepicker" class="mdl-textfield__input" type="text" style="width:100%;"  placeholder="Date..." ng-model = "txtDate"/>
+						</td>
+						<td><input id = "meet_time" class="mdl-textfield__input" type="time" style="width:100%;" min="00:01" max="23:59"  ng-model = "txtTime" placeholder="00:00"/></td>
+						</tr>
+						<tr><td><label class="error" for = "datepicker">Incorrect format for date!</label></td><td><label class="error" for = "meet_time">Incorrect format for time!</label></td></td></tr>
+						</table>
+						</td>
+						</tr>
+						<tr id="tr_for_address"><td>Address</td>
+						<td><textarea  class="mdl-textfield__input" type="text" rows = "5" id="Address" ng-model = "txtAddress"></textarea>
+						</td></tr>
+						<tr><td>Goals</td><td>															
+						<ul id= "meet_goal" class="demo-list-icon mdl-list">
+						<li id="btn_add_goal" class="mdl-list__item">
+						<i class="material-icons mdl-list__item-icon" style="vertical-align: middle;color:green;">grade</i>New goal</li>
+						</ul>
+						<textarea type="text" class="mdl-textfield__input" id="text_goal" 
+						type="text" rows = "5" placeholder="Put the goal here..." style="margin-bottom:5px;" ng-model="txtGoal"></textarea>	
+							
+						<button id="btn_ok"><i class="material-icons"
+                        style="vertical-align: middle; color:white;">add</i>Add goal</button>					
+						</td></tr>
+						<tr><td>Comments </td>
+						<td><textarea class="mdl-textfield__input" type="text" rows = "5" id = "comments" ng-model="txtComm"></textarea>
+						</td></tr>
+						<tr><td></td><td style="text-align:right;"><button type="submit" ng-click="addNewMeet()">Create</button></td></tr>
+						</table>
+						</div>
+						</div>
+						</form>
+                    </div>
+                </div>
+				<!-- Maybe some advertisement-->
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+                        Maybe some advertisement?
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>
