@@ -11,34 +11,64 @@ import ru.unc6.promeets.model.dao.MeetDAO;
 import ru.unc6.promeets.model.repository.MeetRepository;
 
 import java.util.List;
+import ru.unc6.promeets.model.entity.Meet;
+import ru.unc6.promeets.model.service.MeetService;
 
 @RestController
 public class MeetController {
 
-
-    private MeetDAO meetDAO;
-    private MeetRepository meetRepository;
-
     @Autowired
-    public void setMeetRepository(MeetRepository meetRepository) {
-        this.meetRepository = meetRepository;
-    }
-    @Autowired
-    public void setMeetDAO(MeetDAO meetDAO) {
-        this.meetDAO = meetDAO;
-    }
+    private MeetService meetService;
 
 
-    @RequestMapping(value = "/meet", method = RequestMethod.GET)
+    
+    @RequestMapping(value = "/meets", method = RequestMethod.GET)
     @ResponseBody
-    public List getMeets() {
-        return (List) meetRepository.findAll();
+    public List getMeets() 
+    {
+        return meetService.getAll();
+    }
+    
+    @RequestMapping(value = "/meets", method = RequestMethod.GET)
+    public void createMeet(@RequestBody Meet meet) 
+    {
+        
+    }
+    
+    
+    @RequestMapping(value = "/meets/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Meet getMeetById(@PathVariable("id") long id) 
+    {
+        return meetService.getById(id);
     }
 
-    @RequestMapping(value = "/meet/{id}/usermeet", method = RequestMethod.GET)
+    @RequestMapping(value = "/meets/{id}/usermeets", method = RequestMethod.GET)
     @ResponseBody
-    public List getMeetUsers(@PathVariable("id") long id) {
-        return (List) meetRepository.getAllUserMeetsByMeetId(id);
+    public List getMeetUsers(@PathVariable("id") long id) 
+    {
+        return meetService.getUserMeets(id);
+    }
+    
+    @RequestMapping(value = "/meets/{id}/users", method = RequestMethod.GET)
+    @ResponseBody
+    public List getUsers(@PathVariable("id") long id) 
+    {
+        return (List) meetService.getUsers(id);
+    }
+    
+    @RequestMapping(value = "/meets/{id}/notes", method = RequestMethod.GET)
+    @ResponseBody
+    public List getMeetNotes(@PathVariable("id") long id) 
+    {
+        return (List) meetService.getMeetNotes(id);
+    }
+    
+    @RequestMapping(value = "/meets/{id}/targets", method = RequestMethod.GET)
+    @ResponseBody
+    public List getMeetTargets(@PathVariable("id") long id) 
+    {
+        return (List) meetService.getMeetTargets(id);
     }
 
 

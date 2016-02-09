@@ -17,20 +17,26 @@ import java.util.List;
 public class MeetDAOImp extends BaseDAOImp<Meet> implements MeetDAO {
 
     @Override
-    @Transactional
-    public List<UserMeet> getAllUsersByMeetId(long id) {
+    public List<UserMeet> getAllUsersByMeetId(long id) 
+    {
         Meet meet = getById(Meet.class, id);
         Hibernate.initialize(meet.getUsers());
         return meet.getUsers();
     }
 
     @Override
-    public List<MeetNote> getAllNotesByMeetId(long id) {
-        return null;
+    public List<MeetNote> getAllNotesByMeetId(long id) 
+    {
+        Meet meet = getById(Meet.class, id);
+        Hibernate.initialize(meet.getNotes());
+        return meet.getNotes();
     }
 
     @Override
-    public List<MeetTarget> getAllTargetsByMeetId(long id) {
-        return null;
+    public List<MeetTarget> getAllTargetsByMeetId(long id) 
+    {
+        Meet meet = getById(Meet.class, id);
+        Hibernate.initialize(meet.getTargets());
+        return meet.getTargets();
     }
 }
