@@ -66,7 +66,7 @@ public class MeetServiceImpl implements MeetService
     @Override
     public void save(Meet meet) 
     {
-            meetRepository.save(meet);
+        meetRepository.save(meet);
     }
 
     @Override

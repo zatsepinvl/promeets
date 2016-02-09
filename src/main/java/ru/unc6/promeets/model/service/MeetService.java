@@ -36,4 +36,5 @@ public interface MeetService
     List<MeetTarget> getMeetTargets(long id);
     
     Board getBoard(long id);
+    
 }
