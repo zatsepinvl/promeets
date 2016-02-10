@@ -12,7 +12,10 @@ import java.util.List;
 
 /**
  * Created by Vladimir on 06.02.2016.
+ * @param <T>
  */
+
+@Transactional
 public class BaseDAOImp<T> implements BaseDAO<T> {
 
 
@@ -24,32 +27,27 @@ public class BaseDAOImp<T> implements BaseDAO<T> {
     }
 
     @Override
-    @Transactional
     public T getById(Class<T> entity, long id) {
         return entityManager.find(entity, id);
     }
 
     @Override
-    @Transactional
-    public T create(T obj) {
-        return entityManager.merge(obj);
+    public void create(T obj) {
+        entityManager.persist(obj);
     }
 
     @Override
-    @Transactional
     public T update(T obj) {
         return entityManager.merge(obj);
     }
 
     @Override
-    @Transactional
     public void delete(Class<T> entity, long id) {
         entityManager.remove(entityManager.find(entity, id));
     }
 
 
     @Override
-    @Transactional
     public List<T> getAll(Class<T> entity) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(entity);

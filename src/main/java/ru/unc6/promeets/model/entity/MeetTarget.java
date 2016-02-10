@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
@@ -55,7 +56,8 @@ public class MeetTarget {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "target")
     public List<BoardItem> getBoardItems() {
         return boardItems;
@@ -64,7 +66,8 @@ public class MeetTarget {
     public void setBoardItems(List<BoardItem> boardItems) {
         this.boardItems = boardItems;
     }
-
+    
+    @JsonIgnore
     @OneToMany(mappedBy = "target")
     public List<MeetNote> getNotes() {
         return notes;
@@ -73,7 +76,8 @@ public class MeetTarget {
     public void setNotes(List<MeetNote> notes) {
         this.notes = notes;
     }
-
+    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
     public Meet getMeet() {

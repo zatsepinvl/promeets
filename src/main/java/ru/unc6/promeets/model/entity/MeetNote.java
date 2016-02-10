@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 /**
@@ -53,7 +54,7 @@ public class MeetNote {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
     public Meet getMeet() {
@@ -64,6 +65,7 @@ public class MeetNote {
         this.meet = meet;
     }
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "target_id", referencedColumnName = "target_id")
     public MeetTarget getTarget() {
