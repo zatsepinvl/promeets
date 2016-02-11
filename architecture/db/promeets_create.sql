@@ -86,7 +86,7 @@ CREATE TABLE Group_types (
 
 CREATE TABLE Meets (
 	meet_id bigserial NOT NULL,
-	name TEXT NOT NULL,
+	title TEXT NOT NULL,
 	admin_id bigint NOT NULL,
 	time TIMESTAMP NOT NULL,
 	board_id bigint,
@@ -104,7 +104,7 @@ CREATE TABLE Meets (
 
 CREATE TABLE Boards (
 	board_id bigserial NOT NULL,
-	name TEXT,
+	title TEXT,
 	CONSTRAINT Boards_pk PRIMARY KEY (board_id)
 ) WITH (
   OIDS=FALSE
@@ -112,11 +112,11 @@ CREATE TABLE Boards (
 
 
 
-CREATE TABLE Meet_targets (
-	target_id bigserial NOT NULL,
+CREATE TABLE Meet_aims (
+	aim_id bigserial NOT NULL,
 	meet_id bigint NOT NULL,
-	text TEXT NOT NULL,
-	CONSTRAINT Meet_targets_pk PRIMARY KEY (target_id)
+	value TEXT NOT NULL,
+	CONSTRAINT Meet_aims_pk PRIMARY KEY (aim_id)
 ) WITH (
   OIDS=FALSE
 );
@@ -126,8 +126,8 @@ CREATE TABLE Meet_targets (
 CREATE TABLE Meet_notes (
 	note_id bigserial NOT NULL,
 	meet_id bigint NOT NULL,
-	target_id bigint,
-	text TEXT NOT NULL,
+	aim_id bigint,
+	value TEXT NOT NULL,
 	CONSTRAINT Meet_notes_pk PRIMARY KEY (note_id)
 ) WITH (
   OIDS=FALSE
@@ -139,7 +139,7 @@ CREATE TABLE Board_pages (
 	page_id bigserial NOT NULL,
 	board_id bigint NOT NULL,
 	number smallint NOT NULL,
-	name TEXT,
+	title TEXT,
 	CONSTRAINT Board_pages_pk PRIMARY KEY (page_id)
 ) WITH (
   OIDS=FALSE
@@ -150,7 +150,7 @@ CREATE TABLE Board_pages (
 CREATE TABLE Board_items (
 	item_id bigserial NOT NULL,
 	board_page_id bigint NOT NULL,
-	target_id bigint,
+	aim_id bigint,
 	file_id bigint,
 	data TEXT,
 	CONSTRAINT Board_items_pk PRIMARY KEY (item_id)
@@ -214,15 +214,15 @@ ALTER TABLE Meets ADD CONSTRAINT Meets_fk3 FOREIGN KEY (type_id) REFERENCES Meet
 ALTER TABLE Meets ADD CONSTRAINT Meets_fk4 FOREIGN KEY (group_id) REFERENCES Groups(group_id);
 
 
-ALTER TABLE Meet_targets ADD CONSTRAINT Meet_targets_fk0 FOREIGN KEY (meet_id) REFERENCES Meets(meet_id);
+ALTER TABLE Meet_aims ADD CONSTRAINT Meet_aims_fk0 FOREIGN KEY (meet_id) REFERENCES Meets(meet_id);
 
 ALTER TABLE Meet_notes ADD CONSTRAINT Meet_notes_fk0 FOREIGN KEY (meet_id) REFERENCES Meets(meet_id);
-ALTER TABLE Meet_notes ADD CONSTRAINT Meet_notes_fk1 FOREIGN KEY (target_id) REFERENCES Meet_targets(target_id);
+ALTER TABLE Meet_notes ADD CONSTRAINT Meet_notes_fk1 FOREIGN KEY (aim_id) REFERENCES Meet_aims(aim_id);
 
 ALTER TABLE Board_pages ADD CONSTRAINT Board_pages_fk0 FOREIGN KEY (board_id) REFERENCES Boards(board_id);
 
 ALTER TABLE Board_items ADD CONSTRAINT Board_items_fk0 FOREIGN KEY (board_page_id) REFERENCES Board_pages(page_id);
-ALTER TABLE Board_items ADD CONSTRAINT Board_items_fk1 FOREIGN KEY (target_id) REFERENCES Meet_targets(target_id);
+ALTER TABLE Board_items ADD CONSTRAINT Board_items_fk1 FOREIGN KEY (aim_id) REFERENCES Meet_aims(aim_id);
 ALTER TABLE Board_items ADD CONSTRAINT Board_items_fk2 FOREIGN KEY (file_id) REFERENCES Files(file_id);
 
 ALTER TABLE User_groups ADD CONSTRAINT User_groups_fk0 FOREIGN KEY (user_id) REFERENCES Users(user_id);

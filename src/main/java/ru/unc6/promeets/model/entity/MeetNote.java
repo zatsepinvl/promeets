@@ -12,7 +12,7 @@ public class MeetNote {
     private long noteId;
     private String text;
     private Meet meet;
-    private MeetTarget target;
+    private MeetAim aim;
 
     @Id
     @Column(name = "note_id", nullable = false)
@@ -26,7 +26,7 @@ public class MeetNote {
     }
 
     @Basic
-    @Column(name = "text", nullable = false, length = -1)
+    @Column(name = "value", nullable = false, length = -1)
     public String getText() {
         return text;
     }
@@ -54,7 +54,7 @@ public class MeetNote {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
-    @JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
     public Meet getMeet() {
@@ -67,12 +67,12 @@ public class MeetNote {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "target_id", referencedColumnName = "target_id")
-    public MeetTarget getTarget() {
-        return target;
+    @JoinColumn(name = "aim_id", referencedColumnName = "aim_id")
+    public MeetAim getAim() {
+        return aim;
     }
 
-    public void setTarget(MeetTarget target) {
-        this.target = target;
+    public void setAim(MeetAim aim) {
+        this.aim = aim;
     }
 }

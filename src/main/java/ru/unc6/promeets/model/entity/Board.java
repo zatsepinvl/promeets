@@ -26,7 +26,7 @@ public class Board {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "title")
     public String getName() {
         return name;
     }
