@@ -2,13 +2,11 @@ package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -20,7 +18,7 @@ public class Meet {
     private long meetId;
     private String name;
     private Timestamp time;
-    private List<MeetTarget> targets;
+    private List<MeetAim> targets;
     private List<MeetNote> notes;
     private User admin;
     private Board board;
@@ -42,7 +40,7 @@ public class Meet {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "title", nullable = false, length = -1)
     public String getName() {
         return name;
     }
@@ -99,8 +97,8 @@ public class Meet {
         return admin;
     }
 
-    public void setAdmin(User amdin) {
-        this.admin = amdin;
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 
     @OneToOne
@@ -165,11 +163,11 @@ public class Meet {
 
     @JsonIgnore
     @OneToMany(mappedBy = "meet")
-    public List<MeetTarget> getTargets() {
+    public List<MeetAim> getTargets() {
         return targets;
     }
 
-    public void setTargets(List<MeetTarget> targets) {
+    public void setTargets(List<MeetAim> targets) {
         this.targets = targets;
     }
 }

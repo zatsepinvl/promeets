@@ -62,55 +62,55 @@ INSERT INTO groups(
             2);
             
 INSERT INTO boards(
-            board_id, name)
+            board_id, title)
     VALUES (1,'board_for_meet_1');
     
 INSERT INTO boards(
-            board_id, name)
+            board_id, title)
     VALUES (2,'board_for_meet_2');
 
 INSERT INTO board_pages(
-            page_id, board_id, number, name)
+            page_id, board_id, number, title)
     VALUES (1, 1, 1, null);
     
 INSERT INTO board_pages(
-            page_id, board_id, number, name)
+            page_id, board_id, number, title)
     VALUES (2, 2, 1, null);
 
 INSERT INTO board_items(
-            item_id, board_page_id, target_id, file_id, data)
+            item_id, board_page_id, aim_id, file_id, data)
     VALUES (1, 1, null, null, 'some data 1');
     
 INSERT INTO board_items(
-            item_id, board_page_id, target_id, file_id, data)
+            item_id, board_page_id, aim_id, file_id, data)
     VALUES (2, 2, null, null, 'some data 2');
 
 INSERT INTO meets(
-            meet_id, name, admin_id, time, board_id, image_id, location, 
+            meet_id, title, admin_id, time, board_id, image_id, location, 
             description, type_id, group_id)
     VALUES (1, 'The first meet', 1, '12.12.2015', 1, null, null, 
             null, 2, 1);
             
 INSERT INTO meets(
-            meet_id, name, admin_id, time, board_id, image_id, location, 
+            meet_id, title, admin_id, time, board_id, image_id, location, 
             description, type_id, group_id)
     VALUES (2, 'The second meet', 1, '12.12.2016', 2, null, null, 
             null, 2, 1);
 
-INSERT INTO meet_targets(
-            target_id, meet_id, text)
+INSERT INTO meet_aims(
+            aim_id, meet_id, value)
     VALUES (1, 1, 'To discusse the meaning of life');
 
-INSERT INTO meet_targets(
-            target_id, meet_id, text)
+INSERT INTO meet_aims(
+            aim_id, meet_id, value)
     VALUES (2, 2, 'To find out why everything sucks');
     
 INSERT INTO meet_notes(
-            note_id, meet_id, target_id, text)
+            note_id, meet_id, aim_id, value)
     VALUES (1, 1, 1, 'Everything sucks');
     
 INSERT INTO meet_notes(
-            note_id, meet_id, target_id, text)
+            note_id, meet_id, aim_id, value)
     VALUES (2, 2, 2, 'Nobody knows');
     
 INSERT INTO user_groups(

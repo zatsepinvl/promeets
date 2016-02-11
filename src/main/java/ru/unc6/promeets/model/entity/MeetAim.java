@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,8 +9,8 @@ import java.util.List;
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
-@Table(name = "meet_targets", schema = "public", catalog = "promeets_db")
-public class MeetTarget {
+@Table(name = "meet_aims", schema = "public", catalog = "promeets_db")
+public class MeetAim {
     private long targetId;
     private String text;
     private List<BoardItem> boardItems;
@@ -17,7 +18,7 @@ public class MeetTarget {
     private Meet meet;
 
     @Id
-    @Column(name = "target_id", nullable = false)
+    @Column(name = "aim_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getTargetId() {
         return targetId;
@@ -28,7 +29,7 @@ public class MeetTarget {
     }
 
     @Basic
-    @Column(name = "text", nullable = false, length = -1)
+    @Column(name = "value", nullable = false, length = -1)
     public String getText() {
         return text;
     }
@@ -42,7 +43,7 @@ public class MeetTarget {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MeetTarget that = (MeetTarget) o;
+        MeetAim that = (MeetAim) o;
 
         if (targetId != that.targetId) return false;
         if (text != null ? !text.equals(that.text) : that.text != null) return false;
@@ -56,9 +57,9 @@ public class MeetTarget {
         result = 31 * result + (text != null ? text.hashCode() : 0);
         return result;
     }
-    
+
     @JsonIgnore
-    @OneToMany(mappedBy = "target")
+    @OneToMany(mappedBy = "aim")
     public List<BoardItem> getBoardItems() {
         return boardItems;
     }
@@ -66,9 +67,9 @@ public class MeetTarget {
     public void setBoardItems(List<BoardItem> boardItems) {
         this.boardItems = boardItems;
     }
-    
+
     @JsonIgnore
-    @OneToMany(mappedBy = "target")
+    @OneToMany(mappedBy = "aim")
     public List<MeetNote> getNotes() {
         return notes;
     }
@@ -76,7 +77,7 @@ public class MeetTarget {
     public void setNotes(List<MeetNote> notes) {
         this.notes = notes;
     }
-    
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
