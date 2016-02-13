@@ -8,232 +8,253 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Style -->
-    <link rel="stylesheet" href="css/main_style.css">
-    <!-- Material-->
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.deep_orange-green.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-    <!-- Angular Material -->
-    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-    <script src="js/angular_script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Material Styles -->
+    <link rel="stylesheet" href="lib/material/material.min.css"/>
+    <link rel="stylesheet" href="lib/material/fonts_icons.css">
+    <link rel="stylesheet" href="lib/material/material_fonts.css" type="text/css">
+
+    <!-- Angular Material Style  -->
+    <link rel="stylesheet" href="lib/angular_material/angular.material.min.css">
+
+
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-cloak>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-<header class="mdl-layout__header mdl-layout__header--scroll" style="background: #2e7d32">
-    <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Promeets</span>
+    <header class="mdl-layout__header mdl-layout__header--scroll" style="background: #2e7d32">
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Promeets</span>
 
-        <div class="mdl-layout-spacer"></div>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link " href="#" style="padding:0"> <i class="material-icons"
-                                                                            style=" line-height:64px;vertical-align: middle; margin-bottom: 4px">settings</i>
-                <span class="mdl-layout--large-screen-only">Settings</span>
-            </a>
-            <a class="mdl-navigation__link " href="#"><img src="images/face.png"
-                                                           style="width:50px; height: 50px;"
-                                                           class="md-avatar"/>
-            </a>
-        </nav>
-    </div>
-</header>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link " href="#" style="padding:0"> <i class="material-icons"
+                                                                                style=" line-height:64px;vertical-align: middle; margin-bottom: 4px">settings</i>
+                    <span class="mdl-layout--large-screen-only">Settings</span>
+                </a>
+                <a class="mdl-navigation__link " href="#"><img src="image/face.png"
+                                                               style="width:50px; height: 50px;"
+                                                               class="md-avatar"/>
+                </a>
+            </nav>
+        </div>
+    </header>
 
-<main class="mdl-layout__content">
-    <div class="page-content">
-        <div class="mdl-grid">
-            <!-- Navigation menu-->
-            <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%;height: auto; min-height: auto ">
-                    <div class="mdl-grid" style="width: 100%">
-                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                            <a href="#" style="text-decoration: none;">
-                                <div class="nav_menu_item ">
-                                    <i class="material-icons"
-                                       style="line-height: 100%; vertical-align: middle; margin-top:-4px">account_circle</i>
-                                    Profile
-                                </div>
-                            </a>
-                        </div>
-                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                            <a href="#" style="text-decoration: none;">
-                                <div class="nav_menu_item ">
-                                    <i class="material-icons"
-                                       style="line-height: 100%; vertical-align: middle; margin-top:-4px">group_work</i>
-                                    Groups
-                                </div>
-                            </a>
-                        </div>
-                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                            <a href="#" style="text-decoration: none;">
-                                <div class="nav_menu_item ">
-                                    <i class="material-icons"
-                                       style="line-height: 100%; vertical-align: middle; margin-top:-4px">date_range</i>
-                                    Calendar
-                                </div>
-                            </a>
-                        </div>
-                        <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                            <a href="#" style="text-decoration: none;">
-                                <div class="nav_menu_item ">
-                                    <i class="material-icons"
-                                       style="line-height: 100%; vertical-align: middle; margin-top:-2px">message</i>
-                                    Messages
-                                </div>
-                            </a>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="mdl-grid">
+                <!-- Navigation menu-->
+                <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp"
+                         style="width: 100%; margin: 2px;height: auto; min-height: 0;">
+                        <div class="mdl-grid" style="width: 100%">
+                            <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                                <a href="#" style="text-decoration: none;">
+                                    <div class="nav_menu_item ">
+                                        <i class="material-icons"
+                                           style="line-height: 100%; vertical-align: middle; margin-top:-4px">account_circle</i>
+                                        Profile
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                                <a href="#" style="text-decoration: none;">
+                                    <div class="nav_menu_item ">
+                                        <i class="material-icons"
+                                           style="line-height: 100%; vertical-align: middle; margin-top:-4px">group_work</i>
+                                        Groups
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                                <a href="#" style="text-decoration: none;">
+                                    <div class="nav_menu_item ">
+                                        <i class="material-icons"
+                                           style="line-height: 100%; vertical-align: middle; margin-top:-4px">date_range</i>
+                                        Calendar
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                                <a href="#" style="text-decoration: none;">
+                                    <div class="nav_menu_item ">
+                                        <i class="material-icons"
+                                           style="line-height: 100%; vertical-align: middle; margin-top:-2px">message</i>
+                                        Messages
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-table mdl-cell--hide-phone "></div>
-            <!-- Content container-->
-            <div class="mdl-cell mdl-cell--6-col">
-                <!-- Edit meet form container-->
-                <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%">
-                    <form class="md-inline-form" name="editMeet" ng-controller="editMeetCtrl">
-                        <div class="mdl-grid" style="width: 100%">
-                            <!-- Meet img -->
-                            <div class="mdl-cell mdl-cell--12-col" style="margin: 0">
-                                <p style="text-align: center">
-                                    <img style="width: 40%;" src="images/meet1.jpg"/>
-                                </p>
-                            </div>
+                <div class="mdl-cell mdl-cell--1-col mdl-cell--hide-table mdl-cell--hide-phone "></div>
 
-                            <!-- Meet name -->
-                            <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
-                                <md-input-container style="width: 100%; ">
+                <!-- Content container-->
+                <div class="mdl-cell mdl-cell--6-col">
 
-                                    <label>Name</label>
-                                    <input ng-model="meet.name">
-                                </md-input-container>
-                            </div>
-                            <div class="mdl-cel mdl-cell--2-col mdl-cell--2-col-tablet"></div>
+                    <!-- Edit meet form container-->
+                    <div ng-controller="editMeetCtrl">
+                        <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%"
+                             ng-show="load">
+                            <form class="md-inline-form" name="editMeet">
+                                <div class="mdl-grid" style="width: 100%">
+                                    <!-- Meet img -->
+                                    <div class="mdl-cell mdl-cell--12-col" style="margin: 0">
+                                        <p style="text-align: center">
+                                            <img style="width: 40%;" src="image/meet1.jpg"/>
+                                        </p>
+                                    </div>
 
-                            <!-- Meet type -->
-                            <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
-                                <md-input-container style="width: 100%; ">
-                                    <label>Type</label>
-                                    <md-select ng-model="meet.type" id="type">
-                                        <md-option value="Real" selected>
-                                            Real
-                                        </md-option>
-                                        <md-option value="Remote">
-                                            Remote
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
+                                    <!-- Meet name -->
+                                    <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
+                                        <md-input-container style="width: 100%; ">
 
-                            <!-- Meet date type -->
-                            <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
-                                <md-input-container style="width: 100%;">
-                                    <label>Date type</label>
-                                    <md-select ng-model="meet.date_type" id="date_type">
-                                        <md-option value="Single" selected>
-                                            Single
-                                        </md-option>
-                                        <md-option value="Vote">
-                                            Vote
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
+                                            <label>Title</label>
+                                            <input ng-model="meet.title">
+                                        </md-input-container>
+                                    </div>
+                                    <div class="mdl-cel mdl-cell--2-col mdl-cell--2-col-tablet"></div>
 
-                            <div class="mdl-cel mdl-cell--2-col mdl-cell--2-col-tablet"></div>
+                                    <!-- Meet type -->
+                                    <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
+                                        <md-input-container style="width: 100%; ">
+                                            <label>Type</label>
+                                            <md-select ng-model="meet.type" id="type">
+                                                <md-option value="Real">
+                                                    Real
+                                                </md-option>
+                                                <md-option value="Remote">
+                                                    Remote
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
 
-                            <!--Meet date -->
-                            <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
-                                <md-datepicker ng-model="meet.time"
-                                               md-placeholder="Enter date"></md-datepicker>
-                            </div>
+                                    <!-- Meet date type -->
+                                    <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
+                                        <md-input-container style="width: 100%;">
+                                            <label>Date type</label>
+                                            <md-select ng-model="meet.date_type" id="date_type">
+                                                <md-option value="Single" selected>
+                                                    Single
+                                                </md-option>
+                                                <md-option value="Vote">
+                                                    Vote
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </div>
 
-                            <!-- Meet targets -->
-                            <div class="mdl-cel mdl-cell--12-col ">
-                                <md-input-container style="width: 100%; margin: 0">
-                                    <label style="margin-bottom: 10px;">Targets</label>
+                                    <div class="mdl-cel mdl-cell--2-col mdl-cell--2-col-tablet"></div>
 
-                                    <div class="demo-list-action mdl-list">
-                                        <div class="mdl-list__item" ng-repeat="target in meet.targets">
+                                    <!--Meet date -->
+                                    <div class="mdl-cel mdl-cell--5-col mdl-cell--3-col-tablet">
+                                        <md-datepicker ng-model="meet.time"
+                                                       md-placeholder="Enter date"></md-datepicker>
+                                    </div>
+
+                                    <!-- Meet aims -->
+                                    <div class="mdl-cel mdl-cell--12-col ">
+                                        <md-input-container style="width: 100%; margin: 0">
+                                            <label style="margin-bottom: 10px;">Meeting aims</label>
+
+                                            <div class="demo-list-action mdl-list">
+                                                <div class="mdl-list__item" ng-repeat="aim in aims">
                                                  <span class="mdl-list__item-primary-content">
-                                                      <i class="material-icons" style="margin-right: 10px">golf_course</i>
-                                                      <span>{{target}}</span>
+                                                      <i class="material-icons"
+                                                         style="margin-right: 10px">golf_course</i>
+                                                      <span>{{aim.value}}</span>
                                                  </span>
-                                            <a class="mdl-list__item-secondary-action" href="#"><i
-                                                    class="material-icons" style="color:#ef6c00"
-                                                    ng-click="removeTarget(target)">delete</i></a>
-                                        </div>
+                                                    <a class="mdl-list__item-secondary-action" href="#"><i
+                                                            class="material-icons" style="color:#ef6c00"
+                                                            ng-click="removeAim(aim)">delete</i></a>
+                                                </div>
 
 
-                                        <div class="mdl-list__item">
+                                                <div class="mdl-list__item">
                                                  <span class="mdl-list__item-primary-content">
                                                       <md-input-container style="width: 100%; margin: 12px 0 0 0 ">
-                                                          <label>Target</label>
-                                                          <input ng-model="target">
+                                                          <label>Aim</label>
+                                                          <input ng-model="aim">
                                                       </md-input-container>
                                                  </span>
-                                            <a class="mdl-list__item-secondary-action" href="#"><i
-                                                    class="material-icons" style="color:#ef6c00"
-                                                    ng-click="createTarget()">add</i></a>
-                                        </div>
+                                                    <a class="mdl-list__item-secondary-action" href="#"><i
+                                                            class="material-icons" style="color:#ef6c00"
+                                                            ng-click="createAim()">add</i></a>
+                                                </div>
+                                            </div>
+                                        </md-input-container>
                                     </div>
-                                </md-input-container>
-                            </div>
 
-                            <!-- Meet Location -->
-                            <div class="mdl-cel mdl-cell--12-col">
-                                <md-input-container style="width: 90%; ">
-                                    <label>Location</label>
-                                    <input ng-model="meet.location">
-                                    <md-icon class="material-icons">location_on</md-icon>
-                                </md-input-container>
-                            </div>
+                                    <!-- Meet Location -->
+                                    <div class="mdl-cel mdl-cell--12-col">
+                                        <md-input-container style="width: 90%; ">
+                                            <label>Location</label>
+                                            <input ng-model="meet.location">
+                                            <md-icon class="material-icons">location_on</md-icon>
+                                        </md-input-container>
+                                    </div>
 
-                            <!-- Meet description -->
-                            <div class="mdl-cel mdl-cell--12-col">
-                                <md-input-container style="width: 90%; ">
-                                    <label>Description</label>
-                                    <input ng-model="meet.description">
-                                    <md-icon class="material-icons">description</md-icon>
-                                </md-input-container>
-                            </div>
+                                    <!-- Meet description -->
+                                    <div class="mdl-cel mdl-cell--12-col">
+                                        <md-input-container style="width: 90%; ">
+                                            <label>Description</label>
+                                            <input ng-model="meet.description">
+                                            <md-icon class="material-icons">description</md-icon>
+                                        </md-input-container>
+                                    </div>
 
-                            <div class="mdl-cel mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                                <p style="text-align: center">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised "
-                                            style="">
-                                        Cancel
-                                    </button>
-                                </p>
-                            </div>
-                            <div class="mdl-cel mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                                <p style="text-align: center">
-                                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
-                                            style=" background-color: #2e7d32;">
-                                        Save
-                                    </button>
-                                </p>
-                            </div>
+                                    <div class="mdl-cel mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                                        <p style="text-align: center">
+                                            <button class="mdl-button mdl-js-button mdl-button--raised "
+                                                    style=""
+                                                    ng-click="cancel()">
+                                                Cancel
+                                            </button>
+                                        </p>
+                                    </div>
+                                    <div class="mdl-cel mdl-cell--6-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                                        <p style="text-align: center">
+                                            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                                                    style=" background-color: #2e7d32;"
+                                                    ng-click="save()">
+                                                Save
+                                            </button>
+                                        </p>
+                                    </div>
+
+                                </div>
+                            </form>
+
 
                         </div>
-                    </form>
-
-
+                    </div>
                 </div>
                 <!-- Maybe some advertisement
                 <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                    <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" css="width: 100%; margin: 2px">
                         Maybe some advertisement?
                     </div>
                 </div>-->
             </div>
         </div>
-</main>
+    </main>
 </div>
 
 </body>
+<!-- Material Script -->
+<script src="lib/material/material.min.js"></script>
+
+<!-- Angular js -->
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular/angular-resource.min.js"></script>
+<script src="lib/angular/angular-animate.min.js"></script>
+<script src="lib/angular/angular-aria.min.js"></script>
+
+<!-- Angular Material Script -->
+<script src="lib/angular_material/angular-material.min.js"></script>
+
+<!-- App context -->
+<script src="js/app_controller.js"></script>
 </html>

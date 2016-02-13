@@ -46,7 +46,7 @@ public class Group {
     }
 
     @Basic
-    @Column(name = "status", nullable = false, length = -1)
+    @Column(name = "status", length = -1)
     public String getStatus() {
         return status;
     }

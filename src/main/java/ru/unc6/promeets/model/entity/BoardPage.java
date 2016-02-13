@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class BoardPage {
     private long pageId;
     private short number;
-    private String name;
+    private String title;
     private Board board;
 
     @Id
@@ -36,12 +36,12 @@ public class BoardPage {
 
     @Basic
     @Column(name = "name", nullable = false, length = -1)
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class BoardPage {
 
         if (pageId != that.pageId) return false;
         if (number != that.number) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
 
         return true;
     }
@@ -62,7 +62,7 @@ public class BoardPage {
     public int hashCode() {
         int result = (int) (pageId ^ (pageId >>> 32));
         result = 31 * result + (int) number;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
     }
 

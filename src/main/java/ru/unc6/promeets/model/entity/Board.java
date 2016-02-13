@@ -1,5 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Board {
     private long boardId;
-    private String name;
+    private String title;
     private Meet meet;
 
     @Id
@@ -27,12 +29,12 @@ public class Board {
 
     @Basic
     @Column(name = "title")
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Override
@@ -43,7 +45,7 @@ public class Board {
         Board board = (Board) o;
 
         if (boardId != board.boardId) return false;
-        if (name != null ? !name.equals(board.name) : board.name != null) return false;
+        if (title != null ? !title.equals(board.title) : board.title != null) return false;
 
         return true;
     }
@@ -51,10 +53,11 @@ public class Board {
     @Override
     public int hashCode() {
         int result = (int) (boardId ^ (boardId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
     }
 
+    @JsonIgnore
     @OneToOne(mappedBy = "board")
     public Meet getMeet() {
         return meet;

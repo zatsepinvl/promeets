@@ -11,8 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "meet_aims", schema = "public", catalog = "promeets_db")
 public class MeetAim {
-    private long targetId;
-    private String text;
+    private long aimId;
+    private String value;
     private List<BoardItem> boardItems;
     private List<MeetNote> notes;
     private Meet meet;
@@ -20,22 +20,22 @@ public class MeetAim {
     @Id
     @Column(name = "aim_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getTargetId() {
-        return targetId;
+    public long getAimId() {
+        return aimId;
     }
 
-    public void setTargetId(long targetId) {
-        this.targetId = targetId;
+    public void setAimId(long targetId) {
+        this.aimId = targetId;
     }
 
     @Basic
     @Column(name = "value", nullable = false, length = -1)
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setValue(String text) {
+        this.value = text;
     }
 
     @Override
@@ -45,16 +45,16 @@ public class MeetAim {
 
         MeetAim that = (MeetAim) o;
 
-        if (targetId != that.targetId) return false;
-        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (aimId != that.aimId) return false;
+        if (value != null ? !value.equals(that.value) : that.value != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (targetId ^ (targetId >>> 32));
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        int result = (int) (aimId ^ (aimId >>> 32));
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 
@@ -78,7 +78,6 @@ public class MeetAim {
         this.notes = notes;
     }
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
     public Meet getMeet() {

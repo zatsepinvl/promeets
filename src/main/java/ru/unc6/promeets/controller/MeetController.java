@@ -6,15 +6,14 @@
 package ru.unc6.promeets.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
-import ru.unc6.promeets.model.entity.MeetAim;
+import ru.unc6.promeets.model.repository.AimRepository;
 import ru.unc6.promeets.model.service.MeetService;
+
+import java.util.List;
 
 @RestController
 public class MeetController {
@@ -22,21 +21,16 @@ public class MeetController {
     @Autowired
     private MeetService meetService;
 
-
     @RequestMapping(value = "/meets", method = RequestMethod.GET)
     public ResponseEntity<List<Meet>> getMeets() {
         List<Meet> meets = meetService.getAll();
         if (meets.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
+        for (Meet meet : meets) {
+            meet.setAims(null);
+        }
         return new ResponseEntity<>(meets, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/files", method = RequestMethod.POST)
-    public ResponseEntity<Void> createFile(@RequestBody File file) {
-        File f = file;
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/meets/{id}", method = RequestMethod.GET)
@@ -45,24 +39,26 @@ public class MeetController {
         if (meet == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
+        meet.setAims(null);
         return new ResponseEntity<>(meet, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/meets", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/meets", method = RequestMethod.POST)
     public ResponseEntity<Void> createMeet(@RequestBody Meet meet) {
         if (meet == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         meetService.save(meet);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/meets/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateMeet(@RequestBody Meet meet, @PathVariable long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (meetService.getById(id) != null) {
+            meetService.save(meet);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/meets/{id}", method = RequestMethod.DELETE)
@@ -70,54 +66,44 @@ public class MeetController {
         if (meetService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         meetService.delete(id);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/meets/{id}/usermeets", method = RequestMethod.GET)
+    @RequestMapping(value = "/meets/{id}/user_meets", method = RequestMethod.GET)
     public ResponseEntity<List<UserMeet>> getUserMeets(@PathVariable("id") long id) {
         List<UserMeet> userMeets = meetService.getUserMeets(id);
-
         if (userMeets == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(userMeets, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/meets/{id}/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getUsers(@PathVariable("id") long id) {
         List<User> users = meetService.getUsers(id);
-
         if (users == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/meets/{id}/notes", method = RequestMethod.GET)
     public ResponseEntity<List<MeetNote>> getMeetNotes(@PathVariable("id") long id) {
         List<MeetNote> notes = meetService.getMeetNotes(id);
-
         if (notes == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/meets/{id}/aims", method = RequestMethod.GET)
     public ResponseEntity<List<MeetAim>> getMeetTargets(@PathVariable("id") long id) {
-        List<MeetAim> targets = meetService.getMeetAims(id);
-
-        if (targets == null) {
+        List<MeetAim> aims = meetService.getMeetAims(id);
+        if (aims == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
-        return new ResponseEntity<>(targets, HttpStatus.OK);
+        return new ResponseEntity<>(aims, HttpStatus.OK);
     }
 
 

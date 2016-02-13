@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "meet_notes", schema = "public", catalog = "promeets_db")
 public class MeetNote {
     private long noteId;
-    private String text;
+    private String value;
     private Meet meet;
     private MeetAim aim;
 
@@ -27,12 +27,12 @@ public class MeetNote {
 
     @Basic
     @Column(name = "value", nullable = false, length = -1)
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setValue(String text) {
+        this.value = text;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MeetNote {
         MeetNote meetNote = (MeetNote) o;
 
         if (noteId != meetNote.noteId) return false;
-        if (text != null ? !text.equals(meetNote.text) : meetNote.text != null) return false;
+        if (value != null ? !value.equals(meetNote.value) : meetNote.value != null) return false;
 
         return true;
     }
@@ -51,7 +51,7 @@ public class MeetNote {
     @Override
     public int hashCode() {
         int result = (int) (noteId ^ (noteId >>> 32));
-        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
 

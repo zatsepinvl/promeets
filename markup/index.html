@@ -3,45 +3,22 @@
 <head>
     <title>Promeets</title>
 
-    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="description" content="Promeets. We help you to arrange meetings.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- Style -->
-    <link rel="stylesheet" href="css/main_style.css">
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.deep_orange-green.min.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-    <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-    <script src="js/angular_script.js"></script>
-    <!-- Angular Material Library -->
-    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
-    <!-- Bootstrap Material Design -->
-    <link rel="stylesheet" href="css/main_style1.css">
-    <link href="css/bootstrap-material-design.min.css" rel="stylesheet">
-    <link href="css/ripples.min.css" rel="stylesheet">
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="js/ripples.min.js"></script>
-    <script src="js/material.min.js"></script>
-    <script>
-        $(function () {
-            $.material.init();
-        });
-    </script>
-    <script src="js/datetimepicker.js"></script>
-    <script src="angular/angular.min.js"></script>
-    <script src="js/angular_script.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Material Styles -->
+    <link rel="stylesheet" href="lib/material/material.min.css"/>
+    <link rel="stylesheet" href="lib/material/fonts_icons.css">
+    <link rel="stylesheet" href="lib/material/material_fonts.css" type="text/css">
+
+    <!-- Angular Material Style  -->
+    <link rel="stylesheet" href="lib/angular_material/angular.material.min.css">
+
+
 </head>
 <body ng-app="app" ng-cloak>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -55,7 +32,7 @@
                                                                                 style=" line-height:64px;vertical-align: middle; margin-bottom: 4px">settings</i>
                     <span class="mdl-layout--large-screen-only">Settings</span>
                 </a>
-                <a class="mdl-navigation__link " href="#"><img src="images/face.png"
+                <a class="mdl-navigation__link " href="#"><img src="image/face.png"
                                                                style="width:50px; height: 50px;"
                                                                class="md-avatar"/>
                 </a>
@@ -71,7 +48,7 @@
                 <!-- Navigation menu-->
                 <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
                     <div class="mdl-card mdl-card mdl-shadow--2dp"
-                         style="width: 100%; margin: 2px;height: auto; min-height: auto">
+                         style="width: 100%; margin: 2px;height: auto; min-height: 0;">
                         <div class="mdl-grid" style="width: 100%">
                             <div class="mdl-cell mdl-cell--10-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                                 <a href="#" style="text-decoration: none;">
@@ -135,7 +112,7 @@
 
                             <!-- Group logo-->
                             <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
-                                <img style="width: 96%; margin: auto" src="images/group.jpg"/>
+                                <img style="width: 96%; margin: auto" src="image/group.jpg"/>
                             </div>
 
                         </div>
@@ -197,27 +174,32 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- MeetList -->
                         <md-divider></md-divider>
-                        <div class="demo-list-action mdl-list mdl-list__item--two-line" ng-controller="meetListCtrl">
-                            <div class="mdl-list__item" ng-repeat="meet in meets">
+                        <div ng-controller="meetListCtrl">
+                            <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"
+                                 style="width: 100%" ng-hide="load"></div>
+                            <!-- MeetList -->
+                            <ul class="mdl-list "  ng-show="load">
+                                <li class="mdl-list__item mdl-list__item--two-line"
+                                    ng-repeat="meet in meets track by meet.meetId">
                                                  <span class="mdl-list__item-primary-content">
-                                                      <img class="mdl-list__item-avatar" src="images/meet1.jpg"/>
-                                                      <span>{{meet.name}}</span>
+                                                      <img class="mdl-list__item-avatar" src="image/meet1.jpg"/>
+                                                      <span>{{meet.title}}</span>
                                                      <span class="mdl-list__item-sub-title">{{meet.time}}</span>
                                                  </span>
-                                <a class="mdl-list__item-secondary-action" href="#"><i
-                                        class="material-icons" style="color:#ef6c00"
-                                        ng-click="editMeet()">edit</i></a>
-                            </div>
+                                    <a class="mdl-list__item-secondary-action" href="#"><i
+                                            class="material-icons" style="color:#ef6c00"
+                                            ng-click="editMeet(meet)">edit</i></a>
+                                </li>
+                            </ul>
                         </div>
+
                     </div>
 
                 </div>
                 <!-- Maybe some advertisement
                 <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                    <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" css="width: 100%; margin: 2px">
                         CS3
                     </div>
                 </div>
@@ -228,4 +210,18 @@
 </div>
 
 </body>
+<!-- Material Script -->
+<script src="lib/material/material.min.js"></script>
+
+<!-- Angular js -->
+<script src="lib/angular/angular.min.js"></script>
+<script src="lib/angular/angular-resource.min.js"></script>
+<script src="lib/angular/angular-animate.min.js"></script>
+<script src="lib/angular/angular-aria.min.js"></script>
+
+<!-- Angular Material Script -->
+<script src="lib/angular_material/angular-material.min.js"></script>
+
+<!-- App context -->
+<script src="js/app_controller.js"></script>
 </html>

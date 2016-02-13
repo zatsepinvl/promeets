@@ -1,8 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,12 +11,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "meets")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "meetId")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "meetId")
 public class Meet {
     private long meetId;
-    private String name;
+    private String title;
     private Timestamp time;
-    private List<MeetAim> targets;
+    private List<MeetAim> aims;
     private List<MeetNote> notes;
     private User admin;
     private Board board;
@@ -41,12 +39,12 @@ public class Meet {
 
     @Basic
     @Column(name = "title", nullable = false, length = -1)
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Basic
@@ -67,7 +65,7 @@ public class Meet {
         Meet meet = (Meet) o;
 
         if (meetId != meet.meetId) return false;
-        if (name != null ? !name.equals(meet.name) : meet.name != null) return false;
+        if (title != null ? !title.equals(meet.title) : meet.title != null) return false;
         if (time != null ? !time.equals(meet.time) : meet.time != null) return false;
 
         return true;
@@ -76,7 +74,7 @@ public class Meet {
     @Override
     public int hashCode() {
         int result = (int) (meetId ^ (meetId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
     }
@@ -101,7 +99,7 @@ public class Meet {
         this.admin = admin;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     public Board getBoard() {
         return board;
@@ -112,13 +110,24 @@ public class Meet {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "userMeetPK.meet", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "userMeetPK.meet")
     public List<UserMeet> getUsers() {
         return users;
     }
 
     public void setUsers(List<UserMeet> users) {
         this.users = users;
+    }
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "meet")
+    public List<MeetAim> getAims() {
+        return aims;
+    }
+
+    public void setAims(List<MeetAim> targets) {
+        this.aims = targets;
     }
 
     @Basic
@@ -161,13 +170,4 @@ public class Meet {
         this.group = group;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "meet")
-    public List<MeetAim> getTargets() {
-        return targets;
-    }
-
-    public void setTargets(List<MeetAim> targets) {
-        this.targets = targets;
-    }
 }

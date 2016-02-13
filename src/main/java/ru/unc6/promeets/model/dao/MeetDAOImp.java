@@ -34,7 +34,7 @@ public class MeetDAOImp extends BaseDAOImp<Meet> implements MeetDAO {
     public List<MeetAim> getAllTargetsByMeetId(long id)
     {
         Meet meet = getById(Meet.class, id);
-        Hibernate.initialize(meet.getTargets());
-        return meet.getTargets();
+        Hibernate.initialize(meet.getAims());
+        return meet.getAims();
     }
 }

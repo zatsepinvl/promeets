@@ -10,7 +10,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.dao.MeetDAO;
 import ru.unc6.promeets.model.entity.Board;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.MeetNote;
@@ -28,17 +27,15 @@ import ru.unc6.promeets.model.repository.MeetRepository;
 public class MeetServiceImpl implements MeetService {
     @Autowired
     private MeetRepository meetRepository;
-    @Autowired
-    private MeetDAO meetDAO;
 
     @Override
     public Meet getById(long id) {
         return meetRepository.findOne(id);
     }
 
-
     @Override
     public void delete(long id) {
+        meetRepository.deleteAllAimsById(id);
         meetRepository.delete(id);
     }
 
@@ -69,7 +66,7 @@ public class MeetServiceImpl implements MeetService {
 
     @Override
     public List<MeetAim> getMeetAims(long id) {
-        return (List<MeetAim>) meetRepository.getAllMeetTargetsByMeetId(id);
+        return (List<MeetAim>) meetRepository.getAllMeetAimsByMeetId(id);
     }
 
     @Override

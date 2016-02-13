@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by Vladimir on 06.02.2016.
+ *
  * @param <T>
  */
 
@@ -32,13 +33,14 @@ public class BaseDAOImp<T> implements BaseDAO<T> {
     }
 
     @Override
-    public void create(T obj) {
+    public T create(T obj) {
         entityManager.persist(obj);
+        return obj;
     }
 
     @Override
-    public T update(T obj) {
-        return entityManager.merge(obj);
+    public void update(T obj) {
+        entityManager.merge(obj);
     }
 
     @Override

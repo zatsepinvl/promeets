@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "chats")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "chatId")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "chatId")
 public class Chat {
     private long chatId;
     private String name;
@@ -59,6 +60,7 @@ public class Chat {
         return result;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "chat")
     public List<Message> getMessages() {
         return messages;
@@ -68,6 +70,7 @@ public class Chat {
         this.messages = messages;
     }
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "chats")
     public List<User> getUsers() {
         return users;

@@ -8,9 +8,9 @@ import java.util.List;
 public interface BaseDAO<T> {
     T getById(Class<T> entity, long id);
 
-    void create(T obj);
+    T create(T obj);
 
-    T update(T obj);
+    void update(T obj);
 
     void delete(Class<T> entity, long id);
 
