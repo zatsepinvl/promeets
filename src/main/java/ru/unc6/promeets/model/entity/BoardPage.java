@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import java.util.List;
 import javax.persistence.*;
 
 /**
@@ -12,6 +13,8 @@ public class BoardPage {
     private short number;
     private String title;
     private Board board;
+    private List<BoardItem> items;
+    
 
     @Id
     @Column(name = "page_id", nullable = false)
@@ -35,7 +38,7 @@ public class BoardPage {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "title", nullable = false, length = -1)
     public String getTitle() {
         return title;
     }
@@ -75,4 +78,17 @@ public class BoardPage {
     public void setBoard(Board board) {
         this.board = board;
     }
+    
+    
+    @OneToMany(mappedBy = "boardPage")
+    public List<BoardItem> getItems()
+    {
+        return items;
+    }
+    
+    public void setItems(List<BoardItem> items)
+    {
+        this.items = items;
+    }
+    
 }

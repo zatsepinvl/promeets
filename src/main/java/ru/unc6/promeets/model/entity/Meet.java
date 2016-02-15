@@ -99,7 +99,7 @@ public class Meet {
         this.admin = admin;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     public Board getBoard() {
         return board;
@@ -126,8 +126,8 @@ public class Meet {
         return aims;
     }
 
-    public void setAims(List<MeetAim> targets) {
-        this.aims = targets;
+    public void setAims(List<MeetAim> aims) {
+        this.aims = aims;
     }
 
     @Basic

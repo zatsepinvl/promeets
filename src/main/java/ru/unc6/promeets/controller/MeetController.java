@@ -10,13 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
-import ru.unc6.promeets.model.repository.AimRepository;
 import ru.unc6.promeets.model.service.MeetService;
-
 import java.util.List;
+import org.apache.log4j.Logger;
 
 @RestController
 public class MeetController {
+    
+    private static final Logger log = Logger.getLogger(MeetController.class);
 
     @Autowired
     private MeetService meetService;
@@ -24,12 +25,15 @@ public class MeetController {
     @RequestMapping(value = "/meets", method = RequestMethod.GET)
     public ResponseEntity<List<Meet>> getMeets() {
         List<Meet> meets = meetService.getAll();
+        
         if (meets.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        
         for (Meet meet : meets) {
             meet.setAims(null);
         }
+        
         return new ResponseEntity<>(meets, HttpStatus.OK);
     }
 
@@ -39,7 +43,9 @@ public class MeetController {
         if (meet == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        
         meet.setAims(null);
+        
         return new ResponseEntity<>(meet, HttpStatus.OK);
     }
 
@@ -54,18 +60,23 @@ public class MeetController {
 
     @RequestMapping(value = "/meets/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateMeet(@RequestBody Meet meet, @PathVariable long id) {
-        if (meetService.getById(id) != null) {
-            meetService.save(meet);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @RequestMapping(value = "/meets/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteMeet(@PathVariable long id) {
         if (meetService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        
+            meetService.save(meet);
+            
+            return new ResponseEntity<>(HttpStatus.OK); 
+    }
+
+    @RequestMapping(value = "/meets/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteMeet(@PathVariable long id) 
+    {
+        if (meetService.getById(id) == null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
         meetService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

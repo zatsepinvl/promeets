@@ -6,10 +6,12 @@
 package ru.unc6.promeets.model.service;
 
 import java.util.List;
+import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.unc6.promeets.controller.MeetController;
 import ru.unc6.promeets.model.entity.Board;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.MeetNote;
@@ -25,8 +27,13 @@ import ru.unc6.promeets.model.repository.MeetRepository;
 @Service
 @Transactional
 public class MeetServiceImpl implements MeetService {
+    
+    private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
+    
     @Autowired
     private MeetRepository meetRepository;
+    @Autowired
+    private BoardService boardService;
 
     @Override
     public Meet getById(long id) {
@@ -35,8 +42,16 @@ public class MeetServiceImpl implements MeetService {
 
     @Override
     public void delete(long id) {
+        Board board = meetRepository.findOne(id).getBoard();
+        boardService.delete(board.getBoardId());
+        
+        meetRepository.deleteAllNotesById(id);
         meetRepository.deleteAllAimsById(id);
+        meetRepository.deleteAllUserMeetsById(id);
+        
         meetRepository.delete(id);
+        
+        log.debug("Delete meet with id="+id);
     }
 
     @Override
@@ -52,6 +67,8 @@ public class MeetServiceImpl implements MeetService {
     @Override
     public void save(Meet meet) {
         meetRepository.save(meet);
+        
+        log.debug("Save meet with id="+meet.getMeetId());
     }
 
     @Override

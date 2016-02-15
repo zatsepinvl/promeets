@@ -55,8 +55,9 @@ public class BoardItem {
         return result;
     }
 
-    @OneToOne
+
     @JoinColumn(name = "board_page_id", referencedColumnName = "page_id", nullable = false)
+    @ManyToOne()
     public BoardPage getBoardPage() {
         return boardPage;
     }
