@@ -14,16 +14,8 @@ import ru.unc6.promeets.model.entity.MeetAim;
  *
  * @author MDay
  */
-public interface MeetService 
+public interface MeetService extends BaseService<Meet>
 {
-    Meet getById(long id);
-
-    void save(Meet meet);
-
-    void delete(long id);
-
-    List<Meet> getAll();
-    
     List<User> getUsers(long id);
     
     List<UserMeet> getUserMeets(long id);
@@ -32,6 +24,5 @@ public interface MeetService
     
     List<MeetAim> getMeetAims(long id);
     
-    Board getBoard(long id);
-    
+    Board getBoard(long id); 
 }

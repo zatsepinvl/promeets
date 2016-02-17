@@ -64,9 +64,10 @@ public class MeetController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         
-            meetService.save(meet);
+        meet.setMeetId(id);
+        meetService.save(meet);
             
-            return new ResponseEntity<>(HttpStatus.OK); 
+        return new ResponseEntity<>(HttpStatus.OK); 
     }
 
     @RequestMapping(value = "/meets/{id}", method = RequestMethod.DELETE)
