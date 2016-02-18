@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.Group;
+import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
 import ru.unc6.promeets.model.service.GroupService;
@@ -97,6 +98,19 @@ public class GroupController
         groupService.delete(id);
         
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/groups/{id}/meets", method = RequestMethod.GET)
+    public ResponseEntity<List<Meet>> getGroupMeetsById(@PathVariable long id) 
+    {
+        List<Meet> meets = groupService.getMeetsByGroupId(id);
+        
+        if (meets.isEmpty()) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(meets, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/groups/{id}/users", method = RequestMethod.GET)

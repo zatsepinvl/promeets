@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Group;
+import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
 import ru.unc6.promeets.model.repository.GroupRepository;
@@ -27,6 +28,8 @@ public class GroupServiceImpl implements GroupService
     
     @Autowired
     GroupRepository groupRepository;
+    @Autowired
+    MeetService meetService;
 
     @Override
     public Group getById(long id) 
@@ -45,7 +48,16 @@ public class GroupServiceImpl implements GroupService
     @Override
     public void delete(long id) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        groupRepository.deleteAllUserGroupssByGroupId(id);
+        List<Meet> meets = (List<Meet>) groupRepository.getAllMeetsByGroupId(id);
+        for(Meet meet: meets)
+        {
+            meetService.delete(meet.getMeetId());
+        }
+        
+        groupRepository.delete(id);
+        
+        log.debug("Delete group with id="+id);
     }
 
     @Override
@@ -64,6 +76,12 @@ public class GroupServiceImpl implements GroupService
     public List<UserGroup> getUserGroupsByGroupId(long id) 
     {
         return (List<UserGroup>) groupRepository.getAllUserGroupsByGroupId(id);
+    }
+
+    @Override
+    public List<Meet> getMeetsByGroupId(long id) 
+    {
+        return (List<Meet>) groupRepository.getAllMeetsByGroupId(id);
     }
     
 }

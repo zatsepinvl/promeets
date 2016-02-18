@@ -10,6 +10,7 @@ import java.util.List;
 /**
  *
  * @author MDay
+ * @param <T>
  */
 public interface  BaseService<T> 
 {

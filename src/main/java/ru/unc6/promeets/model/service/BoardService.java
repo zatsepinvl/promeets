@@ -5,7 +5,6 @@
  */
 package ru.unc6.promeets.model.service;
 
-import java.util.List;
 import ru.unc6.promeets.model.entity.Board;
 
 /**
