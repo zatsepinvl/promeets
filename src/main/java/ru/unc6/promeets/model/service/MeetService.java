@@ -7,31 +7,23 @@ package ru.unc6.promeets.model.service;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.entity.MeetAim;
 
 /**
- *
  * @author MDay
  */
-public interface MeetService 
-{
-    Meet getById(long id);
+public interface MeetService extends BaseService<Meet> {
 
-    void save(Meet meet);
-
-    void delete(long id);
-
-    List<Meet> getAll();
-    
     List<User> getUsers(long id);
-    
+
     List<UserMeet> getUserMeets(long id);
-    
+
     List<MeetNote> getMeetNotes(long id);
-    
+
     List<MeetAim> getMeetAims(long id);
-    
+
     Board getBoard(long id);
-    
+
 }

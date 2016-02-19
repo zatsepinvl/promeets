@@ -1,0 +1,66 @@
+<div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+    <!-- Group header-->
+    <div class="mdl-grid" style="width: 100%; margin-top:0; margin-bottom: 0; padding: 0">
+
+        <!-- Group name and description-->
+        <div class="mdl-cell mdl-cell--8-col mdl-cell--5-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-grid" style="padding: 0;">
+                <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div style="font-size: 26px; font-weight: 200">NetCracker
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    Super-puper group for everybody.
+                </div>
+            </div>
+        </div>
+
+        <!-- Group logo-->
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
+            <img style="width: 96%; margin: auto" src="../image/group.jpg"/>
+        </div>
+
+    </div>
+
+    <!-- Current meet-->
+    <div class="current_meet">
+        <i class="material-icons"
+           style=" margin-bottom:4px; line-height: 40px; vertical-align: middle">group</i>
+        Current meet
+    </div>
+
+    <!-- Group menu-->
+    <div class="mdl-grid" style="width: 100%; padding: 0">
+        <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+            <a href="#/group/{{group.groupId}}/meets" style="text-decoration: none;">
+                <div class="menu_item">
+                    Meets
+                </div>
+            </a>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+            <a href="#/group/{{group.groupId}}/files" style="text-decoration: none;">
+                <div class="menu_item ">
+                    Files
+                </div>
+            </a>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+            <a href="#/group/{{group.groupId}}/members" style="text-decoration: none;">
+                <div class="menu_item">
+                    Members
+                </div>
+            </a>
+        </div>
+        <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+            <a href="#/group/{{group.groupId}}/chat" style="text-decoration: none;">
+                <div class="menu_item">
+                    Chat
+                </div>
+            </a>
+        </div>
+    </div>
+    <md-divider></md-divider>
+    <!-- Group content -->
+    <ng-include src="'../templates/'+tab+'.html'"></ng-include>
+</div>

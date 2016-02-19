@@ -12,4 +12,10 @@ public class MainController {
     public String index() {
         return "index";
     }
+
+    @RequestMapping(value = "/security")
+    public String security() {
+        return "test";
+    }
+
 }

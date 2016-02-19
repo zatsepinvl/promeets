@@ -1,4 +1,23 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ngRoute']);
+
+
+//configuration for templates routing
+app.config(function ($routeProvider, $httpProvider) {
+        $routeProvider.when('/', {
+            redirectTo: '/group/1/meets'
+        }).when('/group/:groupId', {
+            templateUrl: '../templates/group.html',
+            controller: 'groupCtrl'
+        }).when('/group/:groupId/:tab', {
+            templateUrl: '../templates/group.html',
+            controller: 'groupCtrl'
+        }).when('/edit_meet/:meetId', {
+            templateUrl: '../templates/edit_meet.html',
+            controller: 'editMeetCtrl'
+        }).otherwise('/');
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    }
+);
 
 //configuration for angular_material_style
 app.config(function ($mdThemingProvider) {
@@ -24,12 +43,12 @@ app.config(function ($mdThemingProvider) {
         'contrastLightColors': undefined    // could also specify this if default was 'dark'
     });
     $mdThemingProvider.theme('default')
-        .primaryPalette('amazingPaletteName')
+        .primaryPalette('amazingPaletteName');
 });
 
 //factories
 app.factory('Entity', function ($resource) {
-    return $resource('http://localhost:8080/:entity/:id/:d_entity', {
+    return $resource('/api/:entity/:id/:d_entity', {
         entity: '@entity',
         id: '@id',
         d_entity: "@d_entity"
@@ -40,11 +59,38 @@ app.factory('Entity', function ($resource) {
     });
 });
 
+//group controller
+app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
+    //test
+    $scope.group = {groupId: 777};
+
+    $scope.tab = $routeParams.tab;
+    if ($scope.tab == undefined) {
+        $scope.tab = "meets";
+    }
+});
+
+//meet list controller
+app.controller('meetListCtrl', function ($scope, Entity) {
+    $scope.error = false;
+
+    var loadMeets = function () {
+        $scope.meets = Entity.query({entity: "meets"}, function (meets) {
+            meets.forEach(function (meet) {
+                meet.time = new Date(meet.time);
+            });
+        }, function () {
+            $scope.meet_load_error = "Can't load meets. Try again later."
+        });
+    };
+    loadMeets();
+
+});
 
 //edit meet controller
-app.controller("editMeetCtrl", function ($location, $scope, Entity) {
+app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
     $scope.load = false;
-    var id = $location.search().id;
+    var id = $routeParams.meetId;
     if (id != undefined) {
         $scope.meet = Entity.get({entity: "meets", id: id}, function () {
             $scope.aims = Entity.query({entity: "meets", id: id, d_entity: "aims"},
@@ -63,12 +109,11 @@ app.controller("editMeetCtrl", function ($location, $scope, Entity) {
         var aim = {meet: $scope.meet, value: $scope.aim};
         $scope.aims.push(aim);
         $scope.aim = "";
-        console.log($scope.aims);
-    }
+    };
 
     $scope.removeAim = function (aim) {
         $scope.aims.splice($scope.aims.indexOf(aim), 1);
-    }
+    };
 
     $scope.save = function () {
         Entity.save({entity: "meets"}, $scope.meet);
@@ -77,30 +122,14 @@ app.controller("editMeetCtrl", function ($location, $scope, Entity) {
             Entity.save({entity: "meet_aims"}, aims[i]);
             $scope.initAims.splice($scope.initAims.indexOf(aims[i]), 1);
         }
-        var aims = $scope.initAims;
-        for (var i = 0; i < aims.length; i++) {
+        aims = $scope.initAims;
+        for (i = 0; i < aims.length; i++) {
             Entity.remove({entity: "meet_aims", id: aims[i].aimId});
-            console.log(aims[i]);
         }
-        window.location = "index.html";
+        window.history.back();
     };
+
     $scope.cancel = function () {
-        window.location = "index.html";
+        window.history.back();
     }
-});
-
-//meet list controller
-app.controller('meetListCtrl', function ($scope, Entity) {
-    $scope.load = false;
-    $scope.meets = Entity.query({entity: "meets"}, function (meets) {
-        var meets = $scope.meets;
-        meets.forEach(function (meet, i, meets) {
-            meet.time = new Date(meet.time);
-
-        });
-        $scope.load = true;
-    });
-    $scope.editMeet = function (meet) {
-        window.location = "edit_meet.html#?id=" + meet.meetId;
-    };
 });

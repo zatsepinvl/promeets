@@ -8,7 +8,7 @@
    http://www.springframework.org/schema/tx
    http://www.springframework.org/schema/tx/spring-tx.xsd
    http://www.springframework.org/schema/context
-   http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+   http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
@@ -41,10 +41,12 @@
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
-     <jpa:repositories
-             base-package="ru.unc6.promeets.model.repository"
-             entity-manager-factory-ref="entityManagerFactory"
-             transaction-manager-ref="transactionManager"/>
+    <jpa:repositories
+            base-package="ru.unc6.promeets.model.repository"
+            entity-manager-factory-ref="entityManagerFactory"
+            transaction-manager-ref="transactionManager"/>
 
     <context:component-scan base-package="ru.unc6.promeets.model.*"/>
+
+    <import resource="security.xml"/>
 </beans>

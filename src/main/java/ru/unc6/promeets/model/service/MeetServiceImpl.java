@@ -18,9 +18,6 @@ import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
 import ru.unc6.promeets.model.repository.MeetRepository;
 
-/**
- * @author MDay
- */
 
 @Service
 @Transactional
