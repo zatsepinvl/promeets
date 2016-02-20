@@ -6,13 +6,13 @@
                  http://www.springframework.org/schema/security
                  http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-    <global-method-security secured-annotations="enabled" />
+    <global-method-security secured-annotations="enabled"/>
 
-    <http auto-config="true"  >
-        <csrf disabled="true"/>
-        <intercept-url pattern="/security/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/security" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/**" access="hasRole('ROLE_ANONYMOUS')"/>
+
+    <http auto-config="true" entry-point-ref="restAuthenticationEntryPoint">
+        <intercept-url pattern="/security/*" access="hasRole('ROLE_ADMIN')"/>
+        <logout/>
+        <remember-me/>
     </http>
 
     <authentication-manager>

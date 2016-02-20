@@ -46,7 +46,7 @@
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager"/>
 
-    <context:component-scan base-package="ru.unc6.promeets.model.*"/>
+    <context:component-scan base-package="ru.unc6.promeets.*"/>
 
     <import resource="security.xml"/>
 </beans>
