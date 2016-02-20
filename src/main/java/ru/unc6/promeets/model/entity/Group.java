@@ -19,6 +19,7 @@ public class Group {
     private String name;
     private String status;
     private Timestamp createdTime;
+    private Chat chat;
     private List<UserGroup> users;
     private GroupType type;
     private File image;
@@ -127,5 +128,15 @@ public class Group {
 
     public void setAdmin(User admin) {
         this.admin = admin;
+    }
+    
+    @OneToOne
+    @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false)
+    public Chat getChat() {
+        return chat;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 }
