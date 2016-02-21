@@ -14,7 +14,11 @@ app.config(function ($routeProvider, $httpProvider) {
         }).when('/edit_meet/:meetId', {
             templateUrl: '../templates/edit_meet.html',
             controller: 'editMeetCtrl'
-        }).otherwise('/');
+        }).when('/edit_group/:groupId',{
+            templateUrl: '../templates/edit_group.html',
+            controller: 'editGroupCtrl'
+        })
+        .otherwise('/');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
@@ -132,4 +136,31 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
     $scope.cancel = function () {
         window.history.back();
     }
+    app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
+    /*создаём тестовые данные, пока на клиенте*/
+    var groupId = parseInt($routeParams.groupId);
+    if (groupId != undefined) {
+        var group_admin = new User(0, "Mike");
+        /*администратор группы*/
+        var group = new Group(groupId);
+        /*сама группа*/
+        group.name = "Test group";
+        group.status = "This group is for learning English";
+        group.setAdmin(group_admin);
+        group.createdTime = new Date(2015, 9, 5);
+        group.type = new GroupType(0, "Private");
+        group.setImage(new File(0, "../image/group.jpg"));
+        /*пользователи группы*/
+        for (var i = 0; i < 10; i++) {
+            group.addUser(new User(i, "user " + i));
+        }
+        /*chat пока не инициализируем*/
+        var action = "update";
+        $scope.action = action;
+        $scope.group = group;
+        $scope.removeUser = function (number) {
+            $scope.group.users.splice(number, 1);
+        };
+    }
+});
 });
