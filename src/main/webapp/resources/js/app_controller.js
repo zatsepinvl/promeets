@@ -137,9 +137,19 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
         window.history.back();
     }
     app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
-    /*создаём тестовые данные, пока на клиенте*/
+    /*создаём тестовые данные, пока на клиенте - cм. entities.js*/
     var groupId = parseInt($routeParams.groupId);
     if (groupId != undefined) {
+        /*пока затрудняюсь с принятием данных
+                group = Entity.get({entity: "groups", id: groupId}, function () {
+		$scope.users = Entity.query({entity: "groups", id: groupId, d_entity: "users"},
+		function (users) {
+			for (var i = 0; i < users.length; i++) {
+				group.addUser(users[i]);
+			}
+		});
+	});
+        */
         var group_admin = new User(0, "Mike");
         /*администратор группы*/
         var group = new Group(groupId);
