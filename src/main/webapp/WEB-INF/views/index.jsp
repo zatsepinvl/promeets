@@ -131,4 +131,6 @@
 
 <!-- App context -->
 <script src="<c:url value='js/app_controller.js'/>"></script>
+<!--Entities = data model -->
+<script src="<c:url value='js/entities.js'/>"></script>
 </html>
