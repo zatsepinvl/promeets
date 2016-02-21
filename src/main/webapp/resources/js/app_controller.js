@@ -140,15 +140,18 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
     /*создаём тестовые данные, пока на клиенте - cм. entities.js*/
     var groupId = parseInt($routeParams.groupId);
     if (groupId != undefined) {
-        /*пока затрудняюсь с принятием данных
-                group = Entity.get({entity: "groups", id: groupId}, function () {
+        /*затрудняюсь с принятием данных, не знаю,как правильно
+        сначала должны получить данные по текущей группе и заполнить ими текстовые поля на форме, потом их сохранить
+        var group = new Group(groupId);
+	group = Entity.get({entity: "groups", id: groupId}, function () {
 		$scope.users = Entity.query({entity: "groups", id: groupId, d_entity: "users"},
-		function (users) {
-			for (var i = 0; i < users.length; i++) {
-				group.addUser(users[i]);
-			}
-		});
+			function (users) {
+				for (var i = 0; i < users.length; i++) {
+					group.addUser(users[i]);
+				}
+			});		
 	});
+	$scope.group = group;
         */
         var group_admin = new User(0, "Mike");
         /*администратор группы*/
@@ -171,6 +174,18 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
         $scope.removeUser = function (number) {
             $scope.group.users.splice(number, 1);
         };
+        /*опять я хз,как делать*/
+    	$scope.save = function(){
+		Entity.save({entity: "groups", $scope.group});
+		for(var i = 0; i < group.users.length; i++){
+			Entity.save({entity: "user_groups"}, group.users[i]);
+		}
+	}
+	 $scope.cancel = function () {
+            window.history.back();
+        }
+	
+    	
     }
 });
 });
