@@ -19,7 +19,17 @@
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--4-col-phone">
             <img style="width: 96%; margin: auto" src="../image/group.jpg"/>
         </div>
+        <!--Button for editing group-->
+        <div style="width:100%;">
+        <button class="mdl-button mdl-button--primary mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
+                style="float:left; margin-bottom:5px;">
 
+            <a class = "mdl-list__item-secondary-action" href="#/edit_group/{{group.groupId}}"><i class="material-icons" style="color: white;">edit</i></a>
+            <md-tooltip md-direction="right">
+                Edit group...
+            </md-tooltip>
+        </button>
+        </div>
     </div>
 
     <!-- Current meet-->
