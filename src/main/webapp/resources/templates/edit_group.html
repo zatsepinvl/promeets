@@ -1,0 +1,75 @@
+<div>
+    <form name="groupForm">
+        <!--Group img -->
+        <div flex-xs flex-gt-xs="100" layout="column">
+            <md-card>
+                <md-card-header>
+                    <md-card-avatar>
+                        <md-icon class="material-icons">face</md-icon>
+                    </md-card-avatar>
+                    <md-card-header-text>
+                        <span class="md-title">Group's administrator</span>
+                        <span class="md-subhead">{{group.admin.firstName}}</span>
+                    </md-card-header-text>
+                </md-card-header>
+                <img ng-src="{{group.image.url}}" class="md-card-image" alt="Washed Out" style="width: 320px; height:240px;" >
+                <md-card-actions layout="row" layout-align="start center">
+                    <md-button>new image</md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+
+        <div layout-gt-xs="row"><!-- Name group -->
+        <md-input-container class="md-block" style="width:50%;">
+            <label>Name</label>
+            <md-icon class="material-icons">title</md-icon>
+            <input ng-model = "group.name">
+        </md-input-container>
+
+        <!--Status group -->
+        <md-input-container class="md-block" style="width:50%;">
+            <label>Status</label>
+            <md-icon class="material-icons">grade</md-icon>
+            <input ng-model = "group.status">
+        </md-input-container>
+        </div>
+        <!--Group type and date of foundation-->
+        <div layout-gt-xs="row">
+            <!--Group type-->
+
+            <md-input-container class="md-block" flex-gt-xs style="width:45%;">
+                <label>Group type</label>
+                <md-select ng-model="group.type.name" id="group_type" style="width: 200px;">
+                    <md-option value="Public">
+                        Public
+                    </md-option>
+                    <md-option value="Private">
+                        Private
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <!--Group date -->
+            <md-datepicker style="width:51%;" disabled style="color: darkgreen;" md-placeholder="Enter date" ng-model = "group.createdTime">
+            </md-datepicker>
+        </div>
+
+        <!-- User's list -->
+        <label>Users:</label>
+        <mdl-list>
+        <md-list-item ng-repeat="(number,item) in group.users">
+            <img alt="{{item.firstName}}" ng-src="{{item.img}}" class="md-avatar" width="50px"/>
+            <p>{{item.firstName}}</p>
+            <button ng-click="removeUser(number)" class="mdl-button mdl-button--primary mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">
+                <a class = "mdl-list__item-secondary-action"><i class="material-icons" style="color: white;">clear</i></a>
+                <md-tooltip md-direction="right">
+                    Remove from group...
+                </md-tooltip>
+            </button>
+        </md-list-item>
+        </mdl-list>
+        <!--Button for create or update-->
+        <br>
+        <br>
+        <md-button class="md-raised" style="float:right;">{{action}}</md-button>
+    </form>
+</div>
