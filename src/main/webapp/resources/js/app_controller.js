@@ -6,19 +6,19 @@ app.config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/', {
             redirectTo: '/group/1/meets'
         }).when('/group/:groupId', {
-            templateUrl: '../templates/group.html',
+            templateUrl: 'group.html',
             controller: 'groupCtrl'
         }).when('/group/:groupId/:tab', {
-            templateUrl: '../templates/group.html',
+            templateUrl: 'group.html',
             controller: 'groupCtrl'
         }).when('/edit_meet/:meetId', {
-            templateUrl: '../templates/edit_meet.html',
+            templateUrl: 'edit_meet.html',
             controller: 'editMeetCtrl'
         }).when('/edit_group/:groupId',{
-            templateUrl: '../templates/edit_group.html',
+            templateUrl: 'edit_group.html',
             controller: 'editGroupCtrl'
         })
-        .otherwise('/');
+            .otherwise('/');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
@@ -49,7 +49,6 @@ app.config(function ($mdThemingProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('amazingPaletteName');
 });
-
 //factories
 app.factory('Entity', function ($resource) {
     return $resource('/api/:entity/:id/:d_entity', {
@@ -65,13 +64,33 @@ app.factory('Entity', function ($resource) {
 
 //group controller
 app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
-    //test
-    $scope.group = {groupId: 777};
 
     $scope.tab = $routeParams.tab;
     if ($scope.tab == undefined) {
         $scope.tab = "meets";
     }
+
+    var group_admin = new User(0, "Mike");
+    var group = new Group(777);
+    group.setAdmin(group_admin);
+    group.name = "NetCracker";
+    group.status = "Super-puper group for everybody.";
+
+    /*изменить при подгрузке изображения*/
+    group.setImage(new File(0, "../image/group.jpg"));
+    $scope.group = group;
+
+    $scope.edit_header_mode = false;
+    $scope.edit_status_mode = false;
+    $scope.status_icon = false; $scope.header_icon = false;
+
+    $scope.switchHeaderMode= function(val){
+        $scope.edit_header_mode = val;
+    };
+    $scope.switchStatusMode= function(val){
+        $scope.edit_status_mode = val;
+    };
+
 });
 
 //meet list controller
@@ -136,56 +155,34 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
     $scope.cancel = function () {
         window.history.back();
     }
-    app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
-    /*создаём тестовые данные, пока на клиенте - cм. entities.js*/
+});
+
+
+/*app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
+
     var groupId = parseInt($routeParams.groupId);
     if (groupId != undefined) {
-        /*затрудняюсь с принятием данных, не знаю,как правильно
-        сначала должны получить данные по текущей группе и заполнить ими текстовые поля на форме, потом их сохранить
-        var group = new Group(groupId);
-	group = Entity.get({entity: "groups", id: groupId}, function () {
-		$scope.users = Entity.query({entity: "groups", id: groupId, d_entity: "users"},
-			function (users) {
-				for (var i = 0; i < users.length; i++) {
-					group.addUser(users[i]);
-				}
-			});		
-	});
-	$scope.group = group;
-        */
         var group_admin = new User(0, "Mike");
-        /*администратор группы*/
         var group = new Group(groupId);
-        /*сама группа*/
         group.name = "Test group";
         group.status = "This group is for learning English";
         group.setAdmin(group_admin);
         group.createdTime = new Date(2015, 9, 5);
         group.type = new GroupType(0, "Private");
         group.setImage(new File(0, "../image/group.jpg"));
-        /*пользователи группы*/
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 3; i++) {
             group.addUser(new User(i, "user " + i));
         }
-        /*chat пока не инициализируем*/
         var action = "update";
         $scope.action = action;
         $scope.group = group;
         $scope.removeUser = function (number) {
             $scope.group.users.splice(number, 1);
         };
-        /*опять я хз,как делать*/
-    	$scope.save = function(){
-		Entity.save({entity: "groups", $scope.group});
-		for(var i = 0; i < group.users.length; i++){
-			Entity.save({entity: "user_groups"}, group.users[i]);
-		}
-	}
-	 $scope.cancel = function () {
+        $scope.cancel = function () {
             window.history.back();
         }
-	
-    	
     }
-});
-});
+}); */
+
+
