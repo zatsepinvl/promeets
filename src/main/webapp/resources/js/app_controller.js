@@ -75,14 +75,15 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
     group.setAdmin(group_admin);
     group.name = "NetCracker";
     group.status = "Super-puper group for everybody.";
-
+    group.type = new GroupType(0, "Private");
     /*изменить при подгрузке изображения*/
     group.setImage(new File(0, "../image/group.jpg"));
     $scope.group = group;
 
     $scope.edit_header_mode = false;
     $scope.edit_status_mode = false;
-    $scope.status_icon = false; $scope.header_icon = false;
+    $scope.edit_type_mode = false;
+    $scope.status_icon = false; $scope.header_icon = false; $scope.type_icon = false;
 
     $scope.switchHeaderMode= function(val){
         $scope.edit_header_mode = val;
@@ -90,6 +91,9 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
     $scope.switchStatusMode= function(val){
         $scope.edit_status_mode = val;
     };
+    $scope.change = function(){
+        alert("change");
+    }
 
 });
 
@@ -184,5 +188,3 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
         }
     }
 }); */
-
-
