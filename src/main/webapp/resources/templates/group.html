@@ -14,6 +14,26 @@
                         <label>Name</label>
                         <input ng-blur = "switchHeaderMode(false)" ng-model="group.name">
                     </md-input-container>
+                    <!--редактирование типа группы-->
+                    <div ng-show="!edit_type_mode"
+                         style="font-size:14px; font-weight: 100; color:#ef6c00;" ng-click = "edit_type_mode=true;" ng-mouseover = "type_icon = true;" ng-mouseleave= "type_icon = false;">
+                        {{group.type.name}} group
+                        <i class="material-icons edit-mode" ng-show="type_icon">create</i>
+                    </div>
+
+                    <md-input-container class="md-block" flex-gt-xs style="width:45%;" ng-show="edit_type_mode">
+                        <label>Group type</label>
+                        <md-select ng-change="edit_type_mode=false;" ng-model="group.type.name" id="group_type" style="width: 200px;">
+                            <md-option value="Public">
+                                Public
+                            </md-option>
+                            <md-option value="Private">
+                                Private
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <!--конец -->
+
                     <div ng-show="!edit_status_mode" class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone"
                          ng-mouseover="status_icon = true;" ng-mouseleave= "status_icon = false;" style="margin-left:0px;">
                         {{group.status}}
