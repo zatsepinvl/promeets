@@ -14,11 +14,10 @@ app.config(function ($routeProvider, $httpProvider) {
         }).when('/edit_meet/:meetId', {
             templateUrl: '../templates/edit_meet.html',
             controller: 'editMeetCtrl'
-        }).when('/edit_group/:groupId',{
+        }).when('/edit_group/:groupId', {
             templateUrl: '../templates/edit_group.html',
             controller: 'editGroupCtrl'
-        })
-            .otherwise('/');
+        }).otherwise('/');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
@@ -85,14 +84,14 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
     $scope.status_icon = false;
     $scope.header_icon = false;
 
-    $scope.switchHeaderMode= function(val){
-        if(group.title!=undefined) {
+    $scope.switchHeaderMode = function (val) {
+        if (group.title != undefined) {
             $scope.edit_header_mode = val;
         }
     };
-    $scope.switchStatusMode= function(val){
+    $scope.switchStatusMode = function (val) {
         console.log(group.status);
-        if(group.status!="") {
+        if (group.status != "") {
             $scope.edit_status_mode = val;
         }
 
@@ -167,29 +166,29 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
 
 /*app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
 
-    var groupId = parseInt($routeParams.groupId);
-    if (groupId != undefined) {
-        var group_admin = new User(0, "Mike");
-        var group = new Group(groupId);
-        group.name = "Test group";
-        group.status = "This group is for learning English";
-        group.setAdmin(group_admin);
-        group.createdTime = new Date(2015, 9, 5);
-        group.type = new GroupType(0, "Private");
-        group.setImage(new File(0, "../image/group.jpg"));
-        for (var i = 0; i < 3; i++) {
-            group.addUser(new User(i, "user " + i));
-        }
-        var action = "update";
-        $scope.action = action;
-        $scope.group = group;
-        $scope.removeUser = function (number) {
-            $scope.group.users.splice(number, 1);
-        };
-        $scope.cancel = function () {
-            window.history.back();
-        }
-    }
-}); */
+ var groupId = parseInt($routeParams.groupId);
+ if (groupId != undefined) {
+ var group_admin = new User(0, "Mike");
+ var group = new Group(groupId);
+ group.name = "Test group";
+ group.status = "This group is for learning English";
+ group.setAdmin(group_admin);
+ group.createdTime = new Date(2015, 9, 5);
+ group.type = new GroupType(0, "Private");
+ group.setImage(new File(0, "../image/group.jpg"));
+ for (var i = 0; i < 3; i++) {
+ group.addUser(new User(i, "user " + i));
+ }
+ var action = "update";
+ $scope.action = action;
+ $scope.group = group;
+ $scope.removeUser = function (number) {
+ $scope.group.users.splice(number, 1);
+ };
+ $scope.cancel = function () {
+ window.history.back();
+ }
+ }
+ }); */
 
 
