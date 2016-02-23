@@ -6,19 +6,15 @@ app.config(function ($routeProvider, $httpProvider) {
         $routeProvider.when('/', {
             redirectTo: '/group/1/meets'
         }).when('/group/:groupId', {
-            templateUrl: 'group.html',
+            templateUrl: '../templates/group.html',
             controller: 'groupCtrl'
         }).when('/group/:groupId/:tab', {
-            templateUrl: 'group.html',
+            templateUrl: '../templates/group.html',
             controller: 'groupCtrl'
         }).when('/edit_meet/:meetId', {
-            templateUrl: 'edit_meet.html',
+            templateUrl: '../templates/edit_meet.html',
             controller: 'editMeetCtrl'
-        }).when('/edit_group/:groupId',{
-            templateUrl: 'edit_group.html',
-            controller: 'editGroupCtrl'
-        })
-            .otherwise('/');
+        }).otherwise('/');
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
