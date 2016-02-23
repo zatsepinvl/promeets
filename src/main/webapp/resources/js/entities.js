@@ -28,7 +28,7 @@ Chat.prototype.addUserToChat= function(user){
 
 function Group(_groupId){
     this.groupId = _groupId;
-    this.name = "";
+    this.title = "";
     this.status = "";
     this.createdTime = new Date(1970,0,0);
     this.chat = null;
