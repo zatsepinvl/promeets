@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <!-- Templates -->
+    <definition name="layout" template="/WEB-INF/views/tiles/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp"/>
+    </definition>
+
+    <definition name="user-layout" extends="layout">
+        <put-attribute name="header" value="/WEB-INF/views/tiles/user_header.jsp"/>
+        <put-attribute name="body" value=""/>
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp"/>
+    </definition>
+
+    <definition name="body" template="/WEB-INF/views/tiles/body_nav.jsp">
+        <put-attribute name="nav" value=""/>
+        <put-attribute name="content" value=""/>
+        <put-attribute name="recom" value=""/>
+    </definition>
+
+    <definition name="body-nav" extends="body">
+        <put-attribute name="nav" value="/WEB-INF/views/tiles/nav.jsp"/>
+    </definition>
+
+    <definition name="user-body-nav" extends="body-nav">
+        <put-attribute name="nav" value="/WEB-INF/views/tiles/user_nav.jsp"/>
+    </definition>
+
+    <!-- Index -->
+    <definition name="login-body" extends="body-nav">
+        <put-attribute name="content" value="/WEB-INF/views/login.jsp"/>
+    </definition>
+
+    <definition name="login" extends="layout">
+        <put-attribute name="body" value="login-body"/>
+    </definition>
+
+
+    <!-- Group -->
+    <definition name="group-body" extends="user-body-nav">
+        <put-attribute name="content" value="/WEB-INF/views/group.jsp"/>
+    </definition>
+    <definition name="group" extends="user-layout">
+        <put-attribute name="body" value="group-body"/>
+    </definition>
+
+    <!-- Edit meet -->
+    <definition name="edit_meet-body" extends="user-body-nav">
+        <put-attribute name="content" value="/WEB-INF/views/edit_meet.jsp"/>
+    </definition>
+    <definition name="edit_meet/*" extends="user-layout">
+        <put-attribute name="body" value="edit_meet-body"/>
+    </definition>
+
+
+</tiles-definitions>

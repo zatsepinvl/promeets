@@ -3,18 +3,24 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
 <!-- Page body-->
-<main class="mdl-layout__content" style="background-color: #f5f5f5" ng-controller="indexCtrl" ng-cloak>
+<main class="mdl-layout__content" style="background-color: #f5f5f5">
     <div class="page-content">
+
         <div class="mdl-grid">
 
+            <!-- Navigation menu -->
+            <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                <tiles:insertAttribute name="nav"/>
+            </div>
 
             <!-- Content container -->
             <div class="mdl-cell mdl-cell--8-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                <ng-include src="'../templates/index/'+tab+'.html'"></ng-include>
+                <tiles:insertAttribute name="content"/>
             </div>
 
             <!-- Recommendations -->
             <div class="mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                <tiles:insertAttribute name="recom"/>
             </div>
         </div>
     </div>

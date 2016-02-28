@@ -13,7 +13,7 @@ import java.util.HashMap;
 @RestController
 public class SecurityController {
 
-    @RequestMapping(value = "security/data", method = RequestMethod.GET)
+    @RequestMapping(value = "/security/data", method = RequestMethod.GET)
     public HashMap<String, String> getData() {
         HashMap<String, String> map = new HashMap<>();
         map.put("location", "secured location");
@@ -21,7 +21,7 @@ public class SecurityController {
         return map;
     }
 
-    @RequestMapping("security/user")
+    @RequestMapping("/security/user")
     public Principal user(Principal user) {
         return user;
     }

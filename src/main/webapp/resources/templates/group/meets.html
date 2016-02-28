@@ -1,5 +1,6 @@
 <div ng-controller="meetListCtrl">
     <!-- Search and add button-->
+
     <div style="background-color:#fafafa;">
         <div class="mdl-grid" style="width: 90%;  padding:0 ">
             <div class="mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet mdl-cell--3-col-phone">
@@ -9,25 +10,28 @@
 
             </div>
             <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-                <button class="mdl-button mdl-button--primary mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
-                        style=" margin:0 0 -30px 0 ">
+                <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect"
+                        style="top:10px">
                     <i class="material-icons">add</i>
                 </button>
             </div>
         </div>
     </div>
+    <md-progress-linear md-mode="indeterminate" ng-hide="load"></md-progress-linear >
     <md-divider></md-divider>
-    <ul class="mdl-list ">
+    <ul class="mdl-list " ng-show="load">
         <li class="mdl-list__item mdl-list__item--two-line"
             ng-repeat="meet in meets track by meet.meetId">
                                                  <span class="mdl-list__item-primary-content">
-                                                      <img class="mdl-list__item-avatar" src="../image/meet1.jpg"/>
+                                                      <img class="mdl-list__item-avatar" src="../../image/meet1.jpg"/>
                                                       <span>{{meet.title}}</span>
                                                      <span class="mdl-list__item-sub-title">{{meet.time}}</span>
                                                  </span>
-            <a class="mdl-list__item-secondary-action" href="#/edit_meet/{{meet.meetId}}"><i
+            <a class="mdl-list__item-secondary-action" href="/edit_meet/{{meet.meetId}}" ><i
                     class="material-icons" style="color:#ef6c00"
             >edit</i></a>
         </li>
     </ul>
+    <p style="text-align: center; margin-top:20px; font-weight: 200; font-size: 14px;"  ng-show="error" >{{load_error}}</p>
+
 </div>

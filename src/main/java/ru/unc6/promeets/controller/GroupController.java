@@ -34,7 +34,7 @@ public class GroupController
     @Autowired
     GroupService groupService;
 
-    @RequestMapping(value = "/groups", method = RequestMethod.GET)
+    @RequestMapping(value = "api/groups", method = RequestMethod.GET)
     public ResponseEntity<List<Group>> getGroups() 
     {
         List<Group> groups = groupService.getAll();
@@ -47,7 +47,7 @@ public class GroupController
         return new ResponseEntity<>(groups, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "api/groups/{id}", method = RequestMethod.GET)
     public ResponseEntity<Group> getGroupById(@PathVariable long id) 
     {
         Group group = groupService.getById(id);
@@ -60,7 +60,7 @@ public class GroupController
         return new ResponseEntity<>(group, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/", method = RequestMethod.POST)
+    @RequestMapping(value = "api/groups/", method = RequestMethod.POST)
     public ResponseEntity<Void> createGroup(@RequestBody Group group) 
     { 
         if (group == null) 
@@ -73,7 +73,7 @@ public class GroupController
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
-    @RequestMapping(value = "/groups/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "api/groups/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateGroup(@RequestBody Group group, @PathVariable long id) 
     { 
         if (groupService.getById(id) == null) 
@@ -87,7 +87,7 @@ public class GroupController
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "api/groups/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> updateGroup(@PathVariable long id) 
     { 
         if (groupService.getById(id) == null) 
@@ -100,7 +100,7 @@ public class GroupController
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/{id}/meets", method = RequestMethod.GET)
+    @RequestMapping(value = "api/groups/{id}/meets", method = RequestMethod.GET)
     public ResponseEntity<List<Meet>> getGroupMeetsById(@PathVariable long id) 
     {
         List<Meet> meets = groupService.getMeetsByGroupId(id);
@@ -113,7 +113,7 @@ public class GroupController
         return new ResponseEntity<>(meets, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/{id}/users", method = RequestMethod.GET)
+    @RequestMapping(value = "api/groups/{id}/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getGroupUsersById(@PathVariable long id) 
     {
         List<User> users = groupService.getUsersByGroupId(id);
@@ -126,7 +126,7 @@ public class GroupController
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/groups/{id}/usergroups", method = RequestMethod.GET)
+    @RequestMapping(value = "api/groups/{id}/user_groups", method = RequestMethod.GET)
     public ResponseEntity<List<UserGroup>> getGroupUserGroupsById(@PathVariable long id) 
     {
         List<UserGroup> userGroups = groupService.getUserGroupsByGroupId(id);

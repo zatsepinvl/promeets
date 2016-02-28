@@ -3,21 +3,17 @@ var app = angular.module('app', ['ngMaterial', 'ngResource', 'ngRoute']);
 
 //configuration for templates routing
 app.config(function ($routeProvider, $httpProvider) {
-        $routeProvider.when('/', {
-            redirectTo: '/group/1/meets'
-        }).when('/group/:groupId', {
-            templateUrl: '../templates/group.html',
-            controller: 'groupCtrl'
-        }).when('/group/:groupId/:tab', {
-            templateUrl: '../templates/group.html',
-            controller: 'groupCtrl'
-        }).when('/edit_meet/:meetId', {
-            templateUrl: '../templates/edit_meet.html',
-            controller: 'editMeetCtrl'
-        }).when('/edit_group/:groupId', {
-            templateUrl: '../templates/edit_group.html',
-            controller: 'editGroupCtrl'
-        }).otherwise('/');
+        //$locationProvider.html5Mode(true);
+        /* $routeProvider.when('/group/:groupId', {
+         templateUrl: '../templates/group.html',
+         controller: 'groupCtrl'
+         }).when('/edit_meet/:meetId', {
+         templateUrl: '../templates/edit_meet.html',
+         controller: 'editMeetCtrl'
+         }).when('/edit_group/:groupId', {
+         templateUrl: '../templates/edit_group.html',
+         controller: 'editGroupCtrl'
+         }).otherwise('/')*/
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
@@ -48,6 +44,7 @@ app.config(function ($mdThemingProvider) {
     $mdThemingProvider.theme('default')
         .primaryPalette('amazingPaletteName');
 });
+
 //factories
 app.factory('Entity', function ($resource) {
     return $resource('/api/:entity/:id/:d_entity', {
@@ -59,6 +56,35 @@ app.factory('Entity', function ($resource) {
             method: 'PUT'
         }
     });
+});
+
+//login controller
+app.controller('loginCtrl', function ($scope, $http) {
+    $scope.error = false;
+    var authenticate = function (user, callback) {
+        var headers = user ? {
+            authorization: "Basic "
+            + btoa(user.email + ":" + user.password)
+        } : {};
+        $http.get('/security/user', {headers: headers}).success(function (data) {
+            if (data.name) {
+                $scope.logi = true;
+                $http.get('/security/data').success(function (data) {
+                    $scope.data = data;
+                    window.location.pathname="/group";
+                });
+            }
+            callback && callback(data);
+        }).error(function (error) {
+            $scope.error = user ? true : false;
+            callback && callback(error);
+        });
+    };
+    //authenticate();
+    $scope.user = {};
+    $scope.login = function () {
+        authenticate($scope.user);
+    };
 });
 
 //group controller
@@ -102,24 +128,30 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity) {
 //meet list controller
 app.controller('meetListCtrl', function ($scope, Entity) {
     $scope.error = false;
+    $scope.load = false;
 
     var loadMeets = function () {
         $scope.meets = Entity.query({entity: "meets"}, function (meets) {
             meets.forEach(function (meet) {
                 meet.time = new Date(meet.time);
             });
+            $scope.load = true;
         }, function () {
-            $scope.meet_load_error = "Can't load meets. Try again later."
+            $scope.load = true;
+            $scope.error = true;
+            $scope.load_error = "Can't load meets. Try again later.";
         });
     };
+
     loadMeets();
 
 });
 
 //edit meet controller
-app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
+app.controller("editMeetCtrl", function ($scope, Entity) {
     $scope.load = false;
-    var id = $routeParams.meetId;
+    var id = location.pathname.split("/")[2];
+    console.log(id);
     if (id != undefined) {
         $scope.meet = Entity.get({entity: "meets", id: id}, function () {
             $scope.aims = Entity.query({entity: "meets", id: id, d_entity: "aims"},
@@ -163,32 +195,5 @@ app.controller("editMeetCtrl", function ($routeParams, $scope, Entity) {
     }
 });
 
-
-/*app.controller('editGroupCtrl', function($routeParams, $scope, Entity){
-
- var groupId = parseInt($routeParams.groupId);
- if (groupId != undefined) {
- var group_admin = new User(0, "Mike");
- var group = new Group(groupId);
- group.name = "Test group";
- group.status = "This group is for learning English";
- group.setAdmin(group_admin);
- group.createdTime = new Date(2015, 9, 5);
- group.type = new GroupType(0, "Private");
- group.setImage(new File(0, "../image/group.jpg"));
- for (var i = 0; i < 3; i++) {
- group.addUser(new User(i, "user " + i));
- }
- var action = "update";
- $scope.action = action;
- $scope.group = group;
- $scope.removeUser = function (number) {
- $scope.group.users.splice(number, 1);
- };
- $scope.cancel = function () {
- window.history.back();
- }
- }
- }); */
 
 

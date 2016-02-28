@@ -1,4 +1,6 @@
-<div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px">
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
+<div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%; margin: 2px" ng-controller="groupCtrl">
     <!-- Group header-->
     <div class="mdl-grid" style="width: 100%; margin-top:0; margin-bottom: 0; padding: 0">
 
@@ -59,7 +61,7 @@
         <!-- Group logo-->
         <div class="mdl-cell mdl-cell--4-col mdl-cell--3-col-tablet mdl-cell--4-col-phone img-teaser"
              style="position:relative; display:table;">
-            <img style="width: 96%; margin: auto" src="../image/group.jpg"/>
+            <img style="width: 100%; margin: auto" src="../image/group.jpg"/>
             <button class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
                 <i class="material-icons">file_download</i>
             </button>
@@ -76,28 +78,28 @@
     <!-- Group menu-->
     <div class="mdl-grid" style="width: 100%; padding: 0">
         <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-            <a href="#/group/{{group.groupId}}/meets" style="text-decoration: none;">
+            <a  ng-click="tab='meets'" style="text-decoration: none;">
                 <div class="menu_item">
                     Meets
                 </div>
             </a>
         </div>
         <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-            <a href="#/group/{{group.groupId}}/files" style="text-decoration: none;">
+            <a  ng-click="tab='files'" style="text-decoration: none;">
                 <div class="menu_item ">
                     Files
                 </div>
             </a>
         </div>
         <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-            <a href="#/group/{{group.groupId}}/members" style="text-decoration: none;">
+            <a  ng-click="tab='members'" style="text-decoration: none;">
                 <div class="menu_item">
                     Members
                 </div>
             </a>
         </div>
         <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-            <a href="#/group/{{group.groupId}}/chat" style="text-decoration: none;">
+            <a ng-click="tab='chat'" style="text-decoration: none;">
                 <div class="menu_item">
                     Chat
                 </div>
@@ -106,5 +108,5 @@
     </div>
     <md-divider></md-divider>
     <!-- Group content -->
-    <ng-include src="'../templates/'+tab+'.html'"></ng-include>
+    <ng-include src="'../templates/group/'+tab+'.html'"></ng-include>
 </div>

@@ -8,19 +8,15 @@
 
     <global-method-security secured-annotations="enabled"/>
 
-
     <http auto-config="true" entry-point-ref="restAuthenticationEntryPoint">
-        <intercept-url pattern="/security/*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/security/*" access="hasRole('ROLE_USER')"/>
+        <intercept-url pattern="/security*" access="permitAll"/>
         <logout/>
         <remember-me/>
     </http>
 
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="admin" password="admin" authorities="ROLE_ADMIN"/>
-            </user-service>
-        </authentication-provider>
+        <authentication-provider user-service-ref="customUserDetailService"/>
     </authentication-manager>
 
 </beans:beans>

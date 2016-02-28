@@ -1,6 +1,6 @@
 CREATE TABLE Users (
 	user_id bigserial NOT NULL,
-	email TEXT NOT NULL,
+	email TEXT NOT NULL UNIQUE,
 	phone TEXT,
 	password TEXT NOT NULL,
 	first_name TEXT NOT NULL,
