@@ -1,0 +1,40 @@
+@desk-control-color: green;
+
+.nc-desk {
+
+  .nc-desk-canvas {
+    .nc-sticker {
+      position: absolute !important;
+    }
+  }
+  .nc-desk-control {
+    background-color: @desk-control-color;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    overflow: visible;
+
+    .add-button {
+      display: flex;
+      padding-right: 20px;
+
+    }
+
+  }
+  .nc-text-sticker {
+    margin-right: 15px;
+
+    .mdl-card__actions {
+      display: flex;
+      justify-content: space-between;
+
+      .mdl-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+  }
+}

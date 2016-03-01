@@ -49,3 +49,5 @@ nb-configuration.xml
 .nb-gradle/
 
 /nbproject/
+desk/fabric.js-master/
+desk/node_modules/
