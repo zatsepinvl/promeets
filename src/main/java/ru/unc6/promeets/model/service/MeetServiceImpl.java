@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.controller.MeetController;
 import ru.unc6.promeets.model.entity.Board;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.MeetNote;

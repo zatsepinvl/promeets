@@ -18,7 +18,7 @@ import ru.unc6.promeets.model.entity.BoardPage;
  */
 public interface BoardRepository extends CrudRepository<Board, Long>
 {
-    @Modifying
+    
     @Query("select boardPage from BoardPage boardPage where boardPage.board.boardId=(:boardId)")
     Iterable<BoardPage> getAllBoardPagesById(@Param("boardId") Long id);
     

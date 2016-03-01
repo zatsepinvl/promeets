@@ -65,4 +65,10 @@ public class BoardServiceImpl implements BoardService
         log.debug("Delete board with id=" + id);
     }
     
+    @Override
+    public List<BoardPage> getAllBoardPagesByMeetId (long id)
+    {
+        return (List) boardRepository.getAllBoardPagesById(id);
+    }
+    
 }

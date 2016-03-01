@@ -5,7 +5,9 @@
  */
 package ru.unc6.promeets.model.service;
 
+import java.util.List;
 import ru.unc6.promeets.model.entity.Board;
+import ru.unc6.promeets.model.entity.BoardPage;
 
 /**
  *
@@ -13,5 +15,5 @@ import ru.unc6.promeets.model.entity.Board;
  */
 public interface BoardService extends BaseService<Board>
 {
-    
+    public List<BoardPage> getAllBoardPagesByMeetId (long id);
 }
