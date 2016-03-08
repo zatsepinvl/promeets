@@ -10,15 +10,16 @@
 
             </div>
             <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-                <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect"
-                        style="top:10px">
-                    <i class="material-icons">add</i>
-                </button>
+                    <md-button class="md-fab md-mini" style="background-color: #ef6c00" ng-click="showAdvanced($event)">
+                        <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
+                    </md-button>
             </div>
         </div>
     </div>
-    <md-progress-linear md-mode="indeterminate" ng-hide="load"></md-progress-linear >
+    <md-progress-linear md-mode="indeterminate" ng-hide="load"></md-progress-linear>
     <md-divider></md-divider>
+    <p style="text-align: center; margin-top:20px; font-weight: 200; font-size: 14px;" ng-show="error">
+        {{load_error}}</p>
     <ul class="mdl-list " ng-show="load">
         <li class="mdl-list__item mdl-list__item--two-line"
             ng-repeat="meet in meets track by meet.meetId">
@@ -27,11 +28,9 @@
                                                       <span>{{meet.title}}</span>
                                                      <span class="mdl-list__item-sub-title">{{meet.time}}</span>
                                                  </span>
-            <a class="mdl-list__item-secondary-action" href="/edit_meet/{{meet.meetId}}" ><i
+            <a class="mdl-list__item-secondary-action" href="/meet/{{meet.meetId}}"><i
                     class="material-icons" style="color:#ef6c00"
             >edit</i></a>
         </li>
     </ul>
-    <p style="text-align: center; margin-top:20px; font-weight: 200; font-size: 14px;"  ng-show="error" >{{load_error}}</p>
-
 </div>

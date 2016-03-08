@@ -1,0 +1,58 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/material.css">
+    <script src="js/material.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+<div class="nc-desk section--center mdl-grid">
+    <div class="nc-desk-canvas mdl-card mdl-cell mdl-cell--12-col">
+        <canvas id="nc-canvas" width="1200px" height="600px"></canvas>
+    </div>
+    <div class="nc-desk-control mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+        <div class="add-button">
+            <button id="add-button"
+                    class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored mdl-js-ripple-effect">
+                <i class="material-icons">add</i>
+            </button>
+            <ul class="sticker-type-select mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect"
+                for="add-button">
+                <li class="mdl-menu__item text-sticker">Sticker</li>
+                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>
+                <li disabled class="mdl-menu__item">Disabled Action</li>
+                <li class="mdl-menu__item">Yet Another Action</li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/fabric.min.js"></script>
+<script src="js/ncDesk/NcDesk.es6-compiled.js"></script>
+<script>
+    $(function () {
+        var desk = new NcDesk($(".nc-desk"));
+        desk.addNewSticker('text');
+    });
+    /*
+     $(window).load(function() {
+     var canvas = $("#nc-canvas");
+     var ncDesk = canvas.ncDesk();
+     //ncDesk.addTextSticker('sample sample sample sample sample sample sample sample ');
+
+     $(".add-to-desk").click(function(){
+     var ncDesk = $("#nc-canvas").ncDesk();
+     ncDesk.addTextSticker($(this).closest(".nc-text-sticker").find("textarea").val().toString().trim(),'filon');
+     });
+     });
+     */
+
+</script>
+</body>
+</html>

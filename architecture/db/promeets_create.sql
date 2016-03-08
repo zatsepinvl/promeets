@@ -51,6 +51,7 @@ CREATE TABLE Messages (
 	chat_id bigint NOT NULL,
 	user_id bigint NOT NULL,
 	text TEXT NOT NULL,
+	time timestamp without time zone,
 	CONSTRAINT Messages_pk PRIMARY KEY (message_id)
 ) WITH (
   OIDS=FALSE
@@ -60,7 +61,7 @@ CREATE TABLE Messages (
 
 CREATE TABLE Groups (
 	group_id bigserial NOT NULL,
-	name TEXT NOT NULL,
+	title TEXT NOT NULL,
 	status TEXT,
 	created_time TIMESTAMP NOT NULL,
 	type_id bigint NOT NULL,

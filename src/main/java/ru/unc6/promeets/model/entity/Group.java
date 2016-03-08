@@ -16,7 +16,7 @@ import java.util.List;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="groupId")
 public class Group {
     private long groupId;
-    private String name;
+    private String title;
     private String status;
     private Timestamp createdTime;
     private Chat chat;
@@ -37,13 +37,13 @@ public class Group {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
-    public String getName() {
-        return name;
+    @Column(name = "title", nullable = false, length = -1)
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Basic
@@ -74,7 +74,7 @@ public class Group {
         Group group = (Group) o;
 
         if (groupId != group.groupId) return false;
-        if (name != null ? !name.equals(group.name) : group.name != null) return false;
+        if (title != null ? !title.equals(group.title) : group.title != null) return false;
         if (status != null ? !status.equals(group.status) : group.status != null) return false;
         if (createdTime != null ? !createdTime.equals(group.createdTime) : group.createdTime != null) return false;
 
@@ -84,7 +84,7 @@ public class Group {
     @Override
     public int hashCode() {
         int result = (int) (groupId ^ (groupId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (createdTime != null ? createdTime.hashCode() : 0);
         return result;

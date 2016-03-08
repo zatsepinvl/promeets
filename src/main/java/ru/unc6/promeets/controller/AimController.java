@@ -1,7 +1,10 @@
 package ru.unc6.promeets.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.MeetAim;
 import ru.unc6.promeets.model.repository.AimRepository;
 
@@ -17,34 +20,40 @@ public class AimController {
     private AimRepository aimRepository;
 
     @RequestMapping(value = "api/meet_aims", method = RequestMethod.GET)
-    @ResponseBody
-    public List getAims() {
-        return (List) aimRepository.findAll();
+    public ResponseEntity<List> getAims() {
+        List aims = (List) aimRepository.findAll();
+        return new ResponseEntity<>(aims, aims.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
     @RequestMapping(value = "api/meet_aims/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public MeetAim getMeetById(@PathVariable("id") long id) {
-        return aimRepository.findOne(id);
+    public ResponseEntity<MeetAim> getMeetById(@PathVariable("id") long id) {
+        MeetAim meetAim = aimRepository.findOne(id);
+        return new ResponseEntity<>(meetAim, meetAim == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @RequestMapping(value = "api/meet_aims", method = RequestMethod.POST)
-    @ResponseBody
-    public MeetAim createMeet(@RequestBody MeetAim aim) {
-        return aimRepository.save(aim);
+    public ResponseEntity<MeetAim> createMeet(@RequestBody MeetAim aim) {
+        return new ResponseEntity<>(aimRepository.save(aim), HttpStatus.OK);
     }
 
     @RequestMapping(value = "api/meet_aims/{id}", method = RequestMethod.PUT)
-    public void updateMeet(@RequestBody MeetAim aim, @PathVariable long id) {
+    public ResponseEntity<Void> updateMeet(@RequestBody MeetAim aim, @PathVariable long id) {
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         if (aimRepository.findOne(id) != null) {
             aimRepository.save(aim);
+            httpStatus = HttpStatus.OK;
         }
-
+        return new ResponseEntity<>(httpStatus);
     }
 
     @RequestMapping(value = "api/meet_aims/{id}", method = RequestMethod.DELETE)
-    public void deleteMeet(@PathVariable long id) {
-        aimRepository.delete(id);
+    public ResponseEntity<Void> deleteMeet(@PathVariable long id) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        if (aimRepository.findOne(id) != null) {
+            aimRepository.delete(id);
+            status = HttpStatus.OK;
+        }
+        return new ResponseEntity<>(status);
     }
 
 }

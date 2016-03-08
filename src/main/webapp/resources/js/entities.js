@@ -22,12 +22,23 @@ function GroupType(_typeId, _name){
     this.typeId = _typeId;
     this.name = _name;
 }
+
 Chat.prototype.addUserToChat= function(user){
     this.users.push(user);
 };
 
-function Group(_groupId){
-    this.groupId = _groupId;
+function getMeetTypes()
+{
+    var types = [];
+    types[0]={type_id:1, name:"real"};
+    types[1]={type_id:2, name:"remote"};
+    return types;
+}
+function Meet()
+{
+    this.title="";
+}
+function Group(){
     this.title = "";
     this.status = "";
     this.createdTime = new Date(1970,0,0);

@@ -9,10 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import ru.unc6.promeets.model.entity.Group;
-import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.entity.UserGroup;
+import ru.unc6.promeets.model.entity.*;
 
 /**
  *
@@ -32,5 +29,7 @@ public interface GroupRepository extends CrudRepository<Group, Long>
     @Modifying
     @Query("delete from UserGroup userGroup where userGroup.userGroupPK.group.groupId=(:groupId)")
     void deleteAllUserGroupssByGroupId(@Param("groupId") Long id);
-    
+
+    @Query("select groupType from GroupType groupType")
+    Iterable<GroupType> getAllGroupTypes();
 }

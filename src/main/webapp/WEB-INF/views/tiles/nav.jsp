@@ -15,7 +15,7 @@
             <a href="/login" style="text-decoration: none;">
                 <div class="nav_menu_item ">
                     <i class="material-icons icon">input</i>
-                    Sing in
+                    Sign in
                 </div>
             </a>
         </div>

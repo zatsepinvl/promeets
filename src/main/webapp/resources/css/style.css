@@ -1,7 +1,6 @@
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
-
 .nav_menu_item {
     padding: 8px 0 0 0;
     font-weight: 200;
@@ -26,7 +25,7 @@ body {
     margin-top: -4px;
 }
 
-.menu_item {
+.group_menu_item {
     padding: 8px;
     font-weight: 200;
     font-size: 16px;
@@ -35,12 +34,12 @@ body {
     border-bottom: 2px solid white;
 }
 
-.menu_item:hover {
+.group_menu_item:hover {
     border-bottom-color: #ef6c00;
     cursor: pointer;
 }
 
-.menu_item:active {
+.group_menu_item:active {
     background-color: #e8f5e9;
 }
 
@@ -140,7 +139,8 @@ label {
     display: block;
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    right:5px;
+    left: 5px;
     padding: 5px 10px;
     opacity: 0.9;
 }

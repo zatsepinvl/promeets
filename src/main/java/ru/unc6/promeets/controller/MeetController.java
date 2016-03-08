@@ -1,10 +1,13 @@
 package ru.unc6.promeets.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
+import ru.unc6.promeets.model.repository.MeetTypeRepository;
 import ru.unc6.promeets.model.service.MeetService;
 
 import java.util.List;
@@ -18,22 +21,18 @@ public class MeetController {
 
     private static final Logger log = Logger.getLogger(MeetController.class);
 
-
     @Autowired
     private MeetService meetService;
+
+    @Autowired
+    private MeetTypeRepository meetTypesRepository;
 
     @RequestMapping(value = "api/meets", method = RequestMethod.GET)
     public ResponseEntity<List<Meet>> getMeets() {
         List<Meet> meets = meetService.getAll();
-
         if (meets.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
-        for (Meet meet : meets) {
-            meet.setAims(null);
-        }
-
         return new ResponseEntity<>(meets, HttpStatus.OK);
     }
 
@@ -43,9 +42,6 @@ public class MeetController {
         if (meet == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
-        meet.setAims(null);
-
         return new ResponseEntity<>(meet, HttpStatus.OK);
     }
 
@@ -61,7 +57,7 @@ public class MeetController {
     @RequestMapping(value = "api/meets/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateMeet(@RequestBody Meet meet, @PathVariable long id) {
         if (meetService.getById(id) == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         meet.setMeetId(id);
         meetService.save(meet);
@@ -71,7 +67,7 @@ public class MeetController {
     @RequestMapping(value = "api/meets/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteMeet(@PathVariable long id) {
         if (meetService.getById(id) == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         meetService.delete(id);
@@ -112,6 +108,12 @@ public class MeetController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(aims, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/meet_types", method = RequestMethod.GET)
+    public ResponseEntity<List> getTypes() {
+        List types = (List) meetTypesRepository.findAll();
+        return new ResponseEntity<>(types, types.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK);
     }
 
 

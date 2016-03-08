@@ -1,0 +1,63 @@
+<md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html" ng-show="load">
+    <md-dialog-content>
+        <div layout="column">
+            <md-content layout-padding>
+                <div class="mdl-card__title">
+                    Edit group
+                </div>
+                <div class="img-teaser"
+                     style="position:relative; display:table; text-align: center">
+                    <img style="width: 54%; margin: auto" src="../image/group.jpg"/>
+                    <button class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
+                        <i class="material-icons">file_download</i>
+                    </button>
+                </div>
+                <form>
+
+                    <!-- Title -->
+                    <md-input-container class="md-block">
+                        <label>Title</label>
+                        <md-icon class="material-icons">title</md-icon>
+                        <input ng-model="group.title" type="text" required>
+                    </md-input-container>
+
+                    <!-- Status -->
+                    <md-input-container class="md-block" style="padding-left: 36px">
+                        <label style="padding-left: 36px">Status</label>
+                        <md-icon class="material-icons">description</md-icon>
+                        <textarea md-select-on-focus ng-model="group.status"></textarea>
+                    </md-input-container>
+
+                    <!-- Type -->
+                    <md-input-container class="md-block" style="padding-left: 36px">
+                        <label style="padding-left: 36px">Type</label>
+                        <md-icon class="material-icons">class</md-icon>
+                        <md-select ng-model="group.type"
+                                   ng-model-options="{trackBy: '$value.typeId'}">
+                            <md-option ng-value="type" ng-repeat="type in types">{{type.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <!-- <md-input-container class="md-block" style="padding-left: 36px">
+                         <md-icon class="material-icons">class</md-icon>
+                         <label style="padding-left: 36px">Type</label>
+                         <md-select ng-model="group.type">
+                             <md-option ng-repeat="type in types">
+                                 {{type.name}}
+                             </md-option>
+                         </md-select>
+                     </md-input-container>
+                     -->
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button ng-click="cancel()">
+            Cancel
+        </md-button>
+        <md-button ng-click="save()" style="margin-right:20px;">
+            Save
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

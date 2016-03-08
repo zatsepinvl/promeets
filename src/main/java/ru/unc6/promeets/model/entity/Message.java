@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -11,6 +12,7 @@ public class Message {
     private long messageId;
     private String text;
     private Chat chat;
+    private Timestamp time;
 
     @Id
     @Column(name = "message_id", nullable = false)
@@ -61,5 +63,14 @@ public class Message {
 
     public void setChat(Chat chat) {
         this.chat = chat;
+    }
+
+    @Column(name = "time")
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }

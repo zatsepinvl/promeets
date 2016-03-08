@@ -56,7 +56,7 @@ INSERT INTO messages(
     VALUES (2,2, 1, 'Hello, Jone!');
     
 INSERT INTO groups(
-            group_id, name, status, created_time, type_id, admin_id, chat_id, 
+            group_id, title, status, created_time, type_id, admin_id, chat_id, 
             image_id)
     VALUES (1, 'NetCracker', null, '12.12.2012', 1, 1, 2, 
             2);

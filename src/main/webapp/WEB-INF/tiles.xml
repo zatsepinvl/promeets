@@ -45,17 +45,16 @@
     <definition name="group-body" extends="user-body-nav">
         <put-attribute name="content" value="/WEB-INF/views/group.jsp"/>
     </definition>
-    <definition name="group" extends="user-layout">
+    <definition name="group/*" extends="user-layout">
         <put-attribute name="body" value="group-body"/>
     </definition>
 
-    <!-- Edit meet -->
-    <definition name="edit_meet-body" extends="user-body-nav">
-        <put-attribute name="content" value="/WEB-INF/views/edit_meet.jsp"/>
+    <!--Meet -->
+    <definition name="meet-body" extends="user-body-nav">
+        <put-attribute name="content" value="/WEB-INF/views/meet.jsp"/>
     </definition>
-    <definition name="edit_meet/*" extends="user-layout">
-        <put-attribute name="body" value="edit_meet-body"/>
+    <definition name="meet/*" extends="user-layout">
+        <put-attribute name="body" value="meet-body"/>
     </definition>
-
 
 </tiles-definitions>

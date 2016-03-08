@@ -48,7 +48,7 @@ public class Meet {
     }
 
     @Basic
-    @Column(name = "time", nullable = false)
+    @Column(name = "time")
     public Timestamp getTime() {
         return time;
     }
@@ -90,7 +90,7 @@ public class Meet {
     }
 
     @ManyToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "admin_id", referencedColumnName = "user_id")
     public User getAdmin() {
         return admin;
     }

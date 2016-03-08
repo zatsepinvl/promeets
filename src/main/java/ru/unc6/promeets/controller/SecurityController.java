@@ -1,8 +1,13 @@
 package ru.unc6.promeets.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.repository.UserRepository;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -13,17 +18,12 @@ import java.util.HashMap;
 @RestController
 public class SecurityController {
 
-    @RequestMapping(value = "/security/data", method = RequestMethod.GET)
-    public HashMap<String, String> getData() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("location", "secured location");
-        map.put("you", "so cool");
-        return map;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    @RequestMapping("/security/user")
-    public Principal user(Principal user) {
-        return user;
+    @RequestMapping(value = "/api/user", method = RequestMethod.GET)
+    public ResponseEntity<Object> user(Principal user) {
+        return new ResponseEntity<Object>(userRepository.getUserByEmail(user.getName()), HttpStatus.OK);
     }
 
 }

@@ -8,10 +8,17 @@
 
     <global-method-security secured-annotations="enabled"/>
 
+    <beans:bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <beans:property name="headerName" value="X-XSRF-TOKEN"/>
+    </beans:bean>
+
     <http auto-config="true" entry-point-ref="restAuthenticationEntryPoint">
+        <csrf token-repository-ref="csrfTokenRepository"/>
+        <custom-filter after="CSRF_FILTER" ref="CSRFHeaderFilter"/>
+        <intercept-url pattern="/api/user" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/security/*" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/security*" access="permitAll"/>
-        <logout/>
+        <form-login login-page="/login"/>
         <remember-me/>
     </http>
 

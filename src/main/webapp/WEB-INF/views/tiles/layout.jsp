@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Promeets</title>
@@ -28,7 +29,7 @@
     <tiles:insertAttribute name="body"/>
     <tiles:insertAttribute name="footer"/>
 </div>
-</body>
+
 
 <!-- Material Script -->
 <script src="<c:url value='lib/material/material.min.js'/>"></script>
@@ -47,4 +48,5 @@
 <script src="<c:url value='js/app_controller.js'/>"></script>
 <!--Entities = data model -->
 <script src="<c:url value='js/entities.js'/>"></script>
+</body>
 </html>

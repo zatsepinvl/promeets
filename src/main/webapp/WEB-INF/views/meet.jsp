@@ -32,11 +32,8 @@
                                 <md-input-container mg-no-float class="md-block" flex-gt-xs>
                                     <label>Type</label>
                                     <md-select ng-model="meet.type" id="type">
-                                        <md-option value="Real">
-                                            Real
-                                        </md-option>
-                                        <md-option value="Remote">
-                                            Remote
+                                        <md-option value="types[0]" ng-repeat="type in types track by type.type_id ">
+                                           {{type.name}}
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
