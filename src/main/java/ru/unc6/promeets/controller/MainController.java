@@ -29,6 +29,11 @@ public class MainController {
     public String group() {
         return "group";
     }
+    
+    @RequestMapping(value = "/chat")
+    public String chat() {
+        return "chat";
+    }
 
     @RequestMapping(value = "/edit_meet/{id}")
     public String group(@PathVariable long id) {

@@ -11,6 +11,7 @@ public class Message {
     private long messageId;
     private String text;
     private Chat chat;
+    private User user;
 
     @Id
     @Column(name = "message_id", nullable = false)
@@ -62,4 +63,16 @@ public class Message {
     public void setChat(Chat chat) {
         this.chat = chat;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    
 }
