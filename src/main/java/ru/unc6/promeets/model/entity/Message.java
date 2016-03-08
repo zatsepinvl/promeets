@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -12,6 +13,7 @@ public class Message {
     private String text;
     private Chat chat;
     private User user;
+    private Date time;
 
     @Id
     @Column(name = "message_id", nullable = false)
@@ -72,6 +74,15 @@ public class Message {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Column(name = "time", columnDefinition= "TIMESTAMP WITHOUT TIME ZONE")
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
     
     

@@ -19,7 +19,7 @@ import ru.unc6.promeets.model.entity.Message;
 public interface ChatRepository extends CrudRepository<Chat, Long>
 {
     @Modifying
-    @Query("select message from Message message where message.chat.chatId=(:chatId)")
+    @Query("select message from Message message where message.chat.chatId=(:chatId) order by message.time")
     Iterable<Message> getAllMessagesByChatId(@Param("chatId") Long id);
     
     @Modifying

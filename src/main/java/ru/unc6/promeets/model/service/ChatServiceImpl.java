@@ -5,7 +5,10 @@
  */
 package ru.unc6.promeets.model.service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +67,8 @@ public class ChatServiceImpl implements ChatService
     {
         Chat chat = getById(id);
         message.setChat(chat);
+        Date time = new Date();
+        message.setTime(time);
         
         messageRepository.save(message);
     }
