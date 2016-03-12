@@ -5,7 +5,6 @@
  */
 package ru.unc6.promeets.model.service;
 
-import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +62,12 @@ public class BoardServiceImpl implements BoardService
         boardRepository.delete(id);
         
         log.debug("Delete board with id=" + id);
+    }
+    
+    @Override
+    public List<BoardPage> getAllBoardPagesByMeetId (long id)
+    {
+        return (List) boardRepository.getAllBoardPagesById(id);
     }
     
 }

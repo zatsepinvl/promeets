@@ -27,9 +27,19 @@ public class MainController {
         return "login";
     }
 
+    @RequestMapping(value = "/group")
+    public String group() {
+        return "group";
+    }
+
     @RequestMapping(value = "/group/{id}")
     public String group(@PathVariable long id) {
         return "group/" + id;
+    }
+
+    @RequestMapping(value = "/chat")
+    public String chat() {
+        return "chat";
     }
 
     @RequestMapping(value = "/meet/{id}")

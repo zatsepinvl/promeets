@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import java.util.Date;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -13,6 +14,7 @@ public class Message {
     private String text;
     private Chat chat;
     private Timestamp time;
+    private User user;
 
     @Id
     @Column(name = "message_id", nullable = false)
@@ -72,5 +74,15 @@ public class Message {
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

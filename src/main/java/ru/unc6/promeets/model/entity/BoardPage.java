@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.*;
 
@@ -79,7 +80,7 @@ public class BoardPage {
         this.board = board;
     }
     
-    
+    @JsonIgnore
     @OneToMany(mappedBy = "boardPage")
     public List<BoardItem> getItems()
     {
