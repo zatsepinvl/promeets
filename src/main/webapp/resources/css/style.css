@@ -1,6 +1,16 @@
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none;
+}
+
+.mdl-navigation__link.material-icons {
+    margin-right: 10px;
+
+}
+
 .nav_menu_item {
     padding: 8px 0 0 0;
     font-weight: 200;
@@ -63,65 +73,8 @@ body {
     cursor: pointer;
 }
 
-.list_item:hover {
-    background-color: #e8f5e9;
-    cursor: pointer;
-}
-
-#selected {
-    background-color: #e8f5e9;
-    cursor: pointer;
-}
-
-.invalid {
-    box-shadow: 0 0 5px red !important;
-}
-
-.demo-card-image.mdl-card {
-    width: 100%;
-    height: auto;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-.demo-card-image > .mdl-card__actions {
-    height: 52px;
-    padding: 16px;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.demo-card-image__filename {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-ul {
-    list-style: none;
-}
-
-label {
-    color: #2e7d32;
-}
-
 .material-icons.mdl-list__item-icon {
     vertical-align: middle;
-}
-
-.remove {
-    opacity: 0.7;
-}
-
-.remove:hover {
-    opacity: 1;
-}
-
-.error {
-    color: red;
-    font-style: italic;
-    margin-top: 5px;
-    display: block;
 }
 
 .img-teaser .figcaption {
@@ -139,7 +92,7 @@ label {
     display: block;
     position: absolute;
     bottom: 10px;
-    right:5px;
+    right: 5px;
     left: 5px;
     padding: 5px 10px;
     opacity: 0.9;
@@ -150,5 +103,66 @@ label {
     font-size: 16px !important;
     color: #ef6c00;
     cursor: pointer;
+}
+
+.md-button.md-raised.primary {
+    background-color: #2e7d32;
+    color: #fff;
+}
+
+.md-button.md-raised.primary:hover {
+    background-color: #2e7d32;
+}
+
+.md-button.accent {
+    background-color: #ef6c00;
+    color: #fff;
+}
+
+.md-button.md-fab.accent:hover {
+    background-color: #ef6c00;
+}
+
+md-input-container.md-block {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+md-input-container .md-errors-spacer {
+    display: none;
+}
+
+table td.label {
+    font-size: 12px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #2e7d32;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+input
+{
+    font-size: 14px;
+}
+
+table
+{
+    width: 100%;
+    margin: auto;
+}
+.md-datepicker-input-container {
+    margin-left: 0;
+    width: 100%;
+}
+
+md-datepicker .md-button.md-icon-button {
+    display: none;
 }
 

@@ -1,0 +1,58 @@
+<md-dialog aria-label="Login" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html"
+           ng-cloack>
+    <md-dialog-content>
+        <div layout="column">
+            <md-content layout-padding>
+                <div class="mdl-card__title">
+                    Login
+                </div>
+                <div class="mdl-card__menu">
+                    <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                            style="bottom: 14px"
+                            ng-click="cancel()">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div ng-controller="loginCtrl" ng-cloak>
+                    <md-content layout-padding>
+                        <form name="loginForm" ng-submit="login()" style="margin: 0">
+
+                            <md-input-container class="md-block" md-no-float>
+                                <md-icon class="material-icons">email</md-icon>
+                                <input ng-model="user.email" type="email" required placeholder="Email">
+                            </md-input-container>
+
+                            <md-input-container class="md-block" md-no-float>
+                                <md-icon class="material-icons">lock</md-icon>
+                                <input ng-model="user.password" type="password" required placeholder="Password">
+                            </md-input-container>
+
+                            <div layout="row" style="margin-top: 20px">
+                                <md-button type="submit" class="md-raised" ng-hide="loading"
+                                           flex style="background-color: #2e7d32; color: #fff;">
+                                    Log in
+                                </md-button>
+                            </div>
+
+                            <p style="text-align: center; color:darkred; margin-top: 10px; " ng-show="error.show">
+                                {{error.value}}
+                            </p>
+
+
+                            <md-progress-circular style="margin: auto" md-mode="indeterminate"
+                                                  ng-show="loading"></md-progress-circular>
+                            <div layout="row" style="margin-top: 20px">
+                                <a href="" style="font-size: 12px; text-align: center" flex>
+                                    Forgot password?
+                                </a>
+                                <a href="" style="font-size: 12px; text-align: center" flex>
+                                    Sign up
+                                </a>
+                            </div>
+                        </form>
+                    </md-content>
+                </div>
+            </md-content>
+        </div>
+    </md-dialog-content>
+</md-dialog>

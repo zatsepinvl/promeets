@@ -64,7 +64,6 @@ public class MeetServiceImpl implements MeetService {
     @Override
     public void save(Meet meet) {
         meetRepository.save(meet);
-        
         log.debug("Save meet with id="+meet.getMeetId());
     }
 

@@ -11,9 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
 
-    <!-- Style -->
-    <link href="<c:url value="css/style.css"/>" rel="stylesheet"/>
-
     <!-- Material Styles -->
     <link href="<c:url value="lib/material/material.min.css"/>" rel="stylesheet"/>
     <link href="<c:url value="lib/material/fonts_icons.css"/>" rel="stylesheet"/>
@@ -21,10 +18,13 @@
 
     <!-- Angular Material Style  -->
     <link href="<c:url value="lib/angular_material/angular.material.min.css"/>" rel="stylesheet"/>
+
+    <!-- Style -->
+    <link href="<c:url value="css/style.css"/>" rel="stylesheet"/>
 </head>
 
-<body ng-app="app" ng-cloak>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<body ng-app="app" ng-cloak ng-controller="appCtrl" ng-show="pageState.load">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header " style="background-color: #f5f5f5">
     <tiles:insertAttribute name="header"/>
     <tiles:insertAttribute name="body"/>
     <tiles:insertAttribute name="footer"/>
@@ -46,7 +46,11 @@
 
 <!-- App context -->
 <script src="<c:url value='js/app_controller.js'/>"></script>
-<!--Entities = data model -->
-<script src="<c:url value='js/entities.js'/>"></script>
+<script src="<c:url value='js/header_controller.js'/>"></script>
+<script src="<c:url value='js/index_controller.js'/>"></script>
+<script src="<c:url value='js/login_controller.js'/>"></script>
+<script src="<c:url value='js/group_controller.js'/>"></script>
+<script src="<c:url value='js/meet_controller.js'/>"></script>
+
 </body>
 </html>

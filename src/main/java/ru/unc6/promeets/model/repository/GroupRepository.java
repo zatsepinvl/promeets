@@ -12,20 +12,18 @@ import org.springframework.data.repository.query.Param;
 import ru.unc6.promeets.model.entity.*;
 
 /**
- *
  * @author MDay
  */
-public interface GroupRepository extends CrudRepository<Group, Long>
-{
+public interface GroupRepository extends CrudRepository<Group, Long> {
     @Query("select userGroupPK.user from UserGroup userGroup where  userGroup.userGroupPK.group.groupId=(:groupId)")
     Iterable<User> getAllUsersByGroupId(@Param("groupId") Long id);
-    
+
     @Query("select userGroup from UserGroup userGroup where  userGroup.userGroupPK.group.groupId=(:groupId)")
     Iterable<UserGroup> getAllUserGroupsByGroupId(@Param("groupId") Long id);
-    
-    @Query("select meet from Meet meet where  meet.group.groupId=(:groupId)")
+
+    @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) order by meet.time desc ")
     Iterable<Meet> getAllMeetsByGroupId(@Param("groupId") Long id);
-    
+
     @Modifying
     @Query("delete from UserGroup userGroup where userGroup.userGroupPK.group.groupId=(:groupId)")
     void deleteAllUserGroupssByGroupId(@Param("groupId") Long id);

@@ -1,63 +1,74 @@
-<md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html" ng-show="load">
-    <md-dialog-content>
-        <div layout="column">
-            <md-content layout-padding>
-                <div class="mdl-card__title">
-                    Edit group
-                </div>
-                <div class="img-teaser"
-                     style="position:relative; display:table; text-align: center">
-                    <img style="width: 54%; margin: auto" src="../image/group.jpg"/>
-                    <button class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
-                        <i class="material-icons">file_download</i>
-                    </button>
-                </div>
-                <form>
+<md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <form ng-submit="save()">
+        <md-dialog-content>
+            <div layout="column">
+                <md-content layout-padding>
+                    <div class="mdl-card__title">
+                        Edit group
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                                style="bottom: 14px"
+                                ng-click="cancel()">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
 
-                    <!-- Title -->
-                    <md-input-container class="md-block">
-                        <label>Title</label>
-                        <md-icon class="material-icons">title</md-icon>
-                        <input ng-model="group.title" type="text" required>
-                    </md-input-container>
+                    <!-- Group img -->
+                    <div class="img-teaser"
+                         style="position:relative; display:table; text-align: center">
+                        <img style="width: 54%; margin: auto" src="../image/group.jpg"/>
+                        <button type="button" style="background-color: #ef6c00"
+                                class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
+                            <i class="material-icons">file_download</i>
+                        </button>
+                    </div>
 
-                    <!-- Status -->
-                    <md-input-container class="md-block" style="padding-left: 36px">
-                        <label style="padding-left: 36px">Status</label>
-                        <md-icon class="material-icons">description</md-icon>
-                        <textarea md-select-on-focus ng-model="group.status"></textarea>
-                    </md-input-container>
+                    <table>
 
-                    <!-- Type -->
-                    <md-input-container class="md-block" style="padding-left: 36px">
-                        <label style="padding-left: 36px">Type</label>
-                        <md-icon class="material-icons">class</md-icon>
-                        <md-select ng-model="group.type"
-                                   ng-model-options="{trackBy: '$value.typeId'}">
-                            <md-option ng-value="type" ng-repeat="type in types">{{type.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <!-- <md-input-container class="md-block" style="padding-left: 36px">
-                         <md-icon class="material-icons">class</md-icon>
-                         <label style="padding-left: 36px">Type</label>
-                         <md-select ng-model="group.type">
-                             <md-option ng-repeat="type in types">
-                                 {{type.name}}
-                             </md-option>
-                         </md-select>
-                     </md-input-container>
-                     -->
-                </form>
-            </md-content>
-        </div>
-    </md-dialog-content>
-    <md-dialog-actions layout="row">
-        <md-button ng-click="cancel()">
-            Cancel
-        </md-button>
-        <md-button ng-click="save()" style="margin-right:20px;">
-            Save
-        </md-button>
-    </md-dialog-actions>
+                        <tbody>
+                        <!-- Title -->
+                        <tr>
+                            <td class="label">Title:</td>
+                            <td>
+                                <md-input-container class="md-block" md-no-float>
+                                    <input ng-model="group.title" type="text" required placeholder="Title">
+                                </md-input-container>
+                            </td>
+                        </tr>
+                        <!-- Status -->
+                        <tr>
+                            <td class="label">Status:</td>
+                            <td>
+                                <md-input-container class="md-block" md-no-float>
+                                    <textarea md-select-on-focus ng-model="group.status"
+                                              placeholder="status"></textarea>
+                                </md-input-container>
+                            </td>
+                        </tr>
+                        <!-- Type -->
+                        <tr>
+                            <td class="label">Type:</td>
+                            <td>
+                                <md-input-container class="md-block " md-no-float>
+                                    <md-select ng-model="group.type"
+                                               ng-model-options="{trackBy: '$value.typeId'}">
+                                        <md-option ng-value="type" ng-repeat="type in types">{{type.name}}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div layout="row">
+                        <md-button type="submit"
+                                   class="md-raised primary"
+                                   style="width: 80%;  background-color: #2e7d32; margin: auto; ">
+                            Save
+                        </md-button>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+    </form>
 </md-dialog>

@@ -1,3 +1,65 @@
-<md-dialog aria-label="New meet" ng-cloak>
-    assdasd
+<md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <form ng-submit="save()">
+        <md-dialog-content>
+            <div layout="column">
+                <md-content layout-padding>
+                    <div class="mdl-card__title">
+                        Create new meet
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                                style="bottom: 14px"
+                                ng-click="cancel()">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+
+                    <!-- Meet img -->
+                    <div class="img-teaser"
+                         style="position:relative; display:table; text-align: center">
+                        <img style="width: 54%; margin: auto" src="../image/meet.jpg"/>
+                        <button style="background-color: #ef6c00"
+                                type="button"
+                                class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
+                            <i class="material-icons">file_download</i>
+                        </button>
+                    </div>
+
+
+                    <table>
+                        <tbody>
+
+                        <!-- Title -->
+                        <tr>
+                            <td class="label">Title:</td>
+                            <td>
+                                <md-input-container class="md-block" md-no-float>
+                                    <input ng-model="meet.title" type="text" placeholder="Title" required>
+                                </md-input-container>
+                            </td>
+                        </tr>
+
+
+                        <!-- Date -->
+                        <tr>
+                            <td class="label">Date:</td>
+                            <td>
+                                <md-datepicker ng-model="meet.time" md-placeholder="Enter date"
+                                               required flex>
+                                </md-datepicker>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div layout="row">
+                        <md-button type="submit"
+                                   class="md-raised primary"
+                                   style="width: 80%;  background-color: #2e7d32; margin: auto; ">
+                            Create
+                        </md-button>
+                    </div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+    </form>
 </md-dialog>

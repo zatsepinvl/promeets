@@ -1,19 +1,6 @@
 var app = angular.module('app', ['ngMaterial', 'ngResource', 'ngRoute']);
 
-
-//configuration for templates routing
 app.config(function ($routeProvider, $httpProvider) {
-        //$locationProvider.html5Mode(true);
-        /* $routeProvider.when('/group/:groupId', {
-         templateUrl: '../templates/group.html',
-         controller: 'groupCtrl'
-         }).when('/edit_meet/:meetId', {
-         templateUrl: '../templates/dialog_edit_meet.html',
-         controller: 'editMeetCtrl'
-         }).when('/edit_group/:groupId', {
-         templateUrl: '../templates/edit_group.html',
-         controller: 'editGroupCtrl'
-         }).otherwise('/')*/
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }
 );
@@ -58,171 +45,62 @@ app.factory('Entity', function ($resource) {
     });
 });
 
-//login controller
-app.controller('loginCtrl', function ($scope, $http) {
-    $scope.error = false;
-    $scope.loading = false;
-    var authenticate = function (user, callback) {
-        $scope.error = false;
-        $scope.loading = true;
-        var headers = user ? {
-            authorization: "Basic "
-            + btoa(user.email + ":" + user.password)
-        } : {};
-        $http.get('/api/user', {headers: headers}).success(function (user) {
-            if (user.email) {
-                window.location.pathname = "/group/1";
+//Main App Controller
+app.controller('appCtrl', function ($scope, $http, $rootScope, $mdDialog) {
+    $rootScope.pageState = {
+        load: false, values: [], push: function (value, id) {
+            var values = $rootScope.pageState.values;
+            if (id != undefined) {
+                values[id] = value;
             }
             else {
-                $scope.loading = false;
+                values.push(value);
+                id = values.length - 1;
             }
-            callback && callback(data);
-        }).error(function (error) {
-            $scope.loading = false;
-            $scope.error = user ? true : false;
-            callback && callback(error);
-        });
-    };
-    //authenticate();
-    $scope.user = {};
-    $scope.login = function () {
-        authenticate($scope.user);
-    };
-});
-
-//group controller
-app.controller('groupCtrl', function ($routeParams, $scope, Entity, $mdDialog) {
-    $scope.groupId = location.pathname.split("/")[2];
-    $scope.group = Entity.get({entity: "groups", id: $scope.groupId}, function (data) {
-        $scope.tab = "meets";
-    });
-    $scope.editGroup = function () {
-        $mdDialog.show({
-                controller: EditGroupDialogController,
-                templateUrl: '../templates/group/dialog_edit_group.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                locals: {
-                    group: $scope.group
+            for (var i = 0; i < values.length; i++) {
+                if (!values[i]) {
+                    $rootScope.pageState.load = false;
+                    return id;
                 }
+            }
+            $rootScope.pageState.load = true;
+            return id;
+        }
+    };
+    var id = $rootScope.pageState.push(false);
+    $http.get('/api/user').success(function (user) {
+        $scope.$broadcast('user', user);
+        $rootScope.pageState.push(true, id);
+    }).error(function () {
+        $scope.$broadcast('user', undefined);
+        $rootScope.pageState.push(true, id);
+    });
+
+    $scope.signUp = function () {
+        $mdDialog.show({
+                controller: SignUpController,
+                templateUrl: '../templates/index/dialog_signup.html',
+                parent: angular.element(document.body)
             })
-            .then(function (answer) {
-                //
-            }, function () {
-                //
+            .then(function () {
+
+            })
+            .then(function (user) {
+
             });
     }
 });
 
-function cloneGroup(group) {
-    return {
-        title: group.title,
-        type: group.type,
-        status: group.status
-    };
-}
-
-function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
-    $http.get('/api/group_types').success(function (types) {
-        $scope.types = types;
-        $scope.load=true;
-    });
-    $scope.group = cloneGroup(group);
+function SignUpController($scope, $mdDialog) {
     $scope.cancel = function () {
         $mdDialog.cancel();
-    };
-    $scope.save = function () {
-        group.title = $scope.group.title;
-        group.status = $scope.group.status;
-        group.type = {typeId: $scope.group.type.typeId, name: $scope.group.type.name};
-        console.log(group.type);
-        Entity.update({entity: "groups", id: group.groupId}, group);
-        $mdDialog.hide();
-    };
+    }
 }
 
-//meet list controller
-app.controller('meetListCtrl', function ($scope, Entity, $mdDialog, $mdMedia) {
-    $scope.error = false;
-    $scope.load = false;
-    var loadMeets = function () {
-        $scope.meets = Entity.query({entity: "groups", id: $scope.groupId, d_entity: "meets"}, function (meets) {
-            meets.forEach(function (meet) {
-                meet.time = new Date(meet.time);
-            });
-            $scope.load = true;
-        }, function () {
-            $scope.load = true;
-            $scope.error = true;
-            $scope.load_error = "Can't load meets. Try again later.";
-        });
-    };
-    loadMeets();
-});
 
 
-//edit meet controller
-app.controller("editMeetCtrl", function ($scope, Entity) {
-    $scope.load = false;
-    var id = window.location.pathname.split("/")[2];
-    console.log(id.substr(1, id.length));
-    if (id != undefined && id[0] != 'g') {
-        $scope.meet = Entity.get({entity: "meets", id: id}, function () {
-            $scope.aims = Entity.query({entity: "meets", id: id, d_entity: "aims"},
-                function (aims) {
-                    $scope.initAims = [];
-                    for (var i = 0; i < aims.length; i++) {
-                        $scope.initAims.push(aims[i]);
-                    }
-                    $scope.meet.time = new Date($scope.meet.time);
-                    $scope.load = true;
-                });
-        });
-    }
-    else {
-        $scope.meet = new Meet();
-        $scope.types = getMeetTypes();
-        /*Entity.get({entity: "meet_types"}, function () {
-         $scope.load = true;
-         $scope.meet.type = $scope.types[0];
-         });*/
-        $scope.meet.group = Entity.get({entity: "groups", id: id.substr(1, id.length)},
-            function () {
-                $scope.load = true;
-            });
 
-    }
-    $scope.createAim = function () {
-        var aim = {meet: $scope.meet, value: $scope.aim};
-        $scope.aims.push(aim);
-        $scope.aim = "";
-    };
 
-    $scope.removeAim = function (aim) {
-        $scope.aims.splice($scope.aims.indexOf(aim), 1);
-    };
-
-    $scope.save = function () {
-        console.log($scope.meet);
-        Entity.save({entity: "meets"}, $scope.meet);
-        var aims = $scope.aims;
-        if (aims) {
-            for (var i = 0; i < aims.length; i++) {
-                Entity.save({entity: "meet_aims"}, aims[i]);
-                $scope.initAims.splice($scope.initAims.indexOf(aims[i]), 1);
-            }
-            aims = $scope.initAims;
-            for (i = 0; i < aims.length; i++) {
-                Entity.remove({entity: "meet_aims", id: aims[i].aimId});
-            }
-        }
-        window.location = "/group/" + $scope.meet.group.groupId;
-    };
-
-    $scope.cancel = function () {
-        window.history.back();
-    }
-});
 
 
 

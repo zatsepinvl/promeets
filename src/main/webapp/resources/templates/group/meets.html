@@ -1,6 +1,6 @@
 <div ng-controller="meetListCtrl">
-    <!-- Search and add button-->
 
+    <!-- Search and add button-->
     <div style="background-color:#fafafa;">
         <div class="mdl-grid" style="width: 90%;  padding:0 ">
             <div class="mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet mdl-cell--3-col-phone">
@@ -10,9 +10,9 @@
 
             </div>
             <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-                    <md-button class="md-fab md-mini" style="background-color: #ef6c00" ng-click="showAdvanced($event)">
-                        <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
-                    </md-button>
+                <md-button class="md-fab md-mini accent" style="" ng-click="createMeet()">
+                    <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
+                </md-button>
             </div>
         </div>
     </div>
@@ -25,8 +25,18 @@
             ng-repeat="meet in meets track by meet.meetId">
                                                  <span class="mdl-list__item-primary-content">
                                                       <img class="mdl-list__item-avatar" src="../../image/meet1.jpg"/>
-                                                      <span>{{meet.title}}</span>
-                                                     <span class="mdl-list__item-sub-title">{{meet.time}}</span>
+                                                      <span>
+                                                          {{meet.title}}
+                                                          <br>
+
+                                                      </span>
+                                                     <span class="mdl-list__item-sub-title">
+                                                         {{
+                                                         (meet.time.getDate() > 9 ?
+                                                         meet.time.getDate():'0'+meet.time.getDate())
+                                                         + '.' + ( (meet.time.getMonth() + 1) > 9 ? (meet.time.getMonth() + 1) : '0'+(meet.time.getMonth() + 1) )
+                                                         + '.' + meet.time.getFullYear()}}
+                                                    </span>
                                                  </span>
             <a class="mdl-list__item-secondary-action" href="/meet/{{meet.meetId}}"><i
                     class="material-icons" style="color:#ef6c00"

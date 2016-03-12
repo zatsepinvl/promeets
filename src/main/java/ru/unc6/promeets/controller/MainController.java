@@ -19,7 +19,7 @@ public class MainController {
 
     @RequestMapping(value = "/")
     public String index() {
-        return "login";
+        return "index";
     }
 
     @RequestMapping(value = "/login")

@@ -17,32 +17,36 @@
         <put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp"/>
     </definition>
 
-    <definition name="body" template="/WEB-INF/views/tiles/body_nav.jsp">
-        <put-attribute name="nav" value=""/>
+    <definition name="body" template="/WEB-INF/views/tiles/body.jsp">
+        <put-attribute name="drawer" value=""/>
+        <put-attribute name="left_column" value=""/>
         <put-attribute name="content" value=""/>
-        <put-attribute name="recom" value=""/>
+        <put-attribute name="right_column" value=""/>
     </definition>
 
-    <definition name="body-nav" extends="body">
-        <put-attribute name="nav" value="/WEB-INF/views/tiles/nav.jsp"/>
-    </definition>
-
-    <definition name="user-body-nav" extends="body-nav">
-        <put-attribute name="nav" value="/WEB-INF/views/tiles/user_nav.jsp"/>
+    <definition name="body-drawer" extends="body">
+        <put-attribute name="drawer" value="/WEB-INF/views/tiles/drawer.jsp"/>
     </definition>
 
     <!-- Index -->
-    <definition name="login-body" extends="body-nav">
-        <put-attribute name="content" value="/WEB-INF/views/login.jsp"/>
+    <definition name="index-body" extends="body">
+        <put-attribute name="content" value="/WEB-INF/views/index.jsp"/>
+    </definition>
+    <definition name="index" extends="layout">
+        <put-attribute name="body" value="index-body"/>
     </definition>
 
+    <!-- Login -->
+    <definition name="login-body" extends="body">
+        <put-attribute name="content" value="/WEB-INF/views/login.jsp"/>
+    </definition>
     <definition name="login" extends="layout">
         <put-attribute name="body" value="login-body"/>
     </definition>
 
 
     <!-- Group -->
-    <definition name="group-body" extends="user-body-nav">
+    <definition name="group-body" extends="body-drawer">
         <put-attribute name="content" value="/WEB-INF/views/group.jsp"/>
     </definition>
     <definition name="group/*" extends="user-layout">
@@ -50,7 +54,7 @@
     </definition>
 
     <!--Meet -->
-    <definition name="meet-body" extends="user-body-nav">
+    <definition name="meet-body" extends="body-drawer">
         <put-attribute name="content" value="/WEB-INF/views/meet.jsp"/>
     </definition>
     <definition name="meet/*" extends="user-layout">
