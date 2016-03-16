@@ -44,6 +44,10 @@
 <!-- Angular Material Script -->
 <script src="<c:url value='lib/angular_material/angular-material.min.js'/>"></script>
 
+<!-- SockJS and STOMP -->
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js'/>"></script>
+<script src="<c:url value='https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js'/>"></script>
+
 <!-- App context -->
 <script src="<c:url value='js/app_controller.js'/>"></script>
 <script src="<c:url value='js/header_controller.js'/>"></script>
@@ -51,6 +55,7 @@
 <script src="<c:url value='js/login_controller.js'/>"></script>
 <script src="<c:url value='js/group_controller.js'/>"></script>
 <script src="<c:url value='js/meet_controller.js'/>"></script>
+<script src="<c:url value='js/chat_controller.js'/>"></script>
 
 </body>
 </html>

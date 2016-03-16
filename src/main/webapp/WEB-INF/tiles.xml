@@ -60,5 +60,13 @@
     <definition name="meet/*" extends="user-layout">
         <put-attribute name="body" value="meet-body"/>
     </definition>
+    
+    <!-- Index -->
+    <definition name="chat-body" extends="body">
+        <put-attribute name="content" value="/WEB-INF/views/chat.jsp"/>
+    </definition>
+    <definition name="chat" extends="layout">
+        <put-attribute name="body" value="chat-body"/>
+    </definition>
 
 </tiles-definitions>
