@@ -35,8 +35,12 @@ public class UserServiceImp implements UserService {
     public void save(User entity) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
-        if (entity.getImage() != null && entity.getImage().getUrl() == null) {
-            entity.setImage(null);
+        if (entity.getImage() != null) {
+            if (entity.getImage().getUrl() == null) {
+                entity.setImage(null);
+            } else {
+                fileRepository.save(entity.getImage());
+            }
         }
         userRepository.save(entity);
     }

@@ -12,6 +12,8 @@ import javax.websocket.server.PathParam;
 @Controller
 public class MainController {
 
+    private static final String INDEX_PATH = "/static/index.html";
+
     @RequestMapping(value = "/security")
     public String security() {
         return "security";
@@ -19,28 +21,27 @@ public class MainController {
 
     @RequestMapping(value = "/")
     public String index() {
-        return "index";
+        return INDEX_PATH;
     }
 
     @RequestMapping(value = "/login")
     public String login() {
-        return "index";
+        return INDEX_PATH;
     }
 
     @RequestMapping(value = "/signup")
     public String signUp() {
-        return "index";
+        return INDEX_PATH;
     }
-
 
     @RequestMapping(value = "/group")
     public String group() {
-        return "group";
+        return INDEX_PATH;
     }
 
     @RequestMapping(value = "/group/{id}")
     public String group(@PathVariable long id) {
-        return "index";
+        return INDEX_PATH;
     }
 
     @RequestMapping(value = "/chat")
@@ -51,10 +52,5 @@ public class MainController {
     @RequestMapping(value = "/meet/{id}")
     public String meetById(@PathVariable String id) {
         return "meet/" + id;
-    }
-
-    @RequestMapping(value = "/g")
-    public String meetById() {
-        return "index";
     }
 }

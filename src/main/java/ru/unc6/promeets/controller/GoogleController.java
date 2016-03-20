@@ -34,8 +34,8 @@ public class GoogleController {
     private GoogleService googleService;
 
     @RequestMapping(value = GOOGLE_SIGN_UP_REDIRECT_PATH, method = RequestMethod.GET)
-    public String makeCodeRequest() {
-        return "redirect:" + googleService.getOauth2AuthenticationUrl();
+    public RedirectView makeCodeRequest() {
+        return new RedirectView(googleService.getOauth2AuthenticationUrl());
     }
 
     @RequestMapping(value = GOOGLE_OAUTH2_CALLBACK_PATH, method = RequestMethod.GET)
