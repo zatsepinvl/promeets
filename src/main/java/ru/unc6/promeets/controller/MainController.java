@@ -24,8 +24,14 @@ public class MainController {
 
     @RequestMapping(value = "/login")
     public String login() {
-        return "login";
+        return "index";
     }
+
+    @RequestMapping(value = "/signup")
+    public String signUp() {
+        return "index";
+    }
+
 
     @RequestMapping(value = "/group")
     public String group() {
@@ -34,7 +40,7 @@ public class MainController {
 
     @RequestMapping(value = "/group/{id}")
     public String group(@PathVariable long id) {
-        return "group/" + id;
+        return "index";
     }
 
     @RequestMapping(value = "/chat")
@@ -45,5 +51,10 @@ public class MainController {
     @RequestMapping(value = "/meet/{id}")
     public String meetById(@PathVariable String id) {
         return "meet/" + id;
+    }
+
+    @RequestMapping(value = "/g")
+    public String meetById() {
+        return "index";
     }
 }

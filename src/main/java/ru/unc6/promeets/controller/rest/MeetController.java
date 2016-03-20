@@ -1,18 +1,14 @@
-package ru.unc6.promeets.controller;
+package ru.unc6.promeets.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.MeetTypeRepository;
 import ru.unc6.promeets.model.service.MeetService;
 
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import org.apache.log4j.Logger;
 

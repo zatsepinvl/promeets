@@ -19,11 +19,16 @@
         <intercept-url pattern="/security/*" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/security*" access="permitAll"/>
         <form-login login-page="/login"/>
+        <logout logout-url="/logout" logout-success-url="/"/>
         <remember-me/>
     </http>
 
     <authentication-manager>
-        <authentication-provider user-service-ref="customUserDetailService"/>
+        <authentication-provider user-service-ref="customUserDetailService">
+            <password-encoder ref="bcryptEncoder"/>
+        </authentication-provider>
     </authentication-manager>
+
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 
 </beans:beans>

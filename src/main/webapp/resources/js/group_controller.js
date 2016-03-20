@@ -1,7 +1,7 @@
 //group controller
-app.controller('groupCtrl', function ($routeParams, $scope, Entity, $mdDialog) {
-
-    $scope.groupId = location.pathname.split("/")[2];
+app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
+    $scope.groupId = $stateParams.groupId;
+    $state.go('.meets');
     $scope.group = Entity.get({entity: "groups", id: $scope.groupId}, function () {
         $scope.tab = "meets";
     });
@@ -9,7 +9,7 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity, $mdDialog) {
     $scope.editGroup = function () {
         $mdDialog.show({
                 controller: EditGroupDialogController,
-                templateUrl: '../templates/group/dialog_edit_group.html',
+                templateUrl: 'static/user/group/dialog_edit_group.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 locals: {
@@ -26,7 +26,7 @@ app.controller('groupCtrl', function ($routeParams, $scope, Entity, $mdDialog) {
     $scope.createMeet = function () {
         $mdDialog.show({
                 controller: CreateMeetController,
-                templateUrl: '../templates/group/dialog_new_meet.html',
+                templateUrl: 'static/user/group/meets/dialog_new_meet.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose: true,
                 locals: {

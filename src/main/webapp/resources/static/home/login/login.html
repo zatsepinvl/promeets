@@ -1,0 +1,48 @@
+<div class="mdl-grid" style="padding: 0;">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-table mdl-cell--4-col-phone" style="margin-top: 0;">
+        <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-width: 260px; max-width: 300px; margin: auto ">
+            <div ng-controller="loginCtrl">
+                <md-content layout-padding>
+                    <form name="loginForm" ng-submit="login()" style="margin: 0">
+                        <md-input-container class="md-block" md-no-float>
+                            <md-icon class="material-icons">email</md-icon>
+                            <input ng-model="user.email" type="email" required placeholder="Email">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" md-no-float>
+                            <md-icon class="material-icons">lock</md-icon>
+                            <input ng-model="user.password" type="password" required placeholder="Password">
+                        </md-input-container>
+
+                        <div layout="row">
+                            <md-button type="submit" class="md-raised" ng-hide="loading"
+                                       flex style="background-color: #2e7d32; color: #fff;">
+                                Log in
+                            </md-button>
+                        </div>
+
+                        <p style="text-align: center; color:darkred; margin-top: 10px; " ng-show="error.show">
+                            {{error.value}}
+                        </p>
+
+                        <md-progress-circular style="margin: auto" md-mode="indeterminate"
+                                              ng-show="loading">
+                        </md-progress-circular>
+
+                        <div layout="row" style="margin-top: 20px">
+                            <a href="" style="font-size: 12px; text-align: center" flex>
+                                Forgot password?
+                            </a>
+                            <a href="/signup" style="font-size: 12px; text-align: center" flex>
+                                Sign up
+                            </a>
+                        </div>
+                    </form>
+                </md-content>
+            </div>
+
+        </div>
+    </div>
+</div>

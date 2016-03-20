@@ -1,5 +1,5 @@
 //login controller
-app.controller('loginCtrl', function ($scope, $http) {
+app.controller('loginCtrl', function ($scope, $http, $state) {
     $scope.error = {show: false, value: ""};
     $scope.loading = false;
     var authenticate = function (user, callback) {
@@ -11,7 +11,8 @@ app.controller('loginCtrl', function ($scope, $http) {
         } : {};
         $http.get('/api/user', {headers: headers}).success(function (user) {
             if (user.email) {
-                window.location.pathname = "/group/1";
+                $scope.$emit('closeDialog');
+                $state.transitionTo('user.group', {groupId: 1});
             }
             else {
                 $scope.loading = false;
@@ -20,7 +21,7 @@ app.controller('loginCtrl', function ($scope, $http) {
         }).error(function (error) {
             $scope.loading = false;
             $scope.error.show = user ? true : false;
-            $scope.error.value="Invalid email or password";
+            $scope.error.value = "Invalid email or password";
             callback && callback(error);
         });
     };

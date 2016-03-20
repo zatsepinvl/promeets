@@ -1,5 +1,4 @@
-package ru.unc6.promeets.model.service;
-
+package ru.unc6.promeets.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

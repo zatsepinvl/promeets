@@ -47,18 +47,17 @@ public class ChatSTOMPController
     public void sendMessage(Message message, @DestinationVariable("id") Long id) 
     {
         chatService.addMessageByChatId(message, id);
-        
-        getChat(1L);
+       // getChat(1L);
     }
    
     @PostConstruct
     private void broadcastTimePeriodically() 
     {
-      scheduler.scheduleAtFixedRate(new Runnable() 
+      scheduler.scheduleAtFixedRate(new Runnable()
       {
         @Override public void run() 
         {
-          getChat(1L);
+          //getChat(1L);
         }
       }, 5000);
     }

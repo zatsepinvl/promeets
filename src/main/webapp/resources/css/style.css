@@ -1,5 +1,12 @@
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    background-color: #eeeeee;
+    font-size: 14px;
+}
+
+.main-ui-view {
+    width: 100%;
+    height: 100%;
 }
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -56,21 +63,20 @@ body {
 .current_meet {
     width: 100%;
     height: 40px;
-    background-color: #2e7d32;
-    color: white;
+    color: #ef6c00;
     font-size: 20px;
-    font-weight: 200;
+    font-weight: 300;
     margin: auto;
     line-height: 40px;
     vertical-align: middle;
     text-align: center;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     cursor: pointer;
+    background-color: #fafafa;
 }
 
 .current_meet:hover {
-    background-color: #ef6c00;
     cursor: pointer;
+    background-color: #e0e0e0;
 }
 
 .material-icons.mdl-list__item-icon {
@@ -133,7 +139,7 @@ md-input-container .md-errors-spacer {
 }
 
 table td.label {
-    font-size: 12px;
+    font-size: 14px;
     text-align: right;
     margin-right: 10px;
 }
@@ -147,16 +153,15 @@ a:hover {
     text-decoration: underline;
 }
 
-input
-{
+input {
     font-size: 14px;
 }
 
-table
-{
+table {
     width: 100%;
     margin: auto;
 }
+
 .md-datepicker-input-container {
     margin-left: 0;
     width: 100%;
@@ -166,3 +171,83 @@ md-datepicker .md-button.md-icon-button {
     display: none;
 }
 
+.mdl-layout--fixed-drawer.is-upgraded:not(.is-small-screen) > .mdl-layout__header {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+}
+
+.mdl-layout__drawer {
+    width: 210px;
+}
+
+.mdl-navigation__link .material-icons {
+    margin-right: 4px;
+    margin-bottom: 2px;
+}
+
+.mdl-badge[data-badge]::after {
+    background-color: #ef6c00;
+    color: #fff;
+}
+
+.mdl-layout__drawer header {
+    width: calc(100% - 16px);
+    background-color: #2e7d32;
+    padding: 20px 0 16px 16px;
+}
+
+.mdl-layout__drawer header img {
+    width: 50px;
+    height: 50px;
+    padding: 2px;
+    border-radius: 50px;
+    background-color: #fafafa;
+}
+
+.mdl-layout__drawer header .username {
+    width: 100%;
+    color: #fafafa;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.mdl-layout__drawer header .email {
+    width: 100%;
+    color: #fafafa;
+    font-size: 12px;
+}
+
+md-toolbar .material-icons {
+    font-size: 20px;
+}
+
+header .material-icons {
+    color: #2e7d32;
+}
+
+.g-sign-up-button {
+
+}
+
+.mdl-grid {
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 480px) {
+    .phone {
+        margin: 8px 0 0 0;
+        padding: 0;
+        width: 100%;
+    }
+
+    .phone.mdl-cell {
+        margin: 8px 0 0 0;
+        padding: 0;
+        width: 100%;
+    }
+}
+
+.mdl-card {
+    margin: 0;
+}

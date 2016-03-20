@@ -24,7 +24,7 @@
 </head>
 
 <body ng-app="app" ng-cloak ng-controller="appCtrl" ng-show="pageState.load">
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header " style="background-color: #f5f5f5">
+<div class="<tiles:insertAttribute name="layout_container_class"/>" style="background-color: #f5f5f5">
     <tiles:insertAttribute name="header"/>
     <tiles:insertAttribute name="body"/>
     <tiles:insertAttribute name="footer"/>
@@ -47,10 +47,14 @@
 <!-- App context -->
 <script src="<c:url value='js/app_controller.js'/>"></script>
 <script src="<c:url value='js/header_controller.js'/>"></script>
-<script src="<c:url value='js/index_controller.js'/>"></script>
+<script src="<c:url value='js/drawer_controller.js'/>"></script>
+<script src="<c:url value='js/home_controller.js'/>"></script>
 <script src="<c:url value='js/login_controller.js'/>"></script>
+<script src="<c:url value='js/signup_controller.js'/>"></script>
+<script src="<c:url value='js/gsignup_controller.js'/>"></script>
 <script src="<c:url value='js/group_controller.js'/>"></script>
 <script src="<c:url value='js/meet_controller.js'/>"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
 
 </body>
 </html>

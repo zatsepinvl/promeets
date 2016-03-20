@@ -1,0 +1,51 @@
+<div class="mdl-layout
+     mdl-js-layout
+     mdl-layout--fixed-header">
+
+    <!-- Header -->
+    <header class="mdl-layout__header mdl-layout__header--scroll" style="background: #2e7d32;"
+            ng-controller="headerCtrl"
+            ng-cloak>
+        <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
+             style="cursor: pointer"/>
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title mdl-layout--large-screen-only" ui-sref="home.presentation"
+                  style="cursor: pointer">Promeets</span>
+            <div class="mdl-layout-spacer"></div>
+            <nav class="mdl-navigation">
+                <div ng-show="tab=='nav_log'">
+                    <a class="mdl-navigation__link" href="/group">Profile</a>
+                </div>
+                <div ng-show="tab=='nav_unlog'">
+                    <a class="mdl-navigation__link" href="" ng-click="login()">Log in</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page body-->
+    <main class="mdl-layout__content">
+        <div class="page-content">
+
+            <div class="mdl-grid">
+
+                <!-- Navigation menu -->
+                <div class="phone mdl-cell mdl-cell--2-col mdl-cell--0-col-tablet mdl-cell--0-col-phone">
+                    <div ui-view="left_column"></div>
+                </div>
+
+                <!-- Content container -->
+                <div class="phone mdl-cell mdl-cell--8-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div ui-view="body"></div>
+                </div>
+
+                <!-- Recommendations -->
+                <div class="phone mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div ui-view="right_column"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+</div>

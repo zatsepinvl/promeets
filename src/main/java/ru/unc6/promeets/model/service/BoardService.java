@@ -15,5 +15,5 @@ import ru.unc6.promeets.model.entity.BoardPage;
  */
 public interface BoardService extends BaseService<Board>
 {
-    public List<BoardPage> getAllBoardPagesByMeetId (long id);
+    List<BoardPage> getAllBoardPagesByMeetId(long id);
 }

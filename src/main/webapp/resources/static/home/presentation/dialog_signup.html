@@ -1,0 +1,31 @@
+<md-dialog aria-label="Sign up" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <md-dialog-content>
+        <div layout="column">
+            <md-content layout-padding>
+                <div class="mdl-card__title">
+                    Sign up
+                </div>
+                <div class="mdl-card__menu">
+                    <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                            style="bottom: 14px"
+                            ng-click="cancel()">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div layout="column">
+                    <md-button class="g-sign-up-button md-raised" flex
+                               ng-click="signUp()">
+                        Simple sign up
+                    </md-button>
+                    <div flex style="margin: 10px; text-align: center">
+                        or
+                    </div>
+                    <md-button class="g-sign-up-button md-raised" flex ng-click="gSignUp()">
+                        <img src="image/google_icon.png" style="height: 20px; margin-right: 4px">
+                        Sign up with Google
+                    </md-button>
+                </div>
+            </md-content>
+        </div>
+    </md-dialog-content>
+</md-dialog>

@@ -17,7 +17,7 @@ http://www.springframework.org/schema/websocket/spring-websocket.xsd"
 
     <mvc:annotation-driven/>
     <context:component-scan base-package="ru.unc6.promeets.controller"/>
-    
+
     <websocket:message-broker application-destination-prefix="/app">
         <websocket:stomp-endpoint path="/ws">
             <websocket:sockjs/>
