@@ -70,6 +70,15 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
             .state('user.group.meets',
                 {
                     templateUrl: '/static/user/group/meets/meets.html'
+                })
+            .state('home.chat',
+                {
+                    url: '/chat',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/chat/chat.html'
+                        }
+                    }
                 });
         $locationProvider.html5Mode(true);
     }

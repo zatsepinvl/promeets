@@ -46,7 +46,7 @@ public class MainController {
 
     @RequestMapping(value = "/chat")
     public String chat() {
-        return "chat";
+        return INDEX_PATH;
     }
 
     @RequestMapping(value = "/meet/{id}")

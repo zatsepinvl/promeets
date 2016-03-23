@@ -1,0 +1,25 @@
+<div ng-app = "app" ng-controller = "chatController">
+		<h2>
+		<button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="showUsers()">
+		  <i class="material-icons">group</i>
+		</button> 
+		{{chat.name}}: 
+		</h2>
+		
+		<form ng-submit="sendMessage()">
+		  <div class="mdl-textfield mdl-js-textfield">
+			<textarea class="mdl-textfield__input" type="text" rows= "3" id="sample5" ng-model="messageText"></textarea>
+			<label class="mdl-textfield__label" for="sample5">enter message...</label>
+		  </div>
+		</form>
+		
+		<div class="chat-messages">
+			<p ng-repeat="message in messages | orderBy:'time':true" class="message">
+					<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
+					<span class="chat-messages-name" ng-class="{self: message.self}">{{message.user.firstName}} {{message.user.lastName}}:</span>
+					<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
+			</p>
+		</div>
+      </div>
+	  
+	  

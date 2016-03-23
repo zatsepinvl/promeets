@@ -40,26 +40,22 @@ public class ChatSTOMPController
     {
         List messages = (List) chatService.getAllMessagesByChatId(id);
         log.info(messages); 
-        simpMessagingTemplate.convertAndSend("/topic/chat", messages);
+        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, messages);
+    }
+    
+    @MessageMapping("/chat/{id}/get")
+    public void getMessage() 
+    {
+        getChat(1L);
     }
 
     @MessageMapping("/chat/{id}/send")
     public void sendMessage(Message message, @DestinationVariable("id") Long id) 
     {
         chatService.addMessageByChatId(message, id);
-       // getChat(1L);
+        getChat(1L);
     }
    
-    @PostConstruct
-    private void broadcastTimePeriodically() 
-    {
-      scheduler.scheduleAtFixedRate(new Runnable()
-      {
-        @Override public void run() 
-        {
-          //getChat(1L);
-        }
-      }, 5000);
-    }
+   
 
 }

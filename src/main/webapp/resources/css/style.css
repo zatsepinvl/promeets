@@ -251,3 +251,29 @@ header .material-icons {
 .mdl-card {
     margin: 0;
 }
+
+.chat-messages 
+{
+    display: table;
+    width:400px;
+}
+.chat-messages-time 
+{
+    display: table-cell;
+    width: 60px;
+    color: #ef6c00;
+}
+.chat-messages-name 
+{
+    display: table-cell;
+    width: 30%;
+    color: #2e7d32;
+    font-weight:bold;
+			
+}
+.chat-messages-message 
+{
+    display: table-cell;
+    width: 55%;
+    align: left;
+}
