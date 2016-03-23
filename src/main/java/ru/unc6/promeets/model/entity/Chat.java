@@ -14,9 +14,6 @@ import java.util.List;
 public class Chat {
     private long chatId;
     private String name;
-    private List<Message> messages;
-    private List<User> users;
-
     @Id
     @Column(name = "chat_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,25 +53,5 @@ public class Chat {
         int result = (int) (chatId ^ (chatId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "chat")
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "chats")
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 }

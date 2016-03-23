@@ -1,6 +1,7 @@
 package ru.unc6.promeets.controller;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.services.calendar.Calendar;
 import com.google.api.services.plus.model.Person;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,12 @@ public class GoogleController {
             throws IOException {
         if (error == null) {
             GoogleTokenResponse googleTokenResponse = googleService.exchangeCodeToToken(code);
+
             Cookie accessTokenCookie = new Cookie(ACCESS_TOKEN, googleTokenResponse.getAccessToken());
             accessTokenCookie.setPath("/");
             accessTokenCookie.setMaxAge(Math.toIntExact(googleTokenResponse.getExpiresInSeconds()));
             response.addCookie(accessTokenCookie);
+
             Person person = googleService.getPerson(googleTokenResponse);
             RedirectView redirectView = new RedirectView(SIGN_UP_PATH);
             redirectView.addStaticAttribute("provider", "google");

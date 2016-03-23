@@ -16,11 +16,8 @@ public class Meet {
     private long meetId;
     private String title;
     private Timestamp time;
-    private List<MeetAim> aims;
-    private List<MeetNote> notes;
     private User admin;
     private Board board;
-    private List<UserMeet> users;
     private String location;
     private String description;
     private MeetType type;
@@ -79,15 +76,6 @@ public class Meet {
         return result;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "meet")
-    public List<MeetNote> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<MeetNote> notes) {
-        this.notes = notes;
-    }
 
     @ManyToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "user_id")
@@ -107,27 +95,6 @@ public class Meet {
 
     public void setBoard(Board board) {
         this.board = board;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "userMeetPK.meet")
-    public List<UserMeet> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserMeet> users) {
-        this.users = users;
-    }
-
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "meet")
-    public List<MeetAim> getAims() {
-        return aims;
-    }
-
-    public void setAims(List<MeetAim> aims) {
-        this.aims = aims;
     }
 
     @Basic

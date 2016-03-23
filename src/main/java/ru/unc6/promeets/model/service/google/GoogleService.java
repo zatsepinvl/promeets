@@ -4,10 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.model.*;
+import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.plus.*;
 import com.google.api.services.plus.model.Person;
 import org.apache.log4j.Logger;
@@ -15,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Vladimir on 16.03.2016.
@@ -26,7 +33,31 @@ public class GoogleService {
     //@Value(value = "#{appProperties.googleOAuth2Info}")
     private String clientSecretFilePath = "client_secret.json";
 
-    private final String applicationName = "Promeets";
+    private static final String APPLICATION_NAME = "Promeets";
+
+    private static final String SCOPES =
+            PlusScopes.USERINFO_EMAIL
+                    + "%20" + PlusScopes.USERINFO_PROFILE
+                    + "%20" + CalendarScopes.CALENDAR;
+
+    /**
+     * Global instance of the JSON factory.
+     */
+    private static final JsonFactory JSON_FACTORY =
+            JacksonFactory.getDefaultInstance();
+
+    /**
+     * Global instance of the HTTP transport.
+     */
+    private static HttpTransport HTTP_TRANSPORT;
+
+    static {
+        try {
+            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        } catch (Throwable t) {
+            log.error(t.getMessage(), t);
+        }
+    }
 
     private OAuthInfo oAuthInfo;
 
@@ -51,7 +82,7 @@ public class GoogleService {
     public String getOauth2AuthenticationUrl() {
         return oAuthInfo.getAuth_uri()
                 + "?"
-                + "scope=email%20profile"
+                + "scope=" + SCOPES
                 + "&redirect_uri=" + oAuthInfo.getRedirect_uris()[0]
                 + "&response_type=code"
                 + "&client_id=" + oAuthInfo.getClient_id();
@@ -69,9 +100,15 @@ public class GoogleService {
 
     public Person getPerson(GoogleTokenResponse googleTokenResponse) throws IOException {
         GoogleCredential credential = new GoogleCredential().setAccessToken(googleTokenResponse.getAccessToken());
-        Plus plus = new Plus.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance(), credential)
-                .setApplicationName(applicationName)
+        Plus plus = new Plus.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                .setApplicationName(APPLICATION_NAME)
                 .build();
+        Calendar calendar = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+        Calendar.CalendarList calendarList = calendar.calendarList();
+        Events events = calendar.events().list("primary").setTimeMin(new DateTime(System.nanoTime())).execute();
+        List<Event> eventList = events.getItems();
         return plus.people().get("me").execute();
     }
 }

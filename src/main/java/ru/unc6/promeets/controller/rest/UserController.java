@@ -20,7 +20,7 @@ import java.security.Principal;
  */
 @RestController
 public class UserController {
-    private static final Logger log = Logger.getLogger(MeetController.class);
+    private static final Logger log = Logger.getLogger(UserController.class);
 
 
     private static final String REPEATING_EMAIL_ERROR_MESSAGE = "User with the same email already exists.";

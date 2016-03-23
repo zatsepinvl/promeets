@@ -247,7 +247,20 @@ header .material-icons {
         width: 100%;
     }
 }
-
+@media (min-width: 1025px) {
+    header.hide-fullscreen {
+        display: none;
+    }
+}
 .mdl-card {
     margin: 0;
 }
+
+.group-calendar md-toolbar,.group-calendar .md-toolbar-tools
+{
+    height: 40px;
+    background-color: #2e7d32 ;
+    min-height: 40px;
+}
+
+

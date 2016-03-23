@@ -1,46 +1,50 @@
-<div ng-controller="meetListCtrl">
+<div ng-controller="groupCalendarCtrl">
 
+
+    <md-divider
+            tooltips="tooltips"></md-divider>
+    <calendar model="times"
+              change-month="change"
+              day-click="dayClicked">
+    </calendar>
     <!-- Search and add button-->
-    <div style="background-color:#fafafa;">
-        <div class="mdl-grid" style="width: 90%;  padding:0 ">
-            <div class="mdl-cell mdl-cell--11-col mdl-cell--7-col-tablet mdl-cell--3-col-phone">
-                <md-input-container style="width: 100%;margin:0" md-no-float>
-                    <input placeholder="Search">
-                </md-input-container>
-
-            </div>
-            <div class="mdl-cell mdl-cell--1-col mdl-cell--1-col-tablet mdl-cell--1-col-phone">
-                <md-button class="md-fab md-mini accent" style="" ng-click="createMeet()">
-                    <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
-                </md-button>
-            </div>
-        </div>
+    <div layout="row">
+        <md-button class="md-fab md-mini accent" style="margin: 2px 2px 2px auto" ng-click="createMeet()">
+            <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
+        </md-button>
     </div>
-    <md-progress-linear md-mode="indeterminate" ng-hide="load"></md-progress-linear>
-    <md-divider></md-divider>
     <p style="text-align: center; margin-top:20px; font-weight: 200; font-size: 14px;" ng-show="error">
         {{load_error}}</p>
-    <ul class="mdl-list " ng-show="load">
-        <li class="mdl-list__item mdl-list__item--two-line"
-            ng-repeat="meet in meets track by meet.meetId">
-                                                 <span class="mdl-list__item-primary-content">
-                                                      <img class="mdl-list__item-avatar" src="../../../../image/meet1.jpg"/>
-                                                      <span>
-                                                          {{meet.title}}
-                                                          <br>
+    <md-list>
+        <md-list-item ng-repeat="meet in selectedMeets track by meet.meetId">
+            <img ng-src="{{meet.file}}" class="md-avatar"
+            ng-click=""/>
+            <p style="font-size: 16px">{{ meet.title }}</p>
+        </md-list-item>
+    </md-list>
 
-                                                      </span>
-                                                     <span class="mdl-list__item-sub-title">
-                                                         {{
-                                                         (meet.time.getDate() > 9 ?
-                                                         meet.time.getDate():'0'+meet.time.getDate())
-                                                         + '.' + ( (meet.time.getMonth() + 1) > 9 ? (meet.time.getMonth() + 1) : '0'+(meet.time.getMonth() + 1) )
-                                                         + '.' + meet.time.getFullYear()}}
-                                                    </span>
-                                                 </span>
+   <!-- <ul class="mdl-list " ng-show="load">
+        <li class="mdl-list__item mdl-list__item--two-line"
+            ng-repeat="meet in selectedMeets track by meet.meetId">
+                                                  <span class="mdl-list__item-primary-content">
+                                                       <img class="mdl-list__item-avatar"
+                                                            src="../../../../image/meet1.jpg"/>
+                                                       <span>
+                                                           {{meet.title}}
+                                                           <br>
+
+                                                       </span>
+                                                      <span class="mdl-list__item-sub-title">
+                                                          {{
+                                                          (meet.time.getDate() > 9 ?
+                                                          meet.time.getDate():'0'+meet.time.getDate())
+                                                          + '.' + ( (meet.time.getMonth() + 1) > 9 ? (meet.time.getMonth() + 1) : '0'+(meet.time.getMonth() + 1) )
+                                                          + '.' + meet.time.getFullYear()}}
+                                                     </span>
+                                                  </span>
             <a class="mdl-list__item-secondary-action" href="/meet/{{meet.meetId}}"><i
                     class="material-icons" style="color:#ef6c00"
             >edit</i></a>
         </li>
-    </ul>
+    </ul>-->
 </div>
