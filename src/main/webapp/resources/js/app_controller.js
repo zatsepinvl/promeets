@@ -79,6 +79,10 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                             templateUrl: '/static/chat/chat.html'
                         }
                     }
+                })
+			.state('user.group.chat',
+                {
+                    templateUrl: '/static/chat/chat.html'
                 });
         $locationProvider.html5Mode(true);
     }

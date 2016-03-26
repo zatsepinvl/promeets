@@ -57,11 +57,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void addMessageByChatId(Message message, long id) {
+    @Transactional
+    public Message addMessageByChatId(Message message, long id) {
         Chat chat = getById(id);
         message.setChat(chat);
         message.setTime(new Timestamp(new Date().getTime()));
-        messageRepository.save(message);
+        
+        return messageRepository.save(message);
     }
 
 }

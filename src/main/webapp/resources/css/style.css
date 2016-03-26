@@ -252,28 +252,40 @@ header .material-icons {
     margin: 0;
 }
 
+.chat
+{
+	padding: 5%;
+}
+
+
 .chat-messages 
 {
     display: table;
-    width:400px;
+    width:100%;
 }
+
+.chat-message {
+    display:table-row-group;
+	margin: 12px;
+}
+
 .chat-messages-time 
 {
-    display: table-cell;
-    width: 60px;
+    width: 10%;
     color: #ef6c00;
+	text-align: right;
 }
 .chat-messages-name 
 {
-    display: table-cell;
-    width: 30%;
+    display: table-row;
+    width: 25%;
     color: #2e7d32;
     font-weight:bold;
-			
 }
 .chat-messages-message 
 {
     display: table-cell;
-    width: 55%;
+    width: 58%;
     align: left;
+	font-weight:bold;
 }

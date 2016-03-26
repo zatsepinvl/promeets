@@ -15,6 +15,6 @@ import ru.unc6.promeets.model.entity.Message;
  */
 public interface ChatService extends BaseService<Chat>
 {
-    public void addMessageByChatId(Message message, long id);
+    public Message addMessageByChatId(Message message, long id);
     public List<Message> getAllMessagesByChatId(long id);
 }

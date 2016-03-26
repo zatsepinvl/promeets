@@ -36,24 +36,39 @@ public class ChatSTOMPController
     private ChatService chatService;
 
 
-    private void getChat(Long id) 
+    private void sendAllMessagesToClient(Long id) 
     {
         List messages = (List) chatService.getAllMessagesByChatId(id);
         log.info(messages); 
         simpMessagingTemplate.convertAndSend("/topic/chat/"+id, messages);
     }
     
+    
     @MessageMapping("/chat/{id}/get")
-    public void getMessage() 
+    public void getAllMessagesByClient() 
     {
-        getChat(1L);
+        sendAllMessagesToClient(1L);
     }
 
     @MessageMapping("/chat/{id}/send")
-    public void sendMessage(Message message, @DestinationVariable("id") Long id) 
+    public void sendMessageByClient(Message message, @DestinationVariable("id") Long id) 
     {
-        chatService.addMessageByChatId(message, id);
-        getChat(1L);
+        if (message.getText().trim().isEmpty())
+        {
+            log.info(message + " text is empty");
+            return;
+        }
+        
+        if (message.getChat()==null)
+        {
+            log.error(message + " chat is null");
+            return;
+        }
+        
+        message = chatService.addMessageByChatId(message, id);
+         
+        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, message);
+        
     }
    
    

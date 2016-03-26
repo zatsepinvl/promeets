@@ -1,5 +1,5 @@
 
-app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog) 
+app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService) 
 { 
 		$scope.messages = [];
 		$scope.currentUser = {};
@@ -16,37 +16,39 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		
 		var deferred = $q.defer();
 		
-		$scope.$on('user', function (event, user) 
+		UserService.load(function (user) 
 		{
-			if (user) 
+			if (user.email) 
 			{
 				$scope.currentUser = user;
+				$http.get('/api/chats/1').success(function (chat) 
+				{
+					$scope.chat = chat;
+					$scope.load = true;
+						
+					startListen();
+				});
 			}
 			else 
 			{
-				
+				alert("Not autorize");
 			}
 		});
 		
 		$scope.sendMessage = function ()
 		{
-			var jsonstr = JSON.stringify({'text': $scope.messageText, 'user' : $scope.currentUser });
-			stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/send", {}, jsonstr);
-		}
+            var jsonstr = JSON.stringify({'text': $scope.messageText, 'user' : $scope.currentUser, 'chat': $scope.chat });
+            stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/send", {}, jsonstr);
+			$scope.messageText = "";
+		};
 		
 		$scope.showUsers = function () {
-			$mdDialog.show({
-					controller: SignUpController,
-					templateUrl: '../static/chat/chat_dialog.html',
-					parent: angular.element(document.body)
-				})
-				.then(function () {
-
-				})
-				.then(function (user) {
-
-				});
-		}
+                    $mdDialog.show({
+                            controller: ChatShowUsersController,
+                            templateUrl: '../static/chat/chat_dialog.html',
+                            parent: angular.element(document.body)
+			}).then(function () {}).then(function (user) {});
+		};
 		
 		var startListen = function() 
 		{
@@ -72,7 +74,7 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		var subscribe = function()
 		{
 			stompClient.subscribe(CHAT_TOPIC + $scope.chat.chatId, function(data) {
-			deferred.notify(getMessages(data));
+			deferred.notify(getAllMessagesFromServer(data));
 			});
 			stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/get", {});
 		};
@@ -82,25 +84,23 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		  return deferred.promise;
 		};
 		
-		function getMessages(frame) 
+		function getAllMessagesFromServer(frame) 
 		{
-          var messages = JSON.parse(frame.body);
-		  $scope.messages = messages;
-        };
+                    var messages = JSON.parse(frame.body);
+                    if (Array.isArray(messages))
+                    {
+                        $scope.messages = messages;
+                    }
+                    else
+                    {
+                        $scope.messages.push(messages);
+                    }    
+                };
 			
 		receive().then(null, null, function(message) 
 		{
 		  $scope.messages.push(message);
-		});
-		
-		$http.get('/api/chats/1').success(function (chat) 
-		{
-			$scope.chat = chat;
-			$scope.load = true;
-			
-			startListen();
-		});
-		
+		});		
 			
 });
 
