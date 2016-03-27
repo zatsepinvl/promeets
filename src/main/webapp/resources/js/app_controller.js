@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'mdPickers']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages']);
 
 app.run(function ($rootScope, $location, $timeout) {
     $rootScope.$on('$viewContentLoaded', function () {
@@ -95,6 +95,36 @@ app.directive('complexPassword', function () {
                     return undefined;
                 }
 
+            });
+        }
+    }
+});
+
+app.directive('time', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (time) {
+                console.log(ctrl.$viewValue);
+                if (time.length == 0) {
+                    ctrl.$setValidity('timeComplex', true);
+                    return time;
+                }
+                var hours = time.split(':')[0];
+                var minutes = time.split(':')[1];
+                if (time.length > 5
+                    || !minutes
+                    || hours < 0
+                    || hours > 23
+                    || minutes < 0
+                    || minutes > 59
+                    || hours.length < 2
+                    || minutes.length < 2) {
+                    ctrl.$setValidity('timeComplex', false);
+                    return undefined;
+                }
+                ctrl.$setValidity('timeComplex', true);
+                return time;
             });
         }
     }

@@ -10,19 +10,22 @@ app.directive("calendar", function () {
         },
         link: function ($scope) {
             $scope.$watch('model', function () {
-                console.log("calendar: " + $scope.model);
-                for (var i = 0; i < $scope.weeks.length; i++) {
-                    var week = $scope.weeks[i];
-                    for (var j = 0; j < week.days.length; j++) {
-                        var day = week.days[j];
-                        for (var k = 0; k < $scope.model.length; k++)
-                            if (Math.abs(day.date.format('x') - $scope.model[k]) < 1000 * 60 * 60 * 24) {
-                                day.isEvent = true;
-                                break;
-                            }
-                    }
+                if ($scope.model.length < 1) {
+                    return;
                 }
+                $scope.weeks.forEach(function (week) {
+                    week.days.forEach(function (day) {
+                        day.events = [];
+                        $scope.model.forEach(function (event) {
+                            if ((event.time) && (day.date.isSame(event.time, "day"))) {
+                                day.events.push(event);
+                            }
+                        })
+
+                    });
+                });
             }, true);
+
             $scope.selected = _removeTime($scope.selected || moment());
             $scope.month = $scope.selected.clone();
 
@@ -34,23 +37,23 @@ app.directive("calendar", function () {
 
             $scope.select = function (day) {
                 $scope.selected = day.date;
-                $scope.dayClick && $scope.dayClick(day.date);
+                $scope.dayClick && $scope.dayClick(day);
             };
 
             $scope.next = function () {
                 var next = $scope.month.clone();
-                _removeTime(next.month(next.month() + 1)).date(1);
+                _removeTime(next.month(next.month() + 1).date(1));
                 $scope.month.month($scope.month.month() + 1);
-                $scope.changeMonth && $scope.changeMonth($scope.month);
                 _buildMonth($scope, next, $scope.month);
+                $scope.changeMonth && $scope.changeMonth($scope.month);
             };
 
             $scope.previous = function () {
                 var previous = $scope.month.clone();
                 _removeTime(previous.month(previous.month() - 1).date(1));
                 $scope.month.month($scope.month.month() - 1);
-                $scope.changeMonth && $scope.changeMonth($scope.month);
                 _buildMonth($scope, previous, $scope.month);
+                $scope.changeMonth && $scope.changeMonth($scope.month);
             };
         }
     };
@@ -78,7 +81,8 @@ app.directive("calendar", function () {
                 number: date.date(),
                 isCurrentMonth: date.month() === month.month(),
                 isToday: date.isSame(new Date(), "day"),
-                date: date
+                date: date,
+                events: []
             });
             date = date.clone();
             date.add(1, "d");

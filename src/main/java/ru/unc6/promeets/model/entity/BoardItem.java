@@ -26,7 +26,7 @@ public class BoardItem {
     }
 
     @Basic
-    @Column(name = "data", nullable = true, length = -1)
+    @Column(name = "data", length = -1)
     public String getData() {
         return data;
     }
@@ -76,7 +76,7 @@ public class BoardItem {
         this.aim = target;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "file_id", referencedColumnName = "file_id")
     public File getFile() {
         return file;

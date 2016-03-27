@@ -55,7 +55,6 @@ public class GroupServiceImpl implements GroupService {
         }
 
         groupRepository.delete(id);
-
         log.debug("Delete group with id=" + id);
     }
 
@@ -84,7 +83,7 @@ public class GroupServiceImpl implements GroupService {
         List<Meet> meets = getMeetsByGroupId(id);
         List<Meet> temp = new ArrayList<>();
         for (Meet meet : meets) {
-            long t = meet.getTime().getTime() / day - date.getTime() / day;
+            long t = meet.getTime() / day - date.getTime() / day;
             if (t == 0) {
                 temp.add(meet);
             }
@@ -97,7 +96,7 @@ public class GroupServiceImpl implements GroupService {
         List<Meet> meets = getMeetsByGroupId(id);
         List<Meet> temp = new ArrayList<>();
         for (Meet meet : meets) {
-            long t = meet.getTime().getTime() / month - date.getTime() / month;
+            long t = meet.getTime() / month - date.getTime() / month;
             if (t == 0) {
                 temp.add(meet);
             }

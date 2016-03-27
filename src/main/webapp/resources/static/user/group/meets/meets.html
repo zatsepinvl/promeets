@@ -1,50 +1,40 @@
 <div ng-controller="groupCalendarCtrl">
-
-
-    <md-divider
-            tooltips="tooltips"></md-divider>
-    <calendar model="times"
+    <calendar model="events"
               change-month="change"
               day-click="dayClicked">
     </calendar>
-    <!-- Search and add button-->
-    <div layout="row">
-        <md-button class="md-fab md-mini accent" style="margin: 2px 2px 2px auto" ng-click="createMeet()">
-            <md-icon class="material-icons" style="margin-bottom: 3px">add</md-icon>
-        </md-button>
-    </div>
-    <p style="text-align: center; margin-top:20px; font-weight: 200; font-size: 14px;" ng-show="error">
-        {{load_error}}</p>
+
     <md-list>
+        <md-list-item class="no-hover" style="padding-left: 6px; padding-right: 6px;">
+            <form name="createMeetForm" ng-submit="createMeet()" layout="row">
+                <md-input-container class="md-block" md-no-float flex>
+                    <md-icon class="material-icons">title</md-icon>
+                    <input ng-model="meet.title" type="text" placeholder="Title" required>
+                </md-input-container>
+                <md-input-container class="md-block" md-no-float flex>
+                    <md-icon class="material-icons">access_time</md-icon>
+                    <input ng-model="time" type="time" placeholder="HH:MM" name="time" time required>
+                    <div ng-messages="createMeetForm.time.$error"
+                         md-auto-hide="false">
+                        <div ng-message="timeComplex">
+                            HH:MM
+                        </div>
+                    </div>
+                </md-input-container>
+                <md-button class="md-fab md-mini md-primary" type="submit"
+                           style="margin-top: 20px; margin-bottom: 4px">
+                    <md-icon class="material-icons"
+                             style="margin-bottom: 3px;"
+                             ng-click="createMeet()">add
+                    </md-icon>
+                </md-button>
+            </form>
+        </md-list-item>
         <md-list-item ng-repeat="meet in selectedMeets track by meet.meetId">
-            <img ng-src="{{meet.file}}" class="md-avatar"
-            ng-click=""/>
-            <p style="font-size: 16px">{{ meet.title }}</p>
+            <div class="time md-avatar">
+                {{meet.time.format('HH:mm') }}
+            </div>
+            <p style="font-size: 16px; margin-left: 46px;"> {{ meet.title }}</p>
         </md-list-item>
     </md-list>
-
-   <!-- <ul class="mdl-list " ng-show="load">
-        <li class="mdl-list__item mdl-list__item--two-line"
-            ng-repeat="meet in selectedMeets track by meet.meetId">
-                                                  <span class="mdl-list__item-primary-content">
-                                                       <img class="mdl-list__item-avatar"
-                                                            src="../../../../image/meet1.jpg"/>
-                                                       <span>
-                                                           {{meet.title}}
-                                                           <br>
-
-                                                       </span>
-                                                      <span class="mdl-list__item-sub-title">
-                                                          {{
-                                                          (meet.time.getDate() > 9 ?
-                                                          meet.time.getDate():'0'+meet.time.getDate())
-                                                          + '.' + ( (meet.time.getMonth() + 1) > 9 ? (meet.time.getMonth() + 1) : '0'+(meet.time.getMonth() + 1) )
-                                                          + '.' + meet.time.getFullYear()}}
-                                                     </span>
-                                                  </span>
-            <a class="mdl-list__item-secondary-action" href="/meet/{{meet.meetId}}"><i
-                    class="material-icons" style="color:#ef6c00"
-            >edit</i></a>
-        </li>
-    </ul>-->
 </div>

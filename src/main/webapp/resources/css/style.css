@@ -154,7 +154,7 @@ a:hover {
 }
 
 input {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 table {
@@ -247,20 +247,42 @@ header .material-icons {
         width: 100%;
     }
 }
+
 @media (min-width: 1025px) {
     header.hide-fullscreen {
         display: none;
     }
 }
+
 .mdl-card {
     margin: 0;
 }
 
-.group-calendar md-toolbar,.group-calendar .md-toolbar-tools
-{
+.group-calendar md-toolbar, .group-calendar .md-toolbar-tools {
     height: 40px;
-    background-color: #2e7d32 ;
+    background-color: #2e7d32;
     min-height: 40px;
 }
 
+md-list-item {
+    border-bottom: 1px solid #eeeeee;
+}
 
+md-list-item .time {
+    font-size: 36px;
+    font-weight: 200;
+    vertical-align: middle;
+    line-height: 36px;
+}
+
+md-list-item:hover {
+    background-color: #eeeeee;
+    cursor: pointer;
+    border-bottom: 1px solid #ef6c00;
+}
+
+md-list-item.no-hover:hover {
+    background-color: inherit;
+    cursor: inherit;
+    border-bottom: 1px solid #eeeeee;
+}

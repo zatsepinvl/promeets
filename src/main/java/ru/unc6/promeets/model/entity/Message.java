@@ -1,6 +1,5 @@
 package ru.unc6.promeets.model.entity;
 
-import java.util.Date;
 import javax.persistence.*;
 import java.sql.Timestamp;
 

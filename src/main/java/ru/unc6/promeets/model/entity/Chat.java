@@ -1,19 +1,16 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "chats")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "chatId")
 public class Chat {
     private long chatId;
     private String name;
+
     @Id
     @Column(name = "chat_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

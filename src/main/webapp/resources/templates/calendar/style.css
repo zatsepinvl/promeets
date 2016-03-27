@@ -100,7 +100,7 @@ calendar > div.week > span.day:first-child {
 }
 
 calendar > div.week > span.day.today {
-    background: #E3F2FF;
+    background: #c8e6c9;
 }
 
 calendar > div.week > span.day.different-month {
