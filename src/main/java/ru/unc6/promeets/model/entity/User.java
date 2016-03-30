@@ -1,9 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -21,10 +18,7 @@ public class User {
     private String address;
     private String company;
     private String position;
-    private List<UserMeet> meets;
     private File image;
-    private List<UserGroup> groups;
-    private List<Chat> chats;
 
     @Id
     @Column(name = "user_id")
@@ -137,6 +131,15 @@ public class User {
         return true;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "file_id")
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
     @Override
     public int hashCode() {
         int result = (int) (userId ^ (userId >>> 32));
@@ -151,7 +154,9 @@ public class User {
         return result;
     }
 
-    @JsonIgnore
+
+
+   /* @JsonIgnore
     @OneToMany(mappedBy = "userMeetPK.user")
     public List<UserMeet> getMeets() {
         return meets;
@@ -159,16 +164,6 @@ public class User {
 
     public void setMeets(List<UserMeet> meets) {
         this.meets = meets;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "image_id", referencedColumnName = "file_id")
-    public File getImage() {
-        return image;
-    }
-
-    public void setImage(File image) {
-        this.image = image;
     }
 
     @JsonIgnore
@@ -191,4 +186,5 @@ public class User {
     public void setChats(List<Chat> chats) {
         this.chats = chats;
     }
+    */
 }

@@ -5,17 +5,14 @@
  */
 package ru.unc6.promeets.controller.rest;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
@@ -64,6 +61,7 @@ public class GroupController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
     @RequestMapping(value = "api/groups/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateGroup(@RequestBody Group group, @PathVariable long id) {
         if (groupService.getById(id) == null) {
@@ -91,6 +89,19 @@ public class GroupController {
         }
         return new ResponseEntity<>(meets, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "api/groups/{id}/meets/month/{time}", method = RequestMethod.GET)
+    @ResponseBody
+    public List getGroupMeetsByGroupIdAndMonth(@PathVariable long id, @PathVariable long time) {
+        return groupService.getMeetsByGroupIdAndMonth(id, new Timestamp(time));
+    }
+
+    @RequestMapping(value = "api/groups/{id}/meets/day/{time}", method = RequestMethod.GET)
+    @ResponseBody
+    public List getGroupMeetsByGroupIdAndDay(@PathVariable long id, @PathVariable long time) {
+        return groupService.getMeetsByGroupIdAndDay(id, new Timestamp(time));
+    }
+
 
     @RequestMapping(value = "api/groups/{id}/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getGroupUsersById(@PathVariable long id) {

@@ -7,50 +7,34 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user_chats", schema = "public", catalog = "promeets_db")
-@IdClass(ChatUserPK.class)
 public class ChatUser {
-    private long chatId;
-    private long userId;
+    private ChatUserPK chatUserPK;
 
-    @Id
-    @Column(name = "chat_id", nullable = false)
-    public long getChatId() {
-        return chatId;
+    @EmbeddedId
+    public ChatUserPK getChatUserPK() {
+        return chatUserPK;
     }
 
-    public void setChatId(long chatId) {
-        this.chatId = chatId;
+    public void setChatUserPK(ChatUserPK charUserPK) {
+        this.chatUserPK = charUserPK;
     }
 
-    @Id
-    @Column(name = "user_id", nullable = false)
-    public long getUserId() {
-        return userId;
+    @Transient
+    public Chat getChat() {
+        return chatUserPK.getChat();
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setChat(Chat chat) {
+        chatUserPK.setChat(chat);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ChatUser chatUser = (ChatUser) o;
-
-        if (chatId != chatUser.chatId) return false;
-        if (userId != chatUser.userId) return false;
-
-        return true;
+    @Transient
+    public User getUser() {
+        return chatUserPK.getUser();
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (chatId ^ (chatId >>> 32));
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
-        return result;
+    public void setUser(User user) {
+        chatUserPK.setUser(user);
     }
-
 
 }

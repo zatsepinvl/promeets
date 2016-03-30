@@ -25,7 +25,7 @@ public class File {
     }
 
     @Basic
-    @Column(name = "url", nullable = false, length = -1)
+    @Column(name = "url")
     public String getUrl() {
         return url;
     }

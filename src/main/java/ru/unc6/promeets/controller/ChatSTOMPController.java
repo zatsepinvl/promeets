@@ -15,8 +15,9 @@ import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.service.ChatService;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  *
@@ -38,7 +39,8 @@ public class ChatSTOMPController
 
     private void sendAllMessagesToClient(Long id) 
     {
-        List messages = (List) chatService.getAllMessagesByChatId(id);
+        Pageable page = new PageRequest(0,20);
+        List messages = (List) chatService.getMessagePageByChatId(id, page);
         log.info(messages); 
         simpMessagingTemplate.convertAndSend("/topic/chat/"+id, messages);
     }

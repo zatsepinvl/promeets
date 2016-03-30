@@ -1,9 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -13,8 +10,6 @@ import java.util.List;
 public class MeetAim {
     private long aimId;
     private String value;
-    private List<BoardItem> boardItems;
-    private List<MeetNote> notes;
     private Meet meet;
 
     @Id
@@ -58,25 +53,6 @@ public class MeetAim {
         return result;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "aim")
-    public List<BoardItem> getBoardItems() {
-        return boardItems;
-    }
-
-    public void setBoardItems(List<BoardItem> boardItems) {
-        this.boardItems = boardItems;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "aim")
-    public List<MeetNote> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<MeetNote> notes) {
-        this.notes = notes;
-    }
 
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)

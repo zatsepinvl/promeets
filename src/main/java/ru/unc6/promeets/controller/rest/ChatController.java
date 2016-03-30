@@ -7,6 +7,7 @@ package ru.unc6.promeets.controller.rest;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
+import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.ChatService;
 
 /**
@@ -99,7 +101,7 @@ public class ChatController
     @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getChatMessages(@PathVariable long id) 
     { 
-        List<Message> messages = chatService.getAllMessagesByChatId(id);
+        List<Message> messages = chatService.getMessagePageByChatId(id, new PageRequest(1, 20));
         
         if (messages.isEmpty()) 
         {
@@ -107,5 +109,18 @@ public class ChatController
         }
         
         return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "api/chats/{id}/users", method = RequestMethod.GET)
+    public ResponseEntity<List<User>> getChatUsers(@PathVariable long id) 
+    { 
+        List<User> users = chatService.getAllUsersByChatId(id);
+        
+        if (users.isEmpty()) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 }

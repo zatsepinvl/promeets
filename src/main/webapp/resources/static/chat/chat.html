@@ -1,23 +1,27 @@
 <div ng-app = "app" ng-controller = "chatController" class="chat">
-		<form ng-submit="sendMessage()" >
-			<button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="showUsers()">
-				<i class="material-icons">person bin</i>
-			</button> 
-			<div class="mdl-textfield mdl-js-textfield" >
-				<input class="mdl-textfield__input" type="text" rows= "3" id="chatTextField" ng-model="messageText" ng-disabled="!currentUser.email" box-sizing= "border-box" autocomplete="off"></input>
-				<label class="mdl-textfield__label" for="chatTextField">enter message...</label>
-			</div>
-		</form>
+		<div class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-hide="messages"></div>
 		
-		<div class="chat-messages">
-			<div class="chat-message-group">
-				<p ng-repeat="message in messages | orderBy:'time':true | filter:{text: ''}" class="chat-message">
-								<span class="chat-messages-name" ng-class="{self: message.self}">
-								{{message.user.firstName}} {{message.user.lastName}}
-								<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
-								</span>
-								<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
-				</p>
+		<div ng-hide="!messages">
+			<form ng-submit="sendMessage()" >
+				<button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="showUsers()">
+					<i class="material-icons">person bin</i>
+				</button> 
+				<div class="mdl-textfield mdl-js-textfield" >
+					<input class="mdl-textfield__input" type="text" rows= "3" id="chatTextField" ng-model="messageText" ng-disabled="!currentUser.email" box-sizing= "border-box" autocomplete="off"></input>
+					<label class="mdl-textfield__label" for="chatTextField">enter message...</label>
+				</div>
+			</form>
+			
+			<div class="chat-messages">
+				<div class="chat-message-group">
+					<p ng-repeat="message in messages | orderBy:'time':true | filter:{text: ''}" class="chat-message">
+									<span class="chat-messages-name" ng-class="{self: message.self}">
+									{{message.user.firstName}} {{message.user.lastName}}
+									<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
+									</span>
+									<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
+					</p>
+				</div>
 			</div>
 		</div>
       </div>

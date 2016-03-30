@@ -1,26 +1,18 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "meets")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "meetId")
 public class Meet {
     private long meetId;
     private String title;
-    private Timestamp time;
-    private List<MeetAim> aims;
-    private List<MeetNote> notes;
+    private long time;
     private User admin;
     private Board board;
-    private List<UserMeet> users;
     private String location;
     private String description;
     private MeetType type;
@@ -49,11 +41,11 @@ public class Meet {
 
     @Basic
     @Column(name = "time")
-    public Timestamp getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
@@ -66,7 +58,6 @@ public class Meet {
 
         if (meetId != meet.meetId) return false;
         if (title != null ? !title.equals(meet.title) : meet.title != null) return false;
-        if (time != null ? !time.equals(meet.time) : meet.time != null) return false;
 
         return true;
     }
@@ -75,19 +66,9 @@ public class Meet {
     public int hashCode() {
         int result = (int) (meetId ^ (meetId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
         return result;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "meet")
-    public List<MeetNote> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<MeetNote> notes) {
-        this.notes = notes;
-    }
 
     @ManyToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "user_id")
@@ -107,27 +88,6 @@ public class Meet {
 
     public void setBoard(Board board) {
         this.board = board;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "userMeetPK.meet")
-    public List<UserMeet> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserMeet> users) {
-        this.users = users;
-    }
-
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "meet")
-    public List<MeetAim> getAims() {
-        return aims;
-    }
-
-    public void setAims(List<MeetAim> aims) {
-        this.aims = aims;
     }
 
     @Basic

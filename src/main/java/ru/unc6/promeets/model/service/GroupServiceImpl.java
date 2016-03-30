@@ -5,6 +5,10 @@
  */
 package ru.unc6.promeets.model.service;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,6 +24,9 @@ import ru.unc6.promeets.model.repository.GroupRepository;
 @Service
 @Transactional
 public class GroupServiceImpl implements GroupService {
+
+    private static final long day = 1000 * 60 * 60 * 24;
+    private static final long month = day * 30;
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
     @Autowired
@@ -41,14 +48,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void delete(long id) {
-        groupRepository.deleteAllUserGroupssByGroupId(id);
+        groupRepository.deleteAllUserGroupsByGroupId(id);
         List<Meet> meets = (List<Meet>) groupRepository.getAllMeetsByGroupId(id);
         for (Meet meet : meets) {
             meetService.delete(meet.getMeetId());
         }
 
         groupRepository.delete(id);
-
         log.debug("Delete group with id=" + id);
     }
 
@@ -70,6 +76,32 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Meet> getMeetsByGroupId(long id) {
         return (List<Meet>) groupRepository.getAllMeetsByGroupId(id);
+    }
+
+    @Override
+    public List<Meet> getMeetsByGroupIdAndDay(long id, Timestamp date) {
+        List<Meet> meets = getMeetsByGroupId(id);
+        List<Meet> temp = new ArrayList<>();
+        for (Meet meet : meets) {
+            long t = meet.getTime() / day - date.getTime() / day;
+            if (t == 0) {
+                temp.add(meet);
+            }
+        }
+        return meets;
+    }
+
+    @Override
+    public List<Meet> getMeetsByGroupIdAndMonth(long id, Timestamp date) {
+        List<Meet> meets = getMeetsByGroupId(id);
+        List<Meet> temp = new ArrayList<>();
+        for (Meet meet : meets) {
+            long t = meet.getTime() / month - date.getTime() / month;
+            if (t == 0) {
+                temp.add(meet);
+            }
+        }
+        return temp;
     }
 
     @Override

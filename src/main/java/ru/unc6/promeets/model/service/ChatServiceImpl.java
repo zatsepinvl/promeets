@@ -9,12 +9,15 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.postgresql.util.PGTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
+import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.ChatMessageRepository;
 import ru.unc6.promeets.model.repository.ChatRepository;
 
@@ -31,39 +34,57 @@ public class ChatServiceImpl implements ChatService {
     ChatMessageRepository messageRepository;
 
     @Override
-    public Chat getById(long id) {
+    public Chat getById(long id) 
+    {
         return chatRepository.findOne(id);
     }
 
     @Override
-    public void save(Chat chat) {
+    public void save(Chat chat) 
+    {
         chatRepository.save(chat);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(long id) 
+    {
         chatRepository.deleteAllMessagesByChatId(id);
         chatRepository.delete(id);
     }
 
     @Override
-    public List<Chat> getAll() {
+    public List<Chat> getAll() 
+    {
         return (List<Chat>) chatRepository.findAll();
     }
 
     @Override
-    public List<Message> getAllMessagesByChatId(long id) {
-        return (List<Message>) chatRepository.getAllMessagesByChatId(id);
+    public List<Message> getMessagePageByChatId(long id, Pageable page) 
+    {
+        return (List<Message>) chatRepository.getAllMessagesByChatId(id, page).getContent();
     }
 
     @Override
     @Transactional
-    public Message addMessageByChatId(Message message, long id) {
+    public Message addMessageByChatId(Message message, long id) 
+    {
         Chat chat = getById(id);
         message.setChat(chat);
         message.setTime(new Timestamp(new Date().getTime()));
         
         return messageRepository.save(message);
+    }
+
+    @Override
+    public List<User> getAllUsersByChatId(long id) 
+    {
+        return (List) chatRepository.getAllUsersByChatId(id);
+    }
+
+    @Override
+    public List<Message> getAllMessagesByChatId(long id) 
+    {
+        return (List) getAllMessagesByChatId(id);
     }
 
 }

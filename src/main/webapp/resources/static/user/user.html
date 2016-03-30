@@ -3,7 +3,9 @@
             mdl-layout--fixed-header
             mdl-layout--fixed-drawer">
     <!-- Header -->
-    <header class="mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--4dp">
+    <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--4dp">
+        <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
+             style="cursor: pointer;"/>
         <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">Promeets</span>
             <div class="mdl-layout-spacer">
@@ -44,7 +46,7 @@
 
     <!-- Page body-->
     <main class="mdl-layout__content">
-        <div class="page-content">
+        <div class="page-content" style="margin-top:20px; margin-bottom: 140px">
 
             <div class="mdl-grid">
 
@@ -59,5 +61,6 @@
                 </div>
             </div>
         </div>
+
     </main>
 </div>

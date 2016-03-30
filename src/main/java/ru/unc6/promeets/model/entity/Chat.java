@@ -1,21 +1,15 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "chats")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "chatId")
 public class Chat {
     private long chatId;
     private String name;
-    private List<Message> messages;
-    private List<User> users;
 
     @Id
     @Column(name = "chat_id", nullable = false)
@@ -56,25 +50,5 @@ public class Chat {
         int result = (int) (chatId ^ (chatId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "chat")
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "chats")
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 }
