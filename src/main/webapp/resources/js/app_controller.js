@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ks.ngScrollRepeat']);
 
 app.run(function ($rootScope, $location, $timeout) {
     $rootScope.$on('$viewContentLoaded', function () {

@@ -1,9 +1,26 @@
 
-<md-dialog aria-label="" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
-<div ng-app = "app" ng-controller = "chatController" class="chat">
-		<div ng-repeat="user in chat.users">
-			{{user.firstName}} {{user.lastName}}
-		</div>
-</div>
+<md-dialog aria-label="Users list" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <form ng-submit="">
+        <md-dialog-content>
+            <div layout="column" ng-app = "app" ng-controller = "chatController" class="chat-users-dialog">
+                <md-content layout-padding>
+                    <div class="mdl-card__title">
+                        Users list
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                                style="bottom: 14px"
+                                ng-click="cancel()">
+                            <i class="material-icons">close</i>
+                        </button>
+                    </div>
+					<div ng-repeat="user in chat.users">
+						<img src="{{user.image.url}}" class="md-avatar"/> 
+									{{user.firstName}} {{user.lastName}}
+					</div>
+                </md-content>
+            </div>
+        </md-dialog-content>
+    </form>
 </md-dialog>
 

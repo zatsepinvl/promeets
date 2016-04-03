@@ -1,32 +1,51 @@
-
-app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService) 
+app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService, Entity) 
 { 
-		$scope.messages = [];
+		$scope.messages;
 		$scope.currentUser = {};
 		$scope.messageText = "";
 		$scope.chat = {};
+		$scope.isLoad;
 			
-		RECONNECT_TIMEOUT = 2*1000;
+		RECONNECT_TIMEOUT = 1*1000;
 		SOCKET_URL = "/ws";
 		CHAT_TOPIC = "/topic/chat/";
 		CHAT_BROKER = "/app/chat/";
 		
+		
+		var id = window.location.pathname.split("/")[2];
 		var socket;
 		var stompClient;
 		
 		var deferred = $q.defer();
+		
 		
 		UserService.load(function (user) 
 		{
 			if (user.email) 
 			{
 				$scope.currentUser = user;
-				$http.get('/api/chats/1').success(function (chat) 
+				
+				$http.get('/api/groups/'+id).success(function (group) 
 				{
-					$scope.chat = chat;
-					$scope.load = true;
-						
-					startListen();
+					id = 1;
+					
+					$scope.chat = Entity.get({entity: "chats", id: id}, function () 
+					{
+						$scope.users = Entity.query({entity: "chats", id: id, d_entity: "users"},
+						function (users) 
+							{
+								$scope.chat.users = users;
+								$scope.load = true;
+								if (chatIsContaisUser($scope.currentUser))
+								{
+									startListen();
+								}
+								else 
+								{
+									alert("You are not a member of this chat");
+								}
+							});
+					});
 				});
 			}
 			else 
@@ -77,12 +96,26 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 			deferred.notify(getAllMessagesFromServer(data));
 			});
 			stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/get", {});
+			$scope.isLoad = true;
 		};
 		
 		var receive = function() 
 		{
 		  return deferred.promise;
 		};
+		
+		var chatIsContaisUser = function(user)
+		{
+			for (i = 0; i < $scope.chat.users.length; i++) 
+			{
+				if ($scope.chat.users[i].email === user.email) 
+				{
+					return true;
+				}
+			}
+			
+			return false;
+		}
 		
 		function getAllMessagesFromServer(frame) 
 		{
