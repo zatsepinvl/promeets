@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -12,7 +13,7 @@ public class MeetNote {
     private long noteId;
     private String value;
     private Meet meet;
-    private MeetAim aim;
+    private User user;
 
     @Id
     @Column(name = "note_id", nullable = false)
@@ -65,14 +66,13 @@ public class MeetNote {
         this.meet = meet;
     }
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "aim_id", referencedColumnName = "aim_id")
-    public MeetAim getAim() {
-        return aim;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    public User getUser() {
+        return user;
     }
 
-    public void setAim(MeetAim aim) {
-        this.aim = aim;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

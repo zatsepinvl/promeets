@@ -1,5 +1,7 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages']);
-
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize']);
+String.prototype.replaceAll = function (search, replace) {
+    return this.split(search).join(replace);
+}
 app.run(function ($rootScope, $location, $timeout) {
     $rootScope.$on('$viewContentLoaded', function () {
         $timeout(function () {
@@ -60,16 +62,55 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                 })
             .state('user.group',
                 {
-                    url: '/group/{groupId}',
+                    abstract: true,
+                    url: '',
                     views: {
                         'body': {
                             templateUrl: '/static/user/group/group.html'
                         }
                     }
                 })
-            .state('user.group.meets',
+            .state('user.group.main',
                 {
-                    templateUrl: '/static/user/group/meets/meets.html'
+                    url: '/group/{groupId}',
+                    templateUrl: '/static/user/group/group_main.html'
+                })
+            .state('user.group.calendar',
+                {
+                    url: '/group/{groupId}/calendar',
+                    templateUrl: '/static/user/group/meets/calendar.html'
+                })
+            .state('user.meet',
+                {
+                    abstract: true,
+                    url: '',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/meet/meet.html'
+                        }
+                    }
+                })
+            .state('user.meet.main',
+                {
+                    url: '/meet/{meetId}',
+                    templateUrl: '/static/user/meet/meet_main.html'
+                })
+            .state('user.meet.notes',
+                {
+                    url: '/meet/{meetId}/notes',
+                    templateUrl: '/static/user/meet/notes/notes.html'
+                })
+            .state('user.venue',
+                {
+                    url: '/venue/{meetId}',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/venue/venue.html'
+                        },
+                        'left_column': {
+                            templateUrl: '/static/user/venue/venue_users.html'
+                        }
+                    }
                 });
         $locationProvider.html5Mode(true);
     }
@@ -171,27 +212,46 @@ app.factory('Entity', function ($resource) {
     });
 });
 app.service('UserService', function ($http) {
-    var value = undefined;
-    this.load = function (callback) {
-        $http.get('/api/user').success(function (user) {
-            value = user;
-            callback && callback(user);
-        }).error(function (error) {
-            callback && callback(error);
-        });
+    var value = {};
+    var loaded = false;
+    var headers = {};
+    this.load = function (success, error) {
+        if (loaded) {
+            success && success(value);
+            return value;
+        }
+        $http.get('/api/user', {headers: headers})
+            .success(function (user) {
+                loaded = true;
+                clone(user, value);
+                success && success(value);
+                headers = {};
+            })
+            .error(function (err) {
+                error && error(headers.email ? "Unauthorized" : "Invalid email or password");
+            });
+        return value;
     };
-    this.value = value;
+    this.logout = function () {
+        value = {};
+        loaded = false;
+    };
+    this.login = function (email, password, success, error) {
+        headers = {
+            authorization: "Basic "
+            + btoa(email + ":" + password)
+        };
+        this.load(success, error);
+    };
 });
 //Main App Controller
 app.controller('appCtrl', function ($scope) {
 });
 
 
-
-
-
-
-
+function clone(from, to) {
+    for (var k in from) to[k] = from[k];
+}
 
 
 

@@ -1,10 +1,13 @@
 //group controller
 app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
     $scope.groupId = $stateParams.groupId;
-    $state.go('.meets');
     $scope.group = Entity.get({entity: "groups", id: $scope.groupId}, function () {
         $scope.tab = "meets";
     });
+
+    $scope.transitionTo = function (url) {
+        $state.transitionTo(url, {groupId: $scope.groupId});
+    };
 
     $scope.editGroup = function () {
         $mdDialog.show({
@@ -51,5 +54,11 @@ function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
         $mdDialog.hide();
     };
 }
+
+app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
+    $scope.groupId = $stateParams.groupId;
+    $scope.users = [];
+    $scope.users = Entity.query({entity: "groups", id: $scope.groupId, d_entity: "users"});
+});
 
 

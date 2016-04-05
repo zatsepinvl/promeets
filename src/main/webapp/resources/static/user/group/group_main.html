@@ -1,0 +1,47 @@
+<div ng-controller="groupMainCtrl" ng-cloak>
+    <!-- Group header-->
+    <div class="mdl-grid" style="width: 100%; margin-top:0; margin-bottom: 0; padding: 0">
+
+        <!-- Group name and description-->
+        <div class="mdl-cell mdl-cell--7-col mdl-cell--4-col-tablet mdl-cell--4-col-phone">
+            <div style="margin:10px 0 0 10px">
+                {{group.status}}
+            </div>
+        </div>
+
+        <!-- Group logo-->
+        <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser"
+             style="position:relative; display:table;">
+            <img style="width: 100%; margin: auto" src="../image/group.jpg"/>
+            <button class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
+                <i class="material-icons">file_download</i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Current meet-->
+    <md-divider></md-divider>
+    <div layout="row">
+        <div class="current_meet">
+            <i class="material-icons"
+               style=" margin-bottom:4px; line-height: 40px; vertical-align: middle">group</i>
+            Current meet
+        </div>
+    </div>
+    <md-divider></md-divider>
+    <md-list>
+        <md-list-item class="no-hover primary" style="border: 0">
+            <p style="margin-left: 20px">Members</p>
+            <md-button class="md-icon-button">
+                <i class="material-icons icon" style="color:#8e8e8e">
+                    person_add
+                </i>
+            </md-button>
+
+        </md-list-item>
+        <md-list-item ng-repeat="user in users track by user.userId">
+            <img ng-src="{{user.image.url}}" class="md-avatar"/>
+            <p> {{ user.firstName + ' ' + user.lastName}}</p>
+        </md-list-item>
+    </md-list>
+</div>

@@ -13,7 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.Message;
-import ru.unc6.promeets.model.service.ChatService;
+import ru.unc6.promeets.model.service.entity.ChatService;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
-import ru.unc6.promeets.model.service.ChatService;
+import ru.unc6.promeets.model.service.entity.ChatService;
 
 /**
  *

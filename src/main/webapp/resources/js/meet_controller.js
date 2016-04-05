@@ -1,3 +1,72 @@
+app.service('MeetService', function (Entity) {
+    var value = {};
+    var loaded = false;
+    this.load = function (meetId, success, error) {
+        if (!loaded || value && value.meetId && value.meetId != meetId) {
+            loaded = true;
+            Entity.get({entity: "meets", id: meetId}
+                , function (meet) {
+                    clone(meet, value);
+                    value.time = moment(meet.time).local().format('DD MMMM YYYY HH:mm');
+                    success && success(meet);
+                }
+                , function (err) {
+                    error && error(err);
+                });
+            return value;
+        }
+        else {
+            success && success(value);
+            return value;
+        }
+    };
+});
+
+app.controller("meetCtrl", function ($scope, Entity, $stateParams, MeetService) {
+    $scope.meetId = $stateParams.meetId;
+    MeetService.load($scope.meetId, function (meet) {
+        $scope.meet = meet;
+        console.log(meet);
+    });
+});
+
+app.controller("mainMeetCtrl", function ($scope, Entity, $stateParams, MeetService, UserService) {
+    $scope.note = {};
+    $scope.meetId = $stateParams.meetId;
+    MeetService.load($scope.meetId, function (meet) {
+        $scope.meet = meet;
+    });
+
+    $scope.notes = Entity.query({entity: "meets", id: $scope.meetId, d_entity: "notes"},
+        function (notes) {
+
+        });
+
+    $scope.createNote = function () {
+        if (!$scope.note.user) {
+            $scope.note.user = UserService.load();
+        }
+        if (!$scope.note.meet) {
+            $scope.note.meet = {meetId: $scope.meetId};
+        }
+        Entity.save({entity: "notes"}, $scope.note, function (note) {
+            $scope.note.noteId = note.noteId;
+            console.log($scope.note.value);
+            $scope.notes.push($scope.note);
+            $scope.note = {};
+        });
+    };
+
+    $scope.removeNote = function (note) {
+        $scope.notes.splice($scope.notes.indexOf(note), 1);
+        Entity.remove({entity: "notes", id: note.noteId});
+    };
+
+    $scope.multiLine = function (str) {
+        return str.replaceAll("\n", "<br/>");
+    }
+});
+
 //edit meet controller
 app.controller("editMeetCtrl", function ($scope, Entity) {
     $scope.load = false;

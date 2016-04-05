@@ -1,7 +1,7 @@
-app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast) {
+app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast, $state) {
     $scope.events = [];
     $scope.selectedMeets = [];
-    $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment()};
+    $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
     $scope.$on('newMeet', function (event, meet) {
         $scope.meets.push(meet);
     });
@@ -19,7 +19,7 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
                 console.log(error);
             });
     };
-    $scope.loadByMonth(new Date().getTime());
+    $scope.loadByMonth(moment().day(0).minute(0).millisecond(0));
     $scope.change = function (date) {
         $scope.loadByMonth(date.format('x'));
     };
@@ -32,6 +32,10 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
             $scope.selectedMeets.push(event.meet);
         });
         console.log($scope.selectedMeets);
+    };
+
+    $scope.meetClicked = function (meetId) {
+        $state.transitionTo("user.meet.main", {meetId: meetId});
     };
 
     $scope.createMeet = function () {

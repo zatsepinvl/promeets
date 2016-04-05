@@ -1,4 +1,4 @@
-package ru.unc6.promeets.model.service;
+package ru.unc6.promeets.model.service.entity;
 
 import ru.unc6.promeets.model.entity.User;
 

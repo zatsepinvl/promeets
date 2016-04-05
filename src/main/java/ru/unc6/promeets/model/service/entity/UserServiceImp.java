@@ -1,7 +1,6 @@
-package ru.unc6.promeets.model.service;
+package ru.unc6.promeets.model.service.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,14 +34,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void save(User entity) {
+    public User save(User entity) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         if (entity.getImage() == null) {
             entity.setImage(new File());
         }
         fileRepository.save(entity.getImage());
-        userRepository.save(entity);
+        return userRepository.save(entity);
     }
 
     @Secured("ROLE_GOD")

@@ -18,7 +18,6 @@
         <intercept-url pattern="/api/user" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/security/*" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/security*" access="permitAll"/>
-        <form-login login-page="/login"/>
         <logout logout-url="/logout" logout-success-url="/"/>
         <remember-me/>
     </http>

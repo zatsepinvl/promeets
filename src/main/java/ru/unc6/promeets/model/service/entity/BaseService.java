@@ -1,18 +1,16 @@
 
-package ru.unc6.promeets.model.service;
+package ru.unc6.promeets.model.service.entity;
 
 import java.util.List;
 
 /**
- *
- * @author MDay
  * @param <T>
+ * @author MDay
  */
-public interface  BaseService<T> 
-{
+public interface BaseService<T> {
     T getById(long id);
 
-    void save(T entity);
+    T save(T entity);
 
     void delete(long id);
 

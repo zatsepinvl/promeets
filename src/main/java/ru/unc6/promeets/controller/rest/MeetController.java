@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.MeetTypeRepository;
-import ru.unc6.promeets.model.service.MeetService;
+import ru.unc6.promeets.model.service.entity.MeetService;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class MeetController {
     public ResponseEntity<Meet> getMeetById(@PathVariable("id") long id) {
         Meet meet = meetService.getById(id);
         if (meet == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(meet, HttpStatus.OK);
     }

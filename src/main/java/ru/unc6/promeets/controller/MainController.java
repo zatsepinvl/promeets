@@ -4,8 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.websocket.server.PathParam;
-
 /**
  * Created by Vladimir on 06.02.2016.
  */
@@ -35,12 +33,17 @@ public class MainController {
     }
 
     @RequestMapping(value = "/group")
-    public String group() {
+    public String groups() {
         return INDEX_PATH;
     }
 
     @RequestMapping(value = "/group/{id}")
-    public String group(@PathVariable long id) {
+    public String groupPage(@PathVariable long id) {
+        return INDEX_PATH;
+    }
+
+    @RequestMapping(value = "/group/{id}/calendar")
+    public String groupCalendar(@PathVariable long id) {
         return INDEX_PATH;
     }
 
@@ -51,6 +54,11 @@ public class MainController {
 
     @RequestMapping(value = "/meet/{id}")
     public String meetById(@PathVariable String id) {
-        return "meet/" + id;
+        return INDEX_PATH;
+    }
+
+    @RequestMapping(value = "/venue/{id}")
+    public String venueByMeetId(@PathVariable String id) {
+        return INDEX_PATH;
     }
 }

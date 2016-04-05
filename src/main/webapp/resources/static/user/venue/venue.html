@@ -1,0 +1,24 @@
+<div ng-controller="venueCtrl" ng-cloak>
+    <div class="mdl-grid" style="padding: 0">
+        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="margin-top: 0">
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%;">
+                <md-toolbar style="background-color: #2e7d32;">
+                    <div class="md-toolbar-tools">
+                        <span style="font-weight: 200; font-size: 26px" ng-bind-html="meet.title"></span>
+                        <span flex></span>
+                        <md-button class="md-icon-button">
+                            <i class="material-icons icon">
+                                edit
+                            </i>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="Settings">
+                            <i class="material-icons icon">
+                                exit_to_app</i>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>

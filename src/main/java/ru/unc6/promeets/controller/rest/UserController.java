@@ -4,14 +4,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.repository.UserRepository;
-import ru.unc6.promeets.model.service.UserService;
+import ru.unc6.promeets.model.service.entity.UserService;
 
 import java.security.Principal;
 
