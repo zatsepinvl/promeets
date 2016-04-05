@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,9 @@ public class ChatController
 {
     @Autowired
     ChatService chatService;
+    
+    @Autowired 
+    private SimpMessagingTemplate simpMessagingTemplate;
     
      @RequestMapping(value = "api/chats/{id}", method = RequestMethod.GET)
     public ResponseEntity<Chat> getChatById(@PathVariable long id) 
@@ -101,7 +105,7 @@ public class ChatController
     @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getChatMessages(@PathVariable long id) 
     { 
-        List<Message> messages = chatService.getMessagePageByChatId(id, new PageRequest(1, 20));
+        List<Message> messages = chatService.getMessagePageByChatId(id, new PageRequest(0, 20));
         
         if (messages.isEmpty()) 
         {
@@ -109,6 +113,27 @@ public class ChatController
         }
         
         return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.POST)
+    public ResponseEntity<Void> addChatMessage(@PathVariable long id, @RequestBody Message message) 
+    { 
+        if (message.getText() == null || message.getUser()== null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        if (chatService.getById(id) == null)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        
+        chatService.addMessageByChatId(message, id);
+        
+        String notifyMessage = "{\"action\":\"add_chat_message\",\"body\":" + message.getMessageId() + "}";
+        
+        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, notifyMessage);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
     @RequestMapping(value = "api/chats/{id}/users", method = RequestMethod.GET)

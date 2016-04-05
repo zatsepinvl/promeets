@@ -1,6 +1,19 @@
 <div ng-app = "app" ng-controller = "chatController" class="chat">
 		<div class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-hide="messages"></div>
-		<div ng-hide="!messages">
+		<div ng-hide="!messages">		
+			<div class="chat-messages" style="overflow: scroll; height:200px;">
+				<div scroll-glue-bottoms="!!glued" class="chat-message-group">
+					<div ng-repeat="message in messages | orderBy:'time':reverse | filter:{text: ''}" class="chat-message">
+									<span class="chat-messages-name" ng-class="{self: message.self}">
+									<img src="{{message.user.image.url}}" class="md-avatar"/> 
+									{{message.user.firstName}} {{message.user.lastName}}
+									<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
+									</span>
+									<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
+					</div>
+				</div>
+			</div>
+			
 			<form ng-submit="sendMessage()" >
 				<span with="10%">
 					<button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="showUsers()">
@@ -12,20 +25,8 @@
 					<label class="mdl-textfield__label" for="chatTextField">enter message...</label>
 				</span>
 			</form>
-						
-			<div class="chat-messages" style="overflow: scroll; height:200px;">
-				<div vs-repeat="50" class="chat-message-group" >
-					<div ng-repeat="message in messages | orderBy:'time':true | filter:{text: ''}" class="chat-message">
-									<span class="chat-messages-name" ng-class="{self: message.self}">
-									<img src="{{message.user.image.url}}" class="md-avatar"/> 
-									{{message.user.firstName}} {{message.user.lastName}}
-									<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
-									</span>
-									<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
-					</div>
-				</div>
-			</div>
 		</div>
+
       </div>
 	  
 	  

@@ -47,9 +47,9 @@ public class ChatSTOMPController
     
     
     @MessageMapping("/chat/{id}/get")
-    public void getAllMessagesByClient() 
+    public void getAllMessagesByClient(@DestinationVariable("id") Long id) 
     {
-        sendAllMessagesToClient(1L);
+        sendAllMessagesToClient(id);
     }
 
     @MessageMapping("/chat/{id}/send")
@@ -69,7 +69,7 @@ public class ChatSTOMPController
         
         message = chatService.addMessageByChatId(message, id);
          
-        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, message);
+        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, message.getMessageId());
         
     }
    

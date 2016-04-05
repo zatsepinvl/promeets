@@ -1,10 +1,12 @@
-app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService, Entity) 
+app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService, Entity, $window) 
 { 
 		$scope.messages;
 		$scope.currentUser = {};
 		$scope.messageText = "";
 		$scope.chat = {};
 		$scope.isLoad;
+		
+		$scope.glued = true;
 			
 		RECONNECT_TIMEOUT = 1*1000;
 		SOCKET_URL = "/ws";
@@ -56,9 +58,18 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		
 		$scope.sendMessage = function ()
 		{
-            var jsonstr = JSON.stringify({'text': $scope.messageText, 'user' : $scope.currentUser, 'chat': $scope.chat });
-            stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/send", {}, jsonstr);
-			$scope.messageText = "";
+            var message = {};
+			message.text = $scope.messageText;
+			message.user = $scope.currentUser;
+			
+			$http.post('/api/chats/'+id +'/messages', message)
+            .success(function (data, status, headers, config) 
+			{
+				
+            })
+            .error(function (data, status, header, config) {});
+
+		
 		};
 		
 		$scope.showUsers = function () {
@@ -73,7 +84,7 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		{
 			socket = new SockJS(SOCKET_URL);
 			stompClient = Stomp.over(socket);
-			stompClient.connect("guest", "guest", subscribe, stompErrorCallBack);
+			stompClient.connect($scope.currentUser.email, $scope.currentUser.email, subscribe, stompErrorCallBack);
 			stompClient.onclose = reconnect;
 		};
 		
@@ -93,9 +104,9 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 		var subscribe = function()
 		{
 			stompClient.subscribe(CHAT_TOPIC + $scope.chat.chatId, function(data) {
-			deferred.notify(getAllMessagesFromServer(data));
+			deferred.notify(listenAppSocket(data));
 			});
-			stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/get", {});
+			stompClient.send(CHAT_BROKER+ $scope.chat.chatId +"/init", {});
 			$scope.isLoad = true;
 		};
 		
@@ -117,24 +128,24 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 			return false;
 		}
 		
-		function getAllMessagesFromServer(frame) 
+		function listenAppSocket(frame) 
 		{
-                    var messages = JSON.parse(frame.body);
-                    if (Array.isArray(messages))
-                    {
-                        $scope.messages = messages;
-                    }
-                    else
-                    {
-                        $scope.messages.push(messages);
-                    }    
-                };
-			
-		receive().then(null, null, function(message) 
-		{
-		  $scope.messages.push(message);
-		});		
-			
+            var message = JSON.parse(frame.body);
+            if (message.status=="ready")
+			{
+				$http.get('/api/chats/'+id+'/messages').success(function (messages) 
+				{
+					$scope.messages = messages;
+				});
+			}
+			if (message.action=="add_chat_message")
+			{
+				$http.get('/api/messages/'+message.body).success(function (message) 
+				{
+					$scope.messages.push(message);
+				});
+			}
+        };    
 });
 
 

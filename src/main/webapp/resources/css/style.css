@@ -352,3 +352,12 @@ md-list-item.no-hover:hover {
     cursor: inherit;
     border-bottom: 1px solid #eeeeee;
 }
+
+[scroll-glue-bottoms]{
+        height: 200px;
+        overflow-y: scroll;
+        border-bottom: 1px solid;
+		border-top: 1px solid;
+		border-color:#e8f5e9;
+		padding: 20px;
+      }
