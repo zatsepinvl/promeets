@@ -76,13 +76,13 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     url: '/chat',
                     views: {
                         'body': {
-                            templateUrl: '/static/chat/chat.html'
+                            templateUrl: '/static/user/group/chat/chat.html'
                         }
                     }
                 })
 			.state('user.group.chat',
                 {
-                    templateUrl: '/static/chat/chat.html'
+                    templateUrl: '/static/user/group/chat/chat.html'
                 });
         $locationProvider.html5Mode(true);
     }

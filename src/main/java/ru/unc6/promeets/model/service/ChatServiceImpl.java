@@ -61,7 +61,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<Message> getMessagePageByChatId(long id, Pageable page) 
     {
-        return (List<Message>) chatRepository.getAllMessagesByChatId(id, page).getContent();
+        return (List<Message>) chatRepository.getMessagesPageByChatId(id, page).getContent();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<Message> getAllMessagesByChatId(long id) 
     {
-        return (List) getAllMessagesByChatId(id);
+        return (List) chatRepository.getAllMessagesByChatId(id);
     }
 
 }

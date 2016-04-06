@@ -8,6 +8,8 @@ package ru.unc6.promeets.controller.rest;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ru.unc6.promeets.controller.AppSTOMPController;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
@@ -33,7 +36,10 @@ public class ChatController
     ChatService chatService;
     
     @Autowired 
-    private SimpMessagingTemplate simpMessagingTemplate;
+    SimpMessagingTemplate simpMessagingTemplate;
+    
+    @Autowired
+    AppSTOMPController appSTOMPController;
     
      @RequestMapping(value = "api/chats/{id}", method = RequestMethod.GET)
     public ResponseEntity<Chat> getChatById(@PathVariable long id) 
@@ -103,9 +109,25 @@ public class ChatController
     }
     
     @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.GET)
-    public ResponseEntity<List<Message>> getChatMessages(@PathVariable long id) 
+    public ResponseEntity<List<Message>> getChatAllMessages(@PathVariable long id) 
     { 
-        List<Message> messages = chatService.getMessagePageByChatId(id, new PageRequest(0, 20));
+        List<Message> messages = chatService.getAllMessagesByChatId(id);
+        
+        if (messages.isEmpty()) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(messages, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "api/chats/{id}/messages/{pageId}", method = RequestMethod.GET)
+    public ResponseEntity<List<Message>> getChatMessages(@PathVariable long id, @PathVariable long pageId) 
+    { 
+        Sort sort = new Sort(Sort.Direction.DESC, "time");
+        Pageable page = new PageRequest((int) pageId, 20, sort);
+        
+        List<Message> messages = chatService.getMessagePageByChatId(id, page);
         
         if (messages.isEmpty()) 
         {
@@ -130,9 +152,10 @@ public class ChatController
         
         chatService.addMessageByChatId(message, id);
         
-        String notifyMessage = "{\"action\":\"add_chat_message\",\"body\":" + message.getMessageId() + "}";
+        List<User> users = chatService.getAllUsersByChatId(id);
         
-        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, notifyMessage);
+        String notifyMessage = "{\"action\":\"add_chat_message\",\"body\":" + message.getMessageId() + "}";
+        appSTOMPController.sendMessageToUsers(users, notifyMessage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     

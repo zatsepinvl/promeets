@@ -353,11 +353,13 @@ md-list-item.no-hover:hover {
     border-bottom: 1px solid #eeeeee;
 }
 
-[scroll-glue-bottoms]{
-        height: 200px;
+[scroll-glue-top],
+[scroll-glue-bottom],
+[scroll-glue]{
+        height: 240px;
         overflow-y: scroll;
         border-bottom: 1px solid;
 		border-top: 1px solid;
 		border-color:#e8f5e9;
 		padding: 20px;
-      }
+}

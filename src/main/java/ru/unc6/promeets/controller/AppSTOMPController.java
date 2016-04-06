@@ -5,11 +5,13 @@
  */
 package ru.unc6.promeets.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import ru.unc6.promeets.model.entity.User;
 
 /**
  *
@@ -22,10 +24,18 @@ public class AppSTOMPController
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
     
-    @MessageMapping("/chat/{id}/init")
+    @MessageMapping("/{id}/init")
     public void initUser(@DestinationVariable("id") Long id) 
     {
-        simpMessagingTemplate.convertAndSend("/topic/chat/"+id, "{\"status\":\"ready\"}");
+        simpMessagingTemplate.convertAndSend("/topic/"+id, "{\"status\":\"ready\"}");
+    }
+    
+    public void sendMessageToUsers (List<User> users,String message)
+    {
+        for (User user: users)
+        {
+            simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), "{\"status\":\"ready\"}");
+        }
     }
    
 }
