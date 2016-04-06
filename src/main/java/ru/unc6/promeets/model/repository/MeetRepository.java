@@ -16,11 +16,11 @@ public interface MeetRepository extends CrudRepository<Meet, Long> {
     @Query("select meetNote from MeetNote meetNote where  meetNote.meet.meetId=(:meetId)")
     Iterable<MeetNote> getAllMeetNotesByMeetId(@Param("meetId") Long id);
 
-    @Query("select meetAim from MeetAim meetAim where  meetAim.meet.meetId=(:meetId)")
-    Iterable<MeetAim> getAllMeetAimsByMeetId(@Param("meetId") Long id);
+    @Query("select meetAim from MeetTask meetAim where  meetAim.meet.meetId=(:meetId)")
+    Iterable<MeetTask> getAllMeetAimsByMeetId(@Param("meetId") Long id);
 
     @Modifying
-    @Query("delete from MeetAim meetAim where meetAim.meet.meetId=(:meetId)")
+    @Query("delete from MeetTask meetAim where meetAim.meet.meetId=(:meetId)")
     void deleteAllAimsById(@Param("meetId") Long id);
     
     @Modifying

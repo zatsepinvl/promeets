@@ -1,4 +1,4 @@
-app.controller('signUpCtrl', function ($scope, $state, Entity, $location, $mdToast) {
+app.controller('signUpCtrl', function ($scope, $state, Entity, $location, EventHandler) {
         $scope.loading = false;
         $scope.error = {};
         $scope.provider = $location.search().provider;
@@ -13,13 +13,7 @@ app.controller('signUpCtrl', function ($scope, $state, Entity, $location, $mdToa
                 $scope.loading = true;
                 Entity.save({entity: "users"}, $scope.user, function () {
                         $scope.loading = false;
-                        $mdToast.show(
-                            $mdToast.simple()
-                                .textContent('Account has been created.')
-                                .position('right bottom')
-                                .hideDelay(3000)
-                                .action('CLOSE')
-                        );
+                        EventHandler.show('Account has been created.');
                         $state.transitionTo('home.login');
                     },
                     function (response) {

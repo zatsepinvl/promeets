@@ -91,26 +91,6 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     url: '/calendar',
                     templateUrl: '/static/user/group/meets/calendar.html'
                 })
-            .state('user.meet',
-                {
-                    abstract: true,
-                    url: '',
-                    views: {
-                        'body': {
-                            templateUrl: '/static/user/meet/meet.html'
-                        }
-                    }
-                })
-            .state('user.meet.main',
-                {
-                    url: '/meet/{meetId}',
-                    templateUrl: '/static/user/meet/meet_main.html'
-                })
-            .state('user.meet.notes',
-                {
-                    url: '/meet/{meetId}/notes',
-                    templateUrl: '/static/user/meet/notes/notes.html'
-                })
             .state('user.venue',
                 {
                     url: '/venue/{meetId}',

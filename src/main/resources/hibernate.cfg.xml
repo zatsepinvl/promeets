@@ -18,7 +18,7 @@
         <mapping class="ru.unc6.promeets.model.entity.Meet"/>
         <mapping class="ru.unc6.promeets.model.entity.Group"/>
         <mapping class="ru.unc6.promeets.model.entity.File"/>
-        <mapping class="ru.unc6.promeets.model.entity.MeetAim"/>
+        <mapping class="ru.unc6.promeets.model.entity.MeetTask"/>
         <mapping class="ru.unc6.promeets.model.entity.MeetNote"/>
         <mapping class="ru.unc6.promeets.model.entity.Board"/>
         <mapping class="ru.unc6.promeets.model.entity.BoardItem"/>

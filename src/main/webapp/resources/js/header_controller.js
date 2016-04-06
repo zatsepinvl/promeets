@@ -1,12 +1,13 @@
 // header controller
 app.controller('headerCtrl', function ($scope, UserService, $mdDialog) {
-    UserService.load(function (user) {
+
+    if (UserService.get().userId) {
         $scope.tab = "nav_log";
-        $scope.currentUser = user;
-    }, function () {
+    }
+    else {
         $scope.tab = "nav_unlog";
-    });
-    
+    }
+
     $scope.login = function () {
         $mdDialog.show({
                 controller: LoginDialogController,

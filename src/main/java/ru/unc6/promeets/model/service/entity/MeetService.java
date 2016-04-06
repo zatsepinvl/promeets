@@ -8,7 +8,7 @@ package ru.unc6.promeets.model.service.entity;
 import java.util.List;
 
 import ru.unc6.promeets.model.entity.*;
-import ru.unc6.promeets.model.entity.MeetAim;
+import ru.unc6.promeets.model.entity.MeetTask;
 
 /**
  * @author MDay
@@ -20,7 +20,7 @@ public interface MeetService extends BaseService<Meet> {
 
     List<MeetNote> getMeetNotes(long id);
 
-    List<MeetAim> getMeetAims(long id);
+    List<MeetTask> getMeetAims(long id);
 
     Board getBoard(long id);
 }

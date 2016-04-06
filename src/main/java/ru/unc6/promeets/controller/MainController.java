@@ -12,11 +12,6 @@ public class MainController {
 
     private static final String INDEX_PATH = "/static/index.html";
 
-    @RequestMapping(value = "/security")
-    public String security() {
-        return "security";
-    }
-
     @RequestMapping(value = "/")
     public String index() {
         return INDEX_PATH;
@@ -37,28 +32,13 @@ public class MainController {
         return INDEX_PATH;
     }
 
-    @RequestMapping(value = "/group/{id}")
-    public String groupPage(@PathVariable long id) {
+    @RequestMapping(value = "/group/**")
+    public String groupPage() {
         return INDEX_PATH;
     }
 
-    @RequestMapping(value = "/group/{id}/calendar")
-    public String groupCalendar(@PathVariable long id) {
-        return INDEX_PATH;
-    }
-
-    @RequestMapping(value = "/chat")
-    public String chat() {
-        return "chat";
-    }
-
-    @RequestMapping(value = "/meet/{id}")
-    public String meetById(@PathVariable String id) {
-        return INDEX_PATH;
-    }
-
-    @RequestMapping(value = "/venue/{id}")
-    public String venueByMeetId(@PathVariable String id) {
+    @RequestMapping(value = "/venue/*")
+    public String venueByMeetId() {
         return INDEX_PATH;
     }
 }

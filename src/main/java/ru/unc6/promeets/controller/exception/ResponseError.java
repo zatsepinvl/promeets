@@ -1,17 +1,17 @@
-package ru.unc6.promeets.controller.rest;
+package ru.unc6.promeets.controller.exception;
 
 /**
  * Created by Vladimir on 19.03.2016.
  */
-public class ControllerError {
+public class ResponseError {
     public static final String BASE_ERROR_MESSAGE = "Something went wrong. Please,try again later.";
     private String message;
 
-    public ControllerError() {
+    public ResponseError() {
         message = BASE_ERROR_MESSAGE;
     }
 
-    public ControllerError(String message) {
+    public ResponseError(String message) {
         this.message = message;
     }
 

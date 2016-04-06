@@ -26,7 +26,9 @@ public class BaseRestController<T> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public T getById(@PathVariable("id") long id) {
-        return service.getById(id);
+        T entity = service.getById(id);
+        checkIsNotFound(entity);
+        return entity;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -38,9 +40,7 @@ public class BaseRestController<T> {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public T updateById(@PathVariable("id") long id, @RequestBody T entity) {
-        if (service.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
-        }
+        checkIsNotFound(id);
         return service.save(entity);
     }
 
@@ -50,4 +50,15 @@ public class BaseRestController<T> {
         service.delete(id);
     }
 
+    protected void checkIsNotFound(long id) {
+        if (service.getById(id) == null) {
+            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+        }
+    }
+
+    protected void checkIsNotFound(T entity) {
+        if (entity == null) {
+            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+        }
+    }
 }

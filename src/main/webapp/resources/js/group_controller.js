@@ -1,9 +1,7 @@
 //group controller
-app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
+app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
     $scope.groupId = $stateParams.groupId;
-    $scope.group = Entity.get({entity: "groups", id: $scope.groupId}, function () {
-        $scope.tab = "meets";
-    });
+    $scope.group = GroupService.get();
 
     $scope.transitionTo = function (url) {
         $state.transitionTo(url, {groupId: $scope.groupId});
@@ -55,10 +53,9 @@ function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
     };
 }
 
-app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
+app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
     $scope.groupId = $stateParams.groupId;
-    $scope.users = [];
-    $scope.users = Entity.query({entity: "groups", id: $scope.groupId, d_entity: "users"});
+    $scope.users = GroupService.getMembers();
 });
 
 

@@ -26,7 +26,9 @@
 
 <body ng-controller="appCtrl">
 <div class="mdl-layout__container">
-    <div ui-view></div>
+    <div ui-view>
+        <div ui-view></div>
+    </div>
 </div>
 
 
@@ -50,6 +52,8 @@
 <script src="/lib/angular_material/md-pickers.min.js"></script>
 
 <!-- App context -->
+<script src="/js/app_config.js"></script>
+<script src="/js/app_services.js"></script>
 <script src="/js/app_controller.js"></script>
 <script src="/js/header_controller.js"></script>
 <script src="/js/drawer_controller.js"></script>
@@ -62,9 +66,9 @@
 <script src="/js/group_calendar_controller.js"></script>
 
 
-
 <!-- Templates -->
 <script src="/templates/calendar/calendar.js"></script>
+<script src="/templates/dialog/textarea/dialog-textarea.js"></script>
 
 </body>
 </html>

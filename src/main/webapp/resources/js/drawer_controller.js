@@ -2,8 +2,7 @@
  * Created by Vladimir on 15.03.2016.
  */
 app.controller('drawerCtrl', function ($scope, $http, UserService, $state) {
-    $scope.user = UserService.load();
-    console.log("DrawerCtrl:",$scope.user);
+    $scope.user = UserService.get();
     $scope.logout = function () {
         $http.post('/logout')
             .success(function () {

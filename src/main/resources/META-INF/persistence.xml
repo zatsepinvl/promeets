@@ -11,7 +11,7 @@
         <class>ru.unc6.promeets.model.entity.Meet</class>
         <class>ru.unc6.promeets.model.entity.Group</class>
         <class>ru.unc6.promeets.model.entity.File</class>
-        <class>ru.unc6.promeets.model.entity.MeetAim</class>
+        <class>ru.unc6.promeets.model.entity.MeetTask</class>
         <class>ru.unc6.promeets.model.entity.MeetNote</class>
         <class>ru.unc6.promeets.model.entity.Board</class>
         <class>ru.unc6.promeets.model.entity.BoardItem</class>

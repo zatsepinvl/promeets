@@ -6,21 +6,22 @@ import javax.persistence.*;
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
-@Table(name = "meet_aims", schema = "public", catalog = "promeets_db")
-public class MeetAim {
-    private long aimId;
+@Table(name = "meet_tasks", schema = "public", catalog = "promeets_db")
+public class MeetTask {
+    private long taskId;
     private String value;
     private Meet meet;
+    private boolean checked;
 
     @Id
-    @Column(name = "aim_id", nullable = false)
+    @Column(name = "task_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getAimId() {
-        return aimId;
+    public long getTaskId() {
+        return taskId;
     }
 
-    public void setAimId(long targetId) {
-        this.aimId = targetId;
+    public void setTaskId(long targetId) {
+        this.taskId = targetId;
     }
 
     @Basic
@@ -38,9 +39,9 @@ public class MeetAim {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        MeetAim that = (MeetAim) o;
+        MeetTask that = (MeetTask) o;
 
-        if (aimId != that.aimId) return false;
+        if (taskId != that.taskId) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
 
         return true;
@@ -48,7 +49,7 @@ public class MeetAim {
 
     @Override
     public int hashCode() {
-        int result = (int) (aimId ^ (aimId >>> 32));
+        int result = (int) (taskId ^ (taskId >>> 32));
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
@@ -62,5 +63,15 @@ public class MeetAim {
 
     public void setMeet(Meet meet) {
         this.meet = meet;
+    }
+
+
+    @Column(name = "checked")
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

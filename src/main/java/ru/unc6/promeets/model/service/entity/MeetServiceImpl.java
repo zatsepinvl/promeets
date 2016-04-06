@@ -12,12 +12,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.entity.Board;
-import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.MeetNote;
-import ru.unc6.promeets.model.entity.MeetAim;
-import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.entity.UserMeet;
+import ru.unc6.promeets.model.entity.*;
+import ru.unc6.promeets.model.entity.MeetTask;
 import ru.unc6.promeets.model.repository.MeetRepository;
 
 
@@ -77,8 +73,8 @@ public class MeetServiceImpl implements MeetService {
     }
 
     @Override
-    public List<MeetAim> getMeetAims(long id) {
-        return (List<MeetAim>) meetRepository.getAllMeetAimsByMeetId(id);
+    public List<MeetTask> getMeetAims(long id) {
+        return (List<MeetTask>) meetRepository.getAllMeetAimsByMeetId(id);
     }
 
     @Override

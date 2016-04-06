@@ -1,4 +1,4 @@
-app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast, $state) {
+app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast, $state, EventHandler) {
     $scope.events = [];
     $scope.selectedMeets = [];
     $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
@@ -35,7 +35,7 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
     };
 
     $scope.meetClicked = function (meetId) {
-        $state.transitionTo("user.meet.main", {meetId: meetId});
+        $state.transitionTo("user.venue", {meetId: meetId});
     };
 
     $scope.createMeet = function () {
@@ -46,16 +46,9 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
             meet.time = tempTime.utc().valueOf();
             console.log(meet);
             Entity.save({entity: "meets"}, meet, function () {
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent('Meeting has been created.')
-                        .position('right bottom')
-                        .hideDelay(3000)
-                        .action('CLOSE')
-                );
+                EventHandler.show("Meet has been created");
                 meet.time = tempTime.local();
                 $scope.events.push({meet: meet, time: meet.time});
-
             });
 
         }

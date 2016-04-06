@@ -18,5 +18,5 @@ public interface MeetDAO extends BaseDAO<Meet> {
 
     List<MeetNote> getAllNotesByMeetId(long id);
 
-    List<MeetAim> getAllTargetsByMeetId(long id);
+    List<MeetTask> getAllTargetsByMeetId(long id);
 }
