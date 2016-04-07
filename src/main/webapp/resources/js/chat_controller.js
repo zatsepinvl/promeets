@@ -151,9 +151,9 @@ app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDial
 					$scope.messages = messages;
 				});
 			}
-			if (socketMessage.action=="add_chat_message")
+			if (socketMessage.entity=="message" && socketMessage.action=="CREATE")
 			{
-				$http.get('/api/messages/'+message.body).success(function (message) 
+				$http.get('/api/messages/'+socketMessage.id).success(function (message) 
 				{
 					$scope.messages.push(message);
 				});

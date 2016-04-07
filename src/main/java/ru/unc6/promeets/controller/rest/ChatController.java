@@ -23,6 +23,8 @@ import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.ChatService;
+import ru.unc6.promeets.model.service.notify.Notify;
+import ru.unc6.promeets.model.service.notify.NotifyService;
 
 /**
  *
@@ -39,7 +41,7 @@ public class ChatController
     SimpMessagingTemplate simpMessagingTemplate;
     
     @Autowired
-    AppSTOMPController appSTOMPController;
+    NotifyService notifyService;
     
      @RequestMapping(value = "api/chats/{id}", method = RequestMethod.GET)
     public ResponseEntity<Chat> getChatById(@PathVariable long id) 
@@ -150,12 +152,11 @@ public class ChatController
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         
-        chatService.addMessageByChatId(message, id);
+        message = chatService.addMessageByChatId(message, id);
         
         List<User> users = chatService.getAllUsersByChatId(id);
         
-        String notifyMessage = "{\"action\":\"add_chat_message\",\"body\":" + message.getMessageId() + "}";
-        appSTOMPController.sendMessageToUsers(users, notifyMessage);
+        notifyService.sendNotifyMessage(users, Message.class, message.getMessageId(), Notify.Action.CREATE);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     

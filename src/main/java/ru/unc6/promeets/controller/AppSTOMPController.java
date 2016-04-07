@@ -11,7 +11,10 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.service.notify.Notify;
+import ru.unc6.promeets.model.service.notify.NotifyService;
 
 /**
  *
@@ -23,19 +26,10 @@ public class AppSTOMPController
 {
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
-    
+
     @MessageMapping("/{id}/init")
     public void initUser(@DestinationVariable("id") Long id) 
     {
         simpMessagingTemplate.convertAndSend("/topic/"+id, "{\"status\":\"ready\"}");
     }
-    
-    public void sendMessageToUsers (List<User> users,String message)
-    {
-        for (User user: users)
-        {
-            simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), "{\"status\":\"ready\"}");
-        }
-    }
-   
 }
