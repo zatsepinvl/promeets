@@ -34,12 +34,8 @@ function cloneGroup(group) {
     };
 }
 
-function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
+function EditGroupDialogController($scope, group, Entity, $mdDialog) {
     $scope.group = cloneGroup(group);
-    $http.get('/api/group_types').success(function (types) {
-        $scope.types = types;
-        $scope.load = true;
-    });
     $scope.cancel = function () {
         $mdDialog.cancel();
     };

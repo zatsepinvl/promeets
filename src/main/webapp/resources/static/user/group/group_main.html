@@ -10,12 +10,8 @@
         </div>
 
         <!-- Group logo-->
-        <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser"
-             style="position:relative; display:table;">
+        <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser">
             <img style="width: 100%; margin: auto" src="../image/group.jpg"/>
-            <button class="figcaption mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--primary mdl-js-ripple-effect">
-                <i class="material-icons">file_download</i>
-            </button>
         </div>
     </div>
 
@@ -37,7 +33,6 @@
                     person_add
                 </i>
             </md-button>
-
         </md-list-item>
         <md-list-item ng-repeat="user in users track by user.userId">
             <img ng-src="{{user.image.url}}" class="md-avatar"/>

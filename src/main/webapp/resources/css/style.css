@@ -12,6 +12,14 @@ body {
     color: #ef6c00;
 }
 
+.mdl-card {
+    width: 100%;
+}
+
+.icon-min {
+    font-size: 18px;
+}
+
 .main-ui-view {
     width: 100%;
     height: 100%;
@@ -23,53 +31,6 @@ body {
 
 .mdl-navigation__link.material-icons {
     margin-right: 10px;
-
-}
-
-.nav_menu_item {
-    padding: 8px 0 0 0;
-    font-weight: 200;
-    font-size: 16px;
-    color: #2e7d32;
-    text-align: left;
-    border-bottom: 2px solid white;
-}
-
-.nav_menu_item:hover {
-    cursor: pointer;
-    border-bottom-color: #ef6c00;
-}
-
-.nav_menu_item:active {
-    background-color: #e8f5e9;
-}
-
-.nav_menu_item .icon {
-    line-height: 100%;
-    vertical-align: middle;
-    margin-top: -4px;
-}
-
-.group-menu {
-    border-bottom: 1px solid #eeeeee;
-}
-
-.group-menu .mdl-cell {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-.group-menu-item {
-    padding: 12px;
-    font-weight: 300;
-    font-size: 16px;
-    color: #2e7d32;
-    text-align: center;
-}
-
-.group-menu-item:hover {
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 .current_meet {
@@ -93,27 +54,6 @@ body {
 
 .material-icons.mdl-list__item-icon {
     vertical-align: middle;
-}
-
-.img-teaser .figcaption {
-    display: none;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.img-teaser .figcaption a {
-    cursor: pointer;
-    opacity: 1;
-}
-
-.img-teaser:hover .figcaption { /* прозрачная область */
-    display: block;
-    position: absolute;
-    bottom: 10px;
-    right: 5px;
-    left: 5px;
-    padding: 5px 10px;
-    opacity: 0.9;
 }
 
 .edit-mode {
@@ -161,6 +101,15 @@ a {
     color: #2e7d32;
 }
 
+a.md-default-theme:not(.md-button), a:not(.md-button) {
+    color: #2e7d32;
+}
+
+a.md-default-theme:not(.md-button), a:not(.md-button):hover {
+    text-decoration: underline;
+    color: inherit;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -183,62 +132,8 @@ md-datepicker .md-button.md-icon-button {
     display: none;
 }
 
-.mdl-layout--fixed-drawer.is-upgraded:not(.is-small-screen) > .mdl-layout__header {
-    margin-left: 210px;
-    width: calc(100% - 210px);
-}
-
-.mdl-layout__drawer {
-    width: 210px;
-}
-
-.mdl-navigation__link .material-icons {
-    margin-right: 4px;
-    margin-bottom: 2px;
-}
-
-.mdl-badge[data-badge]::after {
-    background-color: #ef6c00;
-    color: #fff;
-}
-
-.mdl-layout__drawer header {
-    width: calc(100% - 16px);
-    background-color: #2e7d32;
-    padding: 20px 0 16px 16px;
-}
-
-.mdl-layout__drawer header img {
-    width: 50px;
-    height: 50px;
-    padding: 2px;
-    border-radius: 50px;
-    background-color: #fafafa;
-}
-
-.mdl-layout__drawer header .username {
-    width: 100%;
-    color: #fafafa;
-    font-size: 16px;
-    margin-top: 2px;
-}
-
-.mdl-layout__drawer header .email {
-    width: 100%;
-    color: #fafafa;
-    font-size: 12px;
-}
-
 md-toolbar .material-icons {
     font-size: 20px;
-}
-
-header .material-icons {
-    color: #2e7d32;
-}
-
-.g-sign-up-button {
-
 }
 
 .mdl-grid {
@@ -303,7 +198,6 @@ md-list-item.no-hover:hover {
     border-bottom: 1px solid #eeeeee;
 }
 
-md-checkbox.md-checked .md-icon
-{
+md-checkbox.md-checked ._md-icon {
     background-color: #2e7d32;
 }

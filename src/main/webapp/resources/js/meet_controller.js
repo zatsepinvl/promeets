@@ -1,7 +1,12 @@
-app.controller("meetCtrl", function ($scope, Entity, $stateParams, UserService, MeetService, TextareaDialog, EventHandler) {
+app.controller("meetCtrl", function ($scope, Entity, $state, UserService, MeetService, TextareaDialog, EventHandler) {
         $scope.meet = MeetService.get();
         $scope.notes = MeetService.getNotes();
-        $scope.tasks = MeetService.getTasts();
+        $scope.tasks = MeetService.getTasks();
+
+
+        $scope.goBack = function () {
+            $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
+        };
 
         $scope.createNote = function () {
             TextareaDialog.show('New note', 'Note text', undefined, function (result) {
@@ -13,7 +18,7 @@ app.controller("meetCtrl", function ($scope, Entity, $stateParams, UserService, 
                 Entity.save({entity: "notes"}, note,
                     function (data) {
                         note.noteId = data.noteId;
-                        notes.push(note);
+                        $scope.notes.push(note);
                     },
                     function (error) {
                         EventHandler.message(error.data.message);
@@ -31,7 +36,7 @@ app.controller("meetCtrl", function ($scope, Entity, $stateParams, UserService, 
                 Entity.save({entity: "tasks"}, task,
                     function (data) {
                         task.taskId = data.taskId;
-                        notes.push(task);
+                        $scope.tasks.push(task);
                     },
                     function (error) {
                         EventHandler.message(error.data.message);
@@ -44,9 +49,16 @@ app.controller("meetCtrl", function ($scope, Entity, $stateParams, UserService, 
             Entity.remove({entity: "notes", id: note.noteId});
         };
 
+        $scope.removeTask = function (task) {
+            $scope.tasks.splice($scope.tasks.indexOf(task), 1);
+            Entity.remove({entity: "tasks", id: task.taskId});
+        };
+
         $scope.multiLine = function (str) {
             return str.replaceAll("\n", "<br/>");
         }
     }
-)
-;
+);
+app.controller("meetUsersCtrl", function ($scope) {
+
+});

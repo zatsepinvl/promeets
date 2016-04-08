@@ -87,10 +87,6 @@ app.service('UserService', function ($http) {
     var value = {};
     var headers;
     this.load = function (success, error) {
-        if (value.userId) {
-            success && success(value);
-            return value;
-        }
         $http.get('/api/user', {headers: headers})
             .success(function (user) {
                 clone(user, value);
@@ -122,13 +118,11 @@ app.service('UserService', function ($http) {
 
 
 app.service('GroupService', function (Entity) {
-    var value = {};
-    var members = [];
+    var value;
+    var members;
     this.load = function (groupId, success, error) {
-        if (value.groupId) {
-            success && success(value);
-            return value;
-        }
+        value = {};
+        members = [];
         Entity.get({entity: "groups", id: groupId},
             function (group) {
                 clone(group, value);
@@ -152,14 +146,13 @@ app.service('GroupService', function (Entity) {
 });
 
 app.service('MeetService', function (Entity) {
-    var value = {};
-    var notes = [];
-    var tasks = [];
+    var value;
+    var notes;
+    var tasks;
     this.load = function (meetId, success, error) {
-        if (value.meetId) {
-            success && success(value);
-            return value;
-        }
+        value = {};
+        notes = [];
+        tasks = [];
         Entity.get({entity: "meets", id: meetId},
             function (meet) {
                 clone(meet, value);

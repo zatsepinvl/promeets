@@ -1,0 +1,49 @@
+.mdl-layout--fixed-drawer.is-upgraded:not(.is-small-screen) > .mdl-layout__header {
+    margin-left: 210px;
+    width: calc(100% - 210px);
+}
+
+.mdl-layout__drawer {
+    width: 210px;
+}
+
+.mdl-navigation__link .material-icons {
+    margin-right: 4px;
+    margin-bottom: 2px;
+}
+
+.mdl-badge[data-badge]::after {
+    background-color: #ef6c00;
+    color: #fff;
+}
+
+.mdl-layout__drawer header {
+    width: calc(100% - 16px);
+    background-color: #2e7d32;
+    padding: 20px 0 16px 16px;
+}
+
+.mdl-layout__drawer header img {
+    width: 50px;
+    height: 50px;
+    padding: 2px;
+    border-radius: 50px;
+    background-color: #fafafa;
+}
+
+.mdl-layout__drawer header .username {
+    width: 100%;
+    color: #fafafa;
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.mdl-layout__drawer header .email {
+    width: 100%;
+    color: #fafafa;
+    font-size: 12px;
+}
+
+header .material-icons {
+    color: #2e7d32;
+}

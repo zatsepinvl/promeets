@@ -33,7 +33,6 @@ calendar > div.header > i {
     float: left;
     width: 40px;
     font-size: 1em;
-    font-weight: 200;
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -76,10 +75,10 @@ calendar > div.week:first-child {
 calendar > div.week > span.day {
     float: left;
     width: 14.28571429%;
-    font-weight: 200;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     font-size: 0.86em;
+    font-weight:300;
     text-align: center;
     height: 36px;
     line-height: 36px !important;
