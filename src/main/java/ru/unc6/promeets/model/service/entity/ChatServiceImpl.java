@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.repository.ChatMessageRepository;
+import ru.unc6.promeets.model.repository.MessageRepository;
 import ru.unc6.promeets.model.repository.ChatRepository;
 
 /**
@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService {
     @Autowired
     ChatRepository chatRepository;
     @Autowired
-    ChatMessageRepository messageRepository;
+    MessageRepository messageRepository;
 
     @Override
     public Chat getById(long id) 

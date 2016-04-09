@@ -13,7 +13,6 @@ import java.util.List;
  */
 public class BaseRestController<T> {
     public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
-
     private BaseService<T> service;
 
     public BaseRestController(BaseService<T> service) {
@@ -62,5 +61,4 @@ public class BaseRestController<T> {
             throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
         }
     }
-    
 }

@@ -6,7 +6,6 @@
 package ru.unc6.promeets.controller.rest;
 
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,7 @@ import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.ChatService;
-import ru.unc6.promeets.model.service.notify.Notify;
+import ru.unc6.promeets.model.service.notify.MessageNotifyService;
 
 /**
  *
@@ -30,26 +29,81 @@ import ru.unc6.promeets.model.service.notify.Notify;
  */
 
 @RestController
-public class ChatController extends BaseRestController<Chat>
+public class ChatController 
 {
-   private static final Logger log = Logger.getLogger(MeetController.class);
-
-    private ChatService chatService;
-
     @Autowired
-    public ChatController(ChatService service) 
+    ChatService chatService;
+    
+    @Autowired
+    MessageNotifyService messageNotifyServicel;
+    
+     @RequestMapping(value = "api/chats/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Chat> getChatById(@PathVariable long id) 
     {
-        super(service);
-        this.chatService = service;
+        Chat chat = chatService.getById(id);
+        
+        if (chat == null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(chat, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.GET)
-    public List getChatAllMessages(@PathVariable long id) 
-    { 
-        List<Message> messages = chatService.getAllMessagesByChatId(id);
-        checkIsNotFound(id);
-        return messages;
+     @RequestMapping(value = "api/chats", method = RequestMethod.GET)
+    public ResponseEntity<List<Chat>> getChats() 
+    {
+        List<Chat> chats = chatService.getAll();
+        
+        if (chats.isEmpty()) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(chats, HttpStatus.OK);
     }
+    
+    
+    @RequestMapping(value = "api/chats/", method = RequestMethod.POST)
+    public ResponseEntity<Void> createChat(@RequestBody Chat chat) 
+    { 
+        if (chat == null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        chatService.save(chat);
+        
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    
+    @RequestMapping(value = "api/chats/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> updateChat(@RequestBody Chat chat, @PathVariable long id) 
+    { 
+        if (chatService.getById(id) == null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        chat.setChatId(id);
+        chatService.save(chat);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "api/chats/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> updateChat(@PathVariable long id) 
+    { 
+        if (chatService.getById(id) == null) 
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        chatService.delete(id);
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
     
     @RequestMapping(value = "api/chats/{id}/messages/{pageId}", method = RequestMethod.GET)
     public List<Message> getChatMessages(@PathVariable long id, @PathVariable long pageId) 
@@ -59,23 +113,20 @@ public class ChatController extends BaseRestController<Chat>
         
         List<Message> messages = chatService.getMessagePageByChatId(id, page);
         
-        checkIsNotFound(id);
         return messages;
     }
     
     @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.POST)
     public Message addChatMessage(@PathVariable long id, @RequestBody Message message) 
     { 
-        checkIsNotFound(id);
         message = chatService.addMessageByChatId(message, id);
-         
+        messageNotifyServicel.onCreate(message);
         return message;
     }
     
     @RequestMapping(value = "api/chats/{id}/users", method = RequestMethod.GET)
     public List<User> getChatUsers(@PathVariable long id) 
     { 
-        checkIsNotFound(id);
         List<User> users = chatService.getAllUsersByChatId(id);
         return users;
     }

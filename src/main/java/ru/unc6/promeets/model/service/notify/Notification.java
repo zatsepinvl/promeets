@@ -8,13 +8,13 @@ package ru.unc6.promeets.model.service.notify;
  *
  * @author MDay
  */
-public class Notify
+public class Notification
 {
     private Action action;
     private String entity;
     private Long id;
     
-    public Notify(Class entityClass, Action action, Long id)
+    public Notification(Class entityClass, Action action, Long id)
     {
         this.entity = entityClass.getSimpleName().toLowerCase();
         this.action = action;

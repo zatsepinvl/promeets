@@ -5,9 +5,12 @@
  */
 package ru.unc6.promeets.controller.rest;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.Message;
-import ru.unc6.promeets.model.service.entity.BaseService;
+import ru.unc6.promeets.model.service.entity.MessageService;
 
 /**
  *
@@ -15,9 +18,18 @@ import ru.unc6.promeets.model.service.entity.BaseService;
  */
 
 @RestController
+@RequestMapping("/api/messages")
 public class MessageController extends BaseRestController<Message>
-{    
-    public MessageController(BaseService<Message> service) {
+{
+
+    private static final Logger log = Logger.getLogger(MeetController.class);
+
+    private MessageService messageService;
+
+    @Autowired
+    public MessageController(MessageService service) 
+    {
         super(service);
-    }   
+        this.messageService = service;
+    }
 }
