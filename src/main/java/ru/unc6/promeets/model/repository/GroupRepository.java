@@ -25,7 +25,7 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
     Iterable<UserGroup> getAllUserGroupsByGroupId(@Param("groupId") Long id);
 
     @Cacheable(value = "groupMeetsById")
-    @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) order by meet.time desc ")
+    @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) order by meet.time")
     Iterable<Meet> getAllMeetsByGroupId(@Param("groupId") Long id);
 
     @Modifying

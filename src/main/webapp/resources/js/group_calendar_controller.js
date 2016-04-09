@@ -1,7 +1,7 @@
-app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast) {
+app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast, $state, EventHandler) {
     $scope.events = [];
     $scope.selectedMeets = [];
-    $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment()};
+    $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
     $scope.$on('newMeet', function (event, meet) {
         $scope.meets.push(meet);
     });
@@ -19,7 +19,7 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
                 console.log(error);
             });
     };
-    $scope.loadByMonth(new Date().getTime());
+    $scope.loadByMonth(moment().day(0).minute(0).millisecond(0));
     $scope.change = function (date) {
         $scope.loadByMonth(date.format('x'));
     };
@@ -34,6 +34,10 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
         console.log($scope.selectedMeets);
     };
 
+    $scope.meetClicked = function (meetId) {
+        $state.transitionTo("user.venue", {meetId: meetId});
+    };
+
     $scope.createMeet = function () {
         if ($scope.createMeetForm.$valid) {
             var meet = $scope.meet;
@@ -42,16 +46,9 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
             meet.time = tempTime.utc().valueOf();
             console.log(meet);
             Entity.save({entity: "meets"}, meet, function () {
-                $mdToast.show(
-                    $mdToast.simple()
-                        .textContent('Meeting has been created.')
-                        .position('right bottom')
-                        .hideDelay(3000)
-                        .action('CLOSE')
-                );
+                EventHandler.show("Meet has been created");
                 meet.time = tempTime.local();
                 $scope.events.push({meet: meet, time: meet.time});
-
             });
 
         }

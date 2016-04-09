@@ -33,7 +33,6 @@ calendar > div.header > i {
     float: left;
     width: 40px;
     font-size: 1em;
-    font-weight: 200;
     position: relative;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -78,11 +77,11 @@ calendar > div.week > span.day {
     width: 14.28571429%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    border-left: solid 1px #CCC;
-    font-size: 0.75em;
+    font-size: 0.86em;
+    font-weight:300;
     text-align: center;
-    height: 30px;
-    line-height: 30px !important;
+    height: 36px;
+    line-height: 36px !important;
     display: inline-block;
     vertical-align: middle;
     background: white;
@@ -90,9 +89,18 @@ calendar > div.week > span.day {
     color: black;
 }
 
+calendar > div.week > span.day > span.event {
+    position: absolute;
+    margin-left: 18px;
+    margin-top: 4px;
+    width: 7px;
+    height: 7px;
+    background-color: #ef6c00;
+    border-radius: 6px;
+}
 
 calendar > div.week > span.day:hover {
-   background-color: #eeeeee;
+    background-color: #eeeeee;
 }
 
 calendar > div.week > span.day:first-child {
@@ -100,7 +108,8 @@ calendar > div.week > span.day:first-child {
 }
 
 calendar > div.week > span.day.today {
-    background: #c8e6c9;
+    color: #ef6c00;
+    font-weight: 400;
 }
 
 calendar > div.week > span.day.different-month {
@@ -108,8 +117,7 @@ calendar > div.week > span.day.different-month {
 }
 
 calendar > div.week > span.day.selected {
-    background: #2e7d32;
-    color: #ffffff;
+    background-color: #ffa726;
 }
 
 calendar > div.week > span.day.event {

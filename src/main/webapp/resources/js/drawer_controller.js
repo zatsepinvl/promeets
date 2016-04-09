@@ -1,16 +1,12 @@
 /**
  * Created by Vladimir on 15.03.2016.
  */
-app.controller('drawerCtrl', function ($scope, $http, UserService) {
-    $scope.user = {};
-    UserService.load(function (user) {
-        if (user.email) {
-            $scope.user = user;
-        }
-    });
+app.controller('drawerCtrl', function ($scope, $http, UserService, $state) {
+    $scope.user = UserService.get();
     $scope.logout = function () {
         $http.post('/logout')
             .success(function () {
+                UserService.logout();
                 $state.transitionTo('home.presentation');
             })
             .error(function (error) {

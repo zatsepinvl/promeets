@@ -5,7 +5,6 @@
  */
 package ru.unc6.promeets.controller.rest;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,7 +16,7 @@ import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
-import ru.unc6.promeets.model.service.GroupService;
+import ru.unc6.promeets.model.service.entity.GroupService;
 
 /**
  * @author MDay
@@ -93,24 +92,22 @@ public class GroupController {
     @RequestMapping(value = "api/groups/{id}/meets/month/{time}", method = RequestMethod.GET)
     @ResponseBody
     public List getGroupMeetsByGroupIdAndMonth(@PathVariable long id, @PathVariable long time) {
-        return groupService.getMeetsByGroupIdAndMonth(id, new Timestamp(time));
+        return groupService.getMeetsByGroupIdAndMonth(id, time);
     }
 
     @RequestMapping(value = "api/groups/{id}/meets/day/{time}", method = RequestMethod.GET)
     @ResponseBody
     public List getGroupMeetsByGroupIdAndDay(@PathVariable long id, @PathVariable long time) {
-        return groupService.getMeetsByGroupIdAndDay(id, new Timestamp(time));
+        return groupService.getMeetsByGroupIdAndDay(id, time);
     }
 
 
     @RequestMapping(value = "api/groups/{id}/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getGroupUsersById(@PathVariable long id) {
         List<User> users = groupService.getUsersByGroupId(id);
-
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 

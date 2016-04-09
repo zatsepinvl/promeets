@@ -11,7 +11,7 @@ public class BoardItem {
     private long itemId;
     private String data;
     private BoardPage boardPage;
-    private MeetAim aim;
+    private MeetTask aim;
     private File file;
 
     @Id
@@ -67,12 +67,12 @@ public class BoardItem {
     }
 
     @ManyToOne
-    @JoinColumn(name = "aim_id", referencedColumnName = "aim_id")
-    public MeetAim getAim() {
+    @JoinColumn(name = "task_id", referencedColumnName = "task_id")
+    public MeetTask getAim() {
         return aim;
     }
 
-    public void setAim(MeetAim target) {
+    public void setAim(MeetTask target) {
         this.aim = target;
     }
 

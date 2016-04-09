@@ -38,9 +38,11 @@
                                 {{error.value}}
                             </p>
 
-
-                            <md-progress-circular style="margin: auto" md-mode="indeterminate"
-                                                  ng-show="loading"></md-progress-circular>
+                            <div layout="row" style="margin: auto; width:40px">
+                                <md-progress-circular md-mode="indeterminate"
+                                                      md-diameter="30"
+                                                      ng-show="loading" flex></md-progress-circular>
+                            </div>
                             <div layout="row" style="margin-top: 20px">
                                 <a href="" style="font-size: 12px; text-align: center" flex>
                                     Forgot password?

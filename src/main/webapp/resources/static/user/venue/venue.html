@@ -1,0 +1,81 @@
+<div ng-controller="meetCtrl" ng-cloak>
+    <div class="mdl-grid" style="padding: 0">
+        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="min-height: 0">
+                <md-toolbar style="background-color: #2e7d32;">
+                    <div class="md-toolbar-tools">
+                        <span>
+                            <div style="margin-top: 4px" ng-bind-html="meet.title"></div>
+                            <div style="font-weight: 300; font-size: 14px" ng-bind-html="meet.time"></div>
+                        </span>
+                        <span flex></span>
+                        <md-button class="md-icon-button">
+                            <i class="material-icons icon">
+                                edit
+                            </i>
+                        </md-button>
+                        <md-button class="md-icon-button"
+                                   ng-click="goBack()">
+                            <i class="material-icons icon">
+                                exit_to_app</i>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+            </div>
+        </div>
+
+        <!--Board -->
+        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height: 360px">
+            </div>
+        </div>
+
+        <!--Meet Tasks -->
+        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-card mdl-shadow--2dp">
+                <md-list>
+                    <md-list-item class="no-hover primary" style="border: 0">
+                        <p style="margin-left: 20px">Tasks</p>
+                        <md-icon class="md-secondary"
+                                 ng-click="createTask()">
+                            add
+                        </md-icon>
+                    </md-list-item>
+
+                    <md-list-item ng-repeat="task in tasks track by task.taskId">
+                        <p ng-bind-html="tasks.indexOf(task)+1" style="width: 50px; flex: none; text-align: center"></p>
+                        <p ng-bind-html="multiLine(task.value)" style="font-size: 16px"></p>
+                        <md-checkbox class="md-secondary accent"></md-checkbox>
+                        <md-icon class="md-secondary" ng-click="removeTask(task)">
+                            delete
+                        </md-icon>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+
+        <!-- Meet Notes -->
+        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-card mdl-shadow--2dp">
+                <md-list>
+                    <md-list-item class="no-hover primary" style="border: 0">
+                        <p style="margin-left: 20px">Notes</p>
+                        <md-icon class="md-secondary"
+                                 ng-click="createNote()">
+                            add
+                        </md-icon>
+                    </md-list-item>
+
+                    <md-list-item ng-repeat="note in notes track by note.noteId">
+                        <img ng-src="{{note.user.image.url}}" class="md-avatar">
+                        <p ng-bind-html="multiLine(note.value)"></p>
+                        <md-icon class="md-secondary" ng-click="removeNote(note)">
+                            delete
+                        </md-icon>
+                    </md-list-item>
+                </md-list>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

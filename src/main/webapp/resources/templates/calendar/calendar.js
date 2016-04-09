@@ -26,7 +26,7 @@ app.directive("calendar", function () {
                 });
             }, true);
 
-            $scope.selected = _removeTime($scope.selected || moment());
+            $scope.selected = moment().hour(0).minute(0).second(0).millisecond(0);
             $scope.month = $scope.selected.clone();
 
             var start = $scope.selected.clone();

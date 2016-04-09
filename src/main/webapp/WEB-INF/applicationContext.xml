@@ -15,6 +15,9 @@
         <property name="url" value="jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db"/>
         <property name="username" value="pmadmin"/>
         <property name="password" value="pm_admin"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="validationQueryTimeout" value="30000"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -50,7 +53,7 @@
 
     <bean id="appProperties"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/application.properties" />
+        <property name="location" value="/WEB-INF/application.properties"/>
     </bean>
 
     <import resource="security.xml"/>

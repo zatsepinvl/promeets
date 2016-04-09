@@ -8,23 +8,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
 
+    <link rel="shortcut icon" type="image/x-icon" href="image/promeets_icon.ico"/>
+
     <!-- Material Styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="/lib/material/material.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/lib/material/fonts_icons.css" type="text/css" rel="stylesheet"/>
-    <link href="/lib/material/material_fonts.css" type="text/css" rel="stylesheet"/>
+    <!--<link href="/lib/material/fonts_icons.css" type="text/css" rel="stylesheet"/>
+    <link href="/lib/material/material_fonts.css" type="text/css" rel="stylesheet"/>-->
 
     <!-- Angular Material Style  -->
     <link href="/lib/angular_material/angular.material.min.css" type="text/css" rel="stylesheet"/>
-    <link href="/lib/angular_material/md-pickers.min.css" type="text/css" rel="stylesheet"/>
 
     <!-- Style -->
     <link href="/css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/drawer.css" type="text/css" rel="stylesheet"/>
     <link href="/templates/calendar/style.css" type="text/css" rel="stylesheet"/>
 </head>
 
 <body ng-controller="appCtrl">
 <div class="mdl-layout__container">
-    <div ui-view></div>
+    <div ui-view>
+        <div ui-view></div>
+    </div>
 </div>
 
 
@@ -36,21 +41,21 @@
 <script src="/lib/angular/angular-resource.min.js"></script>
 <script src="/lib/angular/angular-animate.min.js"></script>
 <script src="/lib/angular/angular-aria.min.js"></script>
-<script src="/lib/angular/angular-route.min.js"></script>
 <script src="/lib/angular/angular-messages.min.js"></script>
+<script src="/lib/angular/angular-sanitize.min.js"></script>
 <script src="/lib/angular/angular-ui-router.min.js"></script>
 
 <!-- Angular_Material_Script -->
 <script src="/lib/angular_material/angular-material.min.js"></script>
-<script src="/lib/angular_material/angular-material-calendar.js"></script>
 <script src="/lib/angular_material/moment.min.js"></script>
-<script src="/lib/angular_material/md-pickers.min.js"></script>
 
 <!-- SockJS and STOMP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/0.3.4/sockjs.min.js"/></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 <!-- App context -->
+<script src="/js/app_config.js"></script>
+<script src="/js/app_services.js"></script>
 <script src="/js/app_controller.js"></script>
 <script src="/js/header_controller.js"></script>
 <script src="/js/drawer_controller.js"></script>
@@ -63,8 +68,10 @@
 <script src="/js/chat_controller.js"></script>
 
 
+
 <!-- Templates -->
 <script src="/templates/calendar/calendar.js"></script>
+<script src="/templates/dialog/textarea/dialog-textarea.js"></script>
 
 <script src="https://cdn.rawgit.com/Luegg/angularjs-scroll-glue/master/src/scrollglue.js"></script>
     

@@ -35,7 +35,7 @@ public class BoardPage {
     }
 
     @Basic
-    @Column(name = "title",  length = -1)
+    @Column(name = "title", length = -1)
     public String getTitle() {
         return title;
     }
@@ -76,5 +76,5 @@ public class BoardPage {
         this.board = board;
     }
 
-    
+
 }

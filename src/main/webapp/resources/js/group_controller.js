@@ -1,10 +1,11 @@
 //group controller
-app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, $mdDialog) {
+app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
     $scope.groupId = $stateParams.groupId;
-    $state.go('.meets');
-    $scope.group = Entity.get({entity: "groups", id: $scope.groupId}, function () {
-        $scope.tab = "meets";
-    });
+    $scope.group = GroupService.get();
+
+    $scope.transitionTo = function (url) {
+        $state.transitionTo(url, {groupId: $scope.groupId});
+    };
 
     $scope.editGroup = function () {
         $mdDialog.show({
@@ -33,12 +34,8 @@ function cloneGroup(group) {
     };
 }
 
-function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
+function EditGroupDialogController($scope, group, Entity, $mdDialog) {
     $scope.group = cloneGroup(group);
-    $http.get('/api/group_types').success(function (types) {
-        $scope.types = types;
-        $scope.load = true;
-    });
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
@@ -51,5 +48,10 @@ function EditGroupDialogController($scope, group, $http, Entity, $mdDialog) {
         $mdDialog.hide();
     };
 }
+
+app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
+    $scope.groupId = $stateParams.groupId;
+    $scope.users = GroupService.getMembers();
+});
 
 
