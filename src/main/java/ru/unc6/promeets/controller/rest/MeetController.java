@@ -14,6 +14,7 @@ import ru.unc6.promeets.model.service.entity.MeetService;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import ru.unc6.promeets.model.service.notify.MeetNotifyService;
 
 @RestController
 @RequestMapping("/api/meets")
@@ -22,11 +23,13 @@ public class MeetController extends BaseRestController<Meet> {
     private static final Logger log = Logger.getLogger(MeetController.class);
 
     private MeetService meetService;
+    private MeetNotifyService meetNotifyService;
 
     @Autowired
-    public MeetController(MeetService service) {
-        super(service);
+    public MeetController(MeetService service, MeetNotifyService notifyService) {
+        super(service,notifyService);
         this.meetService = service;
+        this.meetNotifyService = notifyService;
     }
 
 

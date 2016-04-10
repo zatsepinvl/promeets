@@ -7,16 +7,20 @@ import ru.unc6.promeets.controller.exception.ResponseError;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
 import java.util.List;
+import ru.unc6.promeets.model.service.notify.BaseNotifyService;
 
 /**
  * Created by Vladimir on 03.04.2016.
+ * @param <T>
  */
 public class BaseRestController<T> {
     public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
     private BaseService<T> service;
+    private BaseNotifyService<T> notifyService;
 
-    public BaseRestController(BaseService<T> service) {
+    public BaseRestController(BaseService<T> service, BaseNotifyService<T> notifyService) {
         this.service = service;
+        this.notifyService = notifyService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -34,19 +38,25 @@ public class BaseRestController<T> {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public T create(@RequestBody T entity) {
-        return service.save(entity);
+        entity = service.save(entity);
+        notifyService.onCreate(entity);
+        return entity;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public T updateById(@PathVariable("id") long id, @RequestBody T entity) {
         checkIsNotFound(id);
-        return service.save(entity);
+        entity = service.save(entity);
+        notifyService.onUpdate(entity);
+        return entity;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteById(@PathVariable("id") long id) {
+        T entity = service.getById(id);
+        notifyService.onDelete(entity);
         service.delete(id);
     }
 

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.controller.AppSTOMPController;
-import ru.unc6.promeets.model.entity.Message;
+import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.ChatRepository;
 
@@ -18,8 +18,9 @@ import ru.unc6.promeets.model.repository.ChatRepository;
  *
  * @author MDay
  */
+
 @Service
-public class MessageNotifyServiceImpl implements MessageNotifyService
+public class ChatNotifyServiceImpl implements ChatNotifyService
 {
     @Autowired
     AppSTOMPController appSTOMPController;
@@ -28,32 +29,32 @@ public class MessageNotifyServiceImpl implements MessageNotifyService
 
     @Async
     @Override
-    public void onCreate(Message message) 
+    public void onCreate(Chat chat) 
     {
-        onAction(message, Notification.Action.CREATE);
+        onAction(chat, Notification.Action.CREATE);
     }
 
     @Async
     @Override
-    public void onUpdate(Message message) 
+    public void onUpdate(Chat chat) 
     {
-        onAction(message, Notification.Action.UPDATE);
+        onAction(chat, Notification.Action.UPDATE);
     }
 
     @Async
     @Override
-    public void onDelete(Message message) 
+    public void onDelete(Chat chat) 
     {
-        onAction(message, Notification.Action.DELETE);
+        onAction(chat, Notification.Action.DELETE);
     }
     
-    public void onAction(Message message,Notification.Action action ) 
+    private void onAction(Chat chat, Notification.Action action) 
     {
-        List<User> users = (List)chatRepository.getAllUsersByChatId(message.getChat().getChatId());
-        Notification notification = new Notification(message.getClass(), action, message.getMessageId());
+        List<User> users = (List)chatRepository.getAllUsersByChatId(chat.getChatId());
+        Notification notification = new Notification(chat.getClass(), action, chat.getChatId());
         for(User user : users){
             appSTOMPController.sendNotificationToUser(notification, user);
-        } 
+        }
     }
     
 }
