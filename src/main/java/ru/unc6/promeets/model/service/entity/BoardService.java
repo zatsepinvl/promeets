@@ -13,7 +13,7 @@ import ru.unc6.promeets.model.entity.BoardPage;
  *
  * @author MDay
  */
-public interface BoardService extends BaseService<Board>
+public interface BoardService extends BaseService<Board,Long>
 {
     List<BoardPage> getAllBoardPagesByMeetId(long id);
 }

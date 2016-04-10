@@ -2,22 +2,20 @@ package ru.unc6.promeets.model.service.entity;
 
 import org.springframework.data.repository.CrudRepository;
 
+import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by Vladimir on 04.04.2016.
- */
-public abstract class BaseServiceImpl<T> implements BaseService<T> {
+public abstract class BaseServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
 
-    private CrudRepository<T, Long> repository;
+    private CrudRepository<T, V> repository;
 
-    public BaseServiceImpl(CrudRepository<T, Long> repository) {
+    public BaseServiceImpl(CrudRepository<T, V> repository) {
         this.repository = repository;
     }
 
 
     @Override
-    public T getById(long id) {
+    public T getById(V id) {
         return repository.findOne(id);
     }
 
@@ -27,7 +25,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(V id) {
         repository.delete(id);
     }
 

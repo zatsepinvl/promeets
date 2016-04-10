@@ -10,41 +10,52 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.entity.MeetTask;
+import ru.unc6.promeets.model.repository.GroupRepository;
 import ru.unc6.promeets.model.repository.MeetRepository;
 
 
 @Service
 @Transactional
-public class MeetServiceImpl implements MeetService {
+public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
+        implements MeetService {
 
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
-    @Autowired
     private MeetRepository meetRepository;
+
+    @Autowired
+    private UserMeetService userMeetService;
+
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    public MeetServiceImpl(MeetRepository repository) {
+        super(repository);
+        this.meetRepository = repository;
+    }
+
     @Override
-    public Meet getById(long id) {
+    public Meet getById(Long id) {
         return meetRepository.findOne(id);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         Board board = meetRepository.findOne(id).getBoard();
-        boardService.delete(board.getBoardId());
-
+        if (board != null) {
+            boardService.delete(board.getBoardId());
+        }
         meetRepository.deleteAllNotesById(id);
         meetRepository.deleteAllAimsById(id);
-        meetRepository.deleteAllUserMeetsById(id);
-
+        userMeetService.deleteUserMeetsByMeetId(id);
         meetRepository.delete(id);
-
-        log.debug("Delete meet with id=" + id);
     }
 
     @Override
@@ -53,29 +64,27 @@ public class MeetServiceImpl implements MeetService {
     }
 
     @Override
-    public List<User> getUsers(long id) {
-        return (List<User>) meetRepository.getAllUsersByMeetId(id);
-    }
-
-    @Override
     public Meet save(Meet meet) {
-        return meetRepository.save(meet);
-    }
-
-    @Override
-    public List<UserMeet> getUserMeets(long id) {
-        return (List<UserMeet>) meetRepository.getAllUserMeetsByMeetId(id);
+        Meet newMeet;
+        if (!meetRepository.exists(meet.getMeetId())) {
+            newMeet = meetRepository.save(meet);
+            userMeetService.createUserMeetsByMeet(meet);
+        } else {
+            newMeet = meetRepository.save(meet);
+        }
+        return newMeet;
     }
 
     @Override
     public List<MeetNote> getMeetNotes(long id) {
-        return (List<MeetNote>) meetRepository.getAllMeetNotesByMeetId(id);
+        return (List<MeetNote>) meetRepository.getMeetNotesByMeetId(id);
     }
 
     @Override
     public List<MeetTask> getMeetAims(long id) {
-        return (List<MeetTask>) meetRepository.getAllMeetAimsByMeetId(id);
+        return (List<MeetTask>) meetRepository.getMeetTasksByMeetId(id);
     }
+
 
     @Override
     public Board getBoard(long id) {

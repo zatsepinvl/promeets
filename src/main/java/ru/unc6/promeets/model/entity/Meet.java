@@ -71,7 +71,7 @@ public class Meet {
 
 
     @ManyToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "user_id", nullable = false)
     public User getAdmin() {
         return admin;
     }

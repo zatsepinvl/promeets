@@ -5,38 +5,51 @@
     </calendar>
 
     <md-list>
-        <md-list-item class="no-hover" style="padding-left: 6px; padding-right: 6px;">
-            <form name="createMeetForm" ng-submit="createMeet()" layout="row" flex>
-                <md-input-container class="md-block" md-no-float flex>
-                    <md-icon class="material-icons">title</md-icon>
-                    <input ng-model="meet.title" type="text" placeholder="Title" required>
-                </md-input-container>
-                <md-input-container class="md-block" md-no-float flex>
-                    <md-icon class="material-icons">access_time</md-icon>
-                    <input ng-model="time" type="time" placeholder="HH:MM" name="time" time required>
-                    <div ng-messages="createMeetForm.time.$error"
-                         md-auto-hide="false">
-                        <div ng-message="timeComplex">
-                            HH:MM
-                        </div>
-                    </div>
-                </md-input-container>
-                <md-button class="md-fab md-mini md-primary" type="submit"
-                           style="margin-top: 10px; margin-bottom: 4px">
-                    <md-icon class="material-icons"
-                             style="margin-bottom: 3px;"
-                             ng-click="createMeet()">add
-                    </md-icon>
-                </md-button>
-            </form>
+        <md-list-item class="no-hover primary" style="padding-left: 6px; padding-right: 6px;">
+            <p style="margin-left: 20px" ng-bind-html="selectedDay.format('DD MMMM YYYY')"></p>
+            <!--<form name="createMeetForm" ng-submit="createMeet()" layout="row" flex>-->
+            <!--<md-input-container class="md-block" md-no-float>-->
+            <!--<md-icon class="material-icons">title</md-icon>-->
+            <!--<input ng-model="meet.title" type="text" placeholder="Title" required>-->
+            <!--</md-input-container>-->
+
+            <!--<md-input-container class="md-block" md-no-float>-->
+            <!--<md-icon class="material-icons">access_time</md-icon>-->
+            <!--<input ng-model="time" type="time" placeholder="HH:MM" name="time" time required>-->
+            <!--<div ng-messages="createMeetForm.time.$error"-->
+            <!--md-auto-hide="false">-->
+            <!--<div ng-message="timeComplex">-->
+            <!--HH:MM-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</md-input-container>-->
+
+            <!--<md-button class="md-fab md-mini md-primary md-secondary" type="submit"-->
+            <!--style="margin-top: 10px; margin-bottom: 4px">-->
+            <!--<md-icon class="material-icons"-->
+            <!--style="margin-bottom: 3px;"-->
+            <!--ng-click="createMeet()">add-->
+            <!--</md-icon>-->
+            <!--</md-button>-->
+            <!--</form>-->
+            <md-icon class="md-secondary"
+                     ng-click="createMeet($event)">
+                add
+            </md-icon>
         </md-list-item>
-        <md-list-item ng-repeat="meet in selectedMeets track by meet.meetId"
-                      ng-click="meetClicked(meet.meetId)">
-            <img src="../image/meet1.jpg" class="md-avatar"/>
-            <p style="font-size: 18px; text-align: center" flex> {{ meet.title }}</p>
-            <p style="font-size: 16px; text-align: center" flex>
-                {{meet.time.format('HH:mm') }}
+        <md-list-item ng-repeat="meet in selected track by meet.meetId"
+                      ng-click="meetClicked(meet.meetId)"
+                      ng-mouseover="mouseover=true"
+                      ng-mouseleave="mouseover=false">
+            <p style="font-size: 16px;" flex> {{ meet.title }}</p>
+            <p style="font-size: 16px;" flex>
+                {{meet.time.format('HH:mm')}}
             </p>
+            <md-icon class="md-secondary"
+                     style="margin-bottom: 3px;"
+                     ng-click="deleteMeet(meet)"
+                     ng-show="mouseover">delete
+            </md-icon>
         </md-list-item>
     </md-list>
 </div>

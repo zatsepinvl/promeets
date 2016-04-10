@@ -11,11 +11,11 @@ import java.util.List;
 /**
  * Created by Vladimir on 03.04.2016.
  */
-public class BaseRestController<T> {
+public class BaseRestController<T, V> {
     public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
-    private BaseService<T> service;
+    private BaseService<T, V> service;
 
-    public BaseRestController(BaseService<T> service) {
+    public BaseRestController(BaseService<T, V> service) {
         this.service = service;
     }
 
@@ -25,7 +25,7 @@ public class BaseRestController<T> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public T getById(@PathVariable("id") long id) {
+    public T getById(@PathVariable("id") V id) {
         T entity = service.getById(id);
         checkIsNotFound(entity);
         return entity;
@@ -39,18 +39,19 @@ public class BaseRestController<T> {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public T updateById(@PathVariable("id") long id, @RequestBody T entity) {
-        checkIsNotFound(id);
+    public T updateById(@PathVariable("id") V id, @RequestBody T entity) {
+        checkIsNotFoundById(id);
         return service.save(entity);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable("id") long id) {
+    public void deleteById(@PathVariable("id") V id) {
+        checkIsNotFoundById(id);
         service.delete(id);
     }
 
-    protected void checkIsNotFound(long id) {
+    protected void checkIsNotFoundById(V id) {
         if (service.getById(id) == null) {
             throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
         }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
@@ -21,21 +22,25 @@ import ru.unc6.promeets.model.repository.GroupRepository;
  */
 @Service
 @Transactional
-public class GroupServiceImpl implements GroupService {
+public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
+        implements GroupService {
 
     private static final long day = 1000 * 60 * 60 * 24;
     private static final long month = day * 30;
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
-    @Autowired
-    GroupRepository groupRepository;
-    @Autowired
-    MeetService meetService;
 
-    @Override
-    public Group getById(long id) {
-        return groupRepository.findOne(id);
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private MeetService meetService;
+
+    @Autowired
+    public GroupServiceImpl(GroupRepository repository) {
+        super(repository);
+        this.groupRepository = repository;
     }
+
 
     @Override
     public Group save(Group group) {
@@ -43,15 +48,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         groupRepository.deleteAllUserGroupsByGroupId(id);
         List<Meet> meets = (List<Meet>) groupRepository.getAllMeetsByGroupId(id);
         for (Meet meet : meets) {
             meetService.delete(meet.getMeetId());
         }
-
         groupRepository.delete(id);
-        log.debug("Delete group with id=" + id);
     }
 
     @Override

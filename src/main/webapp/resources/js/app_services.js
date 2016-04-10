@@ -72,21 +72,11 @@ app.factory('Entity', function ($resource) {
 
 
 //services
-app.service('EventHandler', function ($mdToast) {
-    this.message = function (message) {
-        $mdToast.show(
-            $mdToast.simple()
-                .textContent(message)
-                .position('right bottom')
-                .hideDelay(3000)
-                .action('CLOSE')
-        );
-    };
-});
 app.service('UserService', function ($http) {
     var value = {};
     var headers;
     this.load = function (success, error) {
+        newMeets = [];
         $http.get('/api/user', {headers: headers})
             .success(function (user) {
                 clone(user, value);
@@ -114,8 +104,23 @@ app.service('UserService', function ($http) {
         };
         this.load(success, error);
     };
+
+
 });
 
+app.service('UserMeetService', function ($http) {
+    var newMeets = [];
+    this.load = function () {
+        $http.get('/api/user/meets/new')
+            .success(function (meets) {
+                clone(meets, newMeets);
+            });
+        return newMeets;
+    };
+    this.getNewMeets = function () {
+        return newMeets;
+    }
+});
 
 app.service('GroupService', function (Entity) {
     var value;

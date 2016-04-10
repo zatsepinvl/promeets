@@ -9,6 +9,7 @@ app.directive("calendar", function () {
             changeMonth: "="
         },
         link: function ($scope) {
+            $scope.load = false;
             $scope.$watch('model', function () {
                 if ($scope.model.length < 1) {
                     return;
@@ -20,10 +21,11 @@ app.directive("calendar", function () {
                             if ((event.time) && (day.date.isSame(event.time, "day"))) {
                                 day.events.push(event);
                             }
-                        })
-
+                        });
+                        !$scope.load && day.isToday && $scope.select(day);
                     });
                 });
+                $scope.load = true;
             }, true);
 
             $scope.selected = moment().hour(0).minute(0).second(0).millisecond(0);
@@ -55,6 +57,8 @@ app.directive("calendar", function () {
                 _buildMonth($scope, previous, $scope.month);
                 $scope.changeMonth && $scope.changeMonth($scope.month);
             };
+
+
         }
     };
 

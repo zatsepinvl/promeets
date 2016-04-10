@@ -3,7 +3,7 @@
             mdl-layout--fixed-header
             mdl-layout--fixed-drawer">
     <!-- Header -->
-    <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--4dp">
+    <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp">
         <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
              style="cursor: pointer;"/>
         <div class="mdl-layout__header-row">
@@ -34,10 +34,11 @@
         <nav class="mdl-navigation">
             <a class="mdl-navigation__link" href="/profile"> <i class="material-icons">face</i>Profile</a>
             <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
-            <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar</a>
-            <a class="mdl-navigation__link" href="/message"> <i class="material-icons icon"> message</i><span
-                    class="mdl-badge"
-                    data-badge="4">Messages</span></a>
+            <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
+            <span class="mdl-badge"
+                  data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span></a>
+            <a class="mdl-navigation__link" href="/message"> <i class="material-icons icon"> message</i>
+                Messages</a>
             <a class="mdl-navigation__link " href="/settings"> <i class="material-icons">settings</i>Settings</a>
             <a class="mdl-navigation__link " href="" ng-click="logout()"> <i class="material-icons">exit_to_app</i>Log
                 out</a>

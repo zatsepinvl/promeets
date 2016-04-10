@@ -1,39 +1,52 @@
 <div class="mdl-grid" style="padding: 0;">
     <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--4-col-phone">
     </div>
-    <div class="mdl-cell mdl-cell--6-col mdl-cell--2-col-table mdl-cell--4-col-phone" >
-        <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-width: 260px; max-width: 330px; margin: auto ">
+    <div class="mdl-cell mdl-cell--6-col mdl-cell--2-col-table mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp" style="width: 100%; min-width: 260px; max-width: 300px; margin: auto ">
             <div ng-controller="loginCtrl">
                 <md-content layout-padding>
                     <form name="loginForm" ng-submit="login()" style="margin: 0">
-                        <md-input-container class="md-block" md-no-float>
-                            <md-icon class="material-icons">email</md-icon>
-                            <input ng-model="user.email" type="email" required placeholder="Email">
-                        </md-input-container>
-
-                        <md-input-container class="md-block" md-no-float>
-                            <md-icon class="material-icons">lock</md-icon>
-                            <input ng-model="user.password" type="password" required placeholder="Password">
-                        </md-input-container>
-
-                        <div layout="row">
-                            <md-button type="submit" class="md-raised" ng-hide="loading"
-                                       flex style="background-color: #2e7d32; color: #fff;">
-                                Log in
-                            </md-button>
-                        </div>
-
-                        <p style="text-align: center; color:darkred; margin-top: 10px; " ng-show="error.show">
+                        <table>
+                            <tbody>
+                            <!-- First name -->
+                            <tr>
+                                <td>
+                                    <md-input-container class="md-block" md-no-float>
+                                        <md-icon class="material-icons">email</md-icon>
+                                        <input ng-model="user.email" type="email" required placeholder="Email" focus-if>
+                                    </md-input-container>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input-container class="md-block" md-no-float>
+                                        <md-icon class="material-icons">lock</md-icon>
+                                        <input ng-model="user.password" type="password" required placeholder="Password">
+                                    </md-input-container>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div layout="row">
+                                        <md-button type="submit" class="md-raised" ng-hide="loading"
+                                                   flex style="background-color: #2e7d32; color: #fff;">
+                                            Log in
+                                        </md-button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <p style="text-align: center; color:darkred;" ng-show="error.show">
                             {{error.value}}
                         </p>
 
                         <div layout="row" style="margin: auto; width:40px">
                             <md-progress-circular md-mode="indeterminate"
                                                   md-diameter="30"
-                                                  ng-show="loading" flex></md-progress-circular>
+                                                  ng-if="loading" flex></md-progress-circular>
                         </div>
 
-                        <div layout="row" style="margin-top: 20px">
+                        <div layout="row" layout-padding>
                             <a href="" style="font-size: 12px; text-align: center" flex>
                                 Forgot password?
                             </a>

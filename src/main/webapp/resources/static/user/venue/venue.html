@@ -42,11 +42,14 @@
                         </md-icon>
                     </md-list-item>
 
-                    <md-list-item ng-repeat="task in tasks track by task.taskId">
+                    <md-list-item ng-repeat="task in tasks track by task.taskId"
+                                  ng-mouseover="mouseover=true"
+                                  ng-mouseleave="mouseover=false">
                         <p ng-bind-html="tasks.indexOf(task)+1" style="width: 50px; flex: none; text-align: center"></p>
                         <p ng-bind-html="multiLine(task.value)" style="font-size: 16px"></p>
                         <md-checkbox class="md-secondary accent"></md-checkbox>
-                        <md-icon class="md-secondary" ng-click="removeTask(task)">
+                        <md-icon class="md-secondary" ng-click="removeTask(task)"
+                                 ng-if="mouseover">
                             delete
                         </md-icon>
                     </md-list-item>
@@ -66,10 +69,13 @@
                         </md-icon>
                     </md-list-item>
 
-                    <md-list-item ng-repeat="note in notes track by note.noteId">
+                    <md-list-item ng-repeat="note in notes track by note.noteId"
+                                  ng-mouseover="mouseover=true"
+                                  ng-mouseleave="mouseover=false">
                         <img ng-src="{{note.user.image.url}}" class="md-avatar">
                         <p ng-bind-html="multiLine(note.value)"></p>
-                        <md-icon class="md-secondary" ng-click="removeNote(note)">
+                        <md-icon class="md-secondary" ng-click="removeNote(note)"
+                                 ng-show="mouseover">
                             delete
                         </md-icon>
                     </md-list-item>

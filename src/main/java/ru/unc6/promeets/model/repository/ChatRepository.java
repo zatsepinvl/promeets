@@ -20,9 +20,9 @@ public interface ChatRepository extends CrudRepository<Chat, Long>
 {
     @Modifying
     @Query("select message from Message message where message.chat.chatId=(:chatId) order by message.time")
-    Iterable<Message> getAllMessagesByChatId(@Param("chatId") Long id);
+    Iterable<Message> getMessagesByChatId(@Param("chatId") Long id);
     
     @Modifying
     @Query("delete from Message message where message.chat.chatId=(:chatId)")
-    void deleteAllMessagesByChatId(@Param("chatId") Long id);
+    void deleteMessagesByChatId(@Param("chatId") Long id);
 }

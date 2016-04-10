@@ -99,7 +99,7 @@ public class ChatController
     @RequestMapping(value = "api/chats/{id}/messages", method = RequestMethod.GET)
     public ResponseEntity<List<Message>> getChatMessages(@PathVariable long id) 
     { 
-        List<Message> messages = chatService.getAllMessagesByChatId(id);
+        List<Message> messages = chatService.getMessagesByChatId(id);
         
         if (messages.isEmpty()) 
         {

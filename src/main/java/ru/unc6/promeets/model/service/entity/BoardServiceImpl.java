@@ -28,7 +28,7 @@ public class BoardServiceImpl implements BoardService {
     BoardRepository boardRepository;
 
     @Override
-    public Board getById(long id) {
+    public Board getById(Long id) {
         return boardRepository.findOne(id);
     }
 
@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         List<BoardPage> pages = (List) boardRepository.getAllBoardPagesById(id);
 
         for (BoardPage page : pages) {

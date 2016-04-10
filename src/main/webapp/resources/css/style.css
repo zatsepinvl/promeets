@@ -1,7 +1,7 @@
 body {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     background-color: #eeeeee;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .primary {
@@ -27,6 +27,10 @@ body {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
+}
+
+a.mdl-navigation__link {
+    color: #2e7d32;
 }
 
 .mdl-navigation__link.material-icons {
@@ -65,7 +69,7 @@ body {
 
 .md-button.md-raised.primary {
     background-color: #2e7d32;
-    color: #fff;
+    color: #ffffff;
 }
 
 .md-button.md-raised.primary:hover {
@@ -96,26 +100,23 @@ table td.label {
     margin-right: 10px;
 }
 
+a.md-default-theme:not(.md-button), a:not(.md-button) {
+    color: #2e7d32;
+    font-weight: 400;
+}
+
+a.md-default-theme:not(.md-button), a:not(.md-button):hover {
+    text-decoration: underline;
+    color: #2e7d32;
+}
+
 a {
     text-decoration: none;
     color: #2e7d32;
 }
 
-a.md-default-theme:not(.md-button), a:not(.md-button) {
-    color: #2e7d32;
-}
-
-a.md-default-theme:not(.md-button), a:not(.md-button):hover {
-    text-decoration: underline;
-    color: inherit;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
 input {
-    font-size: 15px;
+    font-size: 14px;
 }
 
 table {

@@ -5,11 +5,10 @@
  */
 package ru.unc6.promeets.model.service.entity;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Chat;
@@ -23,15 +22,18 @@ import ru.unc6.promeets.model.repository.ChatRepository;
 
 @Service
 @Transactional
-public class ChatServiceImpl implements ChatService {
-    @Autowired
-    ChatRepository chatRepository;
-    @Autowired
-    ChatMessageRepository messageRepository;
+public class ChatServiceImpl extends BaseServiceImpl<Chat, Long>
+        implements ChatService {
 
-    @Override
-    public Chat getById(long id) {
-        return chatRepository.findOne(id);
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private ChatMessageRepository messageRepository;
+
+    @Autowired
+    public ChatServiceImpl(ChatRepository repository) {
+        super(repository);
+        this.chatRepository = repository;
     }
 
     @Override
@@ -40,27 +42,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void delete(long id) {
-        chatRepository.deleteAllMessagesByChatId(id);
+    public void delete(Long id) {
+        chatRepository.deleteMessagesByChatId(id);
         chatRepository.delete(id);
     }
 
     @Override
-    public List<Chat> getAll() {
-        return (List<Chat>) chatRepository.findAll();
+    public List<Message> getMessagesByChatId(long id) {
+        return (List<Message>) chatRepository.getMessagesByChatId(id);
     }
-
-    @Override
-    public List<Message> getAllMessagesByChatId(long id) {
-        return (List<Message>) chatRepository.getAllMessagesByChatId(id);
-    }
-
-    @Override
-    public void addMessageByChatId(Message message, long id) {
-        Chat chat = getById(id);
-        message.setChat(chat);
-        message.setTime(new Timestamp(new Date().getTime()));
-        messageRepository.save(message);
-    }
-
 }

@@ -9,7 +9,7 @@ import ru.unc6.promeets.model.repository.TaskRepository;
  * Created by Vladimir on 06.04.2016.
  */
 @Service
-public class TaskServiceImpl extends BaseServiceImpl<MeetTask> implements TaskService {
+public class TaskServiceImpl extends BaseServiceImpl<MeetTask,Long> implements TaskService {
 
     @Autowired
     public TaskServiceImpl(TaskRepository repository) {

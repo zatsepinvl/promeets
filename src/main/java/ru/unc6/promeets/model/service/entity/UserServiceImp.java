@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.service.entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,22 +16,23 @@ import java.util.List;
  * Created by Vladimir on 20.03.2016.
  */
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImp extends BaseServiceImpl<User, Long>
+        implements UserService {
 
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private FileRepository fileRepository;
 
-    @Override
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+    @Autowired
+    public UserServiceImp(UserRepository repository) {
+        super(repository);
+        this.userRepository = repository;
     }
 
     @Override
-    public User getById(long id) {
-        return userRepository.findOne(id);
+    public User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email);
     }
 
     @Override
@@ -42,17 +44,5 @@ public class UserServiceImp implements UserService {
         }
         fileRepository.save(entity.getImage());
         return userRepository.save(entity);
-    }
-
-    @Secured("ROLE_GOD")
-    @Override
-    public void delete(long id) {
-        userRepository.delete(id);
-    }
-
-    @Secured("ROLE_ADMIN")
-    @Override
-    public List<User> getAll() {
-        return (List<User>) userRepository.findAll();
     }
 }

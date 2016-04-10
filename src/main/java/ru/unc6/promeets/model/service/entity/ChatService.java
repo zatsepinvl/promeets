@@ -10,10 +10,7 @@ import java.util.List;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 
-/**
- * @author MDay
- */
-public interface ChatService extends BaseService<Chat> {
-    void addMessageByChatId(Message message, long id);
-    List<Message> getAllMessagesByChatId(long id);
+
+public interface ChatService extends BaseService<Chat,Long> {
+    List<Message> getMessagesByChatId(long id);
 }

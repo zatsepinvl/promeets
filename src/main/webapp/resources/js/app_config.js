@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize', 'focus-if']);
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
 };
@@ -64,7 +64,12 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     abstract: true,
                     parent: 'app',
                     url: '',
-                    templateUrl: '/static/user/user.html'
+                    templateUrl: '/static/user/user.html',
+                    resolve: {
+                        newMeets: function (UserMeetService) {
+                            return UserMeetService.load();
+                        }
+                    }
                 })
             .state('user.group',
                 {
@@ -145,3 +150,8 @@ app.config(function ($mdThemingProvider) {
 function clone(from, to) {
     for (var k in from) to[k] = from[k];
 };
+
+
+var DAY_FORMAT = 'DD MMMM YYYY';
+var TIME_FORMAT = 'HH:mm';
+var DAY_TIME_FORMAT = 'DD MMMM YYYY HH:mm';

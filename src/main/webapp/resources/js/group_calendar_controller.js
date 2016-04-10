@@ -1,10 +1,16 @@
-app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParams, $mdToast, $state, EventHandler) {
+app.controller('groupCalendarCtrl', function ($scope,
+                                              Entity,
+                                              $http,
+                                              $stateParams,
+                                              $state,
+                                              GroupService,
+                                              UserService,
+                                              MeetEditDialogService,
+                                              EventHandler) {
     $scope.events = [];
-    $scope.selectedMeets = [];
+    $scope.selected = [];
     $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
-    $scope.$on('newMeet', function (event, meet) {
-        $scope.meets.push(meet);
-    });
+    $scope.selectedDay = moment();
 
     $scope.loadByMonth = function (date) {
         $scope.events = [];
@@ -12,48 +18,73 @@ app.controller('groupCalendarCtrl', function ($scope, Entity, $http, $stateParam
             .success(function (meets) {
                 meets.forEach(function (meet) {
                     meet.time = moment(meet.time).local();
-                    $scope.events.push({meet: meet, time: meet.time});
+                    $scope.events.push(meet);
                 });
             })
             .error(function (error) {
                 console.log(error);
             });
     };
+
     $scope.loadByMonth(moment().day(0).minute(0).millisecond(0));
+
     $scope.change = function (date) {
         $scope.loadByMonth(date.format('x'));
     };
 
 
     $scope.dayClicked = function (day) {
+        $scope.selectedDay = day.date;
         $scope.meet.time = day.date;
-        $scope.selectedMeets = [];
-        day.events.forEach(function (event) {
-            $scope.selectedMeets.push(event.meet);
-        });
-        console.log($scope.selectedMeets);
+        $scope.selected = day.events;
+        console.log($scope.selected);
     };
 
     $scope.meetClicked = function (meetId) {
         $state.transitionTo("user.venue", {meetId: meetId});
     };
 
-    $scope.createMeet = function () {
-        if ($scope.createMeetForm.$valid) {
-            var meet = $scope.meet;
-            console.log($scope.time);
-            var tempTime = meet.time.hour($scope.time.getHours()).minute($scope.time.getMinutes()).second(0).millisecond(0);
-            meet.time = tempTime.utc().valueOf();
-            console.log(meet);
-            Entity.save({entity: "meets"}, meet, function () {
-                EventHandler.show("Meet has been created");
-                meet.time = tempTime.local();
-                $scope.events.push({meet: meet, time: meet.time});
-            });
-
-        }
+    $scope.createMeet = function (event) {
+        var meet = {time: $scope.selectedDay, group: GroupService.get()};
+        MeetEditDialogService.show(meet, event,
+            function (result) {
+                var meet = result;
+                var tempTime = {};
+                clone(meet.time, tempTime);
+                meet.time = meet.time.valueOf();
+                meet.admin = UserService.get();
+                EventHandler.load('Saving meeting');
+                Entity.save({entity: "meets"}, meet,
+                    function (data) {
+                        meet = data;
+                        meet.time = tempTime;
+                        $scope.events.push(meet);
+                        EventHandler.message('Meeting has been created');
+                    },
+                    function (error) {
+                        EventHandler.message(error.data.message);
+                    })
+            },
+            function () {
+            }
+        )
     };
 
+    $scope.deleteMeet = function (meet) {
+        EventHandler.action('Removing meet', 'UNDO', function () {
+            },
+            function () {
+                Entity.remove({entity: "meets", id: meet.meetId}, function () {
+                        EventHandler.message('Meet has been removed');
+                        $scope.events.splice($scope.events.indexOf(meet), 1);
+                        $scope.selected.splice($scope.selected.indexOf(meet), 1);
+                    },
+                    function (error) {
+                        EventHandler.message(error.data.message);
+                    });
+
+            });
+    }
 });
 
 

@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
     private static final Logger log = Logger.getLogger(GlobalControllerExceptionHandler.class);
+
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ResponseError handleException(Exception ex) {
-        return new ResponseError(ex.getMessage());
+        log.error(ex.getMessage(), ex);
+        return new ResponseError(ex.getClass().getName() + " : " + ex.getMessage());
     }
 
 

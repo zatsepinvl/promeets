@@ -28,11 +28,10 @@
     <md-list>
         <md-list-item class="no-hover primary" style="border: 0">
             <p style="margin-left: 20px">Members</p>
-            <md-button class="md-icon-button">
-                <i class="material-icons icon" style="color:#8e8e8e">
-                    person_add
-                </i>
-            </md-button>
+            <md-icon class="md-secondary"
+                     ng-click="createTask()">
+                person_add
+            </md-icon>
         </md-list-item>
         <md-list-item ng-repeat="user in users track by user.userId">
             <img ng-src="{{user.image.url}}" class="md-avatar"/>

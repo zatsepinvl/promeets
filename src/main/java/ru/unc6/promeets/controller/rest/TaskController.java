@@ -11,7 +11,7 @@ import ru.unc6.promeets.model.service.entity.TaskService;
  */
 @RestController
 @RequestMapping(value = "/api/tasks")
-public class TaskController extends BaseRestController<MeetTask> {
+public class TaskController extends BaseRestController<MeetTask, Long> {
 
     @Autowired
     public TaskController(TaskService service) {
