@@ -8,9 +8,8 @@ import ru.unc6.promeets.model.service.entity.BaseService;
 
 import java.util.List;
 
-/**
- * Created by Vladimir on 03.04.2016.
- */
+import ru.unc6.promeets.model.service.notify.BaseNotifyService;
+
 public class BaseRestController<T, V> {
     public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
     private BaseService<T, V> service;
@@ -34,7 +33,8 @@ public class BaseRestController<T, V> {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public T create(@RequestBody T entity) {
-        return service.save(entity);
+        entity = service.save(entity);
+        return entity;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

@@ -6,11 +6,16 @@
 package ru.unc6.promeets.model.service.entity;
 
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 
 
 public interface ChatService extends BaseService<Chat,Long> {
-    List<Message> getMessagesByChatId(long id);
+    List<Message> getMessagePageByChatId(long id, Pageable page);
+    List<Message> getAllMessagesByChatId(long id);
+    List getAllUsersByChatId(long id);
 }
+
+

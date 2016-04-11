@@ -9,19 +9,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.notify.MeetNotifyService;
 
 @RestController
 @RequestMapping("/api/meets")
-public class MeetController extends BaseRestController<Meet,Long> {
+public class MeetController extends BaseRestController<Meet, Long> {
 
     private static final Logger log = Logger.getLogger(MeetController.class);
 
     private MeetService meetService;
-
+    private MeetNotifyService meetNotifyService;
     private UserMeetService userMeetService;
 
     @Autowired
-    public MeetController(MeetService service) {
+    public MeetController(MeetService service, MeetNotifyService notifyService) {
         super(service);
         this.meetService = service;
     }

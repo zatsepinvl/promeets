@@ -1,0 +1,39 @@
+<div  ng-controller="chatController" class="chat">
+    <div class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-hide="messages"></div>
+    <div ng-hide="!messages">
+        <div class="chat-messages">
+            <div scroll-glue="glued" class="chat-message-group">
+                <div align="center">
+                    <button class="mdl-button mdl-js-button mdl-button--primary" ng-click="getMoreMessages()"
+                            ng-hide="isAllChat">
+                        &#8593; Show more &#8593;
+                    </button>
+                </div>
+                <div ng-repeat="message in messages | orderBy:'time':reverse | filter:{text: ''}" class="chat-message">
+									<span class="chat-messages-name" ng-class="{self: message.self}">
+									<img src="{{message.user.image.url}}" class="md-avatar"/> 
+									{{message.user.firstName}} {{message.user.lastName}}
+									<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
+									</span>
+                    <span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
+                </div>
+            </div>
+        </div>
+
+        <form ng-submit="sendMessage()">
+				<span with="10%">
+					<button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                            ng-click="showUsers()">
+                        <i class="material-icons">person bin</i>
+                    </button>
+				</span>
+				<span class="mdl-textfield mdl-js-textfield">
+					<input class="mdl-textfield__input" type="text" rows="3" id="chatTextField" ng-model="messageText"
+                           ng-disabled="!currentUser.email" box-sizing="border-box" autocomplete="off"></input>
+					<label class="mdl-textfield__label" for="chatTextField">Enter message...</label>
+				</span>
+        </form>
+    </div>
+</div>
+	  
+	  

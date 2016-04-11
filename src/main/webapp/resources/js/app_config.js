@@ -112,6 +112,11 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                             return MeetService.load($stateParams.meetId);
                         }
                     }
+                })
+			.state('user.group.chat',
+                {
+					url: '/chat',
+                    templateUrl: '/static/user/group/chat/chat.html'
                 });
         $locationProvider.html5Mode(true);
     }
