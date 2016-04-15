@@ -34,7 +34,7 @@ public class ChatSTOMPController
 
     private void getChat(Long id) 
     {
-        List messages = (List) chatService.getMessagesByChatId(id);
+        List messages = (List) chatService.getAllMessagesByChatId(id);
         log.info(messages); 
         simpMessagingTemplate.convertAndSend("/topic/chat", messages);
     }

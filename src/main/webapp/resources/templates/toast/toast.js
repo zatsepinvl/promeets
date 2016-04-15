@@ -1,8 +1,8 @@
 //services
 app.service('EventHandler', function ($mdToast) {
 
+    var delay = 2000;
     var dialog = {
-        hideDelay: 1500,
         position: 'right bottom',
         controller: ToastCtrl,
         templateUrl: 'templates/toast/toast.html'
@@ -15,7 +15,7 @@ app.service('EventHandler', function ($mdToast) {
             loading: false,
             action: false
         };
-        dialog.hideDelay = 1500;
+        dialog.hideDelay = delay;
         $mdToast.show(dialog);
     };
 
@@ -37,7 +37,7 @@ app.service('EventHandler', function ($mdToast) {
             loading: false,
             action: act
         };
-        dialog.hideDelay = 1500;
+        dialog.hideDelay = delay;
         $mdToast.show(dialog)
             .then(function (response) {
                 if (response) {
@@ -48,6 +48,25 @@ app.service('EventHandler', function ($mdToast) {
                 }
             });
     };
+
+    this.show = function (message, loading, action, duration, act, none) {
+        dialog.locals =
+        {
+            message: message,
+            loading: loading,
+            action: action
+        };
+        dialog.hideDelay = duration;
+        $mdToast.show(dialog)
+            .then(function (response) {
+                if (response) {
+                    act && act()
+                }
+                else {
+                    none && none();
+                }
+            });
+    }
 });
 
 

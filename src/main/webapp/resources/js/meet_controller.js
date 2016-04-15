@@ -54,9 +54,7 @@ app.controller("meetCtrl", function ($scope, Entity, $state, UserService, MeetSe
             Entity.remove({entity: "tasks", id: task.taskId});
         };
 
-        $scope.multiLine = function (str) {
-            return str.replaceAll("\n", "<br/>");
-        }
+
     }
 );
 app.controller("meetUsersCtrl", function ($scope) {

@@ -28,7 +28,7 @@ public class BoardController {
     @Autowired
     BoardService boardService;
 
-    @RequestMapping(value = "api/boards/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/boards/{id}", method = RequestMethod.GET)
     public ResponseEntity<Board> getBoardById(@PathVariable long id) {
         Board board = boardService.getById(id);
 
@@ -39,7 +39,7 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/boards", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/boards", method = RequestMethod.GET)
     public ResponseEntity<List<Board>> getBoards() {
         List<Board> boards = boardService.getAll();
 
@@ -51,7 +51,7 @@ public class BoardController {
     }
 
 
-    @RequestMapping(value = "api/boards/", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/boards/", method = RequestMethod.POST)
     public ResponseEntity<Void> createBoard(@RequestBody Board board) {
         if (board == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,7 +62,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "api/boards/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/boards/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateBoard(@RequestBody Board board, @PathVariable long id) {
         if (boardService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -74,7 +74,7 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "api/boards/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/boards/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> updateBoard(@PathVariable long id) {
         if (boardService.getById(id) == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

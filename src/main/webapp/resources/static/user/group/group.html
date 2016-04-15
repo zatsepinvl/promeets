@@ -5,7 +5,7 @@
         <div class="phone mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="margin-top: 0">
 
 
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="width: 100%;">
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="min-height: 0; height: 100%">
                 <md-toolbar style="background-color: #2e7d32;">
                     <div class="md-toolbar-tools">
                         <span>{{group.title}}</span>
@@ -23,29 +23,30 @@
                 </md-toolbar>
 
                 <!-- Group elements menu-->
-                <div class="mdl-grid" style="width: 100%;">
-                    <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                        <a href="" ng-click="transitionTo('user.group.main')" style="text-decoration: none;">
+                <div class="mdl-grid" style="width: 100%;padding: 0; margin: 0">
+                    <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                        <a href="" ng-click="transitionTo('user.group.main')"
+                           style="text-decoration: none; padding: 0; margin-top: 0; margin-bottom: 0">
                             <md-button>
                                 Group
                             </md-button>
                         </a>
                     </div>
-                    <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                    <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                         <a href="" ng-click="transitionTo('user.group.calendar')" style="text-decoration: none;">
                             <md-button>
                                 Meetings
                             </md-button>
                         </a>
                     </div>
-                    <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                    <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                         <a ui-sref=".files" style="text-decoration: none;">
                             <md-button>
                                 Files
                             </md-button>
                         </a>
                     </div>
-                    <div class="mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                    <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                         <a href="" ng-click="transitionTo('user.group.chat')" style="text-decoration: none;">
                             <md-button>
                                 Chat
@@ -54,7 +55,6 @@
                     </div>
                 </div>
                 <md-divider></md-divider>
-                <!-- Group content -->
                 <div ui-view></div>
             </div>
         </div>

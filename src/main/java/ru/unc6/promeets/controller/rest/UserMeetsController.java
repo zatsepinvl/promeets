@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Vladimir on 10.04.2016.
  */
 @RestController
-@RequestMapping("/api/user/meets")
+@RequestMapping("/api/users/meets")
 public class UserMeetsController {
 
     @Autowired

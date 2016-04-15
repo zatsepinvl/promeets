@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Created by Vladimir on 06.04.2016.
  */
-public abstract class BaseControllerException extends RuntimeException {
+public class BaseControllerException extends RuntimeException {
 
     protected ResponseError responseError;
     protected HttpStatus httpStatus;

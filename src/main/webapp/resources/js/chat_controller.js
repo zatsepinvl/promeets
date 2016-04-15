@@ -1,169 +1,53 @@
-app.controller('chatController', function($scope, $q, $rootScope, $http, $mdDialog, UserService, Entity, $window) 
-{ 
-		$scope.messages;
-		$scope.currentUser = {};
-		$scope.messageText = "";
-		$scope.chat = {};
-		$scope.isLoad;
-		$scope.glued = true;
-		$scope.isAllChat = false;
-			
-
-		PAGE_LENGHT=20;
-		
-		var groupId = window.location.pathname.split("/")[2];
-		var id;
-		var socket;
-		var stompClient;
-		var messagePageCount = 0;
-		
-		var deferred = $q.defer();
-		
-		
-		UserService.load(function (user) 
-		{
-			if (user.email) 
-			{
-				$scope.currentUser = user;
-				
-				$http.get('/api/groups/'+groupId).success(function (group) 
-				{
-					id = group.groupId;
-					
-					$scope.chat = Entity.get({entity: "chats", id: id}, function () 
-					{
-						$scope.users = Entity.query({entity: "chats", id: id, d_entity: "users"},
-						function (users) 
-							{
-								$scope.chat.users = users;
-								$scope.load = true;
-								if (chatIsContaisUser($scope.currentUser))
-								{
-									startListen();
-								}
-								else 
-								{
-									alert("You are not a member of this chat");
-								}
-							});
-					});
-				});
-				$scope.glued = !$scope.glued;
-			}
-			else 
-			{
-				alert("Not autorize");
-			}
-		});
-		
-		$scope.getMoreMessages = function ()
-		{
-			messagePageCount+=1;
-			$http.get('/api/chats/'+$scope.chat.chatId+'/messages/'+messagePageCount).success(function (newMessages) 
-			{
-				$scope.messages.push.apply($scope.messages, newMessages);
-				if (newMessages.length < PAGE_LENGHT)
-					$scope.isAllChat = true;
-			});
-		}
-		
-		$scope.sendMessage = function ()
-		{
-            var message = {};
-			message.text = $scope.messageText;
-			message.user = $scope.currentUser;
-			
-			$http.post('/api/chats/'+id +'/messages', message)
-            .success(function (data, status, headers, config) 
-			{
-				$scope.messageText="";
-            })
-            .error(function (data, status, header, config) {});
-		};
-		
-		$scope.showUsers = function () 
-		{
-			
-                    $mdDialog.show({
-                            controller: ChatShowUsersController,
-                            templateUrl: '../static/chat/chat_dialog.html',
-                            parent: angular.element(document.body)
-					})
-					.then(function () {})
-					.then(function (user) {});
-		};
-		
-		var chatIsContaisUser = function(user)
-		{
-			for (i = 0; i < $scope.chat.users.length; i++) 
-			{
-				if ($scope.chat.users[i].email === user.email) 
-				{
-					return true;
-				}
-			}
-			
-			return false;
-		}
-		
-		// STOMP
-		RECONNECT_TIMEOUT = 1*1000;
-		SOCKET_URL = "/ws";
-		SOCKET_TOPIC = "/topic/";
-		SOCKET_BROKER = "/app/";
-		
-		var startListen = function() 
-		{
-			socket = new SockJS(SOCKET_URL);
-			stompClient = Stomp.over(socket);
-			stompClient.connect($scope.currentUser.email, $scope.currentUser.email, subscribeToTopic, stompErrorCallBack);
-			stompClient.onclose = reconnect;
-		};
-		
-		var stompErrorCallBack = function (error)
-		{
-			console.log('STOMP: ' + error);
-			console.log('STOMP: Reconecting in '+RECONNECT_TIMEOUT/1000 +' seconds');
-			reconnect();
-		};
-		
-		var reconnect = function() 
-		{
-		  setTimeout(startListen, RECONNECT_TIMEOUT);
-		};
-		
-		var subscribeToTopic = function()
-		{
-			stompClient.subscribe(SOCKET_TOPIC + $scope.currentUser.userId, function(data) {
-			deferred.notify(listenAppSocket(data));
-			});
-			stompClient.send(SOCKET_BROKER+ $scope.currentUser.userId +"/init", {});
-			$scope.isLoad = true;
-		};
-		
-		function listenAppSocket(frame) 
-		{
-            var socketMessage = JSON.parse(frame.body);
-            if (socketMessage.status=="ready")
-			{
-				$http.get('/api/chats/'+$scope.chat.chatId+'/messages/'+messagePageCount).success(function (messages) 
-				{
-					$scope.messages = messages;
-				});
-			}
-			if (socketMessage.entity=="message" && socketMessage.action=="CREATE")
-			{
-				$http.get('/api/messages/'+socketMessage.id).success(function (message) 
-				{
-					$scope.messages.push(message);
-				});
-			}
-        };    
-});
+app.controller('chatController', function ($scope, appConst, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
+    $scope.user = UserService.get();
+    $scope.group = GroupService.get();
+    $scope.messages = GroupChatService.get();
+    $scope.chat = GroupChatService.getChat();
+    $scope.status = GroupChatService.getStatus();
+    $scope.glue=true;
 
 
-function ChatShowUsersController($scope, $state, $mdDialog) {
-    $scope.cancel = function () {
-        $mdDialog.cancel();
+    $scope.send = function () {
+        if ($scope.text == "") {
+            return;
+        }
+        var message = {
+            text: $scope.text,
+            user: $scope.user,
+            chat: $scope.chat,
+            time: moment().valueOf()
+        };
+        $scope.text = "";
+        Entity.save({entity: "messages"}, message,
+            function (value) {
+                $scope.messages.push({message: value, viewed: true});
+                $scope.glue=true;
+            });
     };
-}
+
+    $scope.update = function (message) {
+        message.viewed = true;
+        UserEntity.update({entity: "messages", id: message.message.messageId}, message);
+    };
+
+    $scope.$on('message', function (event, data) {
+        if (data.action == appConst.ACTION.CREATE) {
+            UserEntity.get({entity: "messages", id: data.id},
+                function (message) {
+                    $scope.messages.push(message);
+                    $scope.glue=true;
+                });
+        }
+    });
+
+    var today = moment();
+    $scope.time = function (time) {
+        time = moment(time).local();
+        return time.isSame(today, 'day') ? time.format('HH:mm') : time.format('MM-DD-YY');
+    };
+
+    $scope.onLoad = function () {
+        $scope.scroll();
+    };
+
+});

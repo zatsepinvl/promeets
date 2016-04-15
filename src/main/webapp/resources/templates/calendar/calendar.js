@@ -6,7 +6,8 @@ app.directive("calendar", function () {
             selected: "=",
             model: "=",
             dayClick: "=",
-            changeMonth: "="
+            nextMonth: "=",
+            prevMonth: '='
         },
         link: function ($scope) {
             $scope.load = false;
@@ -18,7 +19,7 @@ app.directive("calendar", function () {
                     week.days.forEach(function (day) {
                         day.events = [];
                         $scope.model.forEach(function (event) {
-                            if ((event.time) && (day.date.isSame(event.time, "day"))) {
+                            if ((event.time) && (day.date.isSame(event.time, 'day'))) {
                                 day.events.push(event);
                             }
                         });
@@ -32,8 +33,7 @@ app.directive("calendar", function () {
             $scope.month = $scope.selected.clone();
 
             var start = $scope.selected.clone();
-            start.date(1);
-            _removeTime(start.day(0));
+            _removeTime(start.date(1).day(0));
 
             _buildMonth($scope, start, $scope.month);
 
@@ -47,7 +47,7 @@ app.directive("calendar", function () {
                 _removeTime(next.month(next.month() + 1).date(1));
                 $scope.month.month($scope.month.month() + 1);
                 _buildMonth($scope, next, $scope.month);
-                $scope.changeMonth && $scope.changeMonth($scope.month);
+                $scope.nextMonth && $scope.nextMonth($scope.month);
             };
 
             $scope.previous = function () {
@@ -55,7 +55,7 @@ app.directive("calendar", function () {
                 _removeTime(previous.month(previous.month() - 1).date(1));
                 $scope.month.month($scope.month.month() - 1);
                 _buildMonth($scope, previous, $scope.month);
-                $scope.changeMonth && $scope.changeMonth($scope.month);
+                $scope.prevMonth && $scope.prevMonth($scope.month);
             };
 
 

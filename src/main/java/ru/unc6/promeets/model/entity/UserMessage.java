@@ -1,0 +1,54 @@
+package ru.unc6.promeets.model.entity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.persistence.*;
+
+/**
+ * Created by Vladimir on 12.04.2016.
+ */
+@Entity
+@Table(name = "user_messages", schema = "public", catalog = "promeets_db")
+public class UserMessage {
+
+    private UserMessagePK userMessagePK;
+    private boolean viewed;
+
+    @EmbeddedId
+    public UserMessagePK getUserMessagePK() {
+        return userMessagePK;
+    }
+
+    @JsonProperty
+    public void setUserMessagePK(UserMessagePK userMessagePK) {
+        this.userMessagePK = userMessagePK;
+    }
+
+    @Basic
+    @Column(name = "viewed")
+    public boolean isViewed() {
+        return viewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
+    }
+
+    @Transient
+    public User getUser() {
+        return userMessagePK.getUser();
+    }
+
+    public void setUser(User user) {
+        userMessagePK.setUser(user);
+    }
+
+    @Transient
+    public Message getMessage() {
+        return userMessagePK.getMessage();
+    }
+
+    public void setMessage(Message message) {
+        userMessagePK.setMessage(message);
+    }
+}

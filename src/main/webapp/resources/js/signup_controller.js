@@ -23,7 +23,7 @@ app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, Ev
         $scope.signUp = function () {
             if ($scope.signUpForm.$valid) {
                 $scope.loading = true;
-                Entity.save({entity: "user"}, $scope.user, function () {
+                Entity.save({entity: "users"}, $scope.user, function () {
                         $scope.loading = false;
                         EventHandler.message('Account has been created.');
                         $state.transitionTo('home.login');

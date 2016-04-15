@@ -2,8 +2,6 @@ package ru.unc6.promeets.controller.rest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,15 +11,12 @@ import ru.unc6.promeets.controller.exception.ResponseError;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CurrentUser;
-import ru.unc6.promeets.security.CustomUserDetails;
-
-import java.security.Principal;
 
 /**
  * Created by Vladimir on 19.02.2016.
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
     private static final Logger log = Logger.getLogger(UserController.class);
 

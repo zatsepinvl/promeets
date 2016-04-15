@@ -20,7 +20,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseBody
     public ResponseError handleException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return new ResponseError(ex.getClass().getName() + " : " + ex.getMessage());
+        return new ResponseError(ex.getClass() + " : " + ex.getMessage());
     }
 
 

@@ -1,7 +1,7 @@
 /**
  * Created by Vladimir on 15.03.2016.
  */
-app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetService, $state) {
+app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetService, $state, appConst) {
     $scope.user = UserService.get();
     $scope.logout = function () {
         $http.post('/logout')
@@ -13,5 +13,12 @@ app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetServi
                 console.log(error);
             });
     };
+
     $scope.newMeets = UserMeetService.getNewMeets();
+
+    $scope.$on('meet', function (event, data) {
+        if (data.action == appConst.ACTION.CREATE) {
+            $scope.newMeets.push(data);
+        }
+    });
 });

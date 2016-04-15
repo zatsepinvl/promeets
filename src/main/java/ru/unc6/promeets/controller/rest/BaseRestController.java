@@ -3,15 +3,15 @@ package ru.unc6.promeets.controller.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.NotFoundException;
+import ru.unc6.promeets.controller.exception.NotFoundResponseError;
 import ru.unc6.promeets.controller.exception.ResponseError;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
 
-import ru.unc6.promeets.model.service.notify.BaseNotifyService;
+public abstract class BaseRestController<T, V extends Serializable> {
 
-public class BaseRestController<T, V> {
-    public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
     private BaseService<T, V> service;
 
     public BaseRestController(BaseService<T, V> service) {
@@ -53,13 +53,13 @@ public class BaseRestController<T, V> {
 
     protected void checkIsNotFoundById(V id) {
         if (service.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+            throw new NotFoundException().setResponseError(new NotFoundResponseError());
         }
     }
 
     protected void checkIsNotFound(T entity) {
         if (entity == null) {
-            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+            throw new NotFoundException().setResponseError(new NotFoundResponseError());
         }
     }
 }

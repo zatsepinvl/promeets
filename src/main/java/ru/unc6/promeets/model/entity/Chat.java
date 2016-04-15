@@ -23,7 +23,7 @@ public class Chat {
     }
 
     @Basic
-    @Column(name = "name", nullable = false, length = -1)
+    @Column(name = "name")
     public String getName() {
         return name;
     }

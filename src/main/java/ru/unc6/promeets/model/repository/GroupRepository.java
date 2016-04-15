@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
 
 import java.sql.Timestamp;
@@ -17,22 +18,22 @@ import java.sql.Timestamp;
 /**
  * @author MDay
  */
+@Transactional
 public interface GroupRepository extends CrudRepository<Group, Long> {
-    @Query("select userGroupPK.user from UserGroup userGroup where  userGroup.userGroupPK.group.groupId=(:groupId)")
-    Iterable<User> getAllUsersByGroupId(@Param("groupId") Long id);
-
-    @Query("select userGroup from UserGroup userGroup where  userGroup.userGroupPK.group.groupId=(:groupId)")
-    Iterable<UserGroup> getAllUserGroupsByGroupId(@Param("groupId") Long id);
 
     @Cacheable(value = "groupMeetsById")
     @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) order by meet.time")
-    Iterable<Meet> getAllMeetsByGroupId(@Param("groupId") Long id);
+    Iterable<Meet> getMeetsByGroupId(@Param("groupId") Long id);
+
+    @Cacheable(value = "groupMeetsByTimePeriod")
+    @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) and meet.time>=(:start) and meet.time<=(:end) order by meet.time")
+    Iterable<Meet> getMeetsByGroupIdAndTimePeriod(@Param("groupId") long groupId, @Param("start") long start, @Param("end") long end);
 
     @Modifying
-    @Query("delete from UserGroup userGroup where userGroup.userGroupPK.group.groupId=(:groupId)")
-    void deleteAllUserGroupsByGroupId(@Param("groupId") Long id);
+    @Query("delete from Meet meet where  meet.group.groupId=(:groupId)")
+    Iterable<Meet> deleteMeetsByGroupId(@Param("groupId") Long id);
 
     @Query("select groupType from GroupType groupType")
-    Iterable<GroupType> getAllGroupTypes();
+    Iterable<GroupType> getGroupTypes();
 
 }

@@ -24,7 +24,7 @@ public interface ChatRepository extends CrudRepository<Chat, Long>
     @Query("select message from Message message where message.chat.chatId=(:chatId) order by message.time DESC")
     Iterable<Message> getAllMessagesByChatId(@Param("chatId") Long id);
     
-    @Query("select chatUserPK.user from ChatUser chatUser where  chatUser.chatUserPK.chat.chatId=(:chatId)")
+    @Query("select userChat.userChatPK.user from UserChat userChat where  userChat.userChatPK.chat.chatId=(:chatId)")
     Iterable<User> getAllUsersByChatId(@Param("chatId") Long id);
     
     @Modifying

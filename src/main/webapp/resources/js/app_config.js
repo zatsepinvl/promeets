@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize', 'focus-if']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize', 'focus-if','luegg.directives']);
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
 };
@@ -9,6 +9,9 @@ app.run(function ($rootScope, $location, $timeout) {
             componentHandler.upgradeAllRegistered();
         });
     });
+    $rootScope.multiLine = function (str) {
+        return str.replaceAll("\n", "<br/>");
+    };
 });
 
 app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
@@ -94,7 +97,12 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
             .state('user.group.calendar',
                 {
                     url: '/calendar',
-                    templateUrl: '/static/user/group/meets/calendar.html'
+                    templateUrl: '/static/user/group/meets/calendar.html',
+                    resolve: {
+                        meets: function (GroupMeetsService, $stateParams) {
+                            return GroupMeetsService.resolve($stateParams.groupId);
+                        }
+                    }
                 })
             .state('user.venue',
                 {
@@ -113,10 +121,15 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
-			.state('user.group.chat',
+            .state('user.group.chat',
                 {
-					url: '/chat',
-                    templateUrl: '/static/user/group/chat/chat.html'
+                    url: '/chat',
+                    templateUrl: '/static/user/group/chat/chat.html',
+                    resolve: {
+                        messages: function (GroupChatService, GroupService) {
+                            return GroupChatService.load(GroupService.get());
+                        }
+                    }
                 });
         $locationProvider.html5Mode(true);
     }
@@ -156,6 +169,26 @@ function clone(from, to) {
     for (var k in from) to[k] = from[k];
 };
 
+app.constant('appConst', {
+    WS: {
+        URL: '/ws',
+        TOPIC: '/topic/',
+        BROKER: '/app/',
+        RECONNECT_TIMEOUT: 600
+    },
+
+    ACTION: {
+        CREATE: 'CREATE',
+        UPDATE: 'UPDATE',
+        DELETE: 'DELETE'
+    },
+
+    TIME_FORMAT: {
+        DAY: 'DD MMMM YYYY',
+        TIME: 'HH:mm',
+        DAY_TIME: 'DD MMMM YYYY HH:mm'
+    }
+});
 
 var DAY_FORMAT = 'DD MMMM YYYY';
 var TIME_FORMAT = 'HH:mm';

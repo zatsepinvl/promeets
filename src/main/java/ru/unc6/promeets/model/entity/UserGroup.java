@@ -1,5 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 /**
@@ -13,6 +15,7 @@ public class UserGroup {
     private short invitePermission;
 
     @EmbeddedId
+    @JsonIgnore
     public UserGroupPK getUserGroupPK() {
         return userGroupPK;
     }

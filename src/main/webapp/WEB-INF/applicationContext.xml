@@ -12,7 +12,7 @@
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db"/>
+        <property name="url" value="jdbc:postgresql://promeets.sytes.net:5432/promeets_db"/>
         <property name="username" value="pmadmin"/>
         <property name="password" value="pm_admin"/>
         <property name="testOnBorrow" value="true"/>

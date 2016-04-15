@@ -71,13 +71,27 @@ app.factory('Entity', function ($resource) {
 });
 
 
+//factories
+app.factory('UserEntity', function ($resource) {
+    return $resource('/api/users/:entity/:id/:d_entity', {
+        entity: '@entity',
+        id: '@id',
+        d_entity: "@d_entity",
+    }, {
+        'update': {
+            method: 'PUT'
+        }
+    });
+});
+
+
 //services
 app.service('UserService', function ($http) {
     var value = {};
     var headers;
     this.load = function (success, error) {
         newMeets = [];
-        $http.get('/api/user', {headers: headers})
+        $http.get('/api/users', {headers: headers})
             .success(function (user) {
                 clone(user, value);
                 success && success(value);
@@ -111,7 +125,8 @@ app.service('UserService', function ($http) {
 app.service('UserMeetService', function ($http) {
     var newMeets = [];
     this.load = function () {
-        $http.get('/api/user/meets/new')
+        newMeets = [];
+        $http.get('/api/users/meets/new')
             .success(function (meets) {
                 clone(meets, newMeets);
             });
@@ -189,5 +204,143 @@ app.service('MeetService', function (Entity) {
     this.getTasks = function () {
         return tasks;
     };
+
+
 });
+
+app.service('GroupMeetsService', function ($http) {
+
+    var pre = [];
+    var current = [];
+    var next = [];
+    var currentTime = moment().day(0).hour(0).utc();
+    var groupId;
+
+    this.resolve = function (id) {
+        groupId = id;
+        currentTime = moment().day(0).hour(0).utc();
+        var prevM = currentTime.clone().add(-1, 'month');
+        var nextM = currentTime.clone().add(1, 'month');
+        this.load(groupId, startOfMonth(currentTime.clone()), endOfMonth(currentTime.clone()), current);
+        this.load(groupId, startOfMonth(prevM.clone()), endOfMonth(prevM.clone()), pre);
+        this.load(groupId, startOfMonth(nextM.clone()), endOfMonth(nextM.clone()), next);
+        return current;
+    };
+
+    this.load = function (groupId, start, end, data, success, error) {
+        $http.get("/api/groups/" + groupId + "/meets/?start=" + start + "&end=" + end)
+            .success(function (meets) {
+                data.length = 0;
+                meets.forEach(function (meet) {
+                    meet.time = moment(meet.time).local();
+                });
+                clone(meets, data);
+            })
+            .error(function (error) {
+
+            });
+    };
+
+    this.current = function () {
+        return current;
+    };
+
+    this.getNext = function () {
+        return next;
+    };
+
+    this.getPrev = function () {
+        return pre;
+    };
+
+    this.next = function () {
+        pre.length = 0;
+        clone(current, pre);
+        current.length = 0;
+        clone(next, current);
+        currentTime.add(1, 'month');
+        var temp = currentTime.clone().add(1, 'month');
+        this.load(groupId, startOfMonth(temp.clone()), endOfMonth(temp.clone()), next);
+        return current;
+    };
+
+    this.previous = function () {
+        next.length = 0;
+        clone(current, next);
+        current.length = 0;
+        clone(pre, current);
+        currentTime.add(-1, 'month');
+        var temp = currentTime.clone().add(-1, 'month');
+        this.load(groupId, startOfMonth(temp.clone()), endOfMonth(temp.clone()), pre);
+        return current;
+    };
+});
+
+function endOfMonth(date) {
+    return date.endOf('month').valueOf();
+}
+
+function startOfMonth(date) {
+    return date.date(1).hour(0).minute(0).millisecond(0).valueOf();
+}
+
+app.service('GroupChatService', function ($rootScope, $http) {
+    var messages = [];
+    var chat = {};
+    var status = {loading: true};
+
+    var page = 0;
+
+    var loadPage = function (chatId, page, success, error) {
+        $http.get("/api/users/chats/" + chatId + "/messages?page=" + page)
+            .success(function (data) {
+                success && success(data);
+            })
+            .error(function (er) {
+                error && error(er);
+            });
+    };
+
+    this.load = function (group, page) {
+        status.loading = true;
+        console.log(group);
+        $rootScope.group = group;
+        $rootScope.$watch('group', function (newVal, oldVal) {
+            if (newVal.chat) {
+                clone(newVal.chat, chat);
+                page = page ? page : 0;
+                messages.length = 0;
+                loadPage(chat.chatId, page, function (data) {
+                    data.forEach(function (val) {
+                        val.message.time = moment(val.message.time).valueOf();
+                    });
+                    clone(data, messages);
+                    status.loading = false;
+                });
+            }
+        }, true);
+    };
+
+
+    this.loadNextPage = function () {
+        page++;
+        loadPage(chat.chatId, page, function (data) {
+            clone(data, messages);
+        });
+    };
+
+    this.get = function () {
+        return messages;
+    };
+
+    this.getChat = function () {
+        return chat;
+    };
+
+    this.getStatus = function () {
+        return status;
+    }
+})
+;
+
 
