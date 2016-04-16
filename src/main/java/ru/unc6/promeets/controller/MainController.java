@@ -41,4 +41,14 @@ public class MainController {
     public String venueByMeetId() {
         return INDEX_PATH;
     }
+    
+    @RequestMapping(value = "/rtc")
+    public String rtcExample() {
+        return "/static/rtc.html";
+    }
+    
+    @RequestMapping(value = "/rtc1")
+    public String rtcExample1() {
+        return "/static/rtc1.html";
+    }
 }

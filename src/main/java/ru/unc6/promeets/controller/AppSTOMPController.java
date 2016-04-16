@@ -8,6 +8,7 @@ package ru.unc6.promeets.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.User;
@@ -29,6 +30,19 @@ public class AppSTOMPController
     {
         simpMessagingTemplate.convertAndSend("/topic/"+id, "{\"status\":\"ready\"}");
     }
+    
+    @MessageMapping("/rtc/1")
+    public void rtc1(@Payload String message) 
+    {
+        simpMessagingTemplate.convertAndSend("/topic/rtc/2" , message);
+    }
+    
+    @MessageMapping("/rtc/2")
+    public void rtc2(@Payload String message) 
+    {
+        simpMessagingTemplate.convertAndSend("/topic/rtc/1" , message);
+    }
+    
     
     public void sendNotificationToUser (Notification notification, User user)
     {
