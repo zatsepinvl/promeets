@@ -15,9 +15,7 @@ public interface UserMessageService extends BaseService<UserMessage, UserMessage
 
     List<UserMessage> getUserMessagesByUserIdAndChatId(long userId, long chatId, int page);
 
-    int getNewUserMessagesCountByUserIdAndChatId(long userId, long chatId);
-
-    int getNewUserMessagesCountByUserId(long userId);
+    List<UserMessage> getNewUserMessagesByUserId(long userId);
 
     void deleteUserMessagesByChatId(long chatId);
 

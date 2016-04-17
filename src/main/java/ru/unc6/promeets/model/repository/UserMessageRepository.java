@@ -24,12 +24,8 @@ public interface UserMessageRepository extends PagingAndSortingRepository<UserMe
     @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) order by userMessage.id.message.time desc")
     Page<UserMessage> getUserMessagesByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId, Pageable pageable);
 
-    @Query("select count(userMessage) from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) and userMessage.viewed=false group by userMessage.id.message.id")
-    int getNewUserMessagesCountByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId);
-
-    @Query("select count(userMessage) from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.viewed=false group by userMessage.id.message.id")
-    int getNewUserMessagesCountByUserId(@Param("userId") long userId);
-
+    @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.viewed=false")
+    Iterable<UserMessage> getNewUserMessagesCountByUserId(@Param("userId") long userId);
 
     @Modifying
     @Query("delete from UserMessage userMessage where userMessage.id.message.chat.chatId=(:chatId)")

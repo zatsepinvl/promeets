@@ -57,6 +57,20 @@ app.directive('time', function () {
     }
 });
 
+app.directive('onScrollToTop', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var fn = scope.$eval(attrs.onScrollToTop);
+            element.on('scroll', function (e) {
+                if (!e.target.scrollTop) {
+                    scope.$apply(fn);
+                }
+            });
+        }
+    };
+});
+
 //factories
 app.factory('Entity', function ($resource) {
     return $resource('/api/:entity/:id/:d_entity', {
@@ -84,6 +98,14 @@ app.factory('UserEntity', function ($resource) {
     });
 });
 
+
+app.service('AppService', function () {
+    var today = moment();
+    this.toTime = function (time) {
+        time = moment(time).local();
+        return time.isSame(today, 'day') ? time.format('HH:mm') : time.format('MM-DD-YY');
+    };
+});
 
 //services
 app.service('UserService', function ($http) {
@@ -137,7 +159,22 @@ app.service('UserMeetService', function ($http) {
     }
 });
 
-app.service('GroupService', function (Entity) {
+app.service('UserMessageService', function ($http) {
+    var newMessages = [];
+    this.load = function () {
+        newMessages = [];
+        $http.get('/api/users/messages/new')
+            .success(function (meets) {
+                clone(meets, newMessages);
+            });
+        return newMessages;
+    };
+    this.getNewMessages = function () {
+        return newMessages;
+    }
+});
+
+app.service('GroupService', function (Entity, $http) {
     var value;
     var members;
     this.load = function (groupId, success, error) {
@@ -154,6 +191,7 @@ app.service('GroupService', function (Entity) {
         Entity.query({entity: "groups", id: groupId, d_entity: "users"}, function (data) {
             clone(data, members);
         });
+
         return value;
     };
     this.get = function () {
@@ -162,7 +200,7 @@ app.service('GroupService', function (Entity) {
 
     this.getMembers = function () {
         return members;
-    }
+    };
 });
 
 app.service('MeetService', function (Entity) {
@@ -303,7 +341,6 @@ app.service('GroupChatService', function ($rootScope, $http) {
 
     this.load = function (group, page) {
         status.loading = true;
-        console.log(group);
         $rootScope.group = group;
         $rootScope.$watch('group', function (newVal, oldVal) {
             if (newVal.chat) {
@@ -325,7 +362,9 @@ app.service('GroupChatService', function ($rootScope, $http) {
     this.loadNextPage = function () {
         page++;
         loadPage(chat.chatId, page, function (data) {
-            clone(data, messages);
+            data.forEach(function (value) {
+                messages.push(value);
+            });
         });
     };
 
@@ -337,10 +376,43 @@ app.service('GroupChatService', function ($rootScope, $http) {
         return chat;
     };
 
-    this.getStatus = function () {
+    this.getState = function () {
         return status;
     }
 })
 ;
+
+
+app.service('UserChatsService', function (UserEntity, $http, UserMessageService) {
+    var chats = [];
+    this.resolve = function () {
+        chats.length = 0;
+        var i = 0;
+        UserEntity.query({entity: 'groups'},
+            function (data) {
+                data.forEach(function (value) {
+                    chats[i] = {group: value.group, chat: value.group.chat, messages: [], newMessages: 0};
+                    $http.get("/api/users/chats/" + value.group.chat.chatId + "/messages?page=" + 0)
+                        .success(function (messages) {
+                            clone(messages, chats[i].messages);
+                            UserMessageService.getNewMessages().forEach(function (message) {
+                                if (message.message.chat.chatId == chats[i].chat.chatId) {
+                                    chats[i].newMessages++;
+                                }
+                            });
+                            i++;
+                        });
+                });
+            });
+    };
+
+
+    this.getChats = function () {
+        return chats;
+    }
+});
+
+
+
 
 

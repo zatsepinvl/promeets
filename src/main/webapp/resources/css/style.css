@@ -19,6 +19,7 @@ body {
 
 .mdl-card {
     width: 100%;
+    min-height: 0;
 }
 
 .icon-min {

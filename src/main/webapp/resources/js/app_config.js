@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize', 'focus-if','luegg.directives']);
+var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize', 'focus-if', 'luegg.directives']);
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
 };
@@ -71,6 +71,9 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     resolve: {
                         newMeets: function (UserMeetService) {
                             return UserMeetService.load();
+                        },
+                        newMessages: function (UserMessageService) {
+                            return UserMessageService.load();
                         }
                     }
                 })
@@ -104,6 +107,30 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
+            .state('user.group.chat',
+                {
+                    url: '/chat',
+                    templateUrl: '/static/user/group/chat/chat.html',
+                    resolve: {
+                        messages: function (GroupChatService, GroupService) {
+                            return GroupChatService.load(GroupService.get());
+                        }
+                    }
+                })
+            .state('user.messages',
+                {
+                    url: '/messages',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/chats/chats.html'
+                        }
+                    },
+                    resolve: {
+                        messages: function (UserChatsService) {
+                            return UserChatsService.resolve();
+                        }
+                    }
+                })
             .state('user.venue',
                 {
                     url: '/venue/{meetId}',
@@ -120,17 +147,8 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                             return MeetService.load($stateParams.meetId);
                         }
                     }
-                })
-            .state('user.group.chat',
-                {
-                    url: '/chat',
-                    templateUrl: '/static/user/group/chat/chat.html',
-                    resolve: {
-                        messages: function (GroupChatService, GroupService) {
-                            return GroupChatService.load(GroupService.get());
-                        }
-                    }
                 });
+
         $locationProvider.html5Mode(true);
     }
 )

@@ -8,12 +8,10 @@ import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMessage;
 import ru.unc6.promeets.model.entity.UserMessagePK;
-import ru.unc6.promeets.model.service.entity.BaseService;
 import ru.unc6.promeets.model.service.entity.MessageService;
 import ru.unc6.promeets.model.service.entity.UserMessageService;
 import ru.unc6.promeets.security.CurrentUser;
 
-import javax.ws.rs.GET;
 import java.util.List;
 
 /**
@@ -56,9 +54,9 @@ public class UserMessageController extends BaseUserRestController<UserMessage, U
         userMessageService.delete(userMessage.getUserMessagePK());
     }
 
-    @RequestMapping(value = "/new/count", method = RequestMethod.GET)
-    public int getNewCount(@CurrentUser User user) {
-        return userMessageService.getNewUserMessagesCountByUserId(user.getUserId());
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public List<UserMessage> getNeMessages(@CurrentUser User user) {
+        return userMessageService.getNewUserMessagesByUserId(user.getUserId());
     }
 
     @Override

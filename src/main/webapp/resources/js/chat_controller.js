@@ -1,10 +1,12 @@
-app.controller('chatController', function ($scope, appConst, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
+app.controller('chatController', function ($document, $scope, appConst, AppService, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
     $scope.user = UserService.get();
     $scope.group = GroupService.get();
+    $scope.messages = undefined;
     $scope.messages = GroupChatService.get();
     $scope.chat = GroupChatService.getChat();
-    $scope.status = GroupChatService.getStatus();
-    $scope.glue=true;
+    $scope.status = GroupChatService.getState();
+    $scope.glue = true;
+    $scope.time = AppService.toTime;
 
 
     $scope.send = function () {
@@ -21,7 +23,7 @@ app.controller('chatController', function ($scope, appConst, $http, GroupService
         Entity.save({entity: "messages"}, message,
             function (value) {
                 $scope.messages.push({message: value, viewed: true});
-                $scope.glue=true;
+                $scope.glue = true;
             });
     };
 
@@ -35,19 +37,15 @@ app.controller('chatController', function ($scope, appConst, $http, GroupService
             UserEntity.get({entity: "messages", id: data.id},
                 function (message) {
                     $scope.messages.push(message);
-                    $scope.glue=true;
+                    $scope.glue = true;
                 });
         }
     });
 
-    var today = moment();
-    $scope.time = function (time) {
-        time = moment(time).local();
-        return time.isSame(today, 'day') ? time.format('HH:mm') : time.format('MM-DD-YY');
-    };
 
-    $scope.onLoad = function () {
-        $scope.scroll();
+    $scope.handleScrollToTop = function () {
+        GroupChatService.loadNextPage();
     };
 
 });
+

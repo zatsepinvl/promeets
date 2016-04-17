@@ -47,14 +47,11 @@ public class UserMessageServiceImpl extends BaseServiceImpl<UserMessage, UserMes
                 .getContent();
     }
 
-    @Override
-    public int getNewUserMessagesCountByUserIdAndChatId(long userId, long chatId) {
-        return userMessageRepository.getNewUserMessagesCountByUserIdAndChatId(userId, chatId);
-    }
+
 
     @Override
-    public int getNewUserMessagesCountByUserId(long userId) {
-        return userMessageRepository.getNewUserMessagesCountByUserId(userId);
+    public List<UserMessage> getNewUserMessagesByUserId(long userId) {
+        return (List<UserMessage>) userMessageRepository.getNewUserMessagesCountByUserId(userId);
     }
 
     @Override

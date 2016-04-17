@@ -1,0 +1,39 @@
+<div ng-controller="messagesCtrl" ng-cloak>
+    <div class="mdl-grid" style="padding: 0">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--4-col-phone"></div>
+
+        <div class="phone mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="margin-top: 0">
+
+            <div class="mdl-card mdl-card mdl-shadow--2dp">
+                <!-- Chats -->
+                <md-list>
+                    <md-list-item class="no-hover primary">
+                        <p style="margin-left: 20px">Messages</p>
+                    </md-list-item>
+                    <md-list-item ng-repeat="chat in chats track by chat.chat.chatId"
+                                  ng-if="chat.messages.length"
+                                  class="md-3-line"
+                                  ng-class="{ 'new' : chat.newMessages}"
+                                  ng-click="go(chat)">
+                        <img ng-src="{{chat.group.image.url}}" class="md-avatar"/>
+                        <div class="md-list-item-text" layout="column">
+                            <img ng-src="{{chat.messages[0].message.user.image.url}}" class="md-avatar min"
+                                 style="position: absolute; top:35px;"/>
+                            <h3 ng-bind-html="chat.group.title"></h3>
+                            <h4 style="color:#2e7d32; font-size: 12px; margin-left: 40px"
+                                ng-bind-html="chat.messages[0].message.user.firstName"></h4>
+                            <h4 style="color:#424242; margin-left: 40px"
+                                ng-bind-html="multiLine(chat.messages[0].message.text)"></h4>
+                            <h3 style="color:#ef6c00; position: absolute; right:20px; top:20px;"
+                                ng-bind-html="'+'+chat.newMessages" ng-if="chat.newMessages"></h3>
+                            <h4 style="color:#757575; font-size: 10px; position: absolute; right:20px; top:40px;"
+                                ng-bind-html="time(chat.messages[0].message.time)"></h4>
+                        </div>
+                    </md-list-item>
+
+                </md-list>
+            </div>
+
+        </div>
+    </div>
+</div>

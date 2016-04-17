@@ -24,16 +24,6 @@ app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, Grou
             });
     };
 
-    $scope.messages = 0;
-    $scope.$on('message', function (event, data) {
-        if (data.action == appConst.ACTION.CREATE) {
-            UserEntity.get({entity: "messages", id: data.id},
-                function (message) {
-                    $scope.message++;
-                });
-        }
-    });
-
 });
 
 function cloneGroup(group) {

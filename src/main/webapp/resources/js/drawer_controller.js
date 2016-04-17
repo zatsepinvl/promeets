@@ -1,7 +1,7 @@
 /**
  * Created by Vladimir on 15.03.2016.
  */
-app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetService, $state, appConst) {
+app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetService, UserMessageService, $state, appConst) {
     $scope.user = UserService.get();
     $scope.logout = function () {
         $http.post('/logout')
@@ -15,6 +15,7 @@ app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetServi
     };
 
     $scope.newMeets = UserMeetService.getNewMeets();
+    $scope.newMessages = UserMessageService.getNewMessages();
 
     $scope.$on('meet', function (event, data) {
         if (data.action == appConst.ACTION.CREATE) {

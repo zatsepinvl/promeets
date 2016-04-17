@@ -27,13 +27,23 @@ public class MainController {
         return INDEX_PATH;
     }
 
-    @RequestMapping(value = "/group")
+    @RequestMapping(value = "/group/**")
+    public String groupPage() {
+        return INDEX_PATH;
+    }
+
+    @RequestMapping(value = "/groups")
     public String groups() {
         return INDEX_PATH;
     }
 
-    @RequestMapping(value = "/group/**")
-    public String groupPage() {
+    @RequestMapping(value = "/messages")
+    public String messages() {
+        return INDEX_PATH;
+    }
+
+    @RequestMapping(value = "/calendar")
+    public String calendar() {
         return INDEX_PATH;
     }
 

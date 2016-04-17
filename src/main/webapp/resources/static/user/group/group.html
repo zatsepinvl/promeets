@@ -35,14 +35,14 @@
                     <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                         <a href="" ng-click="transitionTo('user.group.calendar')" style="text-decoration: none;">
                             <md-button>
-                                Meetings
+                                Calendar
                             </md-button>
                         </a>
                     </div>
                     <div class="no-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
                         <a ui-sref=".files" style="text-decoration: none;">
                             <md-button>
-                                Files
+                                Storage
                             </md-button>
                         </a>
                     </div>
@@ -50,6 +50,7 @@
                         <a href="" ng-click="transitionTo('user.group.chat')" style="text-decoration: none;">
                             <md-button>
                                 Chat
+                                    <span ng-if="state.messages" class="accent"> ({{state.messages}})</span>
                             </md-button>
                         </a>
                     </div>

@@ -1,4 +1,5 @@
-<div ng-controller="chatController"
+<div ng-controller="chatController as ctrl"
+     ng-init="onLoad()"
      style="position: relative;">
     <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
          ng-if="status.loading">
@@ -7,7 +8,8 @@
                               flex></md-progress-circular>
     </div>
 
-    <md-list scroll-glue="glue" class="chat" id="chat" ng-if="messages.length" style="height: 50vh; overflow-y: auto;">
+    <md-list on-scroll-to-top="handleScrollToTop" scroll-glue="glue" class="chat" id="chat" ng-if="messages.length"
+             style="height: 50vh; overflow-y: auto;">
         <md-list-item class="no-hover md-3-line"
                       ng-repeat="message in messages | orderBy : 'message.time' : false  track by message.message.messageId"
                       style="min-height: 0;"
@@ -22,9 +24,10 @@
             </div>
         </md-list-item>
     </md-list>
-
+    <md-divider></md-divider>
     <md-list>
         <md-list-item class="no-hover primary">
+            <img ng-src="{{user.image.url}}" class="md-avatar min"/>
             <md-input-container class="md-block" md-no-float style="width: 100%">
                 <textarea ng-model="text" type="text" placeholder="Text"
                           style="font-size: 13px"

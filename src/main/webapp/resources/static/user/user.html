@@ -37,8 +37,11 @@
                 <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
             <span class="mdl-badge"
                   data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span></a>
-                <a class="mdl-navigation__link" href="/message"> <i class="material-icons icon"> message</i>
-                    Messages</a>
+                <a class="mdl-navigation__link" href="" ui-sref="user.messages"> <i class="material-icons icon">
+                    message</i>
+                    Messages
+                <span class="mdl-badge"
+                      data-badge="{{newMessages.length}}" ng-if="newMessages.length"></span></a>
                 <a class="mdl-navigation__link " href="/settings"> <i class="material-icons">settings</i>Settings</a>
                 <a class="mdl-navigation__link " href="" ng-click="logout()"> <i class="material-icons">exit_to_app</i>Log
                     out</a>
