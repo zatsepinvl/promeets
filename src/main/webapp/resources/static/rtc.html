@@ -24,10 +24,10 @@ var IceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
 var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 navigator.getUserMedia = navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
 
-var pc; // PeerConnection
+var pc; 
+var isOffer = false;
 
 
-// Step 1. getUserMedia
 navigator.getUserMedia(
   { audio: true, video: true }, 
   gotStream, 
@@ -44,9 +44,8 @@ function gotStream(stream) {
   pc.onaddstream = gotRemoteStream;
 }
 
-
-// Step 2. createOffer
 function createOffer() {
+  isOffer=true;	
   pc.createOffer(
     gotLocalDescription, 
     function(error) { console.log(error) }, 
@@ -54,8 +53,6 @@ function createOffer() {
   );
 }
 
-
-// Step 3. createAnswer
 function createAnswer() {
   pc.createAnswer(
     gotLocalDescription,
@@ -63,7 +60,6 @@ function createAnswer() {
     { 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true } }
   );
 }
-
 
 function gotLocalDescription(description){
   pc.setLocalDescription(description);
@@ -97,10 +93,10 @@ function gotRemoteStream(event){
 
 		function sendMessage(message)
 		{
-		  stompClient.send(SOCKET_BROKER+"rtc/1", {}, JSON.stringify(message));
+		  stompClient.send(SOCKET_BROKER+"rtc", {}, JSON.stringify(message));
 		}
 
-		var startListen = function() 
+		var start = function() 
 		{
 			socket = new SockJS(SOCKET_URL);
 			stompClient = Stomp.over(socket);
@@ -117,34 +113,34 @@ function gotRemoteStream(event){
 		
 		var reconnect = function() 
 		{
-		  setTimeout(startListen, RECONNECT_TIMEOUT);
+		  setTimeout(start, RECONNECT_TIMEOUT);
 		};
 		
 		var subscribeToTopic = function()
 		{
-			stompClient.subscribe(SOCKET_TOPIC + 'rtc/1', function(data) {
-			listenAppSocket(data);
+			stompClient.subscribe(SOCKET_TOPIC + 'rtc', function(data) {
+			listenSocket(data);
 			});
 		};
 		
-		function listenAppSocket(frame) 
+		function listenSocket(frame) 
 		{
 			var message = JSON.parse(frame.body);
 			
-			if (message.type === 'offer') {
+			if (message.type === 'offer' && !isOffer) {
 				pc.setRemoteDescription(new SessionDescription(message));
 				createAnswer()
 			} 
 			else if (message.type === 'answer') {
 				pc.setRemoteDescription(new SessionDescription(message));
 			} 
-			else if (message.type === 'candidate') {
+			else if (message.type === 'candidate' && !isOffer) {
 				var candidate = new IceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
 				pc.addIceCandidate(candidate);
 			}
         };   
 
-			startListen();
+			start();
 
 </script>
 </html>

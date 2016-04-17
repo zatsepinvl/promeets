@@ -112,11 +112,6 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                 {
 					url: '/chat',
                     templateUrl: '/static/user/group/chat/chat.html'
-                })
-			.state('user.group.rtc',
-                {
-					url: '/rtc',
-                    templateUrl: '/static/user/group/rtc.html'
                 });
         $locationProvider.html5Mode(true);
     }

@@ -5,13 +5,17 @@
  */
 package ru.unc6.promeets.controller;
 
+import java.security.Principal;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notify.Notification;
 
 /**
@@ -24,6 +28,8 @@ public class AppSTOMPController
 {
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    UserService userService;
 
     @MessageMapping("/{id}/init")
     public void initUser(@DestinationVariable("id") Long id) 
@@ -31,18 +37,11 @@ public class AppSTOMPController
         simpMessagingTemplate.convertAndSend("/topic/"+id, "{\"status\":\"ready\"}");
     }
     
-    @MessageMapping("/rtc/1")
+    @MessageMapping("/rtc")
     public void rtc1(@Payload String message) 
     {
-        simpMessagingTemplate.convertAndSend("/topic/rtc/2" , message);
+        simpMessagingTemplate.convertAndSend("/topic/rtc" , message);
     }
-    
-    @MessageMapping("/rtc/2")
-    public void rtc2(@Payload String message) 
-    {
-        simpMessagingTemplate.convertAndSend("/topic/rtc/1" , message);
-    }
-    
     
     public void sendNotificationToUser (Notification notification, User user)
     {

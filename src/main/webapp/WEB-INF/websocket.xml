@@ -25,11 +25,5 @@ http://www.springframework.org/schema/websocket/spring-websocket-4.2.xsd"
         </websocket:stomp-endpoint>
         <websocket:simple-broker prefix="/topic"/>
     </websocket:message-broker>
-    
-    <websocket:handlers>
-        <websocket:mapping path="/rtc" handler="rtcSignalServer"/>
-        <websocket:sockjs/>
-    </websocket:handlers>
-    <bean id="rtcSignalServer" class="ru.unc6.promeets.controller.RtcSignalServer"/>
 
 </beans>
