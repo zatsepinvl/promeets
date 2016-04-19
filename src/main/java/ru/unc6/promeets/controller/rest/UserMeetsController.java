@@ -26,7 +26,7 @@ public class UserMeetsController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     private UserMeet update(@RequestBody UserMeet userMeet, @PathVariable("id") Long meetId) {
-        return userMeetService.save(userMeet);
+        return userMeetService.update(userMeet);
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)

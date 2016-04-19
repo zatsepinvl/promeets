@@ -19,16 +19,19 @@ import ru.unc6.promeets.model.service.entity.BoardService;
 import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.MeetNotificationService;
+import ru.unc6.promeets.model.service.notification.impl.BaseNotificationServiceImpl;
 
 
 @Service
 @Transactional
-public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
+public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
         implements MeetService {
 
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
     private MeetRepository meetRepository;
+
+    private MeetNotificationService notificationService;
 
     @Autowired
     private UserMeetService userMeetService;
@@ -36,13 +39,12 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
     @Autowired
     private BoardService boardService;
 
-    @Autowired
-    private MeetNotificationService notificationService;
 
     @Autowired
-    public MeetServiceImpl(MeetRepository repository) {
-        super(repository);
+    public MeetServiceImpl(MeetRepository repository, MeetNotificationService notificationService) {
+        super(repository, notificationService);
         this.meetRepository = repository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -59,26 +61,15 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
         meetRepository.deleteAllNotesById(id);
         meetRepository.deleteAllAimsById(id);
         userMeetService.deleteUserMeetsByMeetId(id);
-        meetRepository.delete(id);
+        super.delete(id);
     }
 
-    @Override
-    public List<Meet> getAll() {
-        return (List<Meet>) meetRepository.findAll();
-    }
 
     @Override
-    public Meet save(Meet meet) {
-        Meet newMeet;
-        if (!meetRepository.exists(meet.getMeetId())) {
-            newMeet = meetRepository.save(meet);
-            userMeetService.createUserMeetsByMeet(meet);
-            notificationService.onCreate(meet);
-        } else {
-            newMeet = meetRepository.save(meet);
-            notificationService.onUpdate(meet);
-        }
-        return newMeet;
+    public Meet create(Meet meet) {
+        meet = super.create(meet);
+        userMeetService.createUserMeetsByMeet(meet);
+        return meet;
     }
 
     @Override
@@ -90,7 +81,6 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
     public List<MeetTask> getMeetAims(long id) {
         return (List<MeetTask>) meetRepository.getMeetTasksByMeetId(id);
     }
-
 
     @Override
     public Board getBoard(long id) {

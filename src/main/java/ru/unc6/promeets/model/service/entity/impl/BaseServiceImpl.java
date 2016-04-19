@@ -22,13 +22,18 @@ public abstract class BaseServiceImpl<T, V extends Serializable> implements Base
     }
 
     @Override
-    public T save(T entity) {
+    public T create(T entity) {
         return repository.save(entity);
     }
 
     @Override
     public void delete(V id) {
         repository.delete(id);
+    }
+
+    @Override
+    public T update(T entity) {
+        return repository.save(entity);
     }
 
     @Override

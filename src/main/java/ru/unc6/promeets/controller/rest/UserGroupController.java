@@ -34,14 +34,14 @@ public class UserGroupController {
     public UserGroup update(@PathVariable("id") long id, @RequestBody UserGroup userGroup, @CurrentUser User user) {
         checkIsNotFound(id);
         checkHasOwnerAccess(userGroup, user);
-        return userGroupService.save(userGroup);
+        return userGroupService.update(userGroup);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public UserGroup create(@PathVariable("id") long id, @RequestBody UserGroup userGroup, @CurrentUser User user) {
         checkIsNotFound(id);
         checkHasAccess(userGroup, user);
-        return userGroupService.save(userGroup);
+        return userGroupService.create(userGroup);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

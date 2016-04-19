@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.NotFoundException;
 import ru.unc6.promeets.controller.exception.NotFoundResponseError;
-import ru.unc6.promeets.controller.exception.ResponseError;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
 import java.io.Serializable;
@@ -33,7 +32,7 @@ public abstract class BaseRestController<T, V extends Serializable> {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public T create(@RequestBody T entity) {
-        entity = service.save(entity);
+        entity = service.create(entity);
         return entity;
     }
 
@@ -41,7 +40,7 @@ public abstract class BaseRestController<T, V extends Serializable> {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public T updateById(@PathVariable("id") V id, @RequestBody T entity) {
         checkIsNotFoundById(id);
-        return service.save(entity);
+        return service.update(entity);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

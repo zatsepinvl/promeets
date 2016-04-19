@@ -1,7 +1,8 @@
 app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, AppService) {
     $scope.chats = UserChatsService.getChats();
     $scope.time = AppService.toTime;
-
+    $scope.state = UserChatsService.getState();
+    
     $scope.$on('message', function (event, data) {
         if (data.action == appConst.ACTION.CREATE) {
             UserEntity.get({entity: "messages", id: data.id},

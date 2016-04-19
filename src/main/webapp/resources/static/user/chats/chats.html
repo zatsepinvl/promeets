@@ -10,6 +10,13 @@
                     <md-list-item class="no-hover primary">
                         <p style="margin-left: 20px">Messages</p>
                     </md-list-item>
+                    <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
+                         ng-if="state.loading">
+                        <md-progress-circular md-mode="indeterminate"
+                                              md-diameter="25"
+
+                                              flex></md-progress-circular>
+                    </div>
                     <md-list-item ng-repeat="chat in chats track by chat.chat.chatId"
                                   ng-if="chat.messages.length"
                                   class="md-3-line"
@@ -22,7 +29,7 @@
                             <h3 ng-bind-html="chat.group.title"></h3>
                             <h4 style="color:#2e7d32; font-size: 12px; margin-left: 40px"
                                 ng-bind-html="chat.messages[0].message.user.firstName"></h4>
-                            <h4 style="color:#424242; margin-left: 40px"
+                            <h4 style="color:#424242; margin-left: 40px; width: 70%"
                                 ng-bind-html="multiLine(chat.messages[0].message.text)"></h4>
                             <h3 style="color:#ef6c00; position: absolute; right:20px; top:20px;"
                                 ng-bind-html="'+'+chat.newMessages" ng-if="chat.newMessages"></h3>

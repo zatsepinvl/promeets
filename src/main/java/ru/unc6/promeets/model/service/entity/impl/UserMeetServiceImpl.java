@@ -9,6 +9,7 @@ import ru.unc6.promeets.model.entity.UserMeetPK;
 import ru.unc6.promeets.model.repository.UserGroupRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class UserMeetServiceImpl extends BaseServiceImpl<UserMeet, UserMeetPK>
 
     @Autowired
     private UserGroupRepository userGroupRepository;
+
 
     @Autowired
     public UserMeetServiceImpl(UserMeetRepository repository) {

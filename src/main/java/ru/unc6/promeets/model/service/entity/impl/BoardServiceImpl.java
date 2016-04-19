@@ -39,22 +39,24 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board save(Board board) {
+    public Board create(Board board) {
         return boardRepository.save(board);
+    }
+
+    @Override
+    public Board update(Board entity) {
+        return null;
     }
 
     @Override
     public void delete(Long id) {
         List<BoardPage> pages = (List) boardRepository.getAllBoardPagesById(id);
-
         for (BoardPage page : pages) {
             boardRepository.deleteAllBoardItemsByPageId(page.getPageId());
         }
-
         boardRepository.deleteAllBoardPagesById(id);
         boardRepository.delete(id);
 
-        log.debug("Delete board with id=" + id);
     }
 
     @Override

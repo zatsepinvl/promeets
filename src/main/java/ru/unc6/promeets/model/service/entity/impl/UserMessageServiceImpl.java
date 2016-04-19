@@ -11,6 +11,7 @@ import ru.unc6.promeets.model.entity.UserMessagePK;
 import ru.unc6.promeets.model.repository.UserChatRepository;
 import ru.unc6.promeets.model.repository.UserMessageRepository;
 import ru.unc6.promeets.model.service.entity.UserMessageService;
+import ru.unc6.promeets.model.service.notification.impl.UserMessageNotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +20,25 @@ import java.util.List;
  * Created by Vladimir on 13.04.2016.
  */
 @Service
-public class UserMessageServiceImpl extends BaseServiceImpl<UserMessage, UserMessagePK>
+public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessage, UserMessagePK>
         implements UserMessageService {
 
     private static final int PAGE_SIZE = 10;
     private static final Sort PAGE_SORT = new Sort(Sort.Direction.DESC, "time");
     private UserMessageRepository userMessageRepository;
 
+
     @Autowired
     private UserChatRepository userChatRepository;
 
     @Autowired
-    public UserMessageServiceImpl(UserMessageRepository repository) {
-        super(repository);
+    private UserMessageNotificationService notificationService;
+
+    @Autowired
+    public UserMessageServiceImpl(UserMessageRepository repository, UserMessageNotificationService notificationService) {
+        super(repository, notificationService);
         this.userMessageRepository = repository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -46,7 +52,6 @@ public class UserMessageServiceImpl extends BaseServiceImpl<UserMessage, UserMes
                 .getUserMessagesByUserIdAndChatId(userId, chatId, new PageRequest(pageId, PAGE_SIZE))
                 .getContent();
     }
-
 
 
     @Override
@@ -74,4 +79,5 @@ public class UserMessageServiceImpl extends BaseServiceImpl<UserMessage, UserMes
         }
         userMessageRepository.save(userMessages);
     }
+
 }

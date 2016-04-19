@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.service.notification.BaseNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 

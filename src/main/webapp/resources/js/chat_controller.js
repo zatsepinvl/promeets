@@ -10,6 +10,7 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
 
 
     $scope.send = function () {
+        console.log($scope.text);
         if ($scope.text == "") {
             return;
         }

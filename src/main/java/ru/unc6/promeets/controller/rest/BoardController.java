@@ -57,7 +57,7 @@ public class BoardController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        boardService.save(board);
+        boardService.create(board);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -69,7 +69,7 @@ public class BoardController {
         }
 
         board.setBoardId(id);
-        boardService.save(board);
+        boardService.create(board);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

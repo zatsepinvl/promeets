@@ -3,10 +3,12 @@ package ru.unc6.promeets.model.service.entity;
 
 import java.util.List;
 
-public interface BaseService<T,V> {
+public interface BaseService<T, V> {
     T getById(V id);
 
-    T save(T entity);
+    T create(T entity);
+
+    T update(T entity);
 
     void delete(V id);
 

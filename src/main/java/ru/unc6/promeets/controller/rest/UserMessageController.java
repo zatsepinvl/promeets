@@ -43,7 +43,7 @@ public class UserMessageController extends BaseUserRestController<UserMessage, U
     public UserMessage update(@PathVariable("id") long messageId, @RequestBody UserMessage userMessage, @CurrentUser User user) {
         checkIsNotFound(messageId);
         checkHasOwnerAccess(userMessage, user);
-        return userMessageService.save(userMessage);
+        return userMessageService.update(userMessage);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

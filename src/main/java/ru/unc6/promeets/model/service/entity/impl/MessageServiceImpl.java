@@ -35,8 +35,8 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Long>
 
 
     @Override
-    public Message save(Message entity) {
-        Message message = super.save(entity);
+    public Message create(Message entity) {
+        Message message = super.create(entity);
         userMessageService.createUserMessagesByMessage(entity);
         messageNotificationService.onCreate(entity);
         return message;

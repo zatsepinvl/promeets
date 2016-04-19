@@ -325,7 +325,7 @@ function startOfMonth(date) {
 app.service('GroupChatService', function ($rootScope, $http) {
     var messages = [];
     var chat = {};
-    var status = {loading: true};
+    var state = {loading: true};
 
     var page = 0;
 
@@ -340,19 +340,19 @@ app.service('GroupChatService', function ($rootScope, $http) {
     };
 
     this.load = function (group, page) {
-        status.loading = true;
+        state.loading = true;
+        messages.length = 0;
         $rootScope.group = group;
         $rootScope.$watch('group', function (newVal, oldVal) {
             if (newVal.chat) {
                 clone(newVal.chat, chat);
                 page = page ? page : 0;
-                messages.length = 0;
                 loadPage(chat.chatId, page, function (data) {
                     data.forEach(function (val) {
                         val.message.time = moment(val.message.time).valueOf();
                     });
                     clone(data, messages);
-                    status.loading = false;
+                    state.loading = false;
                 });
             }
         }, true);
@@ -360,12 +360,21 @@ app.service('GroupChatService', function ($rootScope, $http) {
 
 
     this.loadNextPage = function () {
-        page++;
-        loadPage(chat.chatId, page, function (data) {
-            data.forEach(function (value) {
-                messages.push(value);
+        var next = page + 1;
+        state.loading = true;
+        loadPage(chat.chatId, next,
+            function (data) {
+                if (data.length > 0) {
+                    page++;
+                }
+                data.forEach(function (value) {
+                    messages.push(value);
+                });
+                state.loading = false;
+            },
+            function () {
+                state.loading = false;
             });
-        });
     };
 
     this.get = function () {
@@ -377,17 +386,17 @@ app.service('GroupChatService', function ($rootScope, $http) {
     };
 
     this.getState = function () {
-        return status;
+        return state;
     }
-})
-;
-
+});
 
 app.service('UserChatsService', function (UserEntity, $http, UserMessageService) {
     var chats = [];
+    var state = {loading: true};
     this.resolve = function () {
-        chats.length = 0;
         var i = 0;
+        chats.length = 0;
+        state.loading = true;
         UserEntity.query({entity: 'groups'},
             function (data) {
                 data.forEach(function (value) {
@@ -395,13 +404,14 @@ app.service('UserChatsService', function (UserEntity, $http, UserMessageService)
                     $http.get("/api/users/chats/" + value.group.chat.chatId + "/messages?page=" + 0)
                         .success(function (messages) {
                             clone(messages, chats[i].messages);
-                            UserMessageService.getNewMessages().forEach(function (message) {
-                                if (message.message.chat.chatId == chats[i].chat.chatId) {
+                            messages.forEach(function (message) {
+                                if (!message.viewed) {
                                     chats[i].newMessages++;
                                 }
                             });
                             i++;
                         });
+                    state.loading = false;
                 });
             });
     };
@@ -409,7 +419,12 @@ app.service('UserChatsService', function (UserEntity, $http, UserMessageService)
 
     this.getChats = function () {
         return chats;
+    };
+
+    this.getState = function () {
+        return state;
     }
+
 });
 
 

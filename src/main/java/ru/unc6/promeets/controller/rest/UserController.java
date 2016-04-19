@@ -36,6 +36,6 @@ public class UserController {
         if (userService.getUserByEmail(user.getEmail()) != null) {
             throw new BadRequestException().setResponseError(new ResponseError(REPEATING_EMAIL_ERROR_MESSAGE));
         }
-        return userService.save(user);
+        return userService.create(user);
     }
 }

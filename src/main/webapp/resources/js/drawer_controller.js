@@ -19,7 +19,19 @@ app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetServi
 
     $scope.$on('meet', function (event, data) {
         if (data.action == appConst.ACTION.CREATE) {
-            $scope.newMeets.push(data);
+            $scope.newMeets.push();
+        }
+    });
+
+    $scope.$on('message', function (event, data) {
+        if (data.action == appConst.ACTION.CREATE) {
+            $scope.newMessages.push(data.id);
+        }
+    });
+
+    $scope.$on('usermessage', function (event, data) {
+        if (data.action == appConst.ACTION.UPDATE) {
+            $scope.newMessages.splice($scope.newMessages.indexOf(data.id), 1);
         }
     });
 });

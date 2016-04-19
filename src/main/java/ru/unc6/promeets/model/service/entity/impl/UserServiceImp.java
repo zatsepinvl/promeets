@@ -33,7 +33,7 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     }
 
     @Override
-    public User save(User entity) {
+    public User create(User entity) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         if (entity.getImage() == null) {

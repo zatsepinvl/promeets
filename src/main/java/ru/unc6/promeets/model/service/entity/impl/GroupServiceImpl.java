@@ -48,7 +48,7 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
 
     @Override
-    public Group save(Group group) {
+    public Group create(Group group) {
         return groupRepository.save(group);
     }
 
