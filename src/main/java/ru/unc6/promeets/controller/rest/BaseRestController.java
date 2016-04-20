@@ -52,13 +52,13 @@ public abstract class BaseRestController<T, V extends Serializable> {
 
     protected void checkIsNotFoundById(V id) {
         if (service.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new NotFoundResponseError());
+            throw new NotFoundException();
         }
     }
 
     protected void checkIsNotFound(T entity) {
         if (entity == null) {
-            throw new NotFoundException().setResponseError(new NotFoundResponseError());
+            throw new NotFoundException();
         }
     }
 }

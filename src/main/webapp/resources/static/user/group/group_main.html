@@ -11,7 +11,13 @@
 
         <!-- Group logo-->
         <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser">
-            <img style="width: 100%; margin: auto" src="../image/group.jpg"/>
+            <div class="img-box">
+                <img style="width: 100%; margin: auto" ng-src="{{group.image.url}}"/>
+                <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                        ngf-select="upload($file)" ng-model="file" name="file" ngf-accept="'image/*'">
+                    <i class="material-icons">file_upload</i>
+                </button>
+            </div>
         </div>
     </div>
 

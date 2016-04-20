@@ -13,7 +13,7 @@
     </beans:bean>
 
     <http auto-config="false" use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
-        <csrf token-repository-ref="csrfTokenRepository"/>
+        <csrf disabled="true" token-repository-ref="csrfTokenRepository"/>
         <custom-filter after="CSRF_FILTER" ref="CSRFHeaderFilter"/>
         <intercept-url pattern="/api/users" access="hasRole('ROLE_USER')" method="GET"/>
         <intercept-url pattern="/security/*" access="hasRole('ROLE_USER')"/>

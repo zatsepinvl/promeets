@@ -51,4 +51,9 @@ public class MainController {
     public String venueByMeetId() {
         return INDEX_PATH;
     }
+
+    @RequestMapping(value = "/files")
+    public String fileTest() {
+        return INDEX_PATH;
+    }
 }

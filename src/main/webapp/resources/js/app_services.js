@@ -428,6 +428,30 @@ app.service('UserChatsService', function (UserEntity, $http, UserMessageService)
 });
 
 
+app.service('UploadService', function (EventHandler, Upload) {
+
+    this.upload = function (file, id, success, error) {
+        if (!file) {
+            EventHandler.message('Invalid file');
+            return;
+        }
+        EventHandler.load('Uploading file');
+        Upload.upload({
+            url: '/api/files',
+            data: {file: file, id: id}
+        }).then(function (resp) {
+            //success
+            EventHandler.message('File has been uploaded');
+            success && success(resp.data);
+        }, function (resp) {
+            EventHandler.message('Something went wrong, please try again later');
+            error && error(resp.data);
+        }, function (evt) {
+            //progress
+        });
+    }
+})
+
 
 
 

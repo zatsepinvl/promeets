@@ -17,4 +17,5 @@
 
     <context:component-scan base-package="ru.unc6.promeets.controller"/>
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"/>
 </beans>

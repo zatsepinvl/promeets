@@ -52,9 +52,17 @@
     <context:component-scan base-package="ru.unc6.promeets.*"/>
 
     <bean id="appProperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>/WEB-INF/application.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--<bean id="appProperties"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="/WEB-INF/application.properties"/>
-    </bean>
+    </bean>-->
 
     <import resource="security.xml"/>
     <import resource="websocket.xml"/>

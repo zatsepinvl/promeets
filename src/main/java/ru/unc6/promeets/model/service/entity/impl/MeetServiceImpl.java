@@ -66,10 +66,11 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
 
 
     @Override
-    public Meet create(Meet meet) {
-        meet = super.create(meet);
-        userMeetService.createUserMeetsByMeet(meet);
-        return meet;
+    public Meet create(Meet entity) {
+        entity = meetRepository.save(entity);
+        userMeetService.createUserMeetsByMeet(entity);
+        notificationService.onCreate(entity);
+        return entity;
     }
 
     @Override

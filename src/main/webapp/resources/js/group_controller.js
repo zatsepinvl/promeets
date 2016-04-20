@@ -1,5 +1,5 @@
 //group controller
-app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
+app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog, UploadService) {
     $scope.groupId = $stateParams.groupId;
     $scope.group = GroupService.get();
 
@@ -24,6 +24,17 @@ app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, Grou
             });
     };
 
+    $scope.upload = function (file) {
+        if (!file) {
+            return;
+        }
+
+        UploadService.upload(file, $scope.group.image.fileId, function (data) {
+            console.log(data);
+            $scope.group.image.url = data.message;
+        });
+    };
+
 });
 
 function cloneGroup(group) {
@@ -35,21 +46,22 @@ function cloneGroup(group) {
 }
 
 function EditGroupDialogController($scope, group, Entity, $mdDialog) {
-    $scope.group = cloneGroup(group);
+    $scope.group = {};
+    clone(group, $scope.group);
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
+
     $scope.save = function () {
         group.title = $scope.group.title;
         group.status = $scope.group.status;
         group.type = {typeId: $scope.group.type.typeId, name: $scope.group.type.name};
-        console.log(group.type);
         Entity.update({entity: "groups", id: group.groupId}, group);
         $mdDialog.hide();
     };
 }
 
-app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog) {
+app.controller('groupMainCtrl', function ($scope, $state, $stateParams, Entity, GroupService) {
     $scope.groupId = $stateParams.groupId;
     $scope.users = GroupService.getMembers();
 });

@@ -19,7 +19,7 @@ app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetServi
 
     $scope.$on('meet', function (event, data) {
         if (data.action == appConst.ACTION.CREATE) {
-            $scope.newMeets.push();
+            $scope.newMeets.push(data.id);
         }
     });
 
