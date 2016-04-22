@@ -31,6 +31,13 @@ public class GoogleController {
     private static final String ACCESS_TOKEN = "g_access_token";
     private static final Logger log = Logger.getLogger(GoogleController.class);
 
+    private static final String PROVIDER = "provider";
+    private static final String GOOGLE = "google";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String EMAIL = "email";
+    private static final String IMG = "img";
+
     @Autowired
     private GoogleService googleService;
 
@@ -54,11 +61,11 @@ public class GoogleController {
 
             Person person = googleService.getPerson(googleTokenResponse);
             RedirectView redirectView = new RedirectView(SIGN_UP_PATH);
-            redirectView.addStaticAttribute("provider", "google");
-            redirectView.addStaticAttribute("firstName", person.getName().getGivenName());
-            redirectView.addStaticAttribute("lastName", person.getName().getFamilyName());
-            redirectView.addStaticAttribute("email", person.getEmails().get(0).getValue());
-            redirectView.addStaticAttribute("img", person.getImage().getUrl());
+            redirectView.addStaticAttribute(PROVIDER, GOOGLE);
+            redirectView.addStaticAttribute(FIRST_NAME, person.getName().getGivenName());
+            redirectView.addStaticAttribute(LAST_NAME, person.getName().getFamilyName());
+            redirectView.addStaticAttribute(EMAIL, person.getEmails().get(0).getValue());
+            redirectView.addStaticAttribute(IMG, person.getImage().getUrl());
             return redirectView;
         } else {
             log.error(error);

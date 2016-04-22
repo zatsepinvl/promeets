@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.ForbiddenRequestException;
-import ru.unc6.promeets.controller.exception.ForbiddenResponseError;
+import ru.unc6.promeets.controller.exception.ForbiddenResponseErrorMessage;
 import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.NotFoundResponseError;
+import ru.unc6.promeets.controller.exception.NotFoundResponseErrorMessage;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
 import ru.unc6.promeets.model.service.entity.GroupService;
@@ -58,19 +58,19 @@ public class UserGroupController {
             return;
         }
         if (userGroupService.getUserGroupByUserIdAndGroupId(user.getUserId(), userGroup.getGroup().getGroupId()) == null) {
-            throw new ForbiddenRequestException().setResponseError(new ForbiddenResponseError());
+            throw new ForbiddenRequestException().setResponseErrorMessage(new ForbiddenResponseErrorMessage());
         }
     }
 
     private void checkHasOwnerAccess(UserGroup userGroup, User user) {
         if (!userGroup.getUser().equals(user)) {
-            throw new ForbiddenRequestException().setResponseError(new ForbiddenResponseError());
+            throw new ForbiddenRequestException().setResponseErrorMessage(new ForbiddenResponseErrorMessage());
         }
     }
 
     private void checkIsNotFound(long id) {
         if (groupService.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new NotFoundResponseError());
+            throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());
         }
     }
 

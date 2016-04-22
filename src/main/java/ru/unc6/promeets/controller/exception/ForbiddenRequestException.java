@@ -8,5 +8,6 @@ import org.springframework.http.HttpStatus;
 public class ForbiddenRequestException extends BaseControllerException {
     public ForbiddenRequestException() {
         this.httpStatus = HttpStatus.FORBIDDEN;
+        this.responseErrorMessage = new ForbiddenResponseErrorMessage();
     }
 }

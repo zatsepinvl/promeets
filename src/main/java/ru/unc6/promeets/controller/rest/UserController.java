@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.controller.exception.BadRequestException;
-import ru.unc6.promeets.controller.exception.ResponseError;
+import ru.unc6.promeets.controller.exception.ResponseErrorMessage;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CurrentUser;
@@ -34,7 +34,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public User createUser(@RequestBody User user) {
         if (userService.getUserByEmail(user.getEmail()) != null) {
-            throw new BadRequestException().setResponseError(new ResponseError(REPEATING_EMAIL_ERROR_MESSAGE));
+            throw new BadRequestException().setResponseErrorMessage(new ResponseErrorMessage(REPEATING_EMAIL_ERROR_MESSAGE));
         }
         return userService.create(user);
     }

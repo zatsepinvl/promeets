@@ -1,7 +1,7 @@
 package ru.unc6.promeets.controller.rest;
 
 import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.NotFoundResponseError;
+import ru.unc6.promeets.controller.exception.NotFoundResponseErrorMessage;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
@@ -26,7 +26,7 @@ public abstract class BaseUserRestController<T, V extends Serializable, E> {
 
     protected void checkIsNotFound(Long id) {
         if (entityService.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new NotFoundResponseError());
+            throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());
         }
     }
 

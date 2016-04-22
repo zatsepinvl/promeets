@@ -3,7 +3,7 @@ package ru.unc6.promeets.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.ForbiddenRequestException;
-import ru.unc6.promeets.controller.exception.ForbiddenResponseError;
+import ru.unc6.promeets.controller.exception.ForbiddenResponseErrorMessage;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMessage;
@@ -67,7 +67,7 @@ public class UserMessageController extends BaseUserRestController<UserMessage, U
     @Override
     protected void checkHasOwnerAccess(UserMessage entity, User user) {
         if (entity.getUser().getUserId() != user.getUserId()) {
-            throw new ForbiddenRequestException().setResponseError(new ForbiddenResponseError());
+            throw new ForbiddenRequestException().setResponseErrorMessage(new ForbiddenResponseErrorMessage());
         }
     }
 

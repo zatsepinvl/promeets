@@ -14,7 +14,7 @@
             <div class="img-box">
                 <img style="width: 100%; margin: auto" ng-src="{{group.image.url}}"/>
                 <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
-                        ngf-select="upload($file)" ng-model="file" name="file" ngf-accept="'image/*'">
+                        ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file" ngf-accept="'image/*'"  ngf-max-size="10MB">
                     <i class="material-icons">file_upload</i>
                 </button>
             </div>

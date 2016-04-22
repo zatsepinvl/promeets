@@ -1,4 +1,4 @@
-package ru.unc6.promeets.controller;
+package ru.unc6.promeets.controller.rest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ru.unc6.promeets.controller.ResponseMessage;
 import ru.unc6.promeets.controller.exception.BaseControllerException;
 import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.ResponseError;
+import ru.unc6.promeets.controller.exception.ResponseErrorMessage;
 import ru.unc6.promeets.model.service.entity.FileService;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +40,8 @@ public class FileController {
 
     private String uploadHostFolder;
 
+    private long maxSize;
+
     @Resource(name = "appProperties")
     private Properties properties;
 
@@ -47,6 +50,7 @@ public class FileController {
         algorithm = properties.getProperty("file-hash-algorithm");
         uploadRealFolder = properties.getProperty("file-upload-real-folder");
         uploadHostFolder = properties.getProperty("file-upload-host-folder");
+        maxSize = Long.parseLong(properties.getProperty("file-upload-max-size"));
     }
 
     @Autowired
@@ -56,7 +60,9 @@ public class FileController {
     private FileService fileService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public SimpleResponseMessage uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") long fileId) {
+    public ResponseMessage uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") long fileId) {
+        checkIsFileAvailable(file);
+
         BufferedOutputStream stream = null;
         ru.unc6.promeets.model.entity.File entityFile = fileService.getById(fileId);
         if (entityFile == null) {
@@ -73,10 +79,10 @@ public class FileController {
             fileName = uploadHostFolder + "/" + fileName;
             entityFile.setUrl(fileName);
             fileService.update(entityFile);
-            return new SimpleResponseMessage().setMessage(fileName);
+            return new ResponseMessage().setMessage(fileName);
         } catch (NoSuchAlgorithmException | IOException ex) {
             throw new BaseControllerException()
-                    .setResponseError(new ResponseError(ex.getMessage()))
+                    .setResponseErrorMessage(new ResponseErrorMessage(ex.getMessage()))
                     .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             if (stream != null) {
@@ -98,4 +104,10 @@ public class FileController {
         return stringBuffer.toString();
     }
 
+
+    private void checkIsFileAvailable(MultipartFile file) {
+        if (file.getSize() > maxSize) {
+            throw new NotFoundException();
+        }
+    }
 }

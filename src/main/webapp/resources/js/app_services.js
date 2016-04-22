@@ -444,6 +444,7 @@ app.service('UploadService', function (EventHandler, Upload) {
             EventHandler.message('File has been uploaded');
             success && success(resp.data);
         }, function (resp) {
+            console.log(resp);
             EventHandler.message('Something went wrong, please try again later');
             error && error(resp.data);
         }, function (evt) {

@@ -1,5 +1,5 @@
 //group controller
-app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, GroupService, $mdDialog, UploadService) {
+app.controller('groupCtrl', function ($scope, $state,  EventHandler,$stateParams, Entity, GroupService, $mdDialog, UploadService) {
     $scope.groupId = $stateParams.groupId;
     $scope.group = GroupService.get();
 
@@ -24,9 +24,9 @@ app.controller('groupCtrl', function ($scope, $state, $stateParams, Entity, Grou
             });
     };
 
-    $scope.upload = function (file) {
-        if (!file) {
-            return;
+    $scope.upload = function (file, invalidFiles) {
+        if (!file && invalidFiles) {
+            EventHandler.message('Invalid file, max 5MB');
         }
 
         UploadService.upload(file, $scope.group.image.fileId, function (data) {

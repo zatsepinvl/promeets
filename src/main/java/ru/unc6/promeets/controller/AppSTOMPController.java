@@ -19,6 +19,7 @@ import ru.unc6.promeets.model.service.notification.Notification;
 
 @Controller
 public class AppSTOMPController {
+
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 

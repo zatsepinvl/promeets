@@ -1,9 +1,9 @@
 package ru.unc6.promeets.controller.rest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.NotFoundResponseError;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
 import java.io.Serializable;
@@ -50,7 +50,7 @@ public abstract class BaseRestController<T, V extends Serializable> {
         service.delete(id);
     }
 
-    protected void checkIsNotFoundById(V id) {
+    protected void checkIsNotFoundById(V id) throws NotFoundException {
         if (service.getById(id) == null) {
             throw new NotFoundException();
         }

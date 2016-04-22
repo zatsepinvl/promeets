@@ -1,25 +1,19 @@
 package ru.unc6.promeets.controller.exception;
 
+import ru.unc6.promeets.controller.ResponseMessage;
+
 /**
  * Created by Vladimir on 19.03.2016.
  */
-public class ResponseError {
+public class ResponseErrorMessage extends ResponseMessage {
     public static final String BASE_ERROR_MESSAGE = "Something went wrong. Please,try again later.";
-    private String message;
 
-    public ResponseError() {
+    public ResponseErrorMessage() {
         message = BASE_ERROR_MESSAGE;
     }
 
-    public ResponseError(String message) {
+    public ResponseErrorMessage(String message) {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

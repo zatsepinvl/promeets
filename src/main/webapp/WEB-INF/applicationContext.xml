@@ -59,11 +59,6 @@
             </list>
         </property>
     </bean>
-    <!--<bean id="appProperties"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/application.properties"/>
-    </bean>-->
-
     <import resource="security.xml"/>
     <import resource="websocket.xml"/>
 </beans>
