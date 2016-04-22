@@ -10,7 +10,6 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
 
 
     $scope.send = function () {
-        console.log($scope.text);
         if ($scope.text == "") {
             return;
         }
@@ -34,6 +33,7 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
     };
 
     $scope.$on('message', function (event, data) {
+        console.log('new message');
         if (data.action == appConst.ACTION.CREATE) {
             UserEntity.get({entity: "messages", id: data.id},
                 function (message) {

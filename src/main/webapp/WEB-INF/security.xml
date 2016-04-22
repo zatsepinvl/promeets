@@ -12,7 +12,7 @@
         <beans:property name="headerName" value="X-XSRF-TOKEN"/>
     </beans:bean>
 
-    <http auto-config="false" use-expressions="true" entry-point-ref="restAuthenticationEntryPoint">
+    <http auto-config="true" entry-point-ref="restAuthenticationEntryPoint">
         <csrf token-repository-ref="csrfTokenRepository"/>
         <custom-filter after="CSRF_FILTER" ref="CSRFHeaderFilter"/>
         <intercept-url pattern="/api/users" access="hasRole('ROLE_USER')" method="GET"/>
@@ -21,7 +21,7 @@
         <form-login login-page="/login"/>
         <logout logout-url="/logout" logout-success-url="/"/>
         <remember-me/>
-        <http-basic entry-point-ref="customBasicAuthenticationEntryPoint"/>
+        <!--<http-basic entry-point-ref="customBasicAuthenticationEntryPoint"/>-->
     </http>
 
     <authentication-manager>

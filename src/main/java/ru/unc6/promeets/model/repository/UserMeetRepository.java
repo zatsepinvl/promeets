@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.repository;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,7 +15,7 @@ import ru.unc6.promeets.model.entity.UserMeetPK;
  * Created by Vladimir on 10.04.2016.
  */
 
-@Transactional
+
 public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK> {
     @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId)")
     Iterable<UserMeet> getUserMeetsByMeetId(@Param("meetId") long id);
@@ -31,7 +32,12 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Query("select userMeet from UserMeet userMeet where userMeet.userMeetPK.user.userId=(:userId) and userMeet.viewed=false")
     Iterable<UserMeet> getNotViewedMeetsByUserId(@Param("userId") long userId);
 
+    @Cacheable
+    @Query("select userMeet from UserMeet userMeet where userMeet.id.user.userId=(:userId) and userMeet.id.meet.meetId = (:meetId)")
+    UserMeet getUserMeetByUserIdAndMeetId(@Param("userId") long userId, @Param("meetId") long meetId);
+
     @Modifying
+    @Transactional
     @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
     void deleteUserMeetsByMeetId(@Param("meetId") long id);
 }

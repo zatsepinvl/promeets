@@ -13,7 +13,7 @@
             <p ng-if="!messages.length && !status.loading" style="text-align: center;" flex>No messages yet.</p>
         </div>
         <md-list-item class="no-hover md-3-line"
-                      ng-repeat="message in messages | orderBy : 'message.time' : false  track by message.message.messageId"
+                      ng-repeat="message in messages | orderBy : 'message.time' : false  track by $index"
                       style="min-height: 0;"
                       ng-class="{ 'new' : !message.viewed }"
                       ng-mouseover="!message.viewed && update(message)">
@@ -36,10 +36,10 @@
                           focus-if flex>
                     </textarea>
             </md-input-container>
-            <md-button class="md-secondary"
+            <md-icon class="md-secondary accent"
                        ng-click="send()">
-                Send
-            </md-button>
+                send
+            </md-icon>
         </md-list-item>
     </md-list>
 

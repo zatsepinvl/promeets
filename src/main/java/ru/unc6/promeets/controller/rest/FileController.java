@@ -2,6 +2,7 @@ package ru.unc6.promeets.controller.rest;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.unc6.promeets.controller.ResponseMessage;
+import ru.unc6.promeets.controller.exception.BadRequestException;
 import ru.unc6.promeets.controller.exception.BaseControllerException;
 import ru.unc6.promeets.controller.exception.NotFoundException;
 import ru.unc6.promeets.controller.exception.ResponseErrorMessage;
@@ -34,24 +36,20 @@ public class FileController {
 
     private static final Logger log = Logger.getLogger(FileController.class);
 
+    @Value("${file-hash-algorithm}")
     private String algorithm;
 
+    @Value("${file-upload-real-folder}")
     private String uploadRealFolder;
 
+    @Value("${file-upload-host-folder}")
     private String uploadHostFolder;
 
+    @Value("${file-upload-max-size}")
     private long maxSize;
 
-    @Resource(name = "appProperties")
-    private Properties properties;
-
-    @PostConstruct
-    public void init() {
-        algorithm = properties.getProperty("file-hash-algorithm");
-        uploadRealFolder = properties.getProperty("file-upload-real-folder");
-        uploadHostFolder = properties.getProperty("file-upload-host-folder");
-        maxSize = Long.parseLong(properties.getProperty("file-upload-max-size"));
-    }
+    @Value("${file-max-size-error-message}")
+    private String maxSizeExceptionMessage;
 
     @Autowired
     private ServletContext servletContext;
@@ -107,7 +105,8 @@ public class FileController {
 
     private void checkIsFileAvailable(MultipartFile file) {
         if (file.getSize() > maxSize) {
-            throw new NotFoundException();
+            throw new BadRequestException()
+                    .setResponseErrorMessage(new ResponseErrorMessage(maxSizeExceptionMessage));
         }
     }
 }

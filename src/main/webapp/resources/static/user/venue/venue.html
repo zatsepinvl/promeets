@@ -44,10 +44,13 @@
 
                     <md-list-item ng-repeat="task in tasks track by task.taskId"
                                   ng-mouseover="mouseover=true"
-                                  ng-mouseleave="mouseover=false">
+                                  ng-mouseleave="mouseover=false"
+                                  ng-click="updateTask(task)">
                         <p ng-bind-html="tasks.indexOf(task)+1" style="width: 50px; flex: none; text-align: center"></p>
                         <p ng-bind-html="multiLine(task.value)" style="font-size: 16px"></p>
-                        <md-checkbox class="md-secondary accent"></md-checkbox>
+                        <md-checkbox class="md-secondary accent"
+                                     ng-model="task.checked"
+                                     ng-click="updateTask(task)"></md-checkbox>
                         <md-icon class="md-secondary" ng-click="removeTask(task)"
                                  ng-if="mouseover">
                             delete

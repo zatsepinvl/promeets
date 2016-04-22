@@ -1,7 +1,7 @@
 //services
 app.service('EventHandler', function ($mdToast) {
 
-    var delay = 2000;
+    var delay = 7000;
     var dialog = {
         position: 'right bottom',
         controller: ToastCtrl,

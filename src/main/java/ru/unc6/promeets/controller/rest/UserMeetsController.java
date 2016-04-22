@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
+import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.security.CurrentUser;
 
@@ -19,9 +20,17 @@ public class UserMeetsController {
     @Autowired
     private UserMeetService userMeetService;
 
+    @Autowired
+    private MeetService meetService;
+
     @RequestMapping(method = RequestMethod.GET)
     public List getAll(@CurrentUser User user) {
         return userMeetService.getUserMeetsByUserId(user.getUserId());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserMeet getById(@PathVariable("id") long meetId, @CurrentUser User user) {
+        return userMeetService.getUserMeetByUserIdAndMeetId(user.getUserId(), meetId);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

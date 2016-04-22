@@ -1,12 +1,16 @@
 package ru.unc6.promeets.controller.exception;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * Created by Vladimir on 12.04.2016.
  */
 public class NotFoundResponseErrorMessage extends ResponseErrorMessage {
-    public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
+
+    @Value("${rest-message-404}")
+    private String notFoundErrorMessage;
 
     public NotFoundResponseErrorMessage() {
-        setMessage(NOT_FOUND_ERROR_MESSAGE);
+        setMessage(notFoundErrorMessage);
     }
 }

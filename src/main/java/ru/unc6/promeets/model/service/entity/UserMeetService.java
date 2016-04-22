@@ -18,6 +18,8 @@ public interface UserMeetService extends BaseService<UserMeet, UserMeetPK> {
 
     List<UserMeet> getNotViewedMeetsByUserId(long id);
 
+    UserMeet getUserMeetByUserIdAndMeetId(long userId, long meetId);
+
     void createUserMeetsByMeet(Meet meet);
 
     void deleteUserMeetsByMeetId(long meetId);

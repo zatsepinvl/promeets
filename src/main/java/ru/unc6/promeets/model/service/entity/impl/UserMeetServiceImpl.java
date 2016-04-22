@@ -10,14 +10,16 @@ import ru.unc6.promeets.model.repository.UserGroupRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
+import ru.unc6.promeets.model.service.notification.impl.BaseNotificationServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserMeetServiceImpl extends BaseServiceImpl<UserMeet, UserMeetPK>
+public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, UserMeetPK>
         implements UserMeetService {
 
+    private UserMeetNotificationService notificationService;
     private UserMeetRepository userMeetRepository;
 
     @Autowired
@@ -25,9 +27,10 @@ public class UserMeetServiceImpl extends BaseServiceImpl<UserMeet, UserMeetPK>
 
 
     @Autowired
-    public UserMeetServiceImpl(UserMeetRepository repository) {
-        super(repository);
+    public UserMeetServiceImpl(UserMeetRepository repository, UserMeetNotificationService notificationService) {
+        super(repository, notificationService);
         this.userMeetRepository = repository;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -43,6 +46,11 @@ public class UserMeetServiceImpl extends BaseServiceImpl<UserMeet, UserMeetPK>
     @Override
     public List<UserMeet> getNotViewedMeetsByUserId(long id) {
         return (List<UserMeet>) userMeetRepository.getNotViewedMeetsByUserId(id);
+    }
+
+    @Override
+    public UserMeet getUserMeetByUserIdAndMeetId(long userId, long meetId) {
+        return userMeetRepository.getUserMeetByUserIdAndMeetId(userId, meetId);
     }
 
     @Override

@@ -14,7 +14,6 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
 
             //on error -> reconnect
             function (error) {
-                console.log(error);
                 setTimeout(startListen, appConst.WS.RECONNECT_TIMEOUT);
             });
 
