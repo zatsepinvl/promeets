@@ -9,10 +9,11 @@
    http://www.springframework.org/schema/tx/spring-tx.xsd
    http://www.springframework.org/schema/context
    http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-
+    <context:property-placeholder location="WEB-INF/application.properties"/>
+    <context:component-scan base-package="ru.unc6.promeets.*"/>
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://mydnswd.no-ip.org:5432/promeets_db"/>
+        <property name="url" value="jdbc:postgresql://promeets.sytes.net:5432/promeets_db"/>
         <property name="username" value="pmadmin"/>
         <property name="password" value="pm_admin"/>
         <property name="testOnBorrow" value="true"/>
@@ -49,13 +50,23 @@
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager"/>
 
-    <context:component-scan base-package="ru.unc6.promeets.*"/>
 
-    <bean id="appProperties"
-          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="/WEB-INF/application.properties"/>
-    </bean>
+    <!--  <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+          <property name="locations">
+              <list>
+                  <value>/WEB-INF/application.properties</value>
+              </list>
+          </property>
+      </bean>-->
 
+    <!-- <bean id="appProperties"
+           class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+         <property name="locations">
+             <list>
+                 <value>/WEB-INF/application.properties</value>
+             </list>
+         </property>
+     </bean>-->
     <import resource="security.xml"/>
     <import resource="websocket.xml"/>
 </beans>

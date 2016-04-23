@@ -1,4 +1,14 @@
-var app = angular.module('app', ['ngMaterial', 'ngResource', 'ui.router', 'ngMessages', 'ngSanitize']);
+var app = angular.module('app', [
+    'ngMaterial',
+    'ngResource',
+    'ui.router',
+    'ngMessages',
+    'ngSanitize',
+    'focus-if',
+    'luegg.directives',
+    'ngFileUpload'
+    ]);
+
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
 };
@@ -9,6 +19,41 @@ app.run(function ($rootScope, $location, $timeout) {
             componentHandler.upgradeAllRegistered();
         });
     });
+    $rootScope.multiLine = function (str) {
+        return str.replaceAll("\n", "<br/>");
+        /*return str
+         .replace(/\r\n?/g, '\n')
+         // normalize newlines - I'm not sure how these
+         // are parsed in PC's. In Mac's they're \n's
+         .replace(/(^((?!\n)\s)+|((?!\n)\s)+$)/gm, '')
+         // trim each line
+         .replace(/(?!\n)\s+/g, ' ')
+         // reduce multiple spaces to 2 (like in "a    b")
+         .replace(/^\n+|\n+$/g, '')
+         // trim the whole string
+         .replace(/[<>&"']/g, function (a) {
+         // replace these signs with encoded versions
+         switch (a) {
+         case '<'    :
+         return '&lt;';
+         case '>'    :
+         return '&gt;';
+         case '&'    :
+         return '&amp;';
+         case '"'    :
+         return '&quot;';
+         case '\''   :
+         return '&apos;';
+         }
+         })
+         .replace(/\n{2,}/g, '</p><p>')
+         // replace 2 or more consecutive empty lines with these
+         .replace(/\n/g, '<br />')
+         // replace single newline symbols with the <br /> entity
+         .replace(/^(.+?)$/, '<p>$1</p>');
+         // wrap all the string into <p> tags
+         // if there's at least 1 non-empty character*/
+    };
 });
 
 app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
@@ -64,7 +109,15 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     abstract: true,
                     parent: 'app',
                     url: '',
-                    templateUrl: '/static/user/user.html'
+                    templateUrl: '/static/user/user.html',
+                    resolve: {
+                        newMeets: function (UserMeetService) {
+                            return UserMeetService.load();
+                        },
+                        newMessages: function (UserMessageService) {
+                            return UserMessageService.load();
+                        }
+                    }
                 })
             .state('user.group',
                 {
@@ -89,7 +142,41 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
             .state('user.group.calendar',
                 {
                     url: '/calendar',
-                    templateUrl: '/static/user/group/meets/calendar.html'
+                    templateUrl: '/static/user/group/meets/calendar.html',
+                    resolve: {
+                        meets: function (GroupMeetsService, $stateParams) {
+                            return GroupMeetsService.resolve($stateParams.groupId);
+                        }
+                    }
+                })
+            .state('user.group.chat',
+                {
+                    url: '/chat',
+                    templateUrl: '/static/user/group/chat/chat.html',
+                    resolve: {
+                        messages: function (GroupChatService, GroupService) {
+                            return GroupChatService.load(GroupService.get());
+                        }
+                    }
+                })
+			.state('user.group.rtc',
+                {
+                    url: '/rtc',
+                    templateUrl: '/static/user/rtc.html',
+                })
+            .state('user.messages',
+                {
+                    url: '/messages',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/chats/chats.html'
+                        }
+                    },
+                    resolve: {
+                        messages: function (UserChatsService) {
+                            return UserChatsService.resolve();
+                        }
+                    }
                 })
             .state('user.venue',
                 {
@@ -108,11 +195,12 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
-			.state('user.group.chat',
+            .state('files',
                 {
-					url: '/chat',
-                    templateUrl: '/static/user/group/chat/chat.html'
+                    url: '/files',
+                    templateUrl: '/static/file.html'
                 });
+
         $locationProvider.html5Mode(true);
     }
 )
@@ -149,4 +237,29 @@ app.config(function ($mdThemingProvider) {
 
 function clone(from, to) {
     for (var k in from) to[k] = from[k];
-};
+}
+
+app.constant('appConst', {
+    WS: {
+        URL: '/ws',
+        TOPIC: '/topic/',
+        BROKER: '/app/',
+        RECONNECT_TIMEOUT: 600
+    },
+
+    ACTION: {
+        CREATE: 'CREATE',
+        UPDATE: 'UPDATE',
+        DELETE: 'DELETE'
+    },
+
+    TIME_FORMAT: {
+        DAY: 'DD MMMM YYYY',
+        TIME: 'HH:mm',
+        DAY_TIME: 'DD MMMM YYYY HH:mm'
+    }
+});
+
+var DAY_FORMAT = 'DD MMMM YYYY';
+var TIME_FORMAT = 'HH:mm';
+var DAY_TIME_FORMAT = 'DD MMMM YYYY HH:mm';

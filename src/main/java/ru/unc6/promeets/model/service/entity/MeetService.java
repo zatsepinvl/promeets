@@ -10,17 +10,8 @@ import java.util.List;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.entity.MeetTask;
 
-/**
- * @author MDay
- */
-public interface MeetService extends BaseService<Meet> {
-    List<User> getUsers(long id);
-
-    List<UserMeet> getUserMeets(long id);
-
+public interface MeetService extends BaseService<Meet, Long> {
     List<MeetNote> getMeetNotes(long id);
 
     List<MeetTask> getMeetAims(long id);
-
-    Board getBoard(long id);
 }

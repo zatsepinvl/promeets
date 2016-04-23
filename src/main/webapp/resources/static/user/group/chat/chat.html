@@ -1,37 +1,49 @@
-<div ng-app = "app" ng-controller = "chatController" class="chat">
-		<div class="mdl-progress mdl-js-progress mdl-progress__indeterminate" ng-hide="messages"></div>
-		<div ng-hide="!messages">		
-			<div class="chat-messages">
-				<div scroll-glue="glued" class="chat-message-group">
-				<div align="center">
-					<button class="mdl-button mdl-js-button mdl-button--primary" ng-click="getMoreMessages()" ng-hide="isAllChat">
-					 &#8593; Show more &#8593;
-					</button>
-				</div>
-					<div ng-repeat="message in messages | orderBy:'time':reverse | filter:{text: ''}" class="chat-message">
-									<span class="chat-messages-name" ng-class="{self: message.self}">
-									<img src="{{message.user.image.url}}" class="md-avatar"/> 
-									{{message.user.firstName}} {{message.user.lastName}}
-									<span class="chat-messages-time" ng-class="{self: message.self}">{{message.time | date:'HH:mm:ss'}} </span>
-									</span>
-									<span class="chat-messages-message" ng-class="{self: message.self}">{{message.text}}</span>
-					</div>
-				</div>
-			</div>
-			
-			<form ng-submit="sendMessage()" >
-				<span with="10%">
-					<button type="button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" ng-click="showUsers()">
-						<i class="material-icons">person bin</i>
-					</button>
-				</span>
-				<span class="mdl-textfield mdl-js-textfield">
-					<input class="mdl-textfield__input" type="text" rows= "3" id="chatTextField" ng-model="messageText" ng-disabled="!currentUser.email" box-sizing= "border-box" autocomplete="off" ></input>
-					<label class="mdl-textfield__label" for="chatTextField">Enter message...</label>
-				</span>
-			</form>
-		</div>
+<div ng-controller="chatController as ctrl"
+     ng-init="onLoad()"
+     style="position: relative;">
 
-      </div>
+
+    <md-list on-scroll-to-top="handleScrollToTop" scroll-glue="glue" class="chat" id="chat"
+             style="height: 50vh; overflow-y: auto; margin-bottom: 10px">
+        <div layout="row" style="margin: 20px auto 20px auto; width:200px; height: 25px" flex>
+            <md-progress-circular md-mode="indeterminate"
+                                  md-diameter="25"
+                                  ng-if="status.loading"
+                                  style="margin: auto"></md-progress-circular>
+            <p ng-if="!messages.length && !status.loading" style="text-align: center;" flex>No messages yet.</p>
+        </div>
+        <md-list-item class="no-hover md-3-line"
+                      ng-repeat="message in messages | orderBy : 'message.time' : false  track by $index"
+                      style="min-height: 0;"
+                      ng-class="{ 'new' : !message.viewed }"
+                      ng-mouseover="!message.viewed && update(message)">
+            <img ng-src="{{message.message.user.image.url}}" class="md-avatar min"/>
+            <div class="md-list-item-text" layout="column">
+                <h3 style="color:#2e7d32; font-size: 12px" ng-bind-html="message.message.user.firstName"></h3>
+                <p style="color:#424242; font-weight: 400; font-size: 12px; width: 90%; overflow: hidden; text-overflow: ellipsis;" ng-bind-html="multiLine(message.message.text)"></p>
+                <h4 style="color:#757575; font-size: 10px; position: absolute; right:20px; top:8px;"
+                    ng-bind-html="time(message.message.time)"></h4>
+            </div>
+        </md-list-item>
+    </md-list>
+    <md-divider></md-divider>
+    <md-list>
+        <md-list-item class="no-hover primary">
+            <img ng-src="{{user.image.url}}" class="md-avatar min"/>
+            <md-input-container class="md-block" md-no-float style="width: 100%">
+                <textarea ng-model="text" type="text" placeholder="Text"
+                          style="font-size: 13px"
+                          focus-if flex>
+                    </textarea>
+            </md-input-container>
+            <md-icon class="md-secondary accent"
+                       ng-click="send()">
+                send
+            </md-icon>
+        </md-list-item>
+    </md-list>
+
+
+</div>
 	  
 	  

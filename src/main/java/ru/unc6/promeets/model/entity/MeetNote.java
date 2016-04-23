@@ -67,7 +67,7 @@ public class MeetNote {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     public User getUser() {
         return user;
     }

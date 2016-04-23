@@ -11,7 +11,13 @@
 
         <!-- Group logo-->
         <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser">
-            <img style="width: 100%; margin: auto" src="../image/group.jpg"/>
+            <div class="img-box">
+                <img style="width: 100%; margin: auto" ng-src="{{group.image.url}}"/>
+                <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                        ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file" ngf-accept="'image/*'"  ngf-max-size="10MB">
+                    <i class="material-icons">file_upload</i>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -25,14 +31,15 @@
         </div>
     </div>
     <md-divider></md-divider>
+
+    <!-- Members -->
     <md-list>
-        <md-list-item class="no-hover primary" style="border: 0">
+        <md-list-item class="no-hover primary">
             <p style="margin-left: 20px">Members</p>
-            <md-button class="md-icon-button">
-                <i class="material-icons icon" style="color:#8e8e8e">
-                    person_add
-                </i>
-            </md-button>
+            <md-icon class="md-secondary"
+                     ng-click="createTask()">
+                person_add
+            </md-icon>
         </md-list-item>
         <md-list-item ng-repeat="user in users track by user.userId">
             <img ng-src="{{user.image.url}}" class="md-avatar"/>

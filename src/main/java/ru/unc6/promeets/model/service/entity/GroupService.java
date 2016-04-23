@@ -12,7 +12,7 @@ import ru.unc6.promeets.model.entity.*;
 /**
  * @author MDay
  */
-public interface GroupService extends BaseService<Group> {
+public interface GroupService extends BaseService<Group,Long> {
     List<User> getUsersByGroupId(long id);
 
     List<UserGroup> getUserGroupsByGroupId(long id);
@@ -21,7 +21,7 @@ public interface GroupService extends BaseService<Group> {
 
     List<Meet> getMeetsByGroupIdAndDay(long id, long date);
 
-    List<Meet> getMeetsByGroupIdAndMonth(long id, long date);
+    List<Meet> getMeetsByGroupIdAndTimePeriod(long id, long start, long end);
 
     List<GroupType> getGroupTypes();
 }

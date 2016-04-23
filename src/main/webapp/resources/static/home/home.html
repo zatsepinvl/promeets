@@ -3,23 +3,32 @@
      mdl-layout--fixed-header">
 
     <!-- Header -->
-    <header class="mdl-layout__header mdl-layout__header--scroll" style="background: #2e7d32;"
+    <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp"
             ng-controller="headerCtrl"
             ng-cloak>
 
         <div class="mdl-layout__header-row">
-            <img class="mdl-layout-icon" src="../image/promeets_icon_inv.png" ui-sref="home.presentation"
+            <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
                  style="cursor: pointer; width: 40px; height: 40px; margin-right: 10px "/>
-            <span class="mdl-layout-title mdl-layout--large-screen-only" ui-sref="home.presentation"
-                  style="cursor: pointer">Promeets</span>
+            <span class="mdl-layout-title mdl-layout--large-screen-only primary" ui-sref="home.presentation"
+                  style="cursor: pointer;">Promeets</span>
             <div class="mdl-layout-spacer"></div>
             <nav class="mdl-navigation">
-                <div ng-show="tab=='nav_log'">
-                    <a class="mdl-navigation__link" href="/group">Profile</a>
-                </div>
-                <div ng-show="tab=='nav_unlog'">
-                    <a class="mdl-navigation__link" href="" ng-click="login()">Log in</a>
-                </div>
+                <md-button class="md-raised primary"
+                           ng-show="tab=='nav_log'"
+                           ui-sref="user.profile">
+                    Profile
+                </md-button>
+                <md-button class="md-raised primary"
+                           ng-if="tab!='nav_log'"
+                           ui-sref="home.signup">
+                    Sign up
+                </md-button>
+                <md-button class="md-raised primary"
+                           ng-if="tab!='nav_log'"
+                           ui-sref="home.login">
+                    Log in
+                </md-button>
             </nav>
         </div>
     </header>

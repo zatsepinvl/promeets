@@ -1,4 +1,5 @@
 package ru.unc6.promeets.security;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +20,6 @@ import java.util.List;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-
     @Autowired
     private UserRepository userRepository;
 
@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
         if (user == null) {
             return null;
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true, true, true, true, getGrantedAuthorities(user));
+        return new CustomUserDetails(user, user.getEmail(), user.getPassword(), getGrantedAuthorities(user));
     }
 
     private List<GrantedAuthority> getGrantedAuthorities(User user) {

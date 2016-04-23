@@ -3,24 +3,39 @@
         <div class="mdl-cell mdl-cell--3-col mdl-cell--1-col-tablet mdl-cell--4-col-phone">
         </div>
         <div class="phone mdl-cell mdl-cell--6-col mdl-cell--3-col-table mdl-cell--4-col-phone" style="margin-top: 0;">
-            <div class="mdl-card mdl-shadow--2dp" style="width: 100%">
+            <div layout="column" layout-padding
+                 ng-if="!ready">
+                <md-button class="g-sign-up-button md-raised" flex
+                           ng-click="sSignUp()">
+                    Sign up
+                </md-button>
+                <div flex style="margin: 10px; text-align: center">
+                    or
+                </div>
+                <md-button class="g-sign-up-button md-raised" flex ng-click="gSignUp()">
+                    <img src="image/google_icon.png" style="height: 20px; margin-right: 4px">
+                    Sign up with Google
+                </md-button>
+            </div>
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%"
+                 ng-if="ready">
                 <div layout="column">
-                    <md-content layout-padding>
-                        <div class="mdl-card__title">
-                            <img src="/image/google_icon.png" style="width: 30px; margin-right: 6px"
-                                 ng-show="provider=='google'">
-                            Sign up form
-                        </div>
-                        <div class="mdl-card__menu">
-                            <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
-                                    style="bottom: 14px"
-                                    ui-sref="home.presentation">
-                                <i class="material-icons">close</i>
-                            </button>
-                        </div>
-                        <form name="signUpForm" ng-submit="signUp()" style="margin: 0">
+                    <form name="signUpForm" ng-submit="signUp()" style="margin: 0" ng-controller="signUpFormCtrl">
+                        <md-content layout-padding>
+                            <div class="mdl-card__title">
+                                <img src="/image/google_icon.png" style="width: 30px; margin-right: 6px"
+                                     ng-show="provider=='google'">
+                                Sign up form
+                            </div>
+                            <div class="mdl-card__menu">
+                                <button type="button"
+                                        class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                                        style="bottom: 14px"
+                                        ui-sref="home.presentation">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </div>
                             <table>
-
                                 <tbody>
                                 <!-- First name -->
                                 <tr>
@@ -28,7 +43,7 @@
                                     <td>
                                         <md-input-container class="md-block" md-no-float>
                                             <input ng-model="user.firstName" type="text" required
-                                                   placeholder="First name">
+                                                   placeholder="First name" focus-if>
                                         </md-input-container>
                                     </td>
                                 </tr>
@@ -95,24 +110,23 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div layout="row" style="margin-top: 4px">
+                            <div layout="row">
                                 <md-button type="submit" class="md-raised" ng-hide="loading"
-                                           flex style="background-color: #2e7d32; color: #fff;"
-                                >
+                                           flex style="background-color: #2e7d32; color: #fff;">
                                     Sign up
                                 </md-button>
                             </div>
 
-                            <md-progress-circular md-mode="indeterminate"
-                                                  ng-show="loading">
-                            </md-progress-circular>
-
-                            <p style="text-align: center; color:darkred; margin-top: 10px; " ng-show="error.show">
+                            <div layout="row" style="margin: auto; width:40px">
+                                <md-progress-circular md-mode="indeterminate"
+                                                      md-diameter="30"
+                                                      ng-if="loading" flex></md-progress-circular>
+                            </div>
+                            <p style="text-align: center; color:darkred;" ng-show="error.show">
                                 {{error.value}}
                             </p>
-
-                        </form>
-                    </md-content>
+                        </md-content>
+                    </form>
                 </div>
             </div>
         </div>

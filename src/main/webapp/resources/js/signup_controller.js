@@ -1,4 +1,16 @@
-app.controller('signUpCtrl', function ($scope, $state, Entity, $location, EventHandler) {
+app.controller('signUpCtrl', function ($scope, $location) {
+    $scope.ready = $location.search().provider ? true : false;
+
+    $scope.sSignUp = function () {
+        $scope.ready = true;
+    };
+
+    $scope.gSignUp = function () {
+        window.location.pathname = "/g/oauth2";
+    };
+});
+
+app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, EventHandler) {
         $scope.loading = false;
         $scope.error = {};
         $scope.provider = $location.search().provider;
@@ -13,7 +25,7 @@ app.controller('signUpCtrl', function ($scope, $state, Entity, $location, EventH
                 $scope.loading = true;
                 Entity.save({entity: "users"}, $scope.user, function () {
                         $scope.loading = false;
-                        EventHandler.show('Account has been created.');
+                        EventHandler.message('Account has been created.');
                         $state.transitionTo('home.login');
                     },
                     function (response) {
@@ -23,9 +35,6 @@ app.controller('signUpCtrl', function ($scope, $state, Entity, $location, EventH
                     });
             }
 
-        }
-        ;
-
+        };
     }
-)
-;
+);

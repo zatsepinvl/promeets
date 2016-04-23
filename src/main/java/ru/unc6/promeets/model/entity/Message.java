@@ -12,7 +12,7 @@ public class Message {
     private long messageId;
     private String text;
     private Chat chat;
-    private Timestamp time;
+    private long time;
     private User user;
 
     @Id
@@ -53,6 +53,7 @@ public class Message {
     public int hashCode() {
         int result = (int) (messageId ^ (messageId >>> 32));
         result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (int) (time ^ (time >>> 32));
         return result;
     }
 
@@ -67,11 +68,11 @@ public class Message {
     }
 
     @Column(name = "time")
-    public Timestamp getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

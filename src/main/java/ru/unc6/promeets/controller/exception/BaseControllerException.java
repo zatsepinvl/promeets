@@ -5,17 +5,17 @@ import org.springframework.http.HttpStatus;
 /**
  * Created by Vladimir on 06.04.2016.
  */
-public abstract class BaseControllerException extends RuntimeException {
+public class BaseControllerException extends RuntimeException {
 
-    protected ResponseError responseError;
+    protected ResponseErrorMessage responseErrorMessage;
     protected HttpStatus httpStatus;
 
-    public ResponseError getResponseError() {
-        return responseError;
+    public ResponseErrorMessage getResponseErrorMessage() {
+        return responseErrorMessage;
     }
 
-    public BaseControllerException setResponseError(ResponseError responseError) {
-        this.responseError = responseError;
+    public BaseControllerException setResponseErrorMessage(ResponseErrorMessage responseErrorMessage) {
+        this.responseErrorMessage = responseErrorMessage;
         return this;
     }
 

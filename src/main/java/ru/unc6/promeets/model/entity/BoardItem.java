@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class BoardItem {
     private long itemId;
     private String data;
-    private BoardPage boardPage;
+    private Board board;
     private MeetTask aim;
     private File file;
 
@@ -56,14 +56,13 @@ public class BoardItem {
     }
 
 
-    @JoinColumn(name = "board_page_id", referencedColumnName = "page_id", nullable = false)
-    @ManyToOne()
-    public BoardPage getBoardPage() {
-        return boardPage;
+    @Transient
+    public Board getBoard() {
+        return board;
     }
 
-    public void setBoardPage(BoardPage boardPage) {
-        this.boardPage = boardPage;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     @ManyToOne

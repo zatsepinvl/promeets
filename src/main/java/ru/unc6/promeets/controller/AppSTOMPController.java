@@ -6,20 +6,19 @@
 package ru.unc6.promeets.controller;
 
 import java.security.Principal;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.service.entity.UserService;
-import ru.unc6.promeets.model.service.notify.Notification;
+import ru.unc6.promeets.model.service.notification.Notification;
+import ru.unc6.promeets.model.service.webrtc.WebRtcSignalMessage;
+import ru.unc6.promeets.model.service.webrtc.WebRtcSignalService;
+import ru.unc6.promeets.security.CurrentUser;
 
 /**
- *
  * @author MDay
  */
 
@@ -28,8 +27,9 @@ public class AppSTOMPController
 {
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
+    
     @Autowired
-    UserService userService;
+    private WebRtcSignalService rtcSignalService;
 
     @MessageMapping("/{id}/init")
     public void initUser(@DestinationVariable("id") Long id) 
@@ -37,14 +37,19 @@ public class AppSTOMPController
         simpMessagingTemplate.convertAndSend("/topic/"+id, "{\"status\":\"ready\"}");
     }
     
-    @MessageMapping("/rtc")
-    public void rtc1(@Payload String message) 
+    @MessageMapping("/rtc/{id}")
+    public void rtc(WebRtcSignalMessage message, @CurrentUser User currentUser) 
     {
-        simpMessagingTemplate.convertAndSend("/topic/rtc" , message);
+        rtcSignalService.signalRTCByMeetId(message, currentUser);
     }
     
     public void sendNotificationToUser (Notification notification, User user)
     {
         simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), notification);
+    }
+    
+    public void sendRtcSignalMessage (WebRtcSignalMessage message, User user)
+    {
+        simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), message);
     }
 }

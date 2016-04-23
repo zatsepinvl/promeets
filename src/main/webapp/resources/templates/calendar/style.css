@@ -12,6 +12,7 @@ calendar {
     width: 100%;
     border: solid 1px #CCC;
     margin-bottom: 10px;
+    position: relative;
 }
 
 calendar > div.header {

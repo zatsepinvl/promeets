@@ -1,5 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -11,8 +13,10 @@ import javax.persistence.*;
 public class UserMeet implements Serializable {
     private UserMeetPK userMeetPK;
     private short editBoardPermission;
+    private boolean viewed;
 
     @EmbeddedId
+    @JsonIgnore
     public UserMeetPK getUserMeetPK() {
         return userMeetPK;
     }
@@ -51,4 +55,13 @@ public class UserMeet implements Serializable {
     }
 
 
+    @Basic
+    @Column(name = "viewed")
+    public boolean isViewed() {
+        return viewed;
+    }
+
+    public void setViewed(boolean viewed) {
+        this.viewed = viewed;
+    }
 }

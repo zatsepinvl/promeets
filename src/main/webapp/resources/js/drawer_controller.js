@@ -1,7 +1,7 @@
 /**
  * Created by Vladimir on 15.03.2016.
  */
-app.controller('drawerCtrl', function ($scope, $http, UserService, $state) {
+app.controller('drawerCtrl', function ($scope, $http, UserService, UserMeetService, UserMessageService, $state, appConst) {
     $scope.user = UserService.get();
     $scope.logout = function () {
         $http.post('/logout')
@@ -14,4 +14,24 @@ app.controller('drawerCtrl', function ($scope, $http, UserService, $state) {
             });
     };
 
+    $scope.newMeets = UserMeetService.getNewMeets();
+    $scope.newMessages = UserMessageService.getNewMessages();
+
+    $scope.$on('meet', function (event, data) {
+        if (data.action == appConst.ACTION.CREATE) {
+            $scope.newMeets.push(data.id);
+        }
+    });
+
+    $scope.$on('message', function (event, data) {
+        if (data.action == appConst.ACTION.CREATE) {
+            $scope.newMessages.push(data.id);
+        }
+    });
+
+    $scope.$on('usermessage', function (event, data) {
+        if (data.action == appConst.ACTION.UPDATE) {
+            $scope.newMessages.splice($scope.newMessages.indexOf(data.id), 1);
+        }
+    });
 });

@@ -1,26 +1,20 @@
 package ru.unc6.promeets.controller.rest;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.ResponseError;
 import ru.unc6.promeets.model.service.entity.BaseService;
 
+import java.io.Serializable;
 import java.util.List;
-import ru.unc6.promeets.model.service.notify.BaseNotifyService;
 
-/**
- * Created by Vladimir on 03.04.2016.
- * @param <T>
- */
-public class BaseRestController<T> {
-    public static final String NOT_FOUND_ERROR_MESSAGE = "Entity not found";
-    private BaseService<T> service;
-    private BaseNotifyService<T> notifyService;
+public abstract class BaseRestController<T, V extends Serializable> {
 
-    public BaseRestController(BaseService<T> service, BaseNotifyService<T> notifyService) {
+    private BaseService<T, V> service;
+
+    public BaseRestController(BaseService<T, V> service) {
         this.service = service;
-        this.notifyService = notifyService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -29,7 +23,7 @@ public class BaseRestController<T> {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public T getById(@PathVariable("id") long id) {
+    public T getById(@PathVariable("id") V id) {
         T entity = service.getById(id);
         checkIsNotFound(entity);
         return entity;
@@ -38,37 +32,33 @@ public class BaseRestController<T> {
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public T create(@RequestBody T entity) {
-        entity = service.save(entity);
-        notifyService.onCreate(entity);
+        entity = service.create(entity);
         return entity;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public T updateById(@PathVariable("id") long id, @RequestBody T entity) {
-        checkIsNotFound(id);
-        entity = service.save(entity);
-        notifyService.onUpdate(entity);
-        return entity;
+    public T updateById(@PathVariable("id") V id, @RequestBody T entity) {
+        checkIsNotFoundById(id);
+        return service.update(entity);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable("id") long id) {
-        T entity = service.getById(id);
-        notifyService.onDelete(entity);
+    public void deleteById(@PathVariable("id") V id) {
+        checkIsNotFoundById(id);
         service.delete(id);
     }
 
-    protected void checkIsNotFound(long id) {
+    protected void checkIsNotFoundById(V id) throws NotFoundException {
         if (service.getById(id) == null) {
-            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+            throw new NotFoundException();
         }
     }
 
     protected void checkIsNotFound(T entity) {
         if (entity == null) {
-            throw new NotFoundException().setResponseError(new ResponseError(NOT_FOUND_ERROR_MESSAGE));
+            throw new NotFoundException();
         }
     }
 }

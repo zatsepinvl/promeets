@@ -1,66 +1,71 @@
-<body ng-controller="appCtrl">
-<div class="mdl-layout mdl-js-layout
+<div ng-controller="userCtrl">
+    <div class="mdl-layout mdl-js-layout
             mdl-layout--fixed-header
             mdl-layout--fixed-drawer">
-    <!-- Header -->
-    <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--4dp">
-        <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
-             style="cursor: pointer;"/>
-        <div class="mdl-layout__header-row">
-            <span class="mdl-layout-title">Promeets</span>
-            <div class="mdl-layout-spacer">
-            </div>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+        <!-- Header -->
+        <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp">
+            <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
+                 style="cursor: pointer;"/>
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Promeets</span>
+                <div class="mdl-layout-spacer">
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                   mdl-textfield--floating-label mdl-textfield--align-right">
-                <label class="mdl-button mdl-js-button mdl-button--icon"
-                       for="fixed-header-drawer-exp">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <input class="mdl-textfield__input" type="text" name="sample"
-                           id="fixed-header-drawer-exp">
+                    <label class="mdl-button mdl-js-button mdl-button--icon"
+                           for="fixed-header-drawer-exp">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input class="mdl-textfield__input" type="text" name="sample"
+                               id="fixed-header-drawer-exp">
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
-    <!-- Navigation menu -->
-    <div class="mdl-layout__drawer" ng-controller="drawerCtrl">
-        <header>
-            <img ng-src="{{user.image.url}}"
-                 class="md-avatar"/>
-            <div class="username">{{user.firstName+' '+user.lastName}}</div>
-            <div class="email">{{user.email}}</div>
         </header>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link" href="/profile"> <i class="material-icons">face</i>Profile</a>
-            <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
-            <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar</a>
-            <a class="mdl-navigation__link" href="/message"> <i class="material-icons icon"> message</i><span
-                    class="mdl-badge"
-                    data-badge="4">Messages</span></a>
-            <a class="mdl-navigation__link " href="/settings"> <i class="material-icons">settings</i>Settings</a>
-            <a class="mdl-navigation__link " href="" ng-click="logout()"> <i class="material-icons">exit_to_app</i>Log
-                out</a>
-        </nav>
-    </div>
-
-    <!-- Page body-->
-    <main class="mdl-layout__content">
-        <div class="page-content" style="margin-top:20px; margin-bottom: 140px">
-
-            <div class="mdl-grid">
-
-                <!-- Content container -->
-                <div class="phone mdl-cell mdl-cell--10-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                    <div ui-view="body"></div>
-                </div>
-
-                <!-- Recommendations -->
-                <div class="phone mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                    <div ui-view="left_column"></div>
-                </div>
-            </div>
+        <!-- Navigation menu -->
+        <div class="mdl-layout__drawer" ng-controller="drawerCtrl">
+            <header>
+                <img ng-src="{{user.image.url}}"
+                     class="md-avatar"/>
+                <div class="username">{{user.firstName+' '+user.lastName}}</div>
+                <div class="email">{{user.email}}</div>
+            </header>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="/profile"> <i class="material-icons">face</i>Profile</a>
+                <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
+                <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
+            <span class="mdl-badge"
+                  data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span></a>
+                <a class="mdl-navigation__link" href="" ui-sref="user.messages"> <i class="material-icons icon">
+                    message</i>
+                    Messages
+                <span class="mdl-badge"
+                      data-badge="{{newMessages.length}}" ng-if="newMessages.length"></span></a>
+                <a class="mdl-navigation__link " href="/settings"> <i class="material-icons">settings</i>Settings</a>
+                <a class="mdl-navigation__link " href="" ng-click="logout()"> <i class="material-icons">exit_to_app</i>Log
+                    out</a>
+            </nav>
         </div>
 
-    </main>
+        <!-- Page body-->
+        <main class="mdl-layout__content">
+            <div class="page-content" style="margin-top:20px;">
+
+                <div class="mdl-grid">
+
+                    <!-- Content container -->
+                    <div class="phone mdl-cell mdl-cell--10-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                        <div ui-view="body"></div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="phone mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                        <div ui-view="left_column"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
 </div>

@@ -12,6 +12,7 @@ public class MeetTask {
     private String value;
     private Meet meet;
     private boolean checked;
+    private User user;
 
     @Id
     @Column(name = "task_id", nullable = false)
@@ -73,5 +74,15 @@ public class MeetTask {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    @ManyToOne
+    @JoinColumn(name="user_id", referencedColumnName = "user_id", nullable = false)
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

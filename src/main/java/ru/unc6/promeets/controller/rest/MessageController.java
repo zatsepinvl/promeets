@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.service.entity.MessageService;
-import ru.unc6.promeets.model.service.notify.MessageNotifyService;
+import ru.unc6.promeets.model.service.notification.MessageNotificationService;
 
 /**
  *
@@ -20,18 +20,16 @@ import ru.unc6.promeets.model.service.notify.MessageNotifyService;
 
 @RestController
 @RequestMapping("/api/messages")
-public class MessageController extends BaseRestController<Message>
+public class MessageController extends BaseRestController<Message,Long>
 {
 
     private static final Logger log = Logger.getLogger(MeetController.class);
 
     private MessageService messageService;
-    private MessageNotifyService messageNotifyService;
 
     @Autowired
-    public MessageController(MessageService service, MessageNotifyService notifyService) {
-        super(service,notifyService);
+    public MessageController(MessageService service) {
+        super(service);
         this.messageService = service;
-        this.messageNotifyService = notifyService;
     }
 }
