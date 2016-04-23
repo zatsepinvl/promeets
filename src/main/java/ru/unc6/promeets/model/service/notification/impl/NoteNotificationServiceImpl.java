@@ -9,9 +9,6 @@ import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.NoteNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 
-/**
- * Created by Vladimir on 22.04.2016.
- */
 @Service
 public class NoteNotificationServiceImpl extends BaseNotificationServiceImpl<MeetNote>
         implements NoteNotificationService {

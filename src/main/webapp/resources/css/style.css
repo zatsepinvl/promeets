@@ -261,3 +261,8 @@ md-list.md-dense md-list-item.md-3-line .md-list-item-text h4 {
 .img-box:hover .upload {
     display: block;
 }
+
+.md-toolbar-tools .md-button
+{
+    margin-top: 4px;
+}

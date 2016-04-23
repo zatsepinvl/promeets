@@ -12,7 +12,6 @@ public class Meet {
     private String title;
     private long time;
     private User admin;
-    private Board board;
     private String location;
     private String description;
     private MeetType type;
@@ -80,15 +79,6 @@ public class Meet {
         this.admin = admin;
     }
 
-    @OneToOne
-    @JoinColumn(name = "board_id", referencedColumnName = "board_id")
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
 
     @Basic
     @Column(name = "location")

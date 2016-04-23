@@ -60,7 +60,6 @@ public class FileController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseMessage uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") long fileId) {
         checkIsFileAvailable(file);
-
         BufferedOutputStream stream = null;
         ru.unc6.promeets.model.entity.File entityFile = fileService.getById(fileId);
         if (entityFile == null) {
@@ -76,6 +75,7 @@ public class FileController {
             stream.write(bytes);
             fileName = uploadHostFolder + "/" + fileName;
             entityFile.setUrl(fileName);
+            entityFile.setName(file.getName());
             fileService.update(entityFile);
             return new ResponseMessage().setMessage(fileName);
         } catch (NoSuchAlgorithmException | IOException ex) {

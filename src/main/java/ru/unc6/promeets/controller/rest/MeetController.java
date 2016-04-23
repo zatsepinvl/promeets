@@ -3,6 +3,7 @@ package ru.unc6.promeets.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
+import ru.unc6.promeets.model.service.entity.BoardService;
 import ru.unc6.promeets.model.service.entity.MeetService;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public class MeetController extends BaseRestController<Meet, Long> {
 
     @Autowired
     private UserMeetService userMeetService;
+
+    @Autowired
+    private BoardService boardService;
 
     @Autowired
     public MeetController(MeetService service) {
@@ -44,6 +48,12 @@ public class MeetController extends BaseRestController<Meet, Long> {
     public List getMeetTargets(@PathVariable("id") long id) {
         checkIsNotFoundById(id);
         return meetService.getMeetAims(id);
+    }
+
+    @RequestMapping(value = "/{id}/boards", method = RequestMethod.GET)
+    public Board getBoard(@PathVariable("id") long meetId, @RequestParam("page") int page) {
+        checkIsNotFoundById(meetId);
+        return boardService.getBoardByMeetId(meetId, page);
     }
 
 }

@@ -1,67 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ru.unc6.promeets.model.service.entity.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import ru.unc6.promeets.model.entity.Board;
+import ru.unc6.promeets.model.repository.BoardRepository;
+import ru.unc6.promeets.model.service.entity.BoardService;
+import ru.unc6.promeets.model.service.notification.BoardNotificationService;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.entity.Board;
-import ru.unc6.promeets.model.entity.BoardPage;
-import ru.unc6.promeets.model.repository.BoardRepository;
-import ru.unc6.promeets.model.service.entity.BoardService;
-
 /**
- * @author MDay
+ * Created by Vladimir on 23.04.2016.
  */
-
-@Transactional
 @Service
-public class BoardServiceImpl implements BoardService {
-    private static final Logger log = Logger.getLogger(BoardServiceImpl.class);
+public class BoardServiceImpl extends BaseNotificatedServiceImpl<Board, Long>
+        implements BoardService {
+
+    private BoardRepository boardPageRepository;
+
+    private static final int PAGE_SIZE = 1;
 
     @Autowired
-    BoardRepository boardRepository;
-
-    @Override
-    public Board getById(Long id) {
-        return boardRepository.findOne(id);
+    public BoardServiceImpl(BoardRepository repository, BoardNotificationService notificationService) {
+        super(repository, notificationService);
+        this.boardPageRepository = repository;
     }
 
     @Override
-    public List<Board> getAll() {
-        return (List<Board>) boardRepository.findAll();
+    public Board getBoardByMeetId(long meetId, int page) {
+        List<Board> list = boardPageRepository.getBoardByMeetId(meetId, new PageRequest(page, PAGE_SIZE)).getContent();
+        return list.size() > 0 ? list.get(0) : null;
     }
-
-    @Override
-    public Board create(Board board) {
-        return boardRepository.save(board);
-    }
-
-    @Override
-    public Board update(Board entity) {
-        return null;
-    }
-
-    @Override
-    public void delete(Long id) {
-        List<BoardPage> pages = (List) boardRepository.getAllBoardPagesById(id);
-        for (BoardPage page : pages) {
-            boardRepository.deleteAllBoardItemsByPageId(page.getPageId());
-        }
-        boardRepository.deleteAllBoardPagesById(id);
-        boardRepository.delete(id);
-
-    }
-
-    @Override
-    public List<BoardPage> getAllBoardPagesByMeetId(long id) {
-        return (List) boardRepository.getAllBoardPagesById(id);
-    }
-
 }

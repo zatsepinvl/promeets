@@ -432,7 +432,6 @@ app.service('UploadService', function (EventHandler, Upload) {
 
     this.upload = function (file, id, success, error) {
         if (!file) {
-            EventHandler.message('Invalid file');
             return;
         }
         EventHandler.load('Uploading file');

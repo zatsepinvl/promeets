@@ -14,6 +14,4 @@ public interface MeetService extends BaseService<Meet, Long> {
     List<MeetNote> getMeetNotes(long id);
 
     List<MeetTask> getMeetAims(long id);
-
-    Board getBoard(long id);
 }

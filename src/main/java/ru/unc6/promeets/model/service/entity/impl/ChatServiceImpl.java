@@ -18,20 +18,12 @@ import ru.unc6.promeets.model.repository.MessageRepository;
 import ru.unc6.promeets.model.repository.ChatRepository;
 import ru.unc6.promeets.model.service.entity.ChatService;
 
-/**
- * @author MDay
- */
-
 @Service
 @Transactional
 public class ChatServiceImpl extends BaseServiceImpl<Chat, Long>
         implements ChatService {
 
     private ChatRepository chatRepository;
-
-    @Autowired
-    private MessageRepository messageRepository;
-
 
     @Autowired
     public ChatServiceImpl(ChatRepository repository) {

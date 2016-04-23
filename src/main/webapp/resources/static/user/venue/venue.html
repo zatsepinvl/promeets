@@ -2,11 +2,11 @@
     <div class="mdl-grid" style="padding: 0">
         <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             <div class="mdl-card mdl-card mdl-shadow--2dp" style="min-height: 0">
-                <md-toolbar style="background-color: #2e7d32;">
+                <md-toolbar style="background-color: #2e7d32; height: 50px; min-height: 0">
                     <div class="md-toolbar-tools">
                         <span>
-                            <div style="margin-top: 4px" ng-bind-html="meet.title"></div>
-                            <div style="font-weight: 300; font-size: 14px" ng-bind-html="meet.time"></div>
+                            <div style="font-size: 16px" ng-bind-html="meet.title"></div>
+                            <div style="font-weight: 300; font-size: 12px" ng-bind-html="meet.time"></div>
                         </span>
                         <span flex></span>
                         <md-button class="md-icon-button">
@@ -26,7 +26,10 @@
 
         <!--Board -->
         <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height: 360px">
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height: 440px">
+                <div ng-controller="boardCtrl">
+                    <board br-save="onSave" br-model="items" br-data="board.data" br-loading="loading"></board>
+                </div>
             </div>
         </div>
 

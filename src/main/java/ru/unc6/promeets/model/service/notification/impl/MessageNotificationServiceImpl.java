@@ -14,15 +14,12 @@ import ru.unc6.promeets.model.repository.ChatRepository;
 import ru.unc6.promeets.model.service.notification.MessageNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 
-/**
- * @author MDay
- */
 @Service
 public class MessageNotificationServiceImpl extends BaseNotificationServiceImpl<Message> implements MessageNotificationService {
     @Autowired
-    AppSTOMPController appSTOMPController;
+    private AppSTOMPController appSTOMPController;
     @Autowired
-    ChatRepository chatRepository;
+    private ChatRepository chatRepository;
 
     @Override
     protected void onAction(Message message, Notification.Action action) {

@@ -16,7 +16,7 @@
         <class>ru.unc6.promeets.model.entity.MeetNote</class>
         <class>ru.unc6.promeets.model.entity.Board</class>
         <class>ru.unc6.promeets.model.entity.BoardItem</class>
-        <class>ru.unc6.promeets.model.entity.BoardPage</class>
+        <class>ru.unc6.promeets.model.entity.Board</class>
         <class>ru.unc6.promeets.model.entity.GroupType</class>
         <class>ru.unc6.promeets.model.entity.Message</class>
         <class>ru.unc6.promeets.model.entity.Chat</class>

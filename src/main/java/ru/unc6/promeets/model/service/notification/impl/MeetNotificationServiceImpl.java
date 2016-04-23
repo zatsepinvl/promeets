@@ -14,9 +14,6 @@ import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 
-/**
- * @author MDay
- */
 @Service
 public class MeetNotificationServiceImpl extends BaseNotificationServiceImpl<Meet>
         implements MeetNotificationService {

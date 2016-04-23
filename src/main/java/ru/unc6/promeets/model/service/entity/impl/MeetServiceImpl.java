@@ -54,10 +54,10 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
 
     @Override
     public void delete(Long id) {
-        Board board = meetRepository.findOne(id).getBoard();
+        /*Board board = meetRepository.findOne(id).getBoard();
         if (board != null) {
             boardService.delete(board.getBoardId());
-        }
+        }*/
         meetRepository.deleteAllNotesById(id);
         meetRepository.deleteAllAimsById(id);
         userMeetService.deleteUserMeetsByMeetId(id);
@@ -70,6 +70,9 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
         entity = meetRepository.save(entity);
         userMeetService.createUserMeetsByMeet(entity);
         notificationService.onCreate(entity);
+        Board board = new Board();
+        board.setMeet(entity);
+        boardService.create(board);
         return entity;
     }
 
@@ -83,9 +86,5 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
         return (List<MeetTask>) meetRepository.getMeetTasksByMeetId(id);
     }
 
-    @Override
-    public Board getBoard(long id) {
-        return getById(id).getBoard();
-    }
 
 }

@@ -23,7 +23,7 @@
         <mapping class="ru.unc6.promeets.model.entity.MeetNote"/>
         <mapping class="ru.unc6.promeets.model.entity.Board"/>
         <mapping class="ru.unc6.promeets.model.entity.BoardItem"/>
-        <mapping class="ru.unc6.promeets.model.entity.BoardPage"/>
+        <mapping class="ru.unc6.promeets.model.entity.Board"/>
         <mapping class="ru.unc6.promeets.model.entity.GroupType"/>
         <mapping class="ru.unc6.promeets.model.entity.Message"/>
         <mapping class="ru.unc6.promeets.model.entity.Chat"/>

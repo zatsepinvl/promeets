@@ -5,28 +5,19 @@
  */
 package ru.unc6.promeets.model.repository;
 
-import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import ru.unc6.promeets.model.entity.Board;
-import ru.unc6.promeets.model.entity.BoardPage;
 
 /**
- *
  * @author MDay
  */
-public interface BoardRepository extends CrudRepository<Board, Long>
-{
-    
-    @Query("select boardPage from BoardPage boardPage where boardPage.board.boardId=(:boardId)")
-    Iterable<BoardPage> getAllBoardPagesById(@Param("boardId") Long id);
-    
-    @Modifying
-    @Query("delete from BoardPage boardPage where boardPage.board.boardId=(:boardId)")
-    void deleteAllBoardPagesById(@Param("boardId") Long id);
-    
-    @Modifying
-    @Query("delete from BoardItem boardItem where boardItem.boardPage.pageId=(:pageId)")
-    void deleteAllBoardItemsByPageId(@Param("pageId") Long id);
+
+public interface BoardRepository extends PagingAndSortingRepository<Board, Long> {
+    @Query(value = "select board from Board board where board.meet.id=(:meetId) order by board.id")
+    Page<Board> getBoardByMeetId(@Param("meetId") long meetId, Pageable pageable);
 }

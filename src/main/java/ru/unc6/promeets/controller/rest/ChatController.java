@@ -34,14 +34,6 @@ public class ChatController extends BaseRestController<Chat, Long> {
         this.chatService = service;
     }
 
-    @RequestMapping(value = "/{id}/messages/{pageId}", method = RequestMethod.GET)
-    public List<Message> getChatMessages(@PathVariable long id, @PathVariable long pageId) {
-        Sort sort = new Sort(Sort.Direction.DESC, "time");
-        Pageable page = new PageRequest((int) pageId, 20, sort);
-        return chatService.getMessagePageByChatId(id, page);
-    }
-
-
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
     public List getChatUsers(@PathVariable long id) {
         return chatService.getAllUsersByChatId(id);

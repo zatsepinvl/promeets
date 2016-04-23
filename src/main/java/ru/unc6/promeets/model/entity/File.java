@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class File {
     private long fileId;
     private String url;
+    private String name;
 
     @Id
     @Column(name = "file_id", nullable = false)
@@ -51,6 +52,17 @@ public class File {
     public int hashCode() {
         int result = (int) (fileId ^ (fileId >>> 32));
         result = 31 * result + (url != null ? url.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
