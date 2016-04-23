@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<style type="text/css">
+
+    #remoteVideo { height: 70%; margin-top: 5%; background: #000; border: 1px solid #333;}
+    #localVideo { width: 20%;  right: 1.1em; bottom: 1em; border: 1px solid #333;  }
+    #callButton {  display: none; left: 50%; font-size: 2em; bottom: 5%; border-radius: 1em; }
+  </style>
+
+<div ng-controller="rtcController" height="500px">
+<div>
+	<video id="localVideo" autoplay muted></video>
+</div>
+<div>
+<video id="remoteVideo" autoplay></video>
+</div>
+<div>
+<button id="callButton" ng-click="createOffer()">?</button>
+</div>
+</div>

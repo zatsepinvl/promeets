@@ -1,0 +1,16 @@
+<md-toast>
+    <md-progress-circular md-mode="indeterminate"
+                          md-diameter="20"
+                          ng-if="loading" flex></md-progress-circular>
+    <span class="md-toast-text" flex> {{message}}</span>
+    <md-button ng-click="hide()"
+               ng-if="action">
+        {{action}}
+    </md-button>
+    <md-icon ng-click="hide()"
+             ng-if="!action"
+             style="color:white; cursor: pointer;">
+        close
+    </md-icon>
+</md-toast>
+
