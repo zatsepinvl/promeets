@@ -19,6 +19,7 @@ app.controller('boardCtrl', function ($scope, $stateParams, $http, MeetService, 
 
     $scope.$on('board', function (event, message) {
         $scope.board = message.data;
+        $scope.$apply();
     })
 
 });
