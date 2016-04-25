@@ -1,5 +1,8 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 /**
@@ -9,7 +12,9 @@ import javax.persistence.*;
 @Table(name = "chats")
 public class Chat {
     private long chatId;
-    private String name;
+    private String title;
+    private File image;
+    private Group group;
 
     @Id
     @Column(name = "chat_id", nullable = false)
@@ -23,13 +28,13 @@ public class Chat {
     }
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @Column(name = "title")
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class Chat {
         Chat chat = (Chat) o;
 
         if (chatId != chat.chatId) return false;
-        if (name != null ? !name.equals(chat.name) : chat.name != null) return false;
+        if (title != null ? !title.equals(chat.title) : chat.title != null) return false;
 
         return true;
     }
@@ -48,7 +53,29 @@ public class Chat {
     @Override
     public int hashCode() {
         int result = (int) (chatId ^ (chatId >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         return result;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "file_id")
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
+
+
+
+    @Transient
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

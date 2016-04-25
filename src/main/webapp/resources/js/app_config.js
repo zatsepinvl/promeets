@@ -7,7 +7,7 @@ var app = angular.module('app', [
     'focus-if',
     'luegg.directives',
     'ngFileUpload'
-    ]);
+]);
 
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
@@ -56,7 +56,7 @@ app.run(function ($rootScope, $location, $timeout) {
     };
 });
 
-app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
+app.config(function ($locationProvider, $httpProvider,$stateProvider, $urlRouterProvider) {
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');
         $stateProvider

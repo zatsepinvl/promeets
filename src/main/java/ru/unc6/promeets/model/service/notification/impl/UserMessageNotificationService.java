@@ -16,7 +16,11 @@ public class UserMessageNotificationService extends BaseNotificationServiceImpl<
 
     @Override
     protected void onAction(UserMessage entity, Notification.Action action) {
-        Notification notification = new Notification(UserMessage.class, action, entity.getMessage().getMessageId());
-        stompController.sendNotificationToUser(notification, entity.getUser());
+        stompController.sendNotificationToUser(new Notification()
+                        .setData(entity)
+                        .setAction(action)
+                        .setId(entity.getMessage().getMessageId())
+                        .setEntity(entity.getClass().getSimpleName().toLowerCase()),
+                entity.getUser());
     }
 }

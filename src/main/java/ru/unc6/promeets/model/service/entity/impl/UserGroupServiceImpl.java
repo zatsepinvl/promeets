@@ -2,6 +2,7 @@ package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
@@ -11,9 +12,6 @@ import ru.unc6.promeets.model.service.entity.UserGroupService;
 
 import java.util.List;
 
-/**
- * Created by Vladimir on 12.04.2016.
- */
 @Service
 public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup, UserGroupPK>
         implements UserGroupService {
@@ -52,6 +50,7 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup, UserGroupPK
     }
 
     @Override
+    @Transactional
     public void deleteUserGroupsByGroupId(long id) {
         userGroupRepository.deleteUserGroupsByGroupId(id);
     }

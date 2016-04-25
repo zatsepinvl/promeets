@@ -322,7 +322,7 @@ function startOfMonth(date) {
     return date.date(1).hour(0).minute(0).millisecond(0).valueOf();
 }
 
-app.service('GroupChatService', function ($rootScope, $http) {
+app.service('GroupChatService', function ($rootScope, $http, UserService, UserEntity) {
     var messages = [];
     var chat = {};
     var state = {loading: true};
@@ -348,10 +348,7 @@ app.service('GroupChatService', function ($rootScope, $http) {
                 clone(newVal.chat, chat);
                 page = page ? page : 0;
                 loadPage(chat.chatId, page, function (data) {
-                    data.forEach(function (val) {
-                        val.message.time = moment(val.message.time).valueOf();
-                    });
-                    clone(data, messages);
+                    fillData(data);
                     state.loading = false;
                 });
             }
@@ -367,9 +364,7 @@ app.service('GroupChatService', function ($rootScope, $http) {
                 if (data.length > 0) {
                     page++;
                 }
-                data.forEach(function (value) {
-                    messages.push(value);
-                });
+                fillData(data);
                 state.loading = false;
             },
             function () {
@@ -377,6 +372,16 @@ app.service('GroupChatService', function ($rootScope, $http) {
             });
     };
 
+    var fillData = function (userMessages) {
+        userMessages.forEach(function (value) {
+            var message = value.message;
+            if (!value.viewed && !value.sender) {
+                value.viewed = true;
+                UserEntity.update({entity: "messages", id: message.messageId}, value);
+            }
+            messages.push(value);
+        });
+    };
     this.get = function () {
         return messages;
     };
@@ -390,32 +395,21 @@ app.service('GroupChatService', function ($rootScope, $http) {
     }
 });
 
-app.service('UserChatsService', function (UserEntity, $http, UserMessageService) {
+app.service('UserChatsService', function (UserEntity) {
     var chats = [];
     var state = {loading: true};
     this.resolve = function () {
-        var i = 0;
         chats.length = 0;
         state.loading = true;
-        UserEntity.query({entity: 'groups'},
+        UserEntity.query({entity: 'chats'},
             function (data) {
-                data.forEach(function (value) {
-                    chats[i] = {group: value.group, chat: value.group.chat, messages: [], newMessages: 0};
-                    $http.get("/api/users/chats/" + value.group.chat.chatId + "/messages?page=" + 0)
-                        .success(function (messages) {
-                            clone(messages, chats[i].messages);
-                            messages.forEach(function (message) {
-                                if (!message.viewed) {
-                                    chats[i].newMessages++;
-                                }
-                            });
-                            i++;
-                        });
-                    state.loading = false;
-                });
+                clone(data, chats);
+                state.loading = false;
+            }, function (error) {
+                state.error = error.data;
+                state.loading = false;
             });
     };
-
 
     this.getChats = function () {
         return chats;
@@ -429,7 +423,6 @@ app.service('UserChatsService', function (UserEntity, $http, UserMessageService)
 
 
 app.service('UploadService', function (EventHandler, Upload) {
-
     this.upload = function (file, id, success, error) {
         if (!file) {
             return;

@@ -43,10 +43,7 @@ public class ChatServiceImpl extends BaseServiceImpl<Chat, Long>
         return chatRepository.getMessagesPageByChatId(id, page).getContent();
     }
 
-    @Override
-    public List<User> getAllUsersByChatId(long id) {
-        return (List<User>) chatRepository.getAllUsersByChatId(id);
-    }
+
 
     @Override
     public List<Message> getAllMessagesByChatId(long id) {

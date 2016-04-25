@@ -23,7 +23,6 @@ import ru.unc6.promeets.model.service.notification.impl.BaseNotificationServiceI
 
 
 @Service
-@Transactional
 public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
         implements MeetService {
 
@@ -53,6 +52,7 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         /*Board board = meetRepository.findOne(id).getBoard();
         if (board != null) {
@@ -66,6 +66,7 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
 
 
     @Override
+    @Transactional
     public Meet create(Meet entity) {
         entity = meetRepository.save(entity);
         userMeetService.createUserMeetsByMeet(entity);

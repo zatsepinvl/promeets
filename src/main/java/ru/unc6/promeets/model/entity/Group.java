@@ -129,7 +129,7 @@ public class Group {
     public void setAdmin(User admin) {
         this.admin = admin;
     }
-    
+
     @OneToOne
     @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false)
     public Chat getChat() {

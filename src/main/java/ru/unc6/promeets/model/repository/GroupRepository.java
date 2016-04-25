@@ -36,4 +36,7 @@ public interface GroupRepository extends CrudRepository<Group, Long> {
     @Query("select groupType from GroupType groupType")
     Iterable<GroupType> getGroupTypes();
 
+    @Query("select group from Group group where group.chat.chatId=(:chatId)")
+    Group getGroupByChatId(@Param("chatId") long chatId);
+
 }

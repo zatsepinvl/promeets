@@ -31,6 +31,11 @@ public class UserMessageController extends BaseUserRestController<UserMessage, U
         this.userMessageService = service;
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public UserMessage create(@RequestBody UserMessage userMessage, @CurrentUser User user) {
+        return userMessageService.create(userMessage);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserMessage get(@PathVariable("id") long messageId, @CurrentUser User user) {
         checkIsNotFound(messageId);

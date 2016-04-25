@@ -1,24 +1,44 @@
-app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, AppService) {
+app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, UserService, AppService) {
     $scope.chats = UserChatsService.getChats();
     $scope.time = AppService.toTime;
     $scope.state = UserChatsService.getState();
-    
-    $scope.$on('message', function (event, data) {
-        if (data.action == appConst.ACTION.CREATE) {
-            UserEntity.get({entity: "messages", id: data.id},
-                function (message) {
-                    $scope.chats.forEach(function (chat) {
-                        if (chat.chat.chatId = message.message.chat.chatId) {
-                            chat.messages[0] = message;
-                            chat.newMessages++;
-                            return;
-                        }
-                    });
-                });
+    $scope.user = UserService.get();
+
+    $scope.$on('usermessage', function (event, message) {
+        if (message.action == appConst.ACTION.CREATE) {
+            for (var i = 0; i < $scope.chats.length; i++) {
+                if (message.data.message.chat.chatId = $scope.chats[i].chat.chatId) {
+                    $scope.chats[i].lastUserMessage = message.data;
+                    if (!message.data.sender) {
+                        $scope.chats[i].newMessagesCount++;
+                    }
+                    $scope.$apply();
+                    return;
+                }
+            }
+        }
+        else if (message.action == appConst.ACTION.UPDATE) {
+            for (var i = 0; i < $scope.chats.length; i++) {
+                if (message.data.message.chat.chatId = $scope.chats[i].chat.chatId) {
+                    if (message.data.sender && message.data.message.messageId == $scope.chats[i].lastUserMessage.message.messageId) {
+                        $scope.chats[i].lastUserMessage = message.data;
+                    }
+                    else {
+                        $scope.chats[i].newMessagesCount--;
+                    }
+                    $scope.$apply();
+                    return;
+                }
+            }
         }
     });
 
     $scope.go = function (chat) {
-        $state.transitionTo('user.group.chat', {groupId: chat.group.groupId});
+        $state.transitionTo('user.group.chat', {groupId: chat.chat.group.groupId}, {
+            reload: true,
+            inherit: false,
+            notify: true
+        });
     }
+
 });

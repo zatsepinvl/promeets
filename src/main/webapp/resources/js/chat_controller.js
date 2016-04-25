@@ -20,10 +20,14 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
             time: moment().valueOf()
         };
         $scope.text = "";
-        Entity.save({entity: "messages"}, message,
+        UserEntity.save({entity: "messages"},
+            {
+                message: message,
+                user: $scope.user,
+                viewed: false
+            },
             function (value) {
-                $scope.messages.push({message: value, viewed: true});
-                $scope.glue = true;
+                $scope.messages.push(value);
             });
     };
 
@@ -32,17 +36,22 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
         UserEntity.update({entity: "messages", id: message.message.messageId}, message);
     };
 
-    $scope.$on('message', function (event, data) {
-        console.log('new message');
-        if (data.action == appConst.ACTION.CREATE) {
-            UserEntity.get({entity: "messages", id: data.id},
-                function (message) {
-                    $scope.messages.push(message);
-                    $scope.glue = true;
-                });
+    $scope.$on('usermessage', function (event, message) {
+        if (message.action == appConst.ACTION.CREATE && message.data.message.chat.chatId == $scope.chat.chatId) {
+            $scope.messages.push(message.data);
+            $scope.update(message.data);
+            $scope.$apply();
+        }
+        else if (message.action == appConst.ACTION.UPDATE && message.data.message.chat.chatId == $scope.chat.chatId) {
+            for (var i = 0; i < $scope.messages.length; i++) {
+                if ($scope.messages[i].message.messageId == message.id) {
+                    $scope.messages[i] = message.data;
+                    $scope.$apply();
+                    return;
+                }
+            }
         }
     });
-
 
     $scope.handleScrollToTop = function () {
         GroupChatService.loadNextPage();

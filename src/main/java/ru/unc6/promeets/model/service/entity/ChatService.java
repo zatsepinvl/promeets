@@ -15,7 +15,6 @@ import ru.unc6.promeets.model.entity.Message;
 public interface ChatService extends BaseService<Chat,Long> {
     List<Message> getMessagePageByChatId(long id, Pageable page);
     List<Message> getAllMessagesByChatId(long id);
-    List getAllUsersByChatId(long id);
 }
 
 

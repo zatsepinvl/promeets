@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Table(name = "user_chats", schema = "public", catalog = "promeets_db")
 public class UserChat {
     private UserChatPK userChatPK;
+    private int newMessagesCount;
+    private UserMessage lastUserMessage;
+
 
     @EmbeddedId
     @JsonIgnore
@@ -40,4 +43,39 @@ public class UserChat {
         userChatPK.setUser(user);
     }
 
+    @Transient
+    public int getNewMessagesCount() {
+        return newMessagesCount;
+    }
+
+    public void setNewMessagesCount(int messagesCount) {
+        this.newMessagesCount = messagesCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserChat userChat = (UserChat) o;
+        if (newMessagesCount != userChat.newMessagesCount) return false;
+        return userChatPK != null ? userChatPK.equals(userChat.userChatPK) : userChat.userChatPK == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userChatPK != null ? userChatPK.hashCode() : 0;
+        result = 31 * result + newMessagesCount;
+        result = 31 * result + (lastUserMessage != null ? lastUserMessage.hashCode() : 0);
+        return result;
+    }
+
+    @Transient
+    public UserMessage getLastUserMessage() {
+        return lastUserMessage;
+    }
+
+    public void setLastUserMessage(UserMessage lastMessage) {
+        this.lastUserMessage = lastMessage;
+    }
 }

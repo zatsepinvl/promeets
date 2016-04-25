@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.UserMessage;
 import ru.unc6.promeets.model.entity.UserMessagePK;
 
@@ -26,6 +27,12 @@ public interface UserMessageRepository extends PagingAndSortingRepository<UserMe
 
     @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.viewed=false")
     Iterable<UserMessage> getNewUserMessagesCountByUserId(@Param("userId") long userId);
+
+    @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) and userMessage.viewed=false and userMessage.id.user.userId!=userMessage.id.message.user.userId")
+    Iterable<UserMessage> getNewUserMessagesCountByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId);
+
+    @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) order by userMessage.id.message.time desc")
+    Page<UserMessage> getLastMessageByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId, Pageable pageable);
 
     @Modifying
     @Query("delete from UserMessage userMessage where userMessage.id.message.chat.chatId=(:chatId)")

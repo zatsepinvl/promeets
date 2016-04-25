@@ -11,4 +11,8 @@ import java.util.List;
  */
 public interface UserChatService extends BaseService<UserChat, UserChatPK> {
     List<User> getUsersByChatId(long id);
+
+    List<UserChat> getUserChatsByUserId(long userId);
+
+    UserChat getUserChatByUserIdAndChatId(long userId, long chatId);
 }

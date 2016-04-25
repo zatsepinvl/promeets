@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "select user from User user where user.email=(:email)")
     User getUserByEmail(@Param("email") String email);
 
+    @Query("select userChat.userChatPK.user from UserChat userChat where  userChat.userChatPK.chat.chatId=(:chatId)")
+    Iterable<User> getUsersByChatId(@Param("chatId") Long id);
 }

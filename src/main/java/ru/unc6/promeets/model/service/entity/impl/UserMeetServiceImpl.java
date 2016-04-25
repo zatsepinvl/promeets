@@ -2,6 +2,7 @@ package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
@@ -10,7 +11,6 @@ import ru.unc6.promeets.model.repository.UserGroupRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
-import ru.unc6.promeets.model.service.notification.impl.BaseNotificationServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,7 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
     }
 
     @Override
+    @Transactional
     public void createUserMeetsByMeet(Meet meet) {
         List<UserMeet> userMeets = new ArrayList<>();
         long adminId = meet.getAdmin().getUserId();
