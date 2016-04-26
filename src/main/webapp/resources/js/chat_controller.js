@@ -1,4 +1,4 @@
-app.controller('chatController', function ($document, $scope, appConst, AppService, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
+app.controller('chatController', function ($document, $scope,$rootScope, appConst, AppService, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
     $scope.user = UserService.get();
     $scope.group = GroupService.get();
     $scope.messages = undefined;
@@ -31,15 +31,12 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
             });
     };
 
-    $scope.update = function (message) {
-        message.viewed = true;
-        UserEntity.update({entity: "messages", id: message.message.messageId}, message);
-    };
 
     $scope.$on('usermessage', function (event, message) {
+        console.log('FROM CHAT CONTROLLER');
         if (message.action == appConst.ACTION.CREATE && message.data.message.chat.chatId == $scope.chat.chatId) {
             $scope.messages.push(message.data);
-            $scope.update(message.data);
+            GroupChatService.update(message.data);
             $scope.$apply();
         }
         else if (message.action == appConst.ACTION.UPDATE && message.data.message.chat.chatId == $scope.chat.chatId) {
@@ -54,7 +51,9 @@ app.controller('chatController', function ($document, $scope, appConst, AppServi
     });
 
     $scope.handleScrollToTop = function () {
-        GroupChatService.loadNextPage();
+        if($scope.messages && $scope.messages.length) {
+            GroupChatService.loadNextPage();
+        }
     };
 
 });

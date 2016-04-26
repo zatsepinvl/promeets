@@ -1,4 +1,5 @@
 app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, UserService, AppService) {
+    $scope.chats = undefined;
     $scope.chats = UserChatsService.getChats();
     $scope.time = AppService.toTime;
     $scope.state = UserChatsService.getState();
@@ -8,11 +9,12 @@ app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, U
         if (message.action == appConst.ACTION.CREATE) {
             for (var i = 0; i < $scope.chats.length; i++) {
                 if (message.data.message.chat.chatId = $scope.chats[i].chat.chatId) {
-                    $scope.chats[i].lastUserMessage = message.data;
-                    if (!message.data.sender) {
-                        $scope.chats[i].newMessagesCount++;
-                    }
-                    $scope.$apply();
+                    $scope.$apply(function () {
+                        $scope.chats[i].lastUserMessage = message.data;
+                        if (!message.data.sender) {
+                            $scope.chats[i].newMessagesCount++;
+                        }
+                    });
                     return;
                 }
             }
@@ -34,11 +36,7 @@ app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, U
     });
 
     $scope.go = function (chat) {
-        $state.transitionTo('user.group.chat', {groupId: chat.chat.group.groupId}, {
-            reload: true,
-            inherit: false,
-            notify: true
-        });
+        $state.transitionTo('user.group.chat', {groupId: chat.chat.group.groupId});
     }
 
 });

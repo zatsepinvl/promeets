@@ -174,7 +174,7 @@ app.service('UserMessageService', function ($http) {
     }
 });
 
-app.service('GroupService', function (Entity, $http) {
+app.service('GroupService', function (Entity) {
     var value;
     var members;
     this.load = function (groupId, success, error) {
@@ -322,12 +322,22 @@ function startOfMonth(date) {
     return date.date(1).hour(0).minute(0).millisecond(0).valueOf();
 }
 
-app.service('GroupChatService', function ($rootScope, $http, UserService, UserEntity) {
+app.service('GroupChatService', function (appConst, $rootScope, $http, UserService, Entity, UserEntity) {
     var messages = [];
     var chat = {};
     var state = {loading: true};
-
     var page = 0;
+
+    var updateMessage = function (message) {
+        message.viewed = true;
+        $rootScope.$emit('usermessageLocal', {
+            action: appConst.ACTION.UPDATE,
+            data: message,
+            id: message.message.messageId,
+            entity: 'usermessage'
+        });
+        UserEntity.update({entity: "messages", id: message.message.messageId}, message);
+    };
 
     var loadPage = function (chatId, page, success, error) {
         $http.get("/api/users/chats/" + chatId + "/messages?page=" + page)
@@ -339,20 +349,19 @@ app.service('GroupChatService', function ($rootScope, $http, UserService, UserEn
             });
     };
 
-    this.load = function (group, page) {
+
+    this.load = function (groupId, page) {
         state.loading = true;
         messages.length = 0;
-        $rootScope.group = group;
-        $rootScope.$watch('group', function (newVal, oldVal) {
-            if (newVal.chat) {
-                clone(newVal.chat, chat);
+        Entity.get({entity: "groups", id: groupId, d_entity: "chat"},
+            function (data) {
+                clone(data, chat);
                 page = page ? page : 0;
                 loadPage(chat.chatId, page, function (data) {
                     fillData(data);
                     state.loading = false;
                 });
-            }
-        }, true);
+            });
     };
 
 
@@ -374,10 +383,8 @@ app.service('GroupChatService', function ($rootScope, $http, UserService, UserEn
 
     var fillData = function (userMessages) {
         userMessages.forEach(function (value) {
-            var message = value.message;
             if (!value.viewed && !value.sender) {
-                value.viewed = true;
-                UserEntity.update({entity: "messages", id: message.messageId}, value);
+                updateMessage(value);
             }
             messages.push(value);
         });
@@ -392,7 +399,9 @@ app.service('GroupChatService', function ($rootScope, $http, UserService, UserEn
 
     this.getState = function () {
         return state;
-    }
+    };
+
+    this.update = updateMessage;
 });
 
 app.service('UserChatsService', function (UserEntity) {

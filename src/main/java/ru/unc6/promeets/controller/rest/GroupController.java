@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.service.entity.GroupService;
 
@@ -57,6 +58,11 @@ public class GroupController extends BaseRestController<Group, Long> {
     @RequestMapping(value = "/group_types", method = RequestMethod.GET)
     public ResponseEntity<List> getTypes() {
         return new ResponseEntity<List>(groupService.getGroupTypes(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/chat", method = RequestMethod.GET)
+    public Chat getChatByGroupId(@PathVariable("id") long groupId) {
+        return checkAndGetById(groupId).getChat();
     }
 
 }

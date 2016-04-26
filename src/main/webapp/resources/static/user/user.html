@@ -1,7 +1,6 @@
 <div ng-controller="userCtrl">
     <div class="mdl-layout mdl-js-layout
-            mdl-layout--fixed-header
-            mdl-layout--fixed-drawer">
+            mdl-layout--fixed-header">
         <!-- Header -->
         <header class="hide-fullscreen mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp">
             <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
@@ -37,7 +36,8 @@
                 <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
             <span class="mdl-badge"
                   data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span></a>
-                <a class="mdl-navigation__link" href="" ui-sref="user.messages"> <i class="material-icons icon">
+                <a class="mdl-navigation__link" href="" ng-click="go('user.messages')"> <i
+                        class="material-icons icon">
                     message</i>
                     Messages
                 <span class="mdl-badge"
@@ -53,9 +53,10 @@
             <div class="page-content" style="margin-top:20px;">
 
                 <div class="mdl-grid">
-
+                    <div class="phone mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    </div>
                     <!-- Content container -->
-                    <div class="phone mdl-cell mdl-cell--10-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                    <div class="phone mdl-cell mdl-cell--8-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
                         <div ui-view="body"></div>
                     </div>
 

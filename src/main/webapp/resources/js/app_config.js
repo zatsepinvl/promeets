@@ -56,7 +56,7 @@ app.run(function ($rootScope, $location, $timeout) {
     };
 });
 
-app.config(function ($locationProvider, $httpProvider,$stateProvider, $urlRouterProvider) {
+app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRouterProvider) {
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $urlRouterProvider.otherwise('/');
         $stateProvider
@@ -154,8 +154,8 @@ app.config(function ($locationProvider, $httpProvider,$stateProvider, $urlRouter
                     url: '/chat',
                     templateUrl: '/static/user/group/chat/chat.html',
                     resolve: {
-                        messages: function (GroupChatService, GroupService) {
-                            return GroupChatService.load(GroupService.get());
+                        messages: function (GroupChatService,$stateParams) {
+                            return GroupChatService.load($stateParams.groupId);
                         }
                     }
                 })

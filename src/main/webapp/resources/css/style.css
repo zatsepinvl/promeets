@@ -177,11 +177,11 @@ md-list-item .md-avatar.min {
     }
 }
 
-@media (min-width: 1025px) {
+/*@media (min-width: 1025px) {
     header.hide-fullscreen {
         display: none;
     }
-}
+}*/
 
 .mdl-card {
     margin: 0;
