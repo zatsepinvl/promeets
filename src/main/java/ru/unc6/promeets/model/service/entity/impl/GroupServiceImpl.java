@@ -15,13 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.GroupRepository;
+import ru.unc6.promeets.model.service.entity.ChatService;
 import ru.unc6.promeets.model.service.entity.GroupService;
 import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserGroupService;
 
-/**
- * @author MDay
- */
 @Service
 @Transactional
 public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
@@ -39,6 +37,9 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
     @Autowired
     private MeetService meetService;
+
+    @Autowired
+    private ChatService chatService;
 
     @Autowired
     public GroupServiceImpl(GroupRepository repository) {
@@ -108,4 +109,17 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
         return (List<GroupType>) groupRepository.getGroupTypes();
     }
 
+    @Override
+    public Group getGroupByChatId(long chatId) {
+        return groupRepository.getGroupByChatId(chatId);
+    }
+
+
+    @Override
+    public Group update(Group entity) {
+        Chat chat = entity.getChat();
+        chat.setTitle(entity.getTitle());
+        chatService.update(chat);
+        return super.update(entity);
+    }
 }

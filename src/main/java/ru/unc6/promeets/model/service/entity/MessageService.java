@@ -7,11 +7,6 @@ package ru.unc6.promeets.model.service.entity;
 
 import ru.unc6.promeets.model.entity.Message;
 
-/**
- *
- * @author MDay
- */
-public interface MessageService extends BaseService<Message,Long>
-{
-    
+public interface MessageService extends BaseService<Message, Long> {
+
 }

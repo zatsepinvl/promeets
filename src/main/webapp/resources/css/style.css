@@ -147,6 +147,12 @@ md-toolbar .material-icons {
     font-size: 20px;
 }
 
+md-list-item
+{
+    -webkit-transition:all linear 0.3s;
+    transition:all linear 0.3s;
+}
+
 md-list-item .md-avatar.min {
     width: 30px;
     height: 30px;
@@ -171,11 +177,11 @@ md-list-item .md-avatar.min {
     }
 }
 
-@media (min-width: 1025px) {
+/*@media (min-width: 1025px) {
     header.hide-fullscreen {
         display: none;
     }
-}
+}*/
 
 .mdl-card {
     margin: 0;

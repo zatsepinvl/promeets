@@ -106,7 +106,38 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
     });
 });
 
-app.controller("meetUsersCtrl", function ($scope) {
+app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http) 
+{
+	$scope.userMeets = [];
+	$http.get('/api/users/meets/188/all')
+        .success(function (userMeets) 
+		{
+			$scope.userMeets = userMeets;
+        });
+		
+	UserEntity.get({entity: "meets", id: 188},
+        function (data) 
+		{
+            var userMeet = data;
+			data.online = true;
+			UserEntity.update({entity: "meets", id: userMeet.meet.meetId}, userMeet);
+        });
+			
+	$scope.$on('userMeet', function (event, message) 
+	{
+        if (message.action == appConst.ACTION.UPDATE) 
+		{
+            for (var i = 0; i < $scope.userMeets.length; i++)
+			{
+				if ($scope.userMeets[i].meet.meetId === message.id) {
+                        $scope.userMeets[i] = message.data;
+                        $scope.$apply();
+                        return;
+                    }
+			}
+        }
+		
+    });
 
 });
 

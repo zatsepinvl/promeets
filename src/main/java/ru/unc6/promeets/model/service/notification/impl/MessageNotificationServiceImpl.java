@@ -10,22 +10,28 @@ import org.springframework.stereotype.Service;
 import ru.unc6.promeets.controller.AppSTOMPController;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.repository.ChatRepository;
+import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notification.MessageNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 
 @Service
 public class MessageNotificationServiceImpl extends BaseNotificationServiceImpl<Message> implements MessageNotificationService {
+
     @Autowired
     private AppSTOMPController appSTOMPController;
+
     @Autowired
-    private ChatRepository chatRepository;
+    private UserService userService;
 
     @Override
     protected void onAction(Message message, Notification.Action action) {
-        Notification notification = new Notification(message.getClass(), action, message.getMessageId());
-        for (User user : chatRepository.getAllUsersByChatId(message.getChat().getChatId())) {
-            if (user.getUserId() != message.getUser().getUserId()) {
+        Notification notification = new Notification()
+                .setData(message)
+                .setEntity(message.getClass().getSimpleName().toLowerCase())
+                .setAction(action)
+                .setId(message.getMessageId());
+        for (User user : userService.getUsersByChatId(message.getChat().getChatId())) {
+            if (user.getUserId() != message.getUser().getUserId() || action == Notification.Action.UPDATE) {
                 appSTOMPController.sendNotificationToUser(notification, user);
             }
         }

@@ -15,7 +15,7 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
 					// TODO:
 					else (message.type)
 					{
-						$scope.$broadcast('rtc/'+message.meetId, JSON.parse(message.data));
+						$scope.$broadcast('rtc/'+message.meetId, message);
 					}
                     
                 });

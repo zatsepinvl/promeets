@@ -32,6 +32,11 @@ public class UserMeetsController {
     public UserMeet getById(@PathVariable("id") long meetId, @CurrentUser User user) {
         return userMeetService.getUserMeetByUserIdAndMeetId(user.getUserId(), meetId);
     }
+    
+    @RequestMapping(value = "/{id}/all", method = RequestMethod.GET)
+    public List<UserMeet> getAllUserMeetsByMeetId(@PathVariable("id") long meetId) {
+        return userMeetService.getUserMeetsByMeetId(meetId);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     private UserMeet update(@RequestBody UserMeet userMeet, @PathVariable("id") Long meetId) {

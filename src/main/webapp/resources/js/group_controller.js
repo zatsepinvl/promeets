@@ -3,8 +3,8 @@ app.controller('groupCtrl', function ($scope, $state, EventHandler, $stateParams
     $scope.groupId = $stateParams.groupId;
     $scope.group = GroupService.get();
 
-    $scope.transitionTo = function (url) {
-        $state.transitionTo(url, {groupId: $scope.groupId});
+    $scope.transitionTo = function (state) {
+        $state.transitionTo(state, {groupId: $scope.groupId});
     };
 
     $scope.editGroup = function () {

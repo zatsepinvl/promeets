@@ -5,9 +5,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.File;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.repository.FileRepository;
 import ru.unc6.promeets.model.repository.UserRepository;
+import ru.unc6.promeets.model.service.entity.FileService;
 import ru.unc6.promeets.model.service.entity.UserService;
+
+import java.util.List;
 
 /**
  * Created by Vladimir on 20.03.2016.
@@ -19,7 +21,7 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     private UserRepository userRepository;
 
     @Autowired
-    private FileRepository fileRepository;
+    private FileService fileService;
 
     @Autowired
     public UserServiceImp(UserRepository repository) {
@@ -33,13 +35,18 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     }
 
     @Override
+    public List<User> getUsersByChatId(long chatId) {
+        return (List<User>) userRepository.getUsersByChatId(chatId);
+    }
+
+    @Override
     public User create(User entity) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
         if (entity.getImage() == null) {
             entity.setImage(new File());
         }
-        fileRepository.save(entity.getImage());
+        fileService.create(entity.getImage());
         return userRepository.save(entity);
     }
 }

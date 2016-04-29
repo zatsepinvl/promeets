@@ -1,5 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,7 @@ public class UserMessagePK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JsonIgnore
     public User getUser() {
         return user;
     }
@@ -25,6 +28,7 @@ public class UserMessagePK implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "message_id", referencedColumnName = "message_id")
+    @JsonIgnore
     public Message getMessage() {
         return message;
     }

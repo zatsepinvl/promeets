@@ -7,7 +7,7 @@ var app = angular.module('app', [
     'focus-if',
     'luegg.directives',
     'ngFileUpload'
-    ]);
+]);
 
 String.prototype.replaceAll = function (search, replace) {
     return this.split(search).join(replace);
@@ -154,8 +154,8 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     url: '/chat',
                     templateUrl: '/static/user/group/chat/chat.html',
                     resolve: {
-                        messages: function (GroupChatService, GroupService) {
-                            return GroupChatService.load(GroupService.get());
+                        messages: function (GroupChatService,$stateParams) {
+                            return GroupChatService.load($stateParams.groupId);
                         }
                     }
                 })

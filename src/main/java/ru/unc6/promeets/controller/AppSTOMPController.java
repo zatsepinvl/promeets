@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalMessage;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalService;
@@ -28,6 +29,7 @@ public class AppSTOMPController
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
     
+    
     @Autowired
     private WebRtcSignalService rtcSignalService;
 
@@ -38,9 +40,9 @@ public class AppSTOMPController
     }
     
     @MessageMapping("/rtc/{id}")
-    public void rtc(WebRtcSignalMessage message, @CurrentUser User currentUser) 
+    public void rtc(WebRtcSignalMessage message, Principal principal) 
     {
-        rtcSignalService.signalRTCByMeetId(message, currentUser);
+        rtcSignalService.signalRTCByMeetId(message, principal);
     }
     
     public void sendNotificationToUser (Notification notification, User user)
@@ -48,8 +50,8 @@ public class AppSTOMPController
         simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), notification);
     }
     
-    public void sendRtcSignalMessage (WebRtcSignalMessage message, User user)
+    public void sendRtcSignalMessage (WebRtcSignalMessage message)
     {
-        simpMessagingTemplate.convertAndSend("/topic/"+user.getUserId(), message);
+        simpMessagingTemplate.convertAndSend("/topic/"+message.getDuserId(), message);
     }
 }

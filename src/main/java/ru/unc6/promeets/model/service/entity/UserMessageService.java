@@ -17,8 +17,9 @@ public interface UserMessageService extends BaseService<UserMessage, UserMessage
 
     List<UserMessage> getNewUserMessagesByUserId(long userId);
 
+    List<UserMessage> getNewUserMessagesByUserIdAndChatId(long userId, long chatId);
+
     void deleteUserMessagesByChatId(long chatId);
 
-    void createUserMessagesByMessage(Message message);
-
+    UserMessage getLastUserMessageByUserIdAndChatId(long userId, long chatId);
 }

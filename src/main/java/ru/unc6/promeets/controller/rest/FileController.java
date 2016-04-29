@@ -75,7 +75,7 @@ public class FileController {
             stream.write(bytes);
             fileName = uploadHostFolder + "/" + fileName;
             entityFile.setUrl(fileName);
-            entityFile.setName(file.getName());
+            entityFile.setName(file.getOriginalFilename());
             fileService.update(entityFile);
             return new ResponseMessage().setMessage(fileName);
         } catch (NoSuchAlgorithmException | IOException ex) {

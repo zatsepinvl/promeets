@@ -2,6 +2,12 @@
     <div class="mdl-grid" style="padding: 0">
         <div class="phone mdl-cell mdl-cell--12-col">
             <div class="mdl-card mdl-card mdl-shadow--2dp">
+				<p style="margin-left: 20px">Members</p>
+				<md-list-item ng-repeat="userMeet in userMeets" ng-show="userMeet.online">
+					<i class="material-icons">mic</i>  
+					<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
+					<p> {{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}</p>
+				</md-list-item>
             </div>
         </div>
     </div>

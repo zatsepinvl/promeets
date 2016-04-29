@@ -14,6 +14,8 @@ public class WebRtcSignalMessage
     private String data;
     private String type;
     private Long meetId;
+    private Long duserId;
+    private Long suserId;
 
     public String getData() {
         return data;
@@ -31,6 +33,22 @@ public class WebRtcSignalMessage
         this.type = type;
     }
 
+    public Long getDuserId() {
+        return duserId;
+    }
+
+    public void setDuserId(Long duserId) {
+        this.duserId = duserId;
+    }
+
+    public Long getSuserId() {
+        return suserId;
+    }
+
+    public void setSuserId(Long suserId) {
+        this.suserId = suserId;
+    }
+
     public Long getMeetId() {
         return meetId;
     }
@@ -40,3 +58,5 @@ public class WebRtcSignalMessage
     }
     
 }
+    
+

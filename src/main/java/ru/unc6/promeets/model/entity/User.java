@@ -157,38 +157,4 @@ public class User {
         result = 31 * result + (position != null ? position.hashCode() : 0);
         return result;
     }
-
-
-
-   /* @JsonIgnore
-    @OneToMany(mappedBy = "userMeetPK.user")
-    public List<UserMeet> getMeets() {
-        return meets;
-    }
-
-    public void setMeets(List<UserMeet> meets) {
-        this.meets = meets;
-    }
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "userGroupPK.user")
-    public List<UserGroup> getUserGroups() {
-        return groups;
-    }
-
-    public void setUserGroups(List<UserGroup> groups) {
-        this.groups = groups;
-    }
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "user_chats", catalog = "promeets_db", schema = "public", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false), inverseJoinColumns = @JoinColumn(name = "chat_id", referencedColumnName = "chat_id", nullable = false))
-    public List<Chat> getChats() {
-        return chats;
-    }
-
-    public void setChats(List<Chat> chats) {
-        this.chats = chats;
-    }
-    */
 }

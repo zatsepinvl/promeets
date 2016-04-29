@@ -1,10 +1,8 @@
 package ru.unc6.promeets.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
-import ru.unc6.promeets.model.service.entity.BaseService;
 import ru.unc6.promeets.model.service.entity.ChatService;
 import ru.unc6.promeets.model.service.entity.UserChatService;
 import ru.unc6.promeets.model.service.entity.UserMessageService;
@@ -32,11 +30,22 @@ public class UserChatController extends BaseUserRestController<UserChat, UserCha
         this.userChatService = service;
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    public List<UserChat> getAllByUser(@CurrentUser User user) {
+        return userChatService.getUserChatsByUserId(user.getUserId());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserChat getById(@PathVariable("id") long chatId, @CurrentUser User user) {
+        return userChatService.getUserChatByUserIdAndChatId(user.getUserId(), chatId);
+    }
+
     @RequestMapping(value = "/{id}/messages", method = RequestMethod.GET)
     public List<UserMessage> getMessagesByChatId(@PathVariable("id") long chatId, @RequestParam(value = "page") int page, @CurrentUser User user) {
         checkIsNotFound(chatId);
         return userMessageService.getUserMessagesByUserIdAndChatId(user.getUserId(), chatId, page);
     }
+
 
     @Override
     protected void checkHasAccess(UserChat entity, User user) {
