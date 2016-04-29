@@ -1,6 +1,8 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.File;
@@ -8,6 +10,7 @@ import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.UserRepository;
 import ru.unc6.promeets.model.service.entity.FileService;
 import ru.unc6.promeets.model.service.entity.UserService;
+import ru.unc6.promeets.security.CustomUserDetails;
 
 import java.util.List;
 
@@ -37,6 +40,11 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     @Override
     public List<User> getUsersByChatId(long chatId) {
         return (List<User>) userRepository.getUsersByChatId(chatId);
+    }
+
+    @Override
+    public User getCurrentAuthenticatedUser() {
+        return ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
     }
 
     @Override

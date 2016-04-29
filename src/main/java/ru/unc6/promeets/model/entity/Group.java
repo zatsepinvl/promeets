@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "groups")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="groupId")
-public class Group {
+public class Group implements Serializable {
     private long groupId;
     private String title;
     private String status;

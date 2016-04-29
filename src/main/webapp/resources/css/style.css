@@ -3,10 +3,40 @@ body {
     background-color: #eeeeee;
     color: #424242;
     font-size: 12px;
+    -webkit-transition: all linear 0.4s;
+    transition: all linear 0.4s;
 }
 
-.normal {
+.home-header {
+    width: 100%;
+    -webkit-transition: all linear 0.4s;
+    transition: all linear 0.4s;
+    position: relative;
+}
+
+.home-header img {
+    opacity: 1;
+    width: 100%;
+}
+
+.home-header .title {
+    position: absolute;
+    text-shadow: 1px 2px 1px rgb(92, 92, 92);
+    top: 40px;
+    left: 0;
+    font-size: 100px;
+    width: 100%;
+    text-align: center;
+    font-weight: 300;
+    color: white;
+}
+
+.secondary {
     color: #424242;
+}
+
+.secondary-back {
+    background-color: #e0e0e0;
 }
 
 .primary {
@@ -37,6 +67,9 @@ body {
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
+}
+.ng-hide.ng-hide-animate{
+    display: none !important;
 }
 
 a.mdl-navigation__link {
@@ -147,10 +180,9 @@ md-toolbar .material-icons {
     font-size: 20px;
 }
 
-md-list-item
-{
-    -webkit-transition:all linear 0.3s;
-    transition:all linear 0.3s;
+md-list-item {
+    -webkit-transition: all linear 0.3s;
+    transition: all linear 0.3s;
 }
 
 md-list-item .md-avatar.min {
@@ -174,6 +206,11 @@ md-list-item .md-avatar.min {
         margin: 8px 0 0 0;
         padding: 0;
         width: 100%;
+    }
+
+    .mdl-layout__header-row
+    {
+        padding: 0 16px 0 16px;
     }
 }
 
@@ -260,15 +297,15 @@ md-list.md-dense md-list-item.md-3-line .md-list-item-text h4 {
     width: 40px;
     bottom: 10px;
     left: calc(50% - 20px);
-    background-color:#ef6c00;
-    color:white;
+    background-color: #ef6c00;
+    color: white;
 }
 
 .img-box:hover .upload {
     display: block;
 }
 
-.md-toolbar-tools .md-button
-{
+.md-toolbar-tools .md-button {
     margin-top: 4px;
 }
+

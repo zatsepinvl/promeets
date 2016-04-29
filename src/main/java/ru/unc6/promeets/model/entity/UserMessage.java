@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 12.04.2016.
  */
 @Entity
 @Table(name = "user_messages", schema = "public", catalog = "promeets_db")
-public class UserMessage {
+public class UserMessage implements Serializable {
 
     private UserMessagePK userMessagePK;
     private boolean viewed;

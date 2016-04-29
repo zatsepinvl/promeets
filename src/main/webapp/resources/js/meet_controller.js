@@ -64,6 +64,10 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.notes.push(message.data);
+                EventHandler.message(
+                    'New note by '
+                    +message.data.user.firstName
+                    + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }
             else if (message.action == appConst.ACTION.DELETE) {
@@ -82,6 +86,10 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.tasks.push(message.data);
+                EventHandler.message(
+                    'New task by '
+                    +message.data.user.firstName
+                    + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }
             else if (message.action == appConst.ACTION.DELETE) {

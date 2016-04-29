@@ -2,6 +2,7 @@ package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -9,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "files")
 @XmlRootElement
-public class File {
+public class File implements Serializable {
     private long fileId;
     private String url;
     private String name;

@@ -3,13 +3,14 @@ package ru.unc6.promeets.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "meet_notes", schema = "public", catalog = "promeets_db")
-public class MeetNote {
+public class MeetNote implements Serializable {
     private long noteId;
     private String value;
     private Meet meet;

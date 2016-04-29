@@ -61,10 +61,8 @@ public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessa
         long chatId = message.getChat().getChatId();
         for (User user : userService.getUsersByChatId(chatId)) {
             UserMessage userMessage = new UserMessage();
-            UserMessagePK userMessagePK = new UserMessagePK();
-            userMessagePK.setMessage(message);
-            userMessagePK.setUser(user);
-            userMessage.setUserMessagePK(userMessagePK);
+            userMessage.setUser(user);
+            userMessage.setMessage(entity.getMessage());
             userMessage.setViewed(user.getUserId() == message.getUser().getUserId());
             if (message.getUser().getUserId() != user.getUserId()) {
                 notificationService.onCreate(userMessageRepository.save(userMessage));

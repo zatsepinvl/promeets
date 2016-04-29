@@ -1,13 +1,14 @@
 package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "meets")
-public class Meet {
+public class Meet implements Serializable {
     private long meetId;
     private String title;
     private long time;

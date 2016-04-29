@@ -2,8 +2,9 @@ package ru.unc6.promeets.model.service.entity;
 
 import ru.unc6.promeets.model.entity.MeetTask;
 
-/**
- * Created by Vladimir on 06.04.2016.
- */
+import java.util.List;
+
 public interface TaskService extends BaseService<MeetTask,Long> {
+    List<MeetTask> getTasksByMeetId(long meetId);
+    void deleteTasksByMeetId(long meetId);
 }

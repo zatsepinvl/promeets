@@ -32,4 +32,14 @@ public class BoardServiceImpl extends BaseNotificatedServiceImpl<Board, Long>
         List<Board> list = boardPageRepository.getBoardByMeetId(meetId, new PageRequest(page, PAGE_SIZE)).getContent();
         return list.size() > 0 ? list.get(0) : null;
     }
+
+    @Override
+    public List<Board> getBoardsByMeetId(long meetId) {
+        return (List<Board>) boardPageRepository.getBoardsByMeetId(meetId);
+    }
+
+    @Override
+    public void deleteBoardsByMeetId(long meetId) {
+        boardPageRepository.deleteBoardsByMeetId(meetId);
+    }
 }

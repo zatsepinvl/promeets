@@ -15,11 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.entity.MeetTask;
 import ru.unc6.promeets.model.repository.MeetRepository;
-import ru.unc6.promeets.model.service.entity.BoardService;
-import ru.unc6.promeets.model.service.entity.MeetService;
-import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.entity.*;
 import ru.unc6.promeets.model.service.notification.MeetNotificationService;
-import ru.unc6.promeets.model.service.notification.impl.BaseNotificationServiceImpl;
 
 
 @Service
@@ -37,6 +34,10 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
 
     @Autowired
     private BoardService boardService;
+    @Autowired
+    private NoteService noteService;
+    @Autowired
+    private TaskService taskService;
 
 
     @Autowired
@@ -54,12 +55,9 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
     @Override
     @Transactional
     public void delete(Long id) {
-        /*Board board = meetRepository.findOne(id).getBoard();
-        if (board != null) {
-            boardService.delete(board.getBoardId());
-        }*/
-        meetRepository.deleteAllNotesById(id);
-        meetRepository.deleteAllAimsById(id);
+        boardService.deleteBoardsByMeetId(id);
+        taskService.deleteTasksByMeetId(id);
+        noteService.deleteNotesByMeetId(id);
         userMeetService.deleteUserMeetsByMeetId(id);
         super.delete(id);
     }
@@ -79,12 +77,12 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
 
     @Override
     public List<MeetNote> getMeetNotes(long id) {
-        return (List<MeetNote>) meetRepository.getMeetNotesByMeetId(id);
+        return noteService.getNotesByMeetId(id);
     }
 
     @Override
     public List<MeetTask> getMeetAims(long id) {
-        return (List<MeetTask>) meetRepository.getMeetTasksByMeetId(id);
+        return taskService.getTasksByMeetId(id);
     }
 
 

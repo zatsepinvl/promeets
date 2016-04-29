@@ -26,9 +26,19 @@
 
         <!--Board -->
         <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height: 440px">
-                <div ng-controller="boardCtrl">
-                    <board br-save="onSave" br-model="items" br-data="board.data" br-loading="loading"></board>
+            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height:360px">
+                <div ng-controller="boardCtrl" style="height: 100%">
+                    <board
+                            br-save="onSave"
+                            br-edit="onEdit"
+                            br-cancel="onCancel"
+                            br-data="board.data"
+                            br-loading="loading"
+                            br-editing="board.editor && board.editor.userId==user.userId"
+                            br-editor="board.editor.firstName + ' ' +board.editor.lastName"
+                            br-locked="board.editor && board.editor.userId!=user.userId"
+                            br-free="!board.editor">
+                    </board>
                 </div>
             </div>
         </div>

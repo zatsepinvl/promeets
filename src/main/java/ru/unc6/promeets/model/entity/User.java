@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
     private long userId;
     private String email;
     private String phone;
@@ -35,6 +36,7 @@ public class User {
 
     @Basic
     @Column(name = "email", nullable = false, length = -1, unique = true)
+    @JsonIgnore
     public String getEmail() {
         return email;
     }
@@ -45,6 +47,7 @@ public class User {
 
     @Basic
     @Column(name = "phone", length = -1)
+    @JsonIgnore
     public String getPhone() {
         return phone;
     }
@@ -87,6 +90,7 @@ public class User {
 
     @Basic
     @Column(name = "address", length = -1)
+    @JsonIgnore
     public String getAddress() {
         return address;
     }
@@ -97,6 +101,7 @@ public class User {
 
     @Basic
     @Column(name = "company", length = -1)
+    @JsonIgnore
     public String getCompany() {
         return company;
     }
@@ -107,6 +112,7 @@ public class User {
 
     @Basic
     @Column(name = "position", length = -1)
+    @JsonIgnore
     public String getPosition() {
         return position;
     }

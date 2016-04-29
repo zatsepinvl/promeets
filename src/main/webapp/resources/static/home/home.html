@@ -3,7 +3,7 @@
      mdl-layout--fixed-header">
 
     <!-- Header -->
-    <header class="mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp"
+    <header class="mdl-layout__header  mdl-color--grey-100 mdl-color-text--grey-600 mdl-shadow--2dp"
             ng-controller="headerCtrl"
             ng-cloak>
 
@@ -36,23 +36,15 @@
     <!-- Page body-->
     <main class="mdl-layout__content">
         <div class="page-content">
-
             <div class="mdl-grid">
 
-                <!-- Navigation menu -->
-                <div class="phone mdl-cell mdl-cell--2-col mdl-cell--0-col-tablet mdl-cell--0-col-phone">
-                    <div ui-view="left_column"></div>
-                </div>
-
                 <!-- Content container -->
-                <div class="phone mdl-cell mdl-cell--8-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone"
+                     style="margin: 0; width: 100%">
                     <div ui-view="body"></div>
                 </div>
 
-                <!-- Recommendations -->
-                <div class="phone mdl-cell mdl-cell--2-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                    <div ui-view="right_column"></div>
-                </div>
+
             </div>
         </div>
 

@@ -15,6 +15,10 @@ public class UserMeet implements Serializable {
     private short editBoardPermission;
     private boolean viewed;
 
+    public UserMeet() {
+        userMeetPK = new UserMeetPK();
+    }
+
     @EmbeddedId
     @JsonIgnore
     public UserMeetPK getUserMeetPK() {

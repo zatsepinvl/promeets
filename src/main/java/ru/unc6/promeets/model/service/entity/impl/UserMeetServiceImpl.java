@@ -59,11 +59,9 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
         List<UserMeet> userMeets = new ArrayList<>();
         long adminId = meet.getAdmin().getUserId();
         for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
-            UserMeetPK userMeetPK = new UserMeetPK();
-            userMeetPK.setUser(user);
-            userMeetPK.setMeet(meet);
             UserMeet userMeet = new UserMeet();
-            userMeet.setUserMeetPK(userMeetPK);
+            userMeet.setUser(user);
+            userMeet.setMeet(meet);
             userMeet.setViewed(user.getUserId() == adminId);
             userMeets.add(userMeet);
         }

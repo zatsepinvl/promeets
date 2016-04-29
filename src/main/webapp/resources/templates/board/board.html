@@ -1,11 +1,42 @@
-<div layout="column">
+<div layout="column"
+     style="height: 100%;"
+     id="board-container">
     <md-toolbar style="background-color: #ffffff; height: 45px; min-height: 0">
         <div class="md-toolbar-tools">
             <span ng-show="selected && selected.type=='text'">
                 <input ng-model="text" class="tool" type="text">
             </span>
+            <span ng-show="brLocked">
+                <h3 style="color:#ef6c00; font-size: 14px; margin-left: 20px;" ng-bind-html="brEditor"></h3>
+                <md-progress-circular md-mode="indeterminate"
+                                        md-diameter="15"
+                 style="position: absolute; left: 10px; top:14px;"></md-progress-circular>
+            </span>
             <span flex></span>
-            <md-menu md-position-mode="target-right target">
+
+
+            <!-- Free state-->
+            <!-- Edit button -->
+            <md-button class="md-icon-button"
+                       ng-click="edit()"
+                       ng-show="brFree">
+                <i class="material-icons icon primary">
+                    edit
+                </i>
+            </md-button>
+            <md-button class="md-icon-button"
+                       ng-show="brFree">
+                <i class="material-icons icon primary">
+                    fullscreen
+                </i>
+            </md-button>
+            <!-->
+
+            <!--Editing state-->
+            <!-- Add button -->
+            <md-menu md-position-mode="target-right target"
+                     style="position: absolute; top:0; right:120px;"
+                     ng-show="brEditing">
                 <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
                     <i class="material-icons icon accent">
                         add
@@ -21,24 +52,52 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
+
+            <!-- Loading -->
             <md-progress-circular md-mode="indeterminate"
-                                  ng-show="brLoading"
                                   md-diameter="15"
-                                  style="position: absolute; top:15px; right: 73px"></md-progress-circular>
+                                  ng-show="brEditing && brLoading"
+                                  style="position: absolute; top:15px; right: 87px"></md-progress-circular>
+
+            <!-- Saving button -->
             <md-button class="md-icon-button"
-                       ng-click="save()">
-                <i class="material-icons icon accent"
-                   ng-hide="brLoading">
+                       ng-click="save()"
+                       style="position: absolute; top:0; right:68px;"
+                       ng-show="brEditing && !brLoading">
+                <i class="material-icons icon accent">
                     save
                 </i>
             </md-button>
-            <md-button class="md-icon-button">
+
+            <!-- Saving button -->
+            <md-button class="md-icon-button"
+                       ng-click="cancel()"
+                       style="position: absolute; top:0; right:30px;"
+                       ng-show="brEditing">
                 <i class="material-icons icon accent">
-                    fullscreen
+                    cancel
                 </i>
             </md-button>
+            <!-->
+
+            <!-- Locked state-->
+            <!-- Loading -->
+            <!-- <md-progress-circular md-mode="indeterminate"
+                                   md-diameter="15"
+                                   style="position: absolute; top:15px; right: 73px"></md-progress-circular>-->
+            <!-->
+
         </div>
     </md-toolbar>
-    <md-divider></md-divider>
-    <canvas id="board" class="board"></canvas>
+    <md-divider ng-class="{editing: brEditing,
+                              free: brFree,
+                            locked: brLocked}"></md-divider>
+    <canvas id="board"></canvas>
 </div>
+
+<script>
+    var canvas = document.getElementById('board');
+    var parent = document.getElementById('board-container');
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+</script>

@@ -7,14 +7,28 @@ import ru.unc6.promeets.model.repository.TaskRepository;
 import ru.unc6.promeets.model.service.entity.TaskService;
 import ru.unc6.promeets.model.service.notification.TaskNotificationService;
 
+import java.util.List;
+
 /**
  * Created by Vladimir on 06.04.2016.
  */
 @Service
 public class TaskServiceImpl extends BaseNotificatedServiceImpl<MeetTask, Long> implements TaskService {
+    private TaskRepository taskRepository;
 
     @Autowired
     public TaskServiceImpl(TaskRepository repository, TaskNotificationService notificationService) {
         super(repository, notificationService);
+        this.taskRepository = repository;
+    }
+
+    @Override
+    public List<MeetTask> getTasksByMeetId(long meetId) {
+        return (List<MeetTask>) taskRepository.getMeetTasksByMeetId(meetId);
+    }
+
+    @Override
+    public void deleteTasksByMeetId(long meetId) {
+        taskRepository.deleteTasksByMeetId(meetId);
     }
 }
