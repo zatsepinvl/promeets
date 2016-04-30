@@ -68,7 +68,8 @@ body {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none;
 }
-.ng-hide.ng-hide-animate{
+
+.ng-hide.ng-hide-animate {
     display: none !important;
 }
 
@@ -208,8 +209,7 @@ md-list-item .md-avatar.min {
         width: 100%;
     }
 
-    .mdl-layout__header-row
-    {
+    .mdl-layout__header-row {
         padding: 0 16px 0 16px;
     }
 }
@@ -309,3 +309,6 @@ md-list.md-dense md-list-item.md-3-line .md-list-item-text h4 {
     margin-top: 4px;
 }
 
+md-card {
+    margin: 8px 0 0 0;
+}

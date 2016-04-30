@@ -24,28 +24,21 @@
             </div>
         </div>
 
-        <!--Board -->
-        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height:360px">
-                <div ng-controller="boardCtrl" style="height: 100%">
-                    <board
-                            br-save="onSave"
-                            br-edit="onEdit"
-                            br-cancel="onCancel"
-                            br-data="board.data"
-                            br-loading="loading"
-                            br-editing="board.editor && board.editor.userId==user.userId"
-                            br-editor="board.editor.firstName + ' ' +board.editor.lastName"
-                            br-locked="board.editor && board.editor.userId!=user.userId"
-                            br-free="!board.editor">
-                    </board>
-                </div>
-            </div>
-        </div>
+        <div class="phone mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
 
-        <!--Meet Tasks -->
-        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <!--Users -->
             <div class="mdl-card mdl-card mdl-shadow--2dp">
+                <md-list>
+                    <md-list-item class="no-hover primary" style="border: 0">
+                        <p style="margin-left: 20px">Users</p>
+                    </md-list-item>
+                    <!-- ToDo: users list -->
+                </md-list>
+            </div>
+
+            <!--Meet Tasks -->
+            <div class="mdl-card mdl-card mdl-shadow--2dp"
+                 style="margin-top: 8px">
                 <md-list>
                     <md-list-item class="no-hover primary" style="border: 0">
                         <p style="margin-left: 20px">Tasks</p>
@@ -59,8 +52,9 @@
                                   ng-mouseover="mouseover=true"
                                   ng-mouseleave="mouseover=false"
                                   ng-click="updateTask(task)">
-                        <p ng-bind-html="tasks.indexOf(task)+1" style="width: 50px; flex: none; text-align: center"></p>
-                        <p ng-bind-html="multiLine(task.value)" style="font-size: 16px"></p>
+                        <p ng-bind-html="tasks.indexOf(task)+1"
+                           style="width: 50px; flex: none; text-align: center"></p>
+                        <p ng-bind-html="multiLine(task.value)" style="font-size: 14px"></p>
                         <md-checkbox class="md-secondary accent"
                                      ng-model="task.checked"
                                      ng-click="updateTask(task)"></md-checkbox>
@@ -73,31 +67,52 @@
             </div>
         </div>
 
-        <!-- Meet Notes -->
-        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div class="phone mdl-cell mdl-cell--7-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
             <div class="mdl-card mdl-card mdl-shadow--2dp">
                 <md-list>
                     <md-list-item class="no-hover primary" style="border: 0">
-                        <p style="margin-left: 20px">Notes</p>
+                        <p style="margin-left: 20px">Cards</p>
                         <md-icon class="md-secondary"
-                                 ng-click="createNote()">
+                                 ng-click="createCard()">
                             add
-                        </md-icon>
-                    </md-list-item>
-
-                    <md-list-item ng-repeat="note in notes track by note.noteId"
-                                  ng-mouseover="mouseover=true"
-                                  ng-mouseleave="mouseover=false">
-                        <img ng-src="{{note.user.image.url}}" class="md-avatar">
-                        <p ng-bind-html="multiLine(note.value)"></p>
-                        <md-icon class="md-secondary" ng-click="removeNote(note)"
-                                 ng-show="mouseover">
-                            delete
                         </md-icon>
                     </md-list-item>
                 </md-list>
             </div>
+            <md-card>
+                <md-card-header>
+                    <md-card-avatar>
+                        <img class="md-user-avatar" src="image/face.png"/>
+                    </md-card-avatar>
+                    <md-card-header-text>
+                        <span class="md-title">User</span>
+                        <span class="md-subhead">subhead</span>
+                    </md-card-header-text>
+                </md-card-header>
+                <img ng-src="image/group.jpg" class="md-card-image">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">In-card mixed actions</span>
+                       <!-- <span class="md-subhead">Reversed</span>-->
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>
+                        The titles of Washed Out's breakthrough song and the first single from Paracosm share the
+                        two most important words in Ernest Greene's musical language: feel it. It's a simple request, as well...
+                    </p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="start center">
+                    <md-button>Action 1</md-button>
+                    <md-button>Action 2</md-button>
+                    <md-card-icon-actions>
+                        <md-button class="md-icon-button" aria-label="toggle">
+                            <md-icon md-svg-icon="md-toggle-arrow"></md-icon>
+                        </md-button>
+                    </md-card-icon-actions>
+                </md-card-actions>
+            </md-card>
         </div>
+
     </div>
-</div>
 </div>
