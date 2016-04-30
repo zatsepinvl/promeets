@@ -12,6 +12,7 @@ import ru.unc6.promeets.model.service.entity.FileService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CustomUserDetails;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -44,7 +45,12 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
 
     @Override
     public User getCurrentAuthenticatedUser() {
-        return ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        Authentication  authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication!=null)
+        {
+            return ((CustomUserDetails)authentication.getPrincipal()).getUser();
+        }
+        return null;
     }
 
     @Override

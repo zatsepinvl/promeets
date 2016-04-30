@@ -14,70 +14,38 @@ app.directive('board', function () {
             brFree: '='
         },
         link: function ($scope) {
-
             //init canvas
             var tempBoardData;
-        /*    var canvas = document.getElementById('board');
-            var parent = document.getElementById('board-container');*/
-            // resize the canvas to fill browser window dynamically
-            window.addEventListener('resize', function(){console.log('resize');}, false);
-          /*  function resizeCanvas() {
-                ctx.canvas.width = window.innerWidth;
-                ctx.canvas.height = window.innerHeight;
-                $scope.render && $scope.render();
-            }
-            resizeCanvas();*/
 
             function zoomIt(factor) {
                 var canvas = $scope.fabric;
-               /* canvas.setHeight(canvas.getHeight() * factor);
-                canvas.setWidth(canvas.getWidth() * factor);*/
+                /* canvas.setHeight(canvas.getHeight() * factor);
+                 canvas.setWidth(canvas.getWidth() * factor);*/
                 if (canvas.backgroundImage) {
-                    // Need to scale background images as well
                     var bi = canvas.backgroundImage;
-                    bi.width = bi.width * factor; bi.height = bi.height * factor;
+                    bi.width = bi.width * factor;
+                    bi.height = bi.height * factor;
                 }
                 var objects = canvas.getObjects();
-                for (var i=0; i<objects.length; i++) {
+                for (var i = 0; i < objects.length; i++) {
                     console.log(objects[i]);
                     var scaleX = objects[i].scaleX;
                     var scaleY = objects[i].scaleY;
                     var left = objects[i].left;
                     var top = objects[i].top;
-
-                    var tempScaleX = scaleX * factor;
-                    var tempScaleY = scaleY * factor;
-                    var tempLeft = left * factor;
-                    var tempTop = top * factor;
-
-                    objects[i].scaleX = tempScaleX;
-                    objects[i].scaleY = tempScaleY;
-                    objects[i].left = tempLeft;
-                    objects[i].top = tempTop;
-
-                    objects[i].setCoords();
-                    console.log(objects[i]);
+                    objects[i].set(
+                        {
+                            //top: top * factor,
+                            //left: left * factor,
+                            scaleX: scaleX * factor,
+                            scaleY: scaleY * factor
+                        });
                 }
-               // canvas.renderAll();
                 canvas.calcOffset();
             }
 
-
-
-            function fitToContainer(){
-               /* canvas.style.width='100%';
-                canvas.style.height='100%';
-                canvas.width  = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-*/
-                console.log(parent.offsetHeight);
-               /* canvas.width = parent.offsetWidth;
-                canvas.height = parent.offsetHeight;*/
-            }
-            fitToContainer();
-
             //init fabric
-            $scope.fabric = new fabric.Canvas('board');
+            $scope.board = new fabric.Canvas('board');
 
 
             $scope.$watch('brData', function () {
@@ -85,9 +53,9 @@ app.directive('board', function () {
                 console.log($scope.brData);
                 if ($scope.brData) {
                     tempBoardData = $scope.brData;
-                    $scope.fabric.loadFromDatalessJSON($scope.brData);
-                    /*    var text = new fabric.Text('hello world', { left: 100, top: 100 });
-                     $scope.fabric.add(text);*/
+                    $scope.board.loadFromDatalessJSON($scope.brData);
+                    var text = new fabric.Text('XXX', {left: 10, top: 10});
+                    $scope.board.add(text);
                     zoomIt(2);
                     $scope.render();
                 }
@@ -102,7 +70,8 @@ app.directive('board', function () {
             });
 
             $scope.text = '';
-            $scope.fabric.on('mouse:down', function (options) {
+            $scope.board.isDrawingMode=true;
+            $scope.board.on('mouse:down', function (options) {
                 if ($scope.brEditing) {
                     if (options.target && options.target.type == 'text') {
                         $scope.text = options.target.text;
@@ -128,7 +97,7 @@ app.directive('board', function () {
             });
 
             $scope.render = function () {
-                $scope.fabric.renderAll();
+                $scope.board.renderAll();
             };
 
             $scope.openMenu = function ($mdOpenMenu, ev) {
@@ -136,24 +105,24 @@ app.directive('board', function () {
             };
 
             $scope.save = function () {
-                $scope.brSave && $scope.brSave($scope.fabric.toDatalessJSON());
+                $scope.brSave && $scope.brSave($scope.board.toDatalessJSON());
             };
 
             $scope.edit = function () {
                 $scope.brEdit && $scope.brEdit();
-                changeSelectedState($scope.fabric, true);
+                changeSelectedState($scope.board, true);
                 $scope.render();
             };
 
             $scope.cancel = function () {
                 $scope.fabric.loadFromDatalessJSON(tempBoardData);
                 $scope.brCancel && $scope.brCancel();
-                changeSelectedState($scope.fabric, false);
+                changeSelectedState($scope.board, false);
                 $scope.render();
             };
 
             $scope.changeBoardState = function () {
-                changeSelectedState($scope.fabric, $scope.brEditing);
+                changeSelectedState($scope.board, $scope.brEditing);
                 if (!$scope.brEditing) {
                     $scope.unselect();
                 }

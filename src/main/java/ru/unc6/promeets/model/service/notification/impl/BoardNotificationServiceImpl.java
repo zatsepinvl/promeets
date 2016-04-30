@@ -35,8 +35,10 @@ public class BoardNotificationServiceImpl extends BaseNotificationServiceImpl<Bo
                 .setData(entity);
         User currentUser = userService.getCurrentAuthenticatedUser();
         for (UserMeet userMeet : userMeetRepository.getUserMeetsByMeetId(entity.getMeet().getMeetId())) {
-            if (userService.getCurrentAuthenticatedUser().getUserId() != userMeet.getUser().getUserId())
+            if (currentUser != null && userService.getCurrentAuthenticatedUser().getUserId() == userMeet.getUser().getUserId()) {
+            } else {
                 appSTOMPController.sendNotificationToUser(notification, userMeet.getUser());
+            }
         }
     }
 }
