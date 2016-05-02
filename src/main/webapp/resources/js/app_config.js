@@ -250,11 +250,9 @@ app.constant('appConst', {
 
     TIME_FORMAT: {
         DAY: 'DD MMMM YYYY',
+        DAY_SHORT: 'MM-DD-YY',
         TIME: 'HH:mm',
         DAY_TIME: 'DD MMMM YYYY HH:mm'
     }
 });
 
-var DAY_FORMAT = 'DD MMMM YYYY';
-var TIME_FORMAT = 'HH:mm';
-var DAY_TIME_FORMAT = 'DD MMMM YYYY HH:mm';

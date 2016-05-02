@@ -20,6 +20,6 @@ public interface NoteRepository extends CrudRepository<MeetNote, Long>
     @Query("delete from MeetNote meetNote where meetNote.meet.meetId=(:meetId)")
     void deleteNotesByMeetId(@Param("meetId") long id);
 
-    @Query("select meetNote from MeetNote meetNote where  meetNote.meet.meetId=(:meetId)")
+    @Query("select meetNote from MeetNote meetNote where  meetNote.meet.meetId=(:meetId) order by meetNote.noteId")
     Iterable<MeetNote> getMeetNotesByMeetId(@Param("meetId") long id);
 }

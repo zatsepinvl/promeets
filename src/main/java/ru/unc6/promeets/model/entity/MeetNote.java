@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -59,10 +60,12 @@ public class MeetNote implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
+    @JsonIgnore
     public Meet getMeet() {
         return meet;
     }
 
+    @JsonProperty
     public void setMeet(Meet meet) {
         this.meet = meet;
     }

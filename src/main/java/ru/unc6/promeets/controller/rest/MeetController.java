@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.service.entity.BoardService;
+import ru.unc6.promeets.model.service.entity.CardService;
 import ru.unc6.promeets.model.service.entity.MeetService;
 
 import java.util.List;
@@ -18,6 +19,9 @@ public class MeetController extends BaseRestController<Meet, Long> {
     private static final Logger log = Logger.getLogger(MeetController.class);
 
     private MeetService meetService;
+
+    @Autowired
+    private CardService cardService;
 
     @Autowired
     private UserMeetService userMeetService;
@@ -54,6 +58,12 @@ public class MeetController extends BaseRestController<Meet, Long> {
     public Board getBoard(@PathVariable("id") long meetId, @RequestParam("page") int page) {
         checkIsNotFoundById(meetId);
         return boardService.getBoardByMeetId(meetId, page);
+    }
+
+    @RequestMapping(value = "/{id}/cards", method = RequestMethod.GET)
+    public List<Card> getCardsByMeetIdAndPage(@PathVariable("id") long meetId, @RequestParam("page") int page) {
+        checkIsNotFoundById(meetId);
+        return cardService.getCardsByMeetIdAndPage(meetId, page);
     }
 
 }

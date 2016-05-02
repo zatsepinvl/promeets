@@ -1,5 +1,8 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -116,6 +119,7 @@ public class Meet implements Serializable {
     public Group getGroup() {
         return group;
     }
+
 
     public void setGroup(Group group) {
         this.group = group;

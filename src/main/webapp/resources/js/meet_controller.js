@@ -1,5 +1,6 @@
 app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserService, MeetService, TextareaDialog, EventHandler) {
     $scope.meet = MeetService.get();
+    $scope.user = UserService.get();
     $scope.notes = MeetService.getNotes();
     $scope.tasks = MeetService.getTasks();
 
@@ -8,11 +9,11 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
     };
 
-    $scope.createNote = function () {
-        TextareaDialog.show('New note', 'Note text', undefined, function (result) {
+    $scope.createNote = function (event) {
+        TextareaDialog.show('New note', 'Note text', undefined, event, function (result) {
             var note = {
                 value: result,
-                user: UserService.get(),
+                user: $scope.user,
                 meet: {meetId: $scope.meet.meetId}
             };
             Entity.save({entity: "notes"}, note,
@@ -26,12 +27,12 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         });
     };
 
-    $scope.createTask = function () {
-        TextareaDialog.show('New task', 'Task text', undefined, function (result) {
+    $scope.createTask = function (event) {
+        TextareaDialog.show('New task', 'Task text', undefined, event, function (result) {
             var task = {
                 value: result,
                 checked: false,
-                user: UserService.get(),
+                user: $scope.user,
                 meet: {meetId: $scope.meet.meetId}
             };
             Entity.save({entity: "tasks"}, task,
@@ -66,7 +67,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
                 $scope.notes.push(message.data);
                 EventHandler.message(
                     'New note by '
-                    +message.data.user.firstName
+                    + message.data.user.firstName
                     + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }
@@ -88,7 +89,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
                 $scope.tasks.push(message.data);
                 EventHandler.message(
                     'New task by '
-                    +message.data.user.firstName
+                    + message.data.user.firstName
                     + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }

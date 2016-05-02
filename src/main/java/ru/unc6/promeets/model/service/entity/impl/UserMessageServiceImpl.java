@@ -104,12 +104,12 @@ public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessa
 
     @Override
     public List<UserMessage> getNewUserMessagesByUserId(long userId) {
-        return (List<UserMessage>) userMessageRepository.getNewUserMessagesCountByUserId(userId);
+        return (List<UserMessage>) userMessageRepository.getNewUserMessagesByUserId(userId);
     }
 
     @Override
     public List<UserMessage> getNewUserMessagesByUserIdAndChatId(long userId, long chatId) {
-        return (List<UserMessage>) userMessageRepository.getNewUserMessagesCountByUserIdAndChatId(userId, chatId);
+        return (List<UserMessage>) userMessageRepository.getNewUserMessagesByUserIdAndChatId(userId, chatId);
     }
 
     @Override

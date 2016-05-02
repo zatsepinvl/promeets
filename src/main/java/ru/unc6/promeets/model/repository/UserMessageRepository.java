@@ -25,11 +25,11 @@ public interface UserMessageRepository extends PagingAndSortingRepository<UserMe
     @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) order by userMessage.id.message.time desc")
     Page<UserMessage> getUserMessagesByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId, Pageable pageable);
 
-    @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.viewed=false")
-    Iterable<UserMessage> getNewUserMessagesCountByUserId(@Param("userId") long userId);
+    @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.viewed=false and userMessage.id.user.userId!=userMessage.id.message.user.userId")
+    Iterable<UserMessage> getNewUserMessagesByUserId(@Param("userId") long userId);
 
     @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) and userMessage.viewed=false and userMessage.id.user.userId!=userMessage.id.message.user.userId")
-    Iterable<UserMessage> getNewUserMessagesCountByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId);
+    Iterable<UserMessage> getNewUserMessagesByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId);
 
     @Query("select userMessage from UserMessage userMessage where userMessage.id.user.userId=(:userId) and userMessage.id.message.chat.chatId=(:chatId) order by userMessage.id.message.time desc")
     Page<UserMessage> getLastMessageByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId, Pageable pageable);

@@ -2,9 +2,7 @@ package ru.unc6.promeets.controller.exception;
 
 import org.springframework.http.HttpStatus;
 
-/**
- * Created by Vladimir on 06.04.2016.
- */
+
 public class BaseControllerException extends RuntimeException {
 
     protected ResponseErrorMessage responseErrorMessage;

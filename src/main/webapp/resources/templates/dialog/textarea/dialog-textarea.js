@@ -1,22 +1,18 @@
 //Textarea dialog service
-app.service('TextareaDialog', function ($mdDialog) {
-    this.show = function (title, placeholder, text, success, cancel) {
-        $mdDialog.show({
-                controller: TextareaDialogController,
-                templateUrl: 'templates/dialog/textarea/dialog-textarea.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: true,
-                locals: {
-                    title: title,
-                    placeholder: placeholder,
-                    text: text
-                }
-            })
-            .then(function (result) {
-                success && success(result);
-            }, function () {
-                cancel && cancel();
-            });
+app.service('TextareaDialog', function (DialogService) {
+    this.show = function (title, placeholder, text, event, success, cancel) {
+        DialogService.show(
+            TextareaDialogController,
+            'templates/dialog/textarea/dialog-textarea.html',
+            {
+                title: title,
+                placeholder: placeholder,
+                text: text
+            },
+            event,
+            success,
+            cancel
+        );
     }
 });
 

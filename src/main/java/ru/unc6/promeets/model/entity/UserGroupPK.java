@@ -3,9 +3,6 @@ package ru.unc6.promeets.model.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by Vladimir on 30.01.2016.
- */
 @Embeddable
 public class UserGroupPK implements Serializable {
     private User user;

@@ -16,13 +16,13 @@ import ru.unc6.promeets.controller.ResponseMessage;
 public class GlobalControllerExceptionHandler {
     private static final Logger log = Logger.getLogger(GlobalControllerExceptionHandler.class);
 
-     @ExceptionHandler(value = Exception.class)
-     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-     @ResponseBody
-     public ResponseErrorMessage handleException(Exception ex) {
-         log.error(ex.getMessage(), ex);
-         return new ResponseErrorMessage(ex.getClass() + " : " + ex.getMessage());
-     }
+    @ExceptionHandler(value = Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ResponseErrorMessage handleException(Exception ex) {
+        log.error(ex.getMessage(), ex);
+        return new ResponseErrorMessage(ex.getClass() + " : " + ex.getMessage());
+    }
 
 
     @ExceptionHandler(value = BaseControllerException.class)

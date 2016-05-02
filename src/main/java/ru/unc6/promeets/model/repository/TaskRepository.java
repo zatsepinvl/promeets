@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 public interface TaskRepository extends CrudRepository<MeetTask, Long> {
 
-    @Query("select meetAim from MeetTask meetAim where  meetAim.meet.meetId=(:meetId)")
+    @Query("select meetTask from MeetTask meetTask where  meetTask.meet.meetId=(:meetId) order by meetTask.taskId")
     Iterable<MeetTask> getMeetTasksByMeetId(@Param("meetId") long id);
 
     @Modifying

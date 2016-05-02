@@ -4,12 +4,13 @@
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="item-manager" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>ru.unc6.promeets.model.entity.U</class>
+        <class>ru.unc6.promeets.model.entity.User</class>
         <class>ru.unc6.promeets.model.entity.UserMessage</class>
         <class>ru.unc6.promeets.model.entity.UserMeet</class>
         <class>ru.unc6.promeets.model.entity.UserChat</class>
         <class>ru.unc6.promeets.model.entity.UserGroup</class>
         <class>ru.unc6.promeets.model.entity.Meet</class>
+        <class>ru.unc6.promeets.model.entity.Card</class>
         <class>ru.unc6.promeets.model.entity.Group</class>
         <class>ru.unc6.promeets.model.entity.File</class>
         <class>ru.unc6.promeets.model.entity.MeetTask</class>

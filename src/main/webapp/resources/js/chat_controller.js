@@ -1,4 +1,4 @@
-app.controller('chatController', function ($document, $scope,$rootScope, appConst, AppService, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
+app.controller('chatController', function ($document, $scope,$rootScope, appConst, $http, GroupService, UserService, Entity, UserEntity, GroupChatService) {
     $scope.user = UserService.get();
     $scope.group = GroupService.get();
     $scope.messages = undefined;
@@ -6,8 +6,6 @@ app.controller('chatController', function ($document, $scope,$rootScope, appCons
     $scope.chat = GroupChatService.getChat();
     $scope.status = GroupChatService.getState();
     $scope.glue = true;
-    $scope.time = AppService.toTime;
-
 
     $scope.send = function () {
         if ($scope.text == "") {
