@@ -20,7 +20,7 @@ import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 
 
 @Service
-public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
+public class MeetServiceImpl extends BaseNotifiedServiceImpl<Meet, Long>
         implements MeetService {
 
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);

@@ -18,7 +18,7 @@ import java.util.TimerTask;
  * Created by Vladimir on 23.04.2016.
  */
 @Service
-public class BoardServiceImpl extends BaseNotificatedServiceImpl<Board, Long>
+public class BoardServiceImpl extends BaseNotifiedServiceImpl<Board, Long>
         implements BoardService {
 
     @Value("${board-update-timer-delay}")

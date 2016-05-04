@@ -60,7 +60,6 @@ public class MeetNote implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
-    @JsonIgnore
     public Meet getMeet() {
         return meet;
     }

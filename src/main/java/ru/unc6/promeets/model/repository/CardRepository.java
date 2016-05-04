@@ -7,11 +7,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import ru.unc6.promeets.model.entity.Card;
 
-/**
- * Created by Vladimir on 01.05.2016.
- */
 public interface CardRepository extends PagingAndSortingRepository<Card, Long> {
 
-    @Query(value = "select card from Card card where card.meet.meetId=(:meetId) order by card.time desc")
+    @Query(value = "select card from Card card where card.meet.meetId=(:meetId) order by card.time")
     Page<Card> getCardByMeetId(@Param("meetId") long meetId, Pageable pageable);
 }

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, UserMeetPK>
+public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserMeetPK>
         implements UserMeetService {
 
     private UserMeetNotificationService notificationService;

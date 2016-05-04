@@ -8,13 +8,27 @@ app.service('EventHandler', function ($mdToast) {
         templateUrl: 'templates/toast/toast.html'
     };
 
+    this.error = function (message) {
+        dialog.locals =
+        {
+            message: message,
+            loading: false,
+            action: false,
+            image: undefined,
+            error: true
+        };
+        dialog.hideDelay = delay;
+        $mdToast.show(dialog);
+    };
+
     this.message = function (message, image) {
         dialog.locals =
         {
             message: message,
             loading: false,
             action: false,
-            image: image
+            image: image,
+            error: false
         };
         dialog.hideDelay = delay;
         $mdToast.show(dialog);
@@ -26,7 +40,8 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: true,
             action: false,
-            image: undefined
+            image: undefined,
+            error: false
         };
         dialog.hideDelay = 10000;
         $mdToast.show(dialog);
@@ -38,7 +53,8 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: false,
             action: act,
-            image: undefined
+            image: undefined,
+            error: false
         };
         dialog.hideDelay = delay;
         $mdToast.show(dialog)
@@ -58,7 +74,8 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: loading,
             action: action,
-            image: undefined
+            image: undefined,
+            error: false
         };
         dialog.hideDelay = duration;
         $mdToast.show(dialog)
@@ -74,11 +91,12 @@ app.service('EventHandler', function ($mdToast) {
 });
 
 
-function ToastCtrl($scope, message, action, loading, image, $mdToast) {
+function ToastCtrl($scope, message, action, loading, error, image, $mdToast) {
     $scope.message = message;
     $scope.loading = loading;
     $scope.action = action;
     $scope.image = image;
+    $scope.error = error;
     $scope.hide = function () {
         $mdToast.hide(action);
     }

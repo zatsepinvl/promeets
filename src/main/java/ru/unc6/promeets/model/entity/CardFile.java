@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "card_file", schema = "public", catalog = "promeets_db")
+@Table(name = "card_files", schema = "public", catalog = "promeets_db")
 public class CardFile {
     private CardFilePK cardFilePK;
 

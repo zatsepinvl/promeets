@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Vladimir on 30.03.2016.
  */
 @Component
-public class NoteServiceImpl extends BaseNotificatedServiceImpl<MeetNote, Long>
+public class NoteServiceImpl extends BaseNotifiedServiceImpl<MeetNote, Long>
         implements NoteService {
     private NoteRepository noteRepository;
 

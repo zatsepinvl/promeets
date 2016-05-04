@@ -1,0 +1,36 @@
+<style>
+    .box {
+        width: 100%;
+        height: auto;
+        line-height: 100px;
+        font-size: 12px;
+        vertical-align: middle;
+        text-align: center;
+        min-width: 100px;
+        min-height: 100px
+    }
+
+    .box img {
+        width: 100%;
+        margin: auto
+    }
+
+    .box a {
+        width: 90%;
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: auto;
+    }
+</style>
+<div class="box">
+    <img ng-src="{{file.url}}"
+         ng-if="file.url && isImage(file.name)"/>
+    <a ng-href="{{file.url}}" target="_self" ng-if="file.url && !isImage(file.name) && !disabled"
+       download="{{file.name}}">
+        {{file.name}}
+    </a>
+    <a ng-if="file.url && !isImage(file.name) && disabled">
+        {{file.name}}
+    </a>
+</div>

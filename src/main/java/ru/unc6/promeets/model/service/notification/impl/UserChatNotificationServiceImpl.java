@@ -1,13 +1,9 @@
 package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.controller.AppSTOMPController;
 import ru.unc6.promeets.model.entity.UserChat;
-import ru.unc6.promeets.model.entity.UserChatPK;
-import ru.unc6.promeets.model.repository.UserChatRepository;
-import ru.unc6.promeets.model.service.entity.impl.BaseNotificatedServiceImpl;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.notification.UserChatNotificationService;
 

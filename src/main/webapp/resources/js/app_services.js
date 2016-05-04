@@ -380,27 +380,22 @@ app.service('UserChatsService', function (UserEntity) {
 
 
 app.service('UploadService', function (EventHandler, Upload) {
-    this.upload = function (file, id, success, error) {
+    this.upload = function (file, id, success, error, progress) {
         if (!file) {
             return;
         }
-        EventHandler.load('Uploading file');
         Upload.upload({
             url: '/api/files',
             data: {file: file, id: id}
         }).then(function (resp) {
             //success
-            EventHandler.message('File has been uploaded');
             success && success(resp.data);
         }, function (resp) {
-            EventHandler.message(resp.data.message);
             error && error(resp.data);
         }, function (evt) {
-            //progress
+            progress && progress(evt.loaded / evt.total * 100);
         });
     }
 });
-
-
 
 

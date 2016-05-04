@@ -29,22 +29,21 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
     });
 
     $scope.$on('usermessage', function (event, data) {
-        console.log(data.entity + ':DRAWER CONTROLLER:FROM SOCKET:' + data.action);
         onMessageReceive(data);
-
         $scope.$apply();
     });
 
     $rootScope.$on('usermessageLocal', function (event, data) {
-        console.log(data.entity + ':DRAWER CONTROLLER:FROM ROOT SCOPE:' + data.action);
         onMessageReceive(data);
     });
 
     var onMessageReceive = function (data) {
         if (data.action == appConst.ACTION.CREATE) {
-            $scope.newMessages.push(data.id);
-            var sender = data.data.message.user;
-            EventHandler.message('New message by ' + sender.firstName + ' ' + sender.lastName, sender.image.url);
+            //if ($state.current.name != 'user.group.chat') {
+                $scope.newMessages.push(data.id);
+                var sender = data.data.message.user;
+              //  EventHandler.message('New message by ' + sender.firstName + ' ' + sender.lastName, sender.image.url);
+            //}
         }
         else if (data.action == appConst.ACTION.UPDATE) {
             $scope.newMessages.splice($scope.newMessages.indexOf(data.id), 1);

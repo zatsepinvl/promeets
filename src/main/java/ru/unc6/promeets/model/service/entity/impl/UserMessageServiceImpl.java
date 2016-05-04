@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Vladimir on 13.04.2016.
  */
 @Service
-public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessage, UserMessagePK>
+public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage, UserMessagePK>
         implements UserMessageService {
 
     private static final int PAGE_SIZE = 50;

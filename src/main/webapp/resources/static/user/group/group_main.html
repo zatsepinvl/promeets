@@ -11,16 +11,30 @@
 
         <!-- Group logo-->
         <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet mdl-cell--4-col-phone img-teaser">
-            <div class="img-box">
-                <img style="width: 100%; margin: auto" ng-src="{{group.image.url}}"/>
-                <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
-                        ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file" ngf-accept="'image/*'"  ngf-max-size="10MB">
-                    <i class="material-icons">file_upload</i>
-                </button>
-            </div>
+            <!-- <div class="file-box">
+                 <img style="width: 100%; margin: auto" ng-src="{{group.image.url}}"/>
+                 <button class="upload mdl-button mdl-js-button mdl-button&#45;&#45;fab mdl-button&#45;&#45;mini-fab"
+                         ngf-select="upload($file,$invalidFiles,group.image)" ng-model="file"
+                         name="file">
+                     <i class="material-icons">file_upload</i>
+                 </button>
+                 <md-progress-circular
+                         class="loading"
+                         md-mode="determinate"
+                         ng-show="loading"
+                         value="{{progress}}"
+                         md-diameter="30"></md-progress-circular>
+             </div>-->
+            <upload-file-box file="group.image"
+                             white-space-text="Group image"
+                             max-size="5MB"
+                             format="image/*"
+                             on-delete="onGroupImageDelete"
+                             url="/api/files">
+            </upload-file-box>
+
         </div>
     </div>
-
     <!-- Current meet-->
     <md-divider></md-divider>
     <div layout="row">

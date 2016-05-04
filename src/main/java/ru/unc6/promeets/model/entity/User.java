@@ -129,15 +129,14 @@ public class User implements Serializable {
         User user = (User) o;
 
         if (userId != user.userId) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+      /*  if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
         if (address != null ? !address.equals(user.address) : user.address != null) return false;
         if (company != null ? !company.equals(user.company) : user.company != null) return false;
-        if (position != null ? !position.equals(user.position) : user.position != null) return false;
-
+        if (position != null ? !position.equals(user.position) : user.position != null) return false;*/
         return true;
     }
 
@@ -153,14 +152,14 @@ public class User implements Serializable {
     @Override
     public int hashCode() {
         int result = (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+       /* result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (company != null ? company.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
+        result = 31 * result + (position != null ? position.hashCode() : 0);*/
         return result;
     }
 }

@@ -9,34 +9,33 @@ app.controller("cardsCtrl", function ($scope,
                                       EventHandler) {
     $scope.cards = MeetService.getCards();
 
-    $scope.createCard = function (event) {
+    $scope.createCard = function () {
         var card = {
             user: $scope.user,
             meet: $scope.meet,
-            time: moment().utc().valueOf()
+            time: moment().utc().valueOf(),
+            isNew: true
         };
+        $scope.newCard = card;
         Entity.save({entity: "cards"}, card,
             function (data) {
-                card = data;
-                console.log(card.image);
-                CardEditDialogService.show(card, event,
-                    function (card) {
-                        Entity.update({entity: "cards", id: card.cardId}, card);
-                        $scope.cards.push(card);
-                    },
-                    function () {
-                        Entity.delete({entity: "cards", id: card.cardId});
-                    });
+                clone(data, card);
             }
         );
     };
 
-    $scope.editCard = function (card, event) {
-        CardEditDialogService.show(card, event,
-            function (newCard) {
-                $scope.cards[$scope.cards.indexOf(card)] = newCard;
-                Entity.update({entity: "cards", id: newCard.cardId}, newCard);
-            });
+    $scope.editCard = function (card) {
+        card.editing = true;
+    };
+
+    $scope.saveCard = function (card) {
+        card.editing = false;
+        if (card.isNew) {
+            $scope.cards.push(card);
+            card.isNew = false;
+            $scope.newCard = undefined;
+        }
+        Entity.update({entity: "cards", id: card.cardId}, card);
     };
 
     $scope.deleteCard = function (card, event) {
@@ -44,12 +43,18 @@ app.controller("cardsCtrl", function ($scope,
             function () {
                 //EventHandler.load('Deleting card');
                 Entity.remove({entity: "cards", id: card.cardId}, function () {
-                        EventHandler.message('Card has been deleted');
-                        $scope.cards.splice($scope.cards.indexOf(card), 1);
+                        if (!card.isNew) {
+                            EventHandler.message('Card has been deleted');
+                            $scope.cards.splice($scope.cards.indexOf(card), 1);
+                        }
+                        $scope.newCard = undefined;
                     },
                     function (error) {
-                        EventHandler.message('Something went wrong. Try again later.');
+                        if (!card.isNew) {
+                            EventHandler.message('Something went wrong. Try again later.');
+                        }
+                        $scope.newCard = undefined;
                     });
             });
-    }
+    };
 });

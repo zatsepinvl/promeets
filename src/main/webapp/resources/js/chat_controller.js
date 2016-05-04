@@ -27,6 +27,7 @@ app.controller('chatController', function ($document, $scope,$rootScope, appCons
             function (value) {
                 $scope.messages.push(value);
             });
+
     };
 
 

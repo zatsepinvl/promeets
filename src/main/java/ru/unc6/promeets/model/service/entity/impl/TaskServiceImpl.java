@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Vladimir on 06.04.2016.
  */
 @Service
-public class TaskServiceImpl extends BaseNotificatedServiceImpl<MeetTask, Long> implements TaskService {
+public class TaskServiceImpl extends BaseNotifiedServiceImpl<MeetTask, Long> implements TaskService {
     private TaskRepository taskRepository;
 
     @Autowired

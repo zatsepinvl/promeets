@@ -85,7 +85,7 @@ public class Card {
     }
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "card_file",
+    @JoinTable(name = "card_files",
             joinColumns = @JoinColumn(name = "card_id"),
             inverseJoinColumns = @JoinColumn(name = "file_id"))
     public List<File> getFiles() {

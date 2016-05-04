@@ -24,11 +24,11 @@
             </div>
         </div>
 
-        <div class="phone mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-grid" style="padding: 0">
+        <div class="phone mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone ">
+            <div class="mdl-grid" style="padding: 0; margin: 0">
 
                 <!--Users -->
-                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-margin">
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-v-margin">
                     <div class="mdl-card mdl-card mdl-shadow--2dp">
                         <md-list>
                             <md-list-item class="no-hover primary" style="border: 0">
@@ -40,7 +40,7 @@
                 </div>
 
                 <!--Meet Tasks -->
-                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-margin">
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-v-margin">
                     <div class="mdl-card mdl-card mdl-shadow--2dp"
                          style="margin-top: 8px">
                         <md-list>
@@ -72,7 +72,7 @@
                 </div>
 
                 <!-- Meet notes -->
-                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-margin">
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-v-margin">
                     <div class="mdl-card mdl-card mdl-shadow--2dp"
                          style="margin: 8px 0 0 0 ">
                         <md-list>
@@ -108,13 +108,84 @@
                         <md-list-item class="no-hover primary" style="border: 0">
                             <p style="margin-left: 20px">Cards</p>
                             <md-icon class="md-secondary accent"
-                                     ng-click="createCard($event)">
+                                     ng-click="createCard()"
+                                     ng-if="!newCard">
                                 add
                             </md-icon>
                         </md-list-item>
                     </md-list>
+                    <!-- Edit card template -->
+                    <md-card ng-if="newCard"
+                             class="selected">
+                        <!-- Header -->
+                        <md-card-header>
+                            <md-card-avatar>
+                                <img class="md-user-avatar" ng-src="{{newCard.user.image.url}}"/>
+                            </md-card-avatar>
+                            <md-card-header-text>
+                                <span class="md-title"
+                                      ng-bind-html="newCard.user.firstName + ' ' + newCard.user.lastName"></span>
+                                <span class="md-subhead" ng-bind-html="toTime(newCard.time)"></span>
+                            </md-card-header-text>
+                        </md-card-header>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <md-input-container class="md-block" md-no-float>
+                                    <input ng-model="newCard.title" type="text" placeholder="Title">
+                                </md-input-container>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <p>
+                                <md-input-container class="md-block" md-no-float>
+                            <textarea ng-model="newCard.content" type="text" placeholder="Content text">
+                                </textarea>
+                                </md-input-container>
+                            </p>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="center">
+                            <md-switch ng-model="includeFiles">Include files</md-switch>
+                        </md-card-actions>
+                        <div class="mdl-grid files" style="padding: 4px; margin:0;" ng-show="includeFiles">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <upload-file-box file="newCard.image"
+                                                 white-space-text="Card main image"
+                                                 max-size="5MB"
+                                                 format="image/*"
+                                                 on-delete="onCardImageDelete"
+                                                 url="/api/files">
+                                </upload-file-box>
+                            </div>
+                            <!--<div class="mdl-cell mdl-cell&#45;&#45;4-col">
+                                <div class="file-box drop-box-min">
+                                    <div class="text">Image or document</div>
+                                    <button class="upload mdl-button mdl-js-button mdl-button&#45;&#45;fab mdl-button&#45;&#45;mini-fab"
+                                            ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
+                                            ngf-accept="'*'" ngf-max-size="5MB">
+                                        <i class="material-icons">file_upload</i>
+                                    </button>
+                                </div>
+                            </div>-->
+                        </div>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-icon-button"
+                                       ng-click="saveCard(newCard)">
+                                <md-icon class="icon-min">done</md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button"
+                                       ng-click="deleteCard(newCard)">
+                                <md-icon class="icon-min">close</md-icon>
+                            </md-button>
+                        </md-card-actions>
+                    </md-card>
                 </div>
-                <md-card ng-repeat="card in cards | orderBy : 'card.time' track by card.cardId">
+
+
+                <!-- Card template -->
+                <md-card ng-repeat="card in cards | orderBy:'card.time':true track by card.cardId"
+                         ng-class="{selected:card.editing}">
+
+                    <!-- Header -->
                     <md-card-header>
                         <md-card-avatar>
                             <img class="md-user-avatar" ng-src="{{card.user.image.url}}"/>
@@ -125,16 +196,33 @@
                             <span class="md-subhead" ng-bind-html="toTime(card.time)"></span>
                         </md-card-header-text>
                     </md-card-header>
+
+                    <!-- Title -->
                     <md-card-title>
                         <md-card-title-text>
-                            <span class="md-headline" ng-bind-html="card.title"></span>
+                            <span class="md-headline" ng-bind-html="card.title"
+                                  ng-if="!card.editing"></span>
+                            <md-input-container class="md-block" md-no-float
+                                                ng-if="card.editing">
+                                <input ng-model="card.title" type="text" placeholder="Title">
+                            </md-input-container>
                         </md-card-title-text>
                     </md-card-title>
+
+                    <!-- Content -->
                     <md-card-content>
-                        <p ng-bind-html="card.content"></p>
+                        <p ng-bind-html="card.content" ng-if="!card.editing"></p>
+                        <p ng-if="card.editing">
+                            <md-input-container class="md-block" md-no-float>
+                            <textarea ng-model="card.content" type="text" placeholder="Content text">
+                                </textarea>
+                            </md-input-container>
+                        </p>
                     </md-card-content>
+
+                    <!-- Files -->
                     <div class="mdl-grid" style="padding: 0;margin:0"
-                         ng-if="card.image.url || card.files.length">
+                         ng-if="(card.image.url || card.files.length) && !card.editing">
                         <div class="mdl-cell mdl-cell--12-col">
                             <img ng-src="{{card.image.url}}" class="md-card-image">
                         </div>
@@ -143,17 +231,55 @@
                             <img ng-src="{{file.url}}" class="md-card-image">
                         </div>
                     </div>
+
+
+                    <div ng-if="card.editing">
+                        <md-card-actions layout="row" layout-align="center">
+                            <md-switch ng-model="includeFiles">Include files</md-switch>
+                        </md-card-actions>
+                        <div class="mdl-grid files" style="padding: 4px; margin:0;" ng-show="includeFiles">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <upload-file-box file="card.image"
+                                                 white-space-text="Card main image"
+                                                 max-size="5MB"
+                                                 format="image/*"
+                                                 on-delete="onCardImageDelete"
+                                                 url="/api/files">
+                                </upload-file-box>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col">
+                                <div class="file-box drop-box-min">
+                                    <div class="text">Image or document</div>
+                                    <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                                            ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
+                                            ngf-accept="'*'" ngf-max-size="5MB">
+                                        <i class="material-icons">file_upload</i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Actions -->
                     <md-card-actions layout="row" layout-align="end center"
                                      ng-if="user.userId == card.user.userId">
                         <md-button class="md-icon-button"
-                                   ng-click="editCard(card, $event)">
+                                   ng-click="editCard(card)"
+                                   ng-if="!card.editing">
                             <md-icon class="icon-min">edit</md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button"
+                                   ng-click="saveCard(card)"
+                                   ng-if="card.editing">
+                            <md-icon class="icon-min">save</md-icon>
                         </md-button>
                         <md-button class="md-icon-button"
                                    ng-click="deleteCard(card, $event)">
                             <md-icon class="icon-min">delete</md-icon>
                         </md-button>
                     </md-card-actions>
+
                 </md-card>
             </div>
         </div>

@@ -24,12 +24,11 @@ app.controller('groupCtrl', function ($scope, $state, EventHandler, $stateParams
             });
     };
 
-    $scope.upload = function (file, invalidFiles) {
-        UploadService.upload(file, $scope.group.image.fileId, function (data) {
-            $scope.group.image.url = data.message;
-        });
-    };
-
+    $scope.onGroupImageDelete = function (file) {
+        file.url = null;
+        file.name = null;
+        Entity.update({entity: "files", id: file.fileId}, file);
+    }
 });
 
 function cloneGroup(group) {

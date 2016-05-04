@@ -10,12 +10,12 @@ import java.util.List;
 /**
  * Created by Vladimir on 19.04.2016.
  */
-public class BaseNotificatedServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
+public class BaseNotifiedServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
 
     private CrudRepository<T, V> repository;
     private BaseNotificationService<T> notificationService;
 
-    public BaseNotificatedServiceImpl(CrudRepository<T, V> repository, BaseNotificationService<T> notificationService) {
+    public BaseNotifiedServiceImpl(CrudRepository<T, V> repository, BaseNotificationService<T> notificationService) {
         this.repository = repository;
         this.notificationService = notificationService;
     }

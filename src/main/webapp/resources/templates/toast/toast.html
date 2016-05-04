@@ -1,4 +1,8 @@
 <md-toast>
+    <md-icon style="font-size: 26px; color:white; margin:6px"
+             ng-if="error">
+        error_outline
+    </md-icon>
     <img ng-src="{{image}}" style="border-radius: 50%; width:30px; height:30px;margin: 8px 2px 8px 8px"
          class="md-avatar min" ng-if="image"/>
     <md-progress-circular md-mode="indeterminate"

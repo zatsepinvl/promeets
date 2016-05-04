@@ -16,7 +16,7 @@ app.service('CardEditDialogService', function (DialogService) {
     };
 });
 
-function CardEditDialogCtrl($scope, title, action, card, $mdDialog, UploadService) {
+function CardEditDialogCtrl($scope, title, action, card, $mdDialog, UploadService, EventHandler) {
     $scope.title = title;
     $scope.action = action;
     clone(card, $scope.card = {});
@@ -33,9 +33,24 @@ function CardEditDialogCtrl($scope, title, action, card, $mdDialog, UploadServic
         }
     };
 
-    $scope.upload = function (file, invalidFiles) {
-        UploadService.upload(file, $scope.card.image.fileId, function (data) {
-            $scope.card.image.url = data.message;
-        });
+    $scope.upload = function (uploadFile, invalidFiles, file, loading, progress) {
+        loading = true;
+        progress = 0;
+        var temp = file.url;
+        file.url = undefined;
+        UploadService.upload(uploadFile, file.fileId,
+            function (data) {
+                file.url = data.message;
+            },
+            function (error) {
+                EventHandler.error(error.message);
+                file.url = temp;
+            },
+            function (pr) {
+                progress = pr;
+                if (progress == 100) {
+                    loading = false;
+                }
+            });
     };
 }

@@ -13,7 +13,7 @@ import ru.unc6.promeets.model.service.notification.CardNotificationService;
 import java.util.List;
 
 @Service
-public class CardServiceImpl extends BaseNotificatedServiceImpl<Card, Long>
+public class CardServiceImpl extends BaseNotifiedServiceImpl<Card, Long>
         implements CardService {
 
     private static final int PAGE_SIZE = 20;

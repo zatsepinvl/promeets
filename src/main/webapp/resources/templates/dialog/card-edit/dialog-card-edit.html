@@ -16,7 +16,6 @@
         </md-toolbar>
         <md-dialog-content>
             <md-card>
-
                 <md-card-title>
                     <md-card-title-text>
                         <md-input-container class="md-block" md-no-float>
@@ -37,28 +36,16 @@
                 </md-card-actions>
                 <div class="mdl-grid files" style="padding: 4px; margin:0;" ng-show="includeFiles">
                     <div class="mdl-cell mdl-cell--12-col">
-                        <div class="img-box drop-box"
-                             ng-if="!card.image.url">
-                            <div class="text">Main image</div>
-                            <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
-                                    ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
-                                    ngf-accept="'image/*'" ngf-max-size="5MB">
-                                <i class="material-icons">file_upload</i>
-                            </button>
-                        </div>
-                        <div class="img-box"
-                             ng-if="card.image.url">
-                            <img ng-src="{{card.image.url}}"/>
-                            <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
-                                    ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
-                                    ngf-accept="'image/*'" ngf-max-size="5MB">
-                                <i class="material-icons">file_upload</i>
-                            </button>
-                        </div>
-
+                        <upload-file-box file="card.image"
+                                         white-space-text="Card main image"
+                                         max-size="5MB"
+                                         format="image/*"
+                                         on-delete="onCardImageDelete"
+                                         url="/api/files">
+                        </upload-file-box>
                     </div>
                     <div class="mdl-cell mdl-cell--4-col">
-                        <div class="img-box drop-box-min">
+                        <div class="file-box drop-box-min">
                             <div class="text">Image or document</div>
                             <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
                                     ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"

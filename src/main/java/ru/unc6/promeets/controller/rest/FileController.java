@@ -1,31 +1,26 @@
 package ru.unc6.promeets.controller.rest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.unc6.promeets.controller.ResponseMessage;
-import ru.unc6.promeets.controller.exception.BadRequestException;
-import ru.unc6.promeets.controller.exception.BaseControllerException;
-import ru.unc6.promeets.controller.exception.NotFoundException;
-import ru.unc6.promeets.controller.exception.ResponseErrorMessage;
+import ru.unc6.promeets.controller.exception.*;
+import ru.unc6.promeets.model.entity.File;
+import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.entity.UserFile;
 import ru.unc6.promeets.model.service.entity.FileService;
+import ru.unc6.promeets.model.service.entity.UserFileService;
+import ru.unc6.promeets.security.CurrentUser;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Properties;
 
 /**
  * Created by Vladimir on 20.04.2016.
@@ -51,14 +46,45 @@ public class FileController {
     @Value("${file-max-size-error-message}")
     private String maxSizeExceptionMessage;
 
+    @Value("${file-upload-invalid-formats}")
+    private String invalidFileFormats;
+
+    @Value("${file-upload-invalid-format-error-message}")
+    private String invalidFileFormatsErrorMessage;
+
     @Autowired
     private ServletContext servletContext;
 
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private UserFileService userFileService;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public File deleteFile(@PathVariable("id") long fileId) {
+        File file = fileService.getById(fileId);
+        if (file != null) {
+            file.setUrl(null);
+            file.setName(null);
+            return fileService.update(file);
+        } else {
+            throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());
+        }
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public File updateFile(@PathVariable("id") long fileId, @RequestBody File file) {
+        File temp = fileService.getById(fileId);
+        if (temp != null) {
+            return fileService.update(file);
+        } else {
+            throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());
+        }
+    }
+
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseMessage uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") long fileId) {
+    public File uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("id") long fileId, @CurrentUser User user) {
         checkIsFileAvailable(file);
         BufferedOutputStream stream = null;
         ru.unc6.promeets.model.entity.File entityFile = fileService.getById(fileId);
@@ -69,15 +95,16 @@ public class FileController {
             byte[] bytes = file.getBytes();
             MessageDigest digest = MessageDigest.getInstance(algorithm);
             String fileName = convertByteArrayToHexString(digest.digest(bytes));
-            File uploadedFile = new File(servletContext.getRealPath(uploadRealFolder) + "/" + fileName);
+            java.io.File uploadedFile = new java.io.File(servletContext.getRealPath(uploadRealFolder) + "/" + fileName);
             uploadedFile.createNewFile();
             stream = new BufferedOutputStream(new FileOutputStream(uploadedFile));
             stream.write(bytes);
             fileName = uploadHostFolder + "/" + fileName;
             entityFile.setUrl(fileName);
             entityFile.setName(file.getOriginalFilename());
-            fileService.update(entityFile);
-            return new ResponseMessage().setMessage(fileName);
+            File newFile = fileService.update(entityFile);
+            saveUserFile(newFile, user);
+            return newFile;
         } catch (NoSuchAlgorithmException | IOException ex) {
             throw new BaseControllerException()
                     .setResponseErrorMessage(new ResponseErrorMessage(ex.getMessage()))
@@ -91,6 +118,18 @@ public class FileController {
                 }
             }
         }
+    }
+
+
+    private void saveUserFile(File file, User user) {
+        File newFile = new File();
+        newFile.setUrl(file.getUrl());
+        newFile.setName(file.getName());
+        newFile = fileService.create(newFile);
+        UserFile userFile = new UserFile();
+        userFile.setFile(newFile);
+        userFile.setUser(user);
+        userFileService.create(userFile);
     }
 
     private String convertByteArrayToHexString(byte[] arrayBytes) {
@@ -107,6 +146,11 @@ public class FileController {
         if (file.getSize() > maxSize) {
             throw new BadRequestException()
                     .setResponseErrorMessage(new ResponseErrorMessage(maxSizeExceptionMessage));
+        }
+
+        if (invalidFileFormats.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
+            throw new BadRequestException()
+                    .setResponseErrorMessage(new ResponseErrorMessage(invalidFileFormatsErrorMessage));
         }
     }
 }

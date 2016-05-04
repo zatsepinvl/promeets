@@ -268,9 +268,15 @@ md-list.md-dense md-list-item.md-3-line .md-list-item-text h4 {
     line-height: inherit;
 }
 
-.no-margin {
+.no-v-margin {
     margin-top: 0;
     margin-bottom: 0;
+    padding: 0;
+}
+
+.no-h-margin {
+    margin-left: 0;
+    margin-right: 0;
     padding: 0;
 }
 
@@ -285,24 +291,6 @@ md-list.md-dense md-list-item.md-3-line .md-list-item-text h4 {
 
 .chat md-list-item.md-3-line .md-list-item-text h4 {
     font-size: 12px;
-}
-
-.img-box {
-    position: relative;
-}
-
-.img-box .upload {
-    display: none;
-    position: absolute;
-    width: 40px;
-    bottom: 10px;
-    left: calc(50% - 20px);
-    background-color: #ef6c00;
-    color: white;
-}
-
-.img-box:hover .upload {
-    display: block;
 }
 
 .md-toolbar-tools .md-button {
@@ -360,11 +348,14 @@ md-card md-card-actions {
     opacity: 0;
 }
 
-md-switch.md-checked ._md-thumb
-{
+md-switch.md-checked ._md-thumb {
     background-color: #2e7d32;
 }
-md-switch.md-checked ._md-bar
-{
+
+md-switch.md-checked ._md-bar {
     background-color: #c8e6c9;
+}
+
+.selected {
+    border: 1px solid #ef6c00;
 }
