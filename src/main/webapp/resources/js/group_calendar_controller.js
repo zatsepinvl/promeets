@@ -42,15 +42,11 @@ app.controller('groupCalendarCtrl', function ($scope,
         MeetEditDialogService.show(meet, event,
             function (result) {
                 var meet = result;
-                var tempTime = {};
-                clone(meet.time, tempTime);
-                meet.time = meet.time.valueOf();
                 meet.admin = UserService.get();
-                EventHandler.load('Saving meeting');
                 Entity.save({entity: "meets"}, meet,
                     function (data) {
                         meet = data;
-                        meet.time = tempTime;
+                        meet.time = moment(meet.time).local();
                         $scope.events.push(meet);
                         if($scope.selectedDay.isSame(meet.time,'day'))
                         {
@@ -70,7 +66,6 @@ app.controller('groupCalendarCtrl', function ($scope,
     $scope.deleteMeet = function (meet, event) {
         ConfirmDialog.show('Delete meet?', 'Delete', 'Cancel', event,
             function () {
-                EventHandler.load('Deleting meeting');
                 Entity.remove({entity: "meets", id: meet.meetId}, function () {
                         EventHandler.message('Meet has been deleted');
                         $scope.events.splice($scope.events.indexOf(meet), 1);

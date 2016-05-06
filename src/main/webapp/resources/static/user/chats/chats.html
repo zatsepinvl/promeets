@@ -41,7 +41,7 @@
                             <h3 style="color:#ef6c00; position: absolute; right:20px; top:20px;"
                                 ng-bind-html="'+'+chat.newMessagesCount" ng-if="chat.newMessagesCount"></h3>
                             <h4 style="color:#757575; font-size: 10px; position: absolute; right:20px; top:40px;"
-                                ng-bind-html="time(chat.lastUserMessage.message.time)"
+                                ng-bind-html="toShortDayTime(chat.lastUserMessage.message.time)"
                                 ng-if="chat.lastUserMessage"></h4>
                         </div>
                     </md-list-item>

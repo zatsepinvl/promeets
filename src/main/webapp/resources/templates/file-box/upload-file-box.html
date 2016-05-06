@@ -8,7 +8,8 @@
         <md-icon style="color:white">file_upload</md-icon>
     </md-button>
 
-    <md-icon class="delete" ng-click="delete(file)" style="color: #ef6c00;">cancel
+    <md-icon class="delete" ng-click="delete(file)" style="color: #ef6c00;"
+             ng-if="file.url">cancel
         <md-tooltip md-direction="right">
             Delete
         </md-tooltip>

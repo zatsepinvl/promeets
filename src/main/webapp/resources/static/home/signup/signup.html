@@ -1,8 +1,8 @@
 <div ng-controller="signUpCtrl">
-    <div class="mdl-grid" style="padding: 0">
+    <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--3-col mdl-cell--1-col-tablet mdl-cell--4-col-phone">
         </div>
-        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--3-col-table mdl-cell--4-col-phone" style="margin-top: 0;">
+        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--3-col-table mdl-cell--4-col-phone">
             <div layout="column" layout-padding
                  ng-if="!ready">
                 <md-button class="g-sign-up-button md-raised" flex
@@ -17,10 +17,11 @@
                     Sign up with Google
                 </md-button>
             </div>
-            <div class="mdl-card mdl-shadow--2dp" style="width: 100%"
-                 ng-if="ready">
+            <div class="mdl-card mdl-shadow--2dp"
+                 ng-if="ready"
+                 style="max-width: 460px; margin-left: auto; margin-right: auto;">
                 <div layout="column">
-                    <form name="signUpForm" ng-submit="signUp()" style="margin: 0" ng-controller="signUpFormCtrl">
+                    <form name="signUpForm" ng-submit="signUp()" ng-controller="signUpFormCtrl">
                         <md-content layout-padding>
                             <div class="mdl-card__title">
                                 <img src="/image/google_icon.png" style="width: 30px; margin-right: 6px"

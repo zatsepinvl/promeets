@@ -212,6 +212,23 @@ md-list-item .md-avatar.min {
     .mdl-layout__header-row {
         padding: 0 16px 0 16px;
     }
+
+}
+
+@media (min-width: 839px) {
+    .left-meet-column.mdl-cell--5-col {
+        margin-left: 0;
+        margin-right: 0;
+        width: 41.6667%;
+    }
+}
+
+@media (max-width: 839px) {
+    .left-meet-column.mdl-cell--5-col {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
 }
 
 /*@media (min-width: 1025px) {
@@ -359,3 +376,27 @@ md-switch.md-checked ._md-bar {
 .selected {
     border: 1px solid #ef6c00;
 }
+
+.animation {
+    -webkit-transition: 0.6s linear all;
+    -moz-transition: 0.6s linear all;
+    -o-transition: 0.6s linear all;
+    transition: 0.6s linear all;
+}
+
+.animation.ng-enter {
+    opacity: 0;
+}
+
+.animation.ng-leave {
+    opacity: 1;
+}
+
+.animation.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
+.animation.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+

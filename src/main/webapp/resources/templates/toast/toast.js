@@ -8,6 +8,13 @@ app.service('EventHandler', function ($mdToast) {
         templateUrl: 'templates/toast/toast.html'
     };
 
+    this.setNew = function (item) {
+        item.isNew = true;
+        setTimeout(function () {
+            item.isNew = false;
+        }, 1000);
+    };
+
     this.error = function (message) {
         dialog.locals =
         {

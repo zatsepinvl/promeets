@@ -1,9 +1,8 @@
-app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserService, MeetService, TextareaDialog, EventHandler) {
+app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserService, MeetEditDialogService, MeetService, TextareaDialog, EventHandler) {
     $scope.meet = MeetService.get();
     $scope.user = UserService.get();
     $scope.notes = MeetService.getNotes();
     $scope.tasks = MeetService.getTasks();
-
 
     $scope.goBack = function () {
         $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
@@ -65,6 +64,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.notes.push(message.data);
+                EventHandler.setNew(message.data);
                 EventHandler.message(
                     'New note by '
                     + message.data.user.firstName
@@ -87,6 +87,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.tasks.push(message.data);
+                EventHandler.setNew(message.data);
                 EventHandler.message(
                     'New task by '
                     + message.data.user.firstName
@@ -113,6 +114,22 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
             }
         }
     });
+
+    $scope.editMeet = function (meet, event) {
+        MeetEditDialogService.show(meet, event,
+            function (result) {
+                var meet = result;
+                Entity.update({entity: "meets", id: meet.meetId}, meet,
+                    function (data) {
+                        $scope.meet = data;
+                        EventHandler.message('Meeting has been updated');
+                    },
+                    function (error) {
+                        EventHandler.message(error.data.message);
+                    })
+            }
+        )
+    }
 });
 
 app.controller("meetUsersCtrl", function ($scope) {

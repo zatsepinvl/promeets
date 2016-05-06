@@ -22,12 +22,14 @@ public class CardFileServiceImpl extends BaseServiceImpl<CardFile, CardFilePK>
 
     @Autowired
     private FileService fileService;
+
     private CardFileRepository cardFileRepository;
 
 
     @Autowired
     public CardFileServiceImpl(CardFileRepository repository) {
         super(repository);
+        this.cardFileRepository=repository;
     }
 
     @Override

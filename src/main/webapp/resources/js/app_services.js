@@ -3,10 +3,11 @@
 
 //factories
 app.factory('Entity', function ($resource) {
-    return $resource('/api/:entity/:id/:d_entity', {
+    return $resource('/api/:entity/:id/:d_entity/:d_id', {
         entity: '@entity',
         id: '@id',
-        d_entity: "@d_entity"
+        d_entity: '@d_entity',
+        d_id: '@d_id'
     }, {
         'update': {
             method: 'PUT'
@@ -20,7 +21,7 @@ app.factory('UserEntity', function ($resource) {
     return $resource('/api/users/:entity/:id/:d_entity', {
         entity: '@entity',
         id: '@id',
-        d_entity: "@d_entity",
+        d_entity: '@d_entity'
     }, {
         'update': {
             method: 'PUT'
@@ -31,13 +32,18 @@ app.factory('UserEntity', function ($resource) {
 
 app.service('AppService', function (appConst) {
     var today = moment();
-    this.toTime = function (time) {
+
+    this.toShortDayTime = function (time) {
         time = moment(time).local();
         return time.isSame(today, 'day') ? time.format(appConst.TIME_FORMAT.TIME) : time.format(appConst.TIME_FORMAT.DAY_SHORT);
     };
 
-    this.toDateTime = function (time) {
-        return moment(time).local().format(appConst.TIME_FORMAT.DAY);
+    this.toDayTime = function (time) {
+        return moment(time).local().format(appConst.TIME_FORMAT.DAY_TIME);
+    };
+
+    this.toTime = function (time) {
+        return moment(time).local().format(appConst.TIME_FORMAT.TIME);
     }
 });
 
@@ -46,7 +52,6 @@ app.service('UserService', function ($http) {
     var value = {};
     var headers;
     this.load = function (success, error) {
-        newMeets = [];
         $http.get('/api/users', {headers: headers})
             .success(function (user) {
                 clone(user, value);
@@ -142,7 +147,6 @@ app.service('MeetService', function (Entity, $http) {
     var notes = [];
     var tasks = [];
     var cards = [];
-    var board = {};
     var page = 0;
     var meet;
     this.load = function (meetId, success, error) {
@@ -200,7 +204,6 @@ app.service('GroupMeetsService', function ($http) {
     var current = [];
     var next = [];
     var currentTime;
-    console.log(moment());
     var groupId;
     this.resolve = function (id) {
         groupId = id;
@@ -217,10 +220,7 @@ app.service('GroupMeetsService', function ($http) {
         $http.get("/api/groups/" + groupId + "/meets/?start=" + start + "&end=" + end)
             .success(function (meets) {
                 data.length = 0;
-                meets.forEach(function (meet) {
-                    meet.time = moment(meet.time).local();
-                    data.push(meet);
-                });
+                clone(meets,data);
             })
             .error(function (error) {
 
@@ -337,6 +337,7 @@ app.service('GroupChatService', function (appConst, $rootScope, $http, UserServi
             messages.push(value);
         });
     };
+
     this.get = function () {
         return messages;
     };

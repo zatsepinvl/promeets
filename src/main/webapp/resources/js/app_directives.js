@@ -30,7 +30,6 @@ app.directive('time', function () {
         require: 'ngModel',
         link: function (scope, elm, attrs, ctrl) {
             ctrl.$parsers.unshift(function (time) {
-                console.log(ctrl.$viewValue);
                 if (time.length == 0) {
                     ctrl.$setValidity('timeComplex', true);
                     return time;

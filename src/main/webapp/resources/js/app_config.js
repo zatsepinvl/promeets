@@ -1,6 +1,7 @@
 var app = angular.module('app', [
     'ngMaterial',
     'ngResource',
+    'ngAnimate',
     'ui.router',
     'ngMessages',
     'ngSanitize',

@@ -1,7 +1,6 @@
-app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, UserService, AppService) {
+app.controller('messagesCtrl', function ($scope, $state, appConst, UserEntity, UserChatsService, UserService) {
     $scope.chats = undefined;
     $scope.chats = UserChatsService.getChats();
-    $scope.time = AppService.toTime;
     $scope.state = UserChatsService.getState();
     $scope.user = UserService.get();
 

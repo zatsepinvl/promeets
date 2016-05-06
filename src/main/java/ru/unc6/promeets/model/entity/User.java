@@ -14,13 +14,10 @@ import java.io.Serializable;
 public class User implements Serializable {
     private long userId;
     private String email;
-    private String phone;
     private String password;
     private String firstName;
     private String lastName;
-    private String address;
-    private String company;
-    private String position;
+
     private File image;
 
     @Id
@@ -41,20 +38,12 @@ public class User implements Serializable {
         return email;
     }
 
+    @JsonProperty
     public void setEmail(String email) {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "phone", length = -1)
-    @JsonIgnore
-    public String getPhone() {
-        return phone;
-    }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     @Basic
     @Column(name = "password", nullable = false, length = -1)
@@ -88,38 +77,7 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    @Basic
-    @Column(name = "address", length = -1)
-    @JsonIgnore
-    public String getAddress() {
-        return address;
-    }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    @Basic
-    @Column(name = "company", length = -1)
-    @JsonIgnore
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    @Basic
-    @Column(name = "position", length = -1)
-    @JsonIgnore
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -3,7 +3,7 @@ app.filter('fileFormat', function () {
         var filtered = [];
         var extensions = '';
         if (format.indexOf('image') > -1) {
-            extensions += 'jpeg' + 'png' + 'gif';
+            extensions += 'jpeg' + 'png' + 'gif' + 'jpg';
             for (var i = 0; i < files.length; i++) {
                 var ext = files[i].name.substr((~-files[i].name.lastIndexOf(".") >>> 0) + 2);
                 if (extensions.indexOf(ext) > -1) {
