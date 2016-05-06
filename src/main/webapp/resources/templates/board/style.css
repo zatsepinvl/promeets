@@ -1,11 +1,30 @@
-.board {
-    width: 100%;
-    height: 100%;
-}
 
 input.tool {
     border: 0;
-    border-bottom: 2px solid #ef6c00;
+    border-bottom: 1px solid #ef6c00;
     font-size: 14px;
+}
 
+.locked {
+    border: 1px solid #bdbdbd;
+}
+
+.locked-font {
+    color: #bdbdbd;
+}
+
+.free {
+    border: 1px solid #2e7d32;
+}
+
+.free-font {
+    color: #2e7d32
+}
+
+.editing {
+    border: 1px solid #ef6c00;
+}
+
+.editing-font {
+    color: #ef6c00;
 }

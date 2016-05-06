@@ -1,13 +1,17 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "meets")
-public class Meet {
+public class Meet implements Serializable {
     private long meetId;
     private String title;
     private long time;
@@ -115,6 +119,7 @@ public class Meet {
     public Group getGroup() {
         return group;
     }
+
 
     public void setGroup(Group group) {
         this.group = group;

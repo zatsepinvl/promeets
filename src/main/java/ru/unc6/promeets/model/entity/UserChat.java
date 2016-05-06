@@ -3,17 +3,22 @@ package ru.unc6.promeets.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "user_chats", schema = "public", catalog = "promeets_db")
-public class UserChat {
+public class UserChat implements Serializable {
     private UserChatPK userChatPK;
     private int newMessagesCount;
     private UserMessage lastUserMessage;
 
+
+    public UserChat() {
+        userChatPK = new UserChatPK();
+    }
 
     @EmbeddedId
     @JsonIgnore

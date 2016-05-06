@@ -3,16 +3,21 @@ package ru.unc6.promeets.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "user_groups", schema = "public", catalog = "promeets_db")
-public class UserGroup {
+public class UserGroup implements Serializable {
     private UserGroupPK userGroupPK;
     private short createMeetPermission;
     private short invitePermission;
+
+    public UserGroup() {
+        userGroupPK = new UserGroupPK();
+    }
 
     @EmbeddedId
     @JsonIgnore

@@ -1,17 +1,19 @@
 package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "boards", schema = "public", catalog = "promeets_db")
-public class Board {
+public class Board implements Serializable {
     private long boardId;
     private String title;
     private String data;
     private Meet meet;
+    private User editor;
 
     @Id
     @Column(name = "board_id", nullable = false)
@@ -74,5 +76,15 @@ public class Board {
 
     public void setMeet(Meet meet) {
         this.meet = meet;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "editor_id", referencedColumnName = "user_id")
+    public User getEditor() {
+        return editor;
+    }
+
+    public void setEditor(User editor) {
+        this.editor = editor;
     }
 }

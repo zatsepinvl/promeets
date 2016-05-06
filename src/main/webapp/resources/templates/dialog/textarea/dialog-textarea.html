@@ -1,5 +1,5 @@
 <md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
-    <form ng-submit="save()">
+    <form name="form" ng-submit="save()">
         <md-dialog-content>
             <div layout="column">
                 <md-content layout-padding>
@@ -13,7 +13,9 @@
                         </button>
                     </div>
                     <md-input-container class="md-block" md-no-float>
-                        <textarea ng-model="text" type="text" required placeholder="{{placeholder}}" md-autofocus>
+                        <textarea ng-model="text" type="text" required placeholder="{{placeholder}}" md-autofocus
+                                  name="text"
+                                  pressed-enter="form.$valid && save()">
                             </textarea>
                     </md-input-container>
                     <div layout="row">

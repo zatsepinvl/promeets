@@ -33,7 +33,8 @@
             <md-input-container class="md-block" md-no-float style="width: 100%">
                 <textarea ng-model="text" type="text" placeholder="Text"
                           style="font-size: 13px"
-                          focus-if flex>
+                          flex
+                          pressed-enter="send()">
                     </textarea>
             </md-input-container>
             <md-icon class="md-secondary accent"

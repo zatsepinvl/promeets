@@ -61,10 +61,8 @@ public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessa
         long chatId = message.getChat().getChatId();
         for (User user : userService.getUsersByChatId(chatId)) {
             UserMessage userMessage = new UserMessage();
-            UserMessagePK userMessagePK = new UserMessagePK();
-            userMessagePK.setMessage(message);
-            userMessagePK.setUser(user);
-            userMessage.setUserMessagePK(userMessagePK);
+            userMessage.setUser(user);
+            userMessage.setMessage(entity.getMessage());
             userMessage.setViewed(user.getUserId() == message.getUser().getUserId());
             if (message.getUser().getUserId() != user.getUserId()) {
                 notificationService.onCreate(userMessageRepository.save(userMessage));
@@ -106,12 +104,12 @@ public class UserMessageServiceImpl extends BaseNotificatedServiceImpl<UserMessa
 
     @Override
     public List<UserMessage> getNewUserMessagesByUserId(long userId) {
-        return (List<UserMessage>) userMessageRepository.getNewUserMessagesCountByUserId(userId);
+        return (List<UserMessage>) userMessageRepository.getNewUserMessagesByUserId(userId);
     }
 
     @Override
     public List<UserMessage> getNewUserMessagesByUserIdAndChatId(long userId, long chatId) {
-        return (List<UserMessage>) userMessageRepository.getNewUserMessagesCountByUserIdAndChatId(userId, chatId);
+        return (List<UserMessage>) userMessageRepository.getNewUserMessagesByUserIdAndChatId(userId, chatId);
     }
 
     @Override

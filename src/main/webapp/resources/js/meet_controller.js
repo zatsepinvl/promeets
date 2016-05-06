@@ -1,18 +1,21 @@
-app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserService, MeetService, TextareaDialog, EventHandler) {
+app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserService, MeetService, TextareaDialog, EventHandler, $window, $http) {
     $scope.meet = MeetService.get();
+    $scope.user = UserService.get();
     $scope.notes = MeetService.getNotes();
     $scope.tasks = MeetService.getTasks();
-
-
+	
+	$scope.meetUsers = MeetService.getMeetUsers();
+	$scope.userMeet = MeetService.getUserMeet();
+	
     $scope.goBack = function () {
         $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
     };
 
-    $scope.createNote = function () {
-        TextareaDialog.show('New note', 'Note text', undefined, function (result) {
+    $scope.createNote = function (event) {
+        TextareaDialog.show('New note', 'Note text', undefined, event, function (result) {
             var note = {
                 value: result,
-                user: UserService.get(),
+                user: $scope.user,
                 meet: {meetId: $scope.meet.meetId}
             };
             Entity.save({entity: "notes"}, note,
@@ -26,12 +29,12 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         });
     };
 
-    $scope.createTask = function () {
-        TextareaDialog.show('New task', 'Task text', undefined, function (result) {
+    $scope.createTask = function (event) {
+        TextareaDialog.show('New task', 'Task text', undefined, event, function (result) {
             var task = {
                 value: result,
                 checked: false,
-                user: UserService.get(),
+                user: $scope.user,
                 meet: {meetId: $scope.meet.meetId}
             };
             Entity.save({entity: "tasks"}, task,
@@ -64,6 +67,10 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.notes.push(message.data);
+                EventHandler.message(
+                    'New note by '
+                    + message.data.user.firstName
+                    + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }
             else if (message.action == appConst.ACTION.DELETE) {
@@ -82,6 +89,10 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         if (message.data.meet.meetId == $scope.meet.meetId) {
             if (message.action == appConst.ACTION.CREATE) {
                 $scope.tasks.push(message.data);
+                EventHandler.message(
+                    'New task by '
+                    + message.data.user.firstName
+                    + ' ' + message.data.user.lastName);
                 $scope.$apply();
             }
             else if (message.action == appConst.ACTION.DELETE) {
@@ -104,24 +115,40 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
             }
         }
     });
+	
+	$scope.$on('meetinfo', function (event, message) 
+	{
+        if (message.action == appConst.ACTION.UPDATE) 
+		{
+            for (var i = 0; i < $scope.meetUsers.length; i++)
+			{
+				if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
+                    $scope.meetUsers[i] = message.data;
+                    $scope.$apply();
+                    return;
+                }
+			}
+			
+			$scope.meetUsers.push(message.data);
+			$scope.$apply();
+        }
+		
+    });
+	
+	$window.onbeforeunload = function () {
+		$scope.userMeet.online = false;
+		$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
+            .success(function (data, status, headers, config) {
+            })
+		//return ('bye bye');
+	}
+	
 });
 
-app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http) 
+app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, MeetService, UserMeetService) 
 {
-	$scope.userMeets = [];
-	$http.get('/api/users/meets/188/all')
-        .success(function (userMeets) 
-		{
-			$scope.userMeets = userMeets;
-        });
-		
-	UserEntity.get({entity: "meets", id: 188},
-        function (data) 
-		{
-            var userMeet = data;
-			data.online = true;
-			UserEntity.update({entity: "meets", id: userMeet.meet.meetId}, userMeet);
-        });
+	$scope.meet = MeetService.get();
+    $scope.user = UserService.get();
 			
 	$scope.$on('userMeet', function (event, message) 
 	{

@@ -1,5 +1,4 @@
 app.controller("rtcController", function ($scope, Entity, $state, UserService, MeetService, appConst, EventHandler, $http) {
-        $scope.userMeets = [];
 		$scope.user = UserService.get();
 		
 		var PeerConnection = window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
@@ -7,8 +6,12 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 		navigator.getUserMedia = navigator.getUserMedia ||  navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
 
-		var peerConnections = []; 
-		var meetId = 188;
+		$scope.userMeets = MeetService.getUserMeets();
+		$scope.currentUserMeet = MeetService.getCurrentUserMeet();
+		
+		var peerConnections = [];
+		$scope.meet = MeetService.get();
+		var meetId = $scope.meet.meetId;
 		
 		
 		$http.get('/api/users/meets/'+meetId+'/all')
@@ -33,7 +36,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 				}
 				
 				navigator.getUserMedia(
-				  { audio: true, video: true }, 
+				  { audio: false, video: true }, 
 				  gotStream, 
 				  function(error) { console.log(error) }
 				);

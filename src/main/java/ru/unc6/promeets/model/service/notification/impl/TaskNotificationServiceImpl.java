@@ -16,6 +16,7 @@ import ru.unc6.promeets.model.repository.MeetRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.notification.TaskNotificationService;
 
@@ -28,7 +29,8 @@ public class TaskNotificationServiceImpl extends BaseNotificationServiceImpl<Mee
     private AppSTOMPController appSTOMPController;
     @Autowired
     private UserMeetService userMeetService;
-
+    @Autowired
+    private UserService userService;
 
     @Override
     protected void onAction(MeetTask task, Notification.Action action) {
@@ -37,8 +39,9 @@ public class TaskNotificationServiceImpl extends BaseNotificationServiceImpl<Mee
                 .setEntity(task.getClass().getSimpleName().toLowerCase())
                 .setId(task.getTaskId())
                 .setAction(action);
+        User currentUser = userService.getCurrentAuthenticatedUser();
         for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(task.getMeet().getMeetId())) {
-            if (task.getUser().getUserId() != userMeet.getUser().getUserId()) {
+            if (currentUser.getUserId() != userMeet.getUser().getUserId()) {
                 appSTOMPController.sendNotificationToUser(notification, userMeet.getUser());
             }
         }

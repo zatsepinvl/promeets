@@ -8,23 +8,21 @@
     <md-list>
         <md-list-item class="no-hover primary">
             <p style="margin-left: 20px" ng-bind-html="selectedDay.format('DD MMMM YYYY')"></p>
-            <md-icon class="md-secondary"
+            <md-icon class="md-secondary accent"
                      ng-click="createMeet($event)">
                 add
             </md-icon>
         </md-list-item>
-        <md-list-item ng-repeat="meet in selected track by meet.meetId"
+        <md-list-item ng-repeat="meet in selected track by $index"
                       ng-click="meetClicked(meet.meetId)"
                       ng-mouseover="mouseover=true"
                       ng-mouseleave="mouseover=false">
             <img ng-src="{{meet.admin.image.url}}" class="md-avatar"/>
-            <p style="font-size: 16px;" flex> {{ meet.title }}</p>
-            <p style="font-size: 16px;" flex>
-                {{meet.time.format('HH:mm')}}
-            </p>
+            <p style="font-size: 16px;" flex ng-bind-html="meet.title"></p>
+            <p style="font-size: 16px;" flex ng-bind-html="meet.time.format('HH:mm')"></p>
             <md-icon class="md-secondary"
                      style="margin-bottom: 3px;"
-                     ng-click="deleteMeet(meet)"
+                     ng-click="deleteMeet(meet,$event)"
                      ng-show="mouseover">delete
             </md-icon>
         </md-list-item>

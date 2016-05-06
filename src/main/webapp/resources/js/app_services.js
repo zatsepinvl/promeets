@@ -1,76 +1,6 @@
 //constants
 
 
-//directives
-app.directive('complexPassword', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elm, attrs, ctrl) {
-            ctrl.$parsers.unshift(function (password) {
-                var hasUpperCase = /[A-Z]/.test(password);
-                var hasLowerCase = /[a-z]/.test(password);
-                var hasNumbers = /\d/.test(password);
-                var hasNonalphas = /\W/.test(password);
-                var characterGroupCount = hasUpperCase + hasLowerCase + hasNumbers + hasNonalphas;
-
-                if ((password.length >= 8) && (characterGroupCount >= 3)) {
-                    ctrl.$setValidity('complexity', true);
-                    return password;
-                }
-                else {
-                    ctrl.$setValidity('complexity', false);
-                    return undefined;
-                }
-
-            });
-        }
-    }
-});
-
-app.directive('time', function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elm, attrs, ctrl) {
-            ctrl.$parsers.unshift(function (time) {
-                console.log(ctrl.$viewValue);
-                if (time.length == 0) {
-                    ctrl.$setValidity('timeComplex', true);
-                    return time;
-                }
-                var hours = time.split(':')[0];
-                var minutes = time.split(':')[1];
-                if (time.length > 5
-                    || !minutes
-                    || hours < 0
-                    || hours > 23
-                    || minutes < 0
-                    || minutes > 59
-                    || hours.length < 2
-                    || minutes.length < 2) {
-                    ctrl.$setValidity('timeComplex', false);
-                    return undefined;
-                }
-                ctrl.$setValidity('timeComplex', true);
-                return time;
-            });
-        }
-    }
-});
-
-app.directive('onScrollToTop', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var fn = scope.$eval(attrs.onScrollToTop);
-            element.on('scroll', function (e) {
-                if (!e.target.scrollTop) {
-                    scope.$apply(fn);
-                }
-            });
-        }
-    };
-});
-
 //factories
 app.factory('Entity', function ($resource) {
     return $resource('/api/:entity/:id/:d_entity', {
@@ -99,12 +29,16 @@ app.factory('UserEntity', function ($resource) {
 });
 
 
-app.service('AppService', function () {
+app.service('AppService', function (appConst) {
     var today = moment();
     this.toTime = function (time) {
         time = moment(time).local();
-        return time.isSame(today, 'day') ? time.format('HH:mm') : time.format('MM-DD-YY');
+        return time.isSame(today, 'day') ? time.format(appConst.TIME_FORMAT.TIME) : time.format(appConst.TIME_FORMAT.DAY_SHORT);
     };
+
+    this.toDateTime = function (time) {
+        return moment(time).local().format(appConst.TIME_FORMAT.DAY);
+    }
 });
 
 //services
@@ -146,7 +80,8 @@ app.service('UserService', function ($http) {
 
 app.service('UserMeetService', function ($http) {
     var newMeets = [];
-    this.load = function () {
+	var userMeets = [];
+    this.load = function (meetId) {
         newMeets = [];
         $http.get('/api/users/meets/new')
             .success(function (meets) {
@@ -157,6 +92,9 @@ app.service('UserMeetService', function ($http) {
     this.getNewMeets = function () {
         return newMeets;
     }
+	this.get = function () {
+		return userMeets;
+	}
 });
 
 app.service('UserMessageService', function ($http) {
@@ -203,18 +141,28 @@ app.service('GroupService', function (Entity) {
     };
 });
 
-app.service('MeetService', function (Entity) {
+app.service('MeetService', function (Entity, UserEntity, $http) {
     var value;
-    var notes;
-    var tasks;
+    var notes = [];
+    var tasks = [];
+    var cards = [];
+    var board = {};
+	
+	var meetUsers = [];
+	var currentUserMeet = {};
+	
+    var page = 0;
+    var meet;
+	
     this.load = function (meetId, success, error) {
         value = {};
-        notes = [];
-        tasks = [];
+        notes.length = 0;
+        tasks.length = 0;
+        cards.length = 0;
+        meet = meetId;
         Entity.get({entity: "meets", id: meetId},
             function (meet) {
                 clone(meet, value);
-                value.time = moment(meet.time).local().format('DD MMMM YYYY HH:mm');
                 success && success(value);
             },
             function (err) {
@@ -228,6 +176,27 @@ app.service('MeetService', function (Entity) {
             function (data) {
                 clone(data, tasks)
             });
+        $http.get('/api/meets/' + meetId + '/cards?page=' + page)
+            .success(function (data) {
+                clone(data, cards);
+            });
+		UserEntity.get({entity: "meets", id: meetId},
+        function (data) {
+            var userMeet = data;
+			userMeet.online = true;
+			UserEntity.update({entity: "meets", id: meetId}, userMeet);
+			clone(userMeet, currentUserMeet);
+        });
+		$http.get('/api/meets/'+meetId+'/info')
+			.success(function (meets) {
+				for (var i=0; i<meets.length; i++) {
+					if (meets[i].user.userId == currentUserMeet.user.userId) {
+						meets.splice(i,1);
+						break;
+					}
+				}
+				clone(meets, meetUsers);
+			});
         return value;
     };
 
@@ -243,7 +212,26 @@ app.service('MeetService', function (Entity) {
         return tasks;
     };
 
-
+    this.getCards = function () {
+        return cards;
+    }
+	
+	this.getMeetUsers = function () {
+		return meetUsers;
+	}
+	
+	this.getUserMeet = function () {
+		return currentUserMeet;
+	}
+	
+	this.toOffline = function () {
+		UserEntity.get({entity: "meets", id: meetId},
+        function (data) {
+            var userMeet = data;
+			userMeet.online = false;
+			UserEntity.update({entity: "meets", id: meetId}, userMeet);
+        });
+	}
 });
 
 app.service('GroupMeetsService', function ($http) {
@@ -251,17 +239,17 @@ app.service('GroupMeetsService', function ($http) {
     var pre = [];
     var current = [];
     var next = [];
-    var currentTime = moment().day(0).hour(0).utc();
+    var currentTime;
+    console.log(moment());
     var groupId;
-
     this.resolve = function (id) {
         groupId = id;
-        currentTime = moment().day(0).hour(0).utc();
+        currentTime = moment();
         var prevM = currentTime.clone().add(-1, 'month');
         var nextM = currentTime.clone().add(1, 'month');
-        this.load(groupId, startOfMonth(currentTime.clone()), endOfMonth(currentTime.clone()), current);
-        this.load(groupId, startOfMonth(prevM.clone()), endOfMonth(prevM.clone()), pre);
-        this.load(groupId, startOfMonth(nextM.clone()), endOfMonth(nextM.clone()), next);
+        this.load(groupId, startOfMonth(currentTime), endOfMonth(currentTime), current);
+        this.load(groupId, startOfMonth(prevM), endOfMonth(prevM), pre);
+        this.load(groupId, startOfMonth(nextM), endOfMonth(nextM), next);
         return current;
     };
 
@@ -271,8 +259,8 @@ app.service('GroupMeetsService', function ($http) {
                 data.length = 0;
                 meets.forEach(function (meet) {
                     meet.time = moment(meet.time).local();
+                    data.push(meet);
                 });
-                clone(meets, data);
             })
             .error(function (error) {
 
@@ -298,7 +286,7 @@ app.service('GroupMeetsService', function ($http) {
         clone(next, current);
         currentTime.add(1, 'month');
         var temp = currentTime.clone().add(1, 'month');
-        this.load(groupId, startOfMonth(temp.clone()), endOfMonth(temp.clone()), next);
+        this.load(groupId, startOfMonth(temp), endOfMonth(temp), next);
         return current;
     };
 
@@ -309,17 +297,17 @@ app.service('GroupMeetsService', function ($http) {
         clone(pre, current);
         currentTime.add(-1, 'month');
         var temp = currentTime.clone().add(-1, 'month');
-        this.load(groupId, startOfMonth(temp.clone()), endOfMonth(temp.clone()), pre);
+        this.load(groupId, startOfMonth(temp), endOfMonth(temp), pre);
         return current;
     };
 });
 
 function endOfMonth(date) {
-    return date.endOf('month').valueOf();
+    return date.utc().endOf('month').valueOf();
 }
 
 function startOfMonth(date) {
-    return date.date(1).hour(0).minute(0).millisecond(0).valueOf();
+    return date.utc().date(1).hour(0).minute(0).millisecond(0).valueOf();
 }
 
 app.service('GroupChatService', function (appConst, $rootScope, $http, UserService, Entity, UserEntity) {
@@ -451,7 +439,7 @@ app.service('UploadService', function (EventHandler, Upload) {
             //progress
         });
     }
-})
+});
 
 
 

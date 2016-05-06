@@ -1,0 +1,29 @@
+<md-dialog aria-label="Edit group" ng-cloak style="width: 300px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <md-dialog-content>
+        <div layout="column">
+            <md-content layout-padding>
+                <div class="mdl-card__title" ng-bind-html="title">
+                </div>
+                <div class="mdl-card__menu">
+                    <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
+                            style="bottom: 14px"
+                            ng-click="cancel()">
+                        <i class="material-icons">close</i>
+                    </button>
+                </div>
+                <div layout="row">
+                    <md-button ng-click="cancel()"
+                               class="secondary-back"
+                               flex>
+                        {{cancelText}}
+                    </md-button>
+                    <md-button ng-click="ok()"
+                               class="secondary-back"
+                               flex>
+                        {{okText}}
+                    </md-button>
+                </div>
+            </md-content>
+        </div>
+    </md-dialog-content>
+</md-dialog>

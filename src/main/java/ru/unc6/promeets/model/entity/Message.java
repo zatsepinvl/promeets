@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "messages")
-public class Message {
+public class Message implements Serializable{
     private long messageId;
     private String text;
     private Chat chat;

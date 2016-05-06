@@ -1,13 +1,17 @@
 package ru.unc6.promeets.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Vladimir on 30.01.2016.
  */
 @Entity
 @Table(name = "meet_tasks", schema = "public", catalog = "promeets_db")
-public class MeetTask {
+public class MeetTask implements Serializable {
     private long taskId;
     private String value;
     private Meet meet;
@@ -58,10 +62,12 @@ public class MeetTask {
 
     @ManyToOne
     @JoinColumn(name = "meet_id", referencedColumnName = "meet_id", nullable = false)
+    @JsonIgnore
     public Meet getMeet() {
         return meet;
     }
 
+    @JsonProperty
     public void setMeet(Meet meet) {
         this.meet = meet;
     }
@@ -77,7 +83,7 @@ public class MeetTask {
     }
 
     @ManyToOne
-    @JoinColumn(name="user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     public User getUser() {
         return user;
     }

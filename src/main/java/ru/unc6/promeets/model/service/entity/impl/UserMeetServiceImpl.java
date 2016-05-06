@@ -14,13 +14,18 @@ import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
+import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.service.entity.MeetInfoService;
 
 @Service
-public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, UserMeetPK>
+public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, UserMeetPK> 
         implements UserMeetService {
 
     private UserMeetNotificationService notificationService;
     private UserMeetRepository userMeetRepository;
+    
+    @Autowired
+    private MeetInfoService meetInfoService;
 
     @Autowired
     private UserGroupRepository userGroupRepository;
@@ -31,6 +36,20 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
         super(repository, notificationService);
         this.userMeetRepository = repository;
         this.notificationService = notificationService;
+    }
+    
+    @Override
+    @Transactional
+    public UserMeet update (UserMeet userMeet)
+    {
+        MeetInfo meetInfo = new MeetInfo();
+        meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
+        meetInfo.setMeet(userMeet.getMeet());
+        meetInfo.setUser(userMeet.getUser());
+        meetInfo.setOnline(userMeet.isOnline());
+        meetInfoService.update(meetInfo);
+                
+        return super.update(userMeet);
     }
 
     @Override
@@ -59,11 +78,9 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
         List<UserMeet> userMeets = new ArrayList<>();
         long adminId = meet.getAdmin().getUserId();
         for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
-            UserMeetPK userMeetPK = new UserMeetPK();
-            userMeetPK.setUser(user);
-            userMeetPK.setMeet(meet);
             UserMeet userMeet = new UserMeet();
-            userMeet.setUserMeetPK(userMeetPK);
+            userMeet.setUser(user);
+            userMeet.setMeet(meet);
             userMeet.setViewed(user.getUserId() == adminId);
             userMeets.add(userMeet);
         }

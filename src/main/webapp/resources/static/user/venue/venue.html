@@ -6,7 +6,7 @@
                     <div class="md-toolbar-tools">
                         <span>
                             <div style="font-size: 16px" ng-bind-html="meet.title"></div>
-                            <div style="font-weight: 300; font-size: 12px" ng-bind-html="meet.time"></div>
+                            <div style="font-weight: 300; font-size: 12px" ng-bind-html="toDateTime(meet.time)"></div>
                         </span>
                         <span flex></span>
                         <md-button class="md-icon-button">
@@ -24,70 +24,154 @@
             </div>
         </div>
 
-        <!--Board -->
-        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="height: 440px">
-                <div ng-controller="boardCtrl">
-                    <board br-save="onSave" br-model="items" br-data="board.data" br-loading="loading"></board>
+        <div class="phone mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-grid" style="padding: 0">
+
+                <!--Users -->
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-margin">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp">
+                        <md-list>
+                            <md-list-item class="no-hover primary" style="border: 0">
+                                <p style="margin-left: 20px">Users</p>
+                            </md-list-item>
+							<md-list-item>
+								<p>
+									<span class="venueUserListItem" ng-show="userMeet.online">
+									</span>
+									<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
+									{{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}
+								</p>
+							</md-list-item>
+							<md-list-item ng-repeat="meetUser in meetUsers">
+								<p>
+									<span class="venueUserListItem" ng-show="meetUser.online">
+									</span>
+									<img ng-src="{{meetUser.user.image.url}}" class="md-avatar"/>
+									{{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
+								</p>
+							</md-list-item>
+                        </md-list>
+                    </div>
+                </div>
+
+                <!--Meet Tasks -->
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-margin">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp"
+                         style="margin-top: 8px">
+                        <md-list>
+                            <md-list-item class="no-hover primary" style="border: 0">
+                                <p style="margin-left: 20px">Tasks</p>
+                                <md-icon class="md-secondary accent"
+                                         ng-click="createTask($event)">
+                                    add
+                                </md-icon>
+                            </md-list-item>
+
+                            <md-list-item ng-repeat="task in tasks track by task.taskId"
+                                          ng-mouseover="mouseover=true"
+                                          ng-mouseleave="mouseover=false"
+                                          ng-click="updateTask(task)">
+                                <p ng-bind-html="(tasks.indexOf(task)+1)+'.'"
+                                   style="width: 28px; flex: none; text-align: center"></p>
+                                <p ng-bind-html="multiLine(task.value)" style="font-size: 14px"></p>
+                                <md-checkbox class="md-secondary accent min"
+                                             ng-model="task.checked"
+                                             ng-click="updateTask(task)"></md-checkbox>
+                                <md-icon class="md-secondary" ng-click="removeTask(task)"
+                                         ng-if="mouseover">
+                                    delete
+                                </md-icon>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+                </div>
+
+                <!-- Meet notes -->
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-margin">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp"
+                         style="margin: 8px 0 0 0 ">
+                        <md-list>
+                            <md-list-item class="no-hover primary" style="border: 0">
+                                <p style="margin-left: 20px">Notes</p>
+                                <md-icon class="md-secondary accent"
+                                         ng-click="createNote($event)">
+                                    add
+                                </md-icon>
+                            </md-list-item>
+
+                            <md-list-item ng-repeat="note in notes track by note.noteId"
+                                          ng-mouseover="mouseover=true"
+                                          ng-mouseleave="mouseover=false">
+                                <img ng-src="{{note.user.image.url}}" class="md-avatar min">
+                                <p ng-bind-html="multiLine(note.value)"></p>
+                                <md-icon class="md-secondary" ng-click="removeNote(note)"
+                                         ng-show="mouseover">
+                                    delete
+                                </md-icon>
+                            </md-list-item>
+                        </md-list>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!--Meet Tasks -->
-        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp">
-                <md-list>
-                    <md-list-item class="no-hover primary" style="border: 0">
-                        <p style="margin-left: 20px">Tasks</p>
-                        <md-icon class="md-secondary"
-                                 ng-click="createTask()">
-                            add
-                        </md-icon>
-                    </md-list-item>
-
-                    <md-list-item ng-repeat="task in tasks track by task.taskId"
-                                  ng-mouseover="mouseover=true"
-                                  ng-mouseleave="mouseover=false"
-                                  ng-click="updateTask(task)">
-                        <p ng-bind-html="tasks.indexOf(task)+1" style="width: 50px; flex: none; text-align: center"></p>
-                        <p ng-bind-html="multiLine(task.value)" style="font-size: 16px"></p>
-                        <md-checkbox class="md-secondary accent"
-                                     ng-model="task.checked"
-                                     ng-click="updateTask(task)"></md-checkbox>
-                        <md-icon class="md-secondary" ng-click="removeTask(task)"
-                                 ng-if="mouseover">
-                            delete
-                        </md-icon>
-                    </md-list-item>
-                </md-list>
+        <!-- Cards -->
+        <div class="phone mdl-cell mdl-cell--7-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <div ng-controller="cardsCtrl">
+                <div class="mdl-card mdl-card mdl-shadow--2dp">
+                    <md-list>
+                        <md-list-item class="no-hover primary" style="border: 0">
+                            <p style="margin-left: 20px">Cards</p>
+                            <md-icon class="md-secondary accent"
+                                     ng-click="createCard($event)">
+                                add
+                            </md-icon>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <md-card ng-repeat="card in cards | orderBy : 'card.time' track by card.cardId">
+                    <md-card-header>
+                        <md-card-avatar>
+                            <img class="md-user-avatar" ng-src="{{card.user.image.url}}"/>
+                        </md-card-avatar>
+                        <md-card-header-text>
+                                <span class="md-title"
+                                      ng-bind-html="card.user.firstName + ' ' + card.user.lastName"></span>
+                            <span class="md-subhead" ng-bind-html="toTime(card.time)"></span>
+                        </md-card-header-text>
+                    </md-card-header>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline" ng-bind-html="card.title"></span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <p ng-bind-html="card.content"></p>
+                    </md-card-content>
+                    <div class="mdl-grid" style="padding: 0;margin:0"
+                         ng-if="card.image.url || card.files.length">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <img ng-src="{{card.image.url}}" class="md-card-image">
+                        </div>
+                        <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone"
+                             ng-repeat="file in card.files">
+                            <img ng-src="{{file.url}}" class="md-card-image">
+                        </div>
+                    </div>
+                    <md-card-actions layout="row" layout-align="end center"
+                                     ng-if="user.userId == card.user.userId">
+                        <md-button class="md-icon-button"
+                                   ng-click="editCard(card, $event)">
+                            <md-icon class="icon-min">edit</md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button"
+                                   ng-click="deleteCard(card, $event)">
+                            <md-icon class="icon-min">delete</md-icon>
+                        </md-button>
+                    </md-card-actions>
+                </md-card>
             </div>
         </div>
 
-        <!-- Meet Notes -->
-        <div class="phone mdl-cell mdl-cell--6-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-card mdl-shadow--2dp">
-                <md-list>
-                    <md-list-item class="no-hover primary" style="border: 0">
-                        <p style="margin-left: 20px">Notes</p>
-                        <md-icon class="md-secondary"
-                                 ng-click="createNote()">
-                            add
-                        </md-icon>
-                    </md-list-item>
-
-                    <md-list-item ng-repeat="note in notes track by note.noteId"
-                                  ng-mouseover="mouseover=true"
-                                  ng-mouseleave="mouseover=false">
-                        <img ng-src="{{note.user.image.url}}" class="md-avatar">
-                        <p ng-bind-html="multiLine(note.value)"></p>
-                        <md-icon class="md-secondary" ng-click="removeNote(note)"
-                                 ng-show="mouseover">
-                            delete
-                        </md-icon>
-                    </md-list-item>
-                </md-list>
-            </div>
-        </div>
     </div>
-</div>
 </div>

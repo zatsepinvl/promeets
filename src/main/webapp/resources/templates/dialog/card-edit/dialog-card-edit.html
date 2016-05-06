@@ -1,0 +1,81 @@
+<md-dialog aria-label="Edit group" ng-cloak style="width: 420px;" xmlns="http://java.sun.com/jsf/html">
+    <form name="editCardForm" ng-submit="save()">
+        <md-toolbar style="background-color: #ffffff">
+            <div layout="column">
+                <div class="mdl-card__title">
+                    {{title}}
+                </div>
+                <div class="mdl-card__menu">
+                    <md-icon style="bottom: 10px; color:black; cursor: pointer"
+                             ng-click="cancel()">
+                        close
+                    </md-icon>
+                </div>
+            </div>
+            <md-divider></md-divider>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-card>
+
+                <md-card-title>
+                    <md-card-title-text>
+                        <md-input-container class="md-block" md-no-float>
+                            <input ng-model="card.title" type="text" placeholder="Title">
+                        </md-input-container>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <p>
+                        <md-input-container class="md-block" md-no-float>
+                            <textarea ng-model="card.content" type="text" placeholder="Content text">
+                                </textarea>
+                        </md-input-container>
+                    </p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="center">
+                    <md-switch ng-model="includeFiles">Include files</md-switch>
+                </md-card-actions>
+                <div class="mdl-grid files" style="padding: 4px; margin:0;" ng-show="includeFiles">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <div class="img-box drop-box"
+                             ng-if="!card.image.url">
+                            <div class="text">Main image</div>
+                            <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                                    ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
+                                    ngf-accept="'image/*'" ngf-max-size="5MB">
+                                <i class="material-icons">file_upload</i>
+                            </button>
+                        </div>
+                        <div class="img-box"
+                             ng-if="card.image.url">
+                            <img ng-src="{{card.image.url}}"/>
+                            <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                                    ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
+                                    ngf-accept="'image/*'" ngf-max-size="5MB">
+                                <i class="material-icons">file_upload</i>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="mdl-cell mdl-cell--4-col">
+                        <div class="img-box drop-box-min">
+                            <div class="text">Image or document</div>
+                            <button class="upload mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab"
+                                    ngf-select="upload($file,$invalidFiles)" ng-model="file" name="file"
+                                    ngf-accept="'*'" ngf-max-size="5MB">
+                                <i class="material-icons">file_upload</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </md-card>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <md-button type="submit"
+                       style="background-color: #2e7d32; color:#fafafa; width: 100%;
+                       margin: 0 8px 0 0">
+                {{action}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

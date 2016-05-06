@@ -6,6 +6,7 @@ app.controller('groupCalendarCtrl', function ($scope,
                                               GroupService,
                                               UserService,
                                               MeetEditDialogService,
+                                              ConfirmDialog,
                                               EventHandler,
                                               GroupMeetsService,
                                               appConst) {
@@ -30,7 +31,6 @@ app.controller('groupCalendarCtrl', function ($scope,
         $scope.selectedDay = day.date;
         $scope.meet.time = day.date;
         $scope.selected = day.events;
-        console.log($scope.selected);
     };
 
     $scope.meetClicked = function (meetId) {
@@ -52,6 +52,10 @@ app.controller('groupCalendarCtrl', function ($scope,
                         meet = data;
                         meet.time = tempTime;
                         $scope.events.push(meet);
+                        if($scope.selectedDay.isSame(meet.time,'day'))
+                        {
+                            $scope.selected.push(meet);
+                        }
                         EventHandler.message('Meeting has been created');
                     },
                     function (error) {
@@ -63,21 +67,18 @@ app.controller('groupCalendarCtrl', function ($scope,
         )
     };
 
-    $scope.deleteMeet = function (meet) {
-        EventHandler.action('Removing meet', 'UNDO', function () {
-            },
+    $scope.deleteMeet = function (meet, event) {
+        ConfirmDialog.show('Delete meet?', 'Delete', 'Cancel', event,
             function () {
+                EventHandler.load('Deleting meeting');
                 Entity.remove({entity: "meets", id: meet.meetId}, function () {
-                        EventHandler.message('Meet has been removed');
+                        EventHandler.message('Meet has been deleted');
                         $scope.events.splice($scope.events.indexOf(meet), 1);
-                        if (meet.time.isSame($scope.selected, 'day')) {
-                            $scope.selected.splice($scope.selected.indexOf(meet), 1);
-                        }
+                        $scope.selected.splice($scope.selected.indexOf(meet), 1);
                     },
                     function (error) {
                         EventHandler.message('Something went wrong. Try again later.');
                     });
-
             });
     };
 

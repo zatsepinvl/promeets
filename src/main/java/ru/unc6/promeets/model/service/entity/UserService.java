@@ -11,4 +11,6 @@ public interface UserService extends BaseService<User, Long> {
     User getUserByEmail(String email);
 
     List<User> getUsersByChatId(long chatId);
+
+    User getCurrentAuthenticatedUser();
 }
