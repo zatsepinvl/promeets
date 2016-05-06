@@ -13,7 +13,7 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
 						$scope.$broadcast(message.entity, message);
 					}
 					// TODO:
-					else (message.type)
+					else if (message.type)
 					{
 						$scope.$broadcast('rtc/'+message.meetId, message);
 					}

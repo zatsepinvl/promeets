@@ -4,43 +4,46 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		var PeerConnection = window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 		var IceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
 		var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
-		navigator.getUserMedia = navigator.getUserMedia ||  navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-		$scope.userMeets = MeetService.getUserMeets();
-		$scope.currentUserMeet = MeetService.getCurrentUserMeet();
-		
 		var peerConnections = [];
 		$scope.meet = MeetService.get();
 		var meetId = $scope.meet.meetId;
 		
+		$scope.meetUsers = [];
+		$scope.currentUserMeet = MeetService.getUserMeet();
 		
-		$http.get('/api/users/meets/'+meetId+'/all')
-            .success(function (userMeets) 
+		var createPeerConnections = function () 
 			{
-                $scope.userMeets=userMeets;
-				var i = 0;
-				while (i<$scope.userMeets.length)
-				{
-					var newPc = new PeerConnection(null);
-					newPc.duserId = $scope.userMeets[i].user.userId;
-					newPc.pmId = i;
-					if (newPc.duserId!=$scope.user.userId)
+				console.log('CREATING PeerConnection');
+				$http.get('/api/meets/'+meetId+'/info')
+					.success(function (meetUsers) 
 					{
-						peerConnections.push(newPc);
-						i++;
-					}
-					else 
-					{
-						userMeets.splice (i, 1);
-					}
-				}
-				
-				navigator.getUserMedia(
-				  { audio: false, video: true }, 
-				  gotStream, 
-				  function(error) { console.log(error) }
-				);
-            });
+						$scope.meetUsers=meetUsers;
+						var i = 0;
+						while (i<$scope.meetUsers.length)
+						{
+							var newPc = new PeerConnection(null);
+							newPc.duserId = $scope.meetUsers[i].user.userId;
+							newPc.pmId = i;
+							if (newPc.duserId!=$scope.user.userId)
+							{
+								peerConnections.push(newPc);
+								i++;
+							}
+							else 
+							{
+								meetUsers.splice (i, 1);
+							}
+						}
+						
+						navigator.getUserMedia(
+						  { audio: true, video: false}, 
+						  gotStream, 
+						  function(error) { console.log(error) }
+						);
+					});
+            };
 
 ////    HELPERS   //////////////////////////////////////
 			
@@ -58,34 +61,42 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 ////    RTC   //////////////////////////////////////
 
 		function gotStream(stream) {
-			document.getElementById("callButton").style.display = 'inline-block';
-			document.getElementById("localVideo").src = URL.createObjectURL(stream);
+			
+			var audioTracks = stream.getAudioTracks();
+				  if (audioTracks.length > 0) {
+					console.log('Using Audio device: ' + audioTracks[0].label);
+				  }
 			for (var i=0; i<peerConnections.length; i++)
 			{
 				peerConnections[i].addStream(stream);
 				peerConnections[i].onicecandidate = gotIceCandidate;
-				peerConnections[i].onaddstream = gotRemoteStream;
+				peerConnections[i].ontrack = gotRemoteStream;
 				peerConnections[i].onremovestream = function(event) {
 					console.log('stream removed'); 
 					};
 				peerConnections[i].oniceconnectionstatechange = function(ev) {
 				};
 			}
+			
+			$scope.createOffer();
 		}
 
-		$scope.createOffer = function(duserId) 
+		$scope.createOffer = function() 
 		{
+			console.log('Start creating offer');
 			peerConnections.forEach(function(pc, i, arr)
 			{
-				pc.createOffer(
-					gotLocalDescriptions, 
-					function(error) { console.log(error) }, 
-					{ 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true }
-				);
-				function gotLocalDescriptions(description)
-				{
-				  pc.setLocalDescription(description);
-				  sendMessage(description,pc.duserId);
+				if ($scope.meetUsers[pc.pmId].online) {
+					pc.createOffer(
+						gotLocalDescriptions, 
+						function(error) { console.log(error) }, 
+						{ 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false }
+					);
+					function gotLocalDescriptions(description)
+					{
+					  pc.setLocalDescription(description);
+					  sendMessage(description,pc.duserId);
+					}
 				}
 			});
 		}
@@ -100,7 +111,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 					gotLocalDescription(answer, userId); 
 				},
 				function(error) { console.log(error) }, 
-				{ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true } }
+				{ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false } }
 		  );
 		}
 
@@ -125,8 +136,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 
 		function gotRemoteStream(event)
 		{
-			$scope.userMeets[event.currentTarget.pmId].online = true;
-			document.getElementById("remoteVideo-"+event.currentTarget.pmId).src = URL.createObjectURL(event.stream);
+			document.getElementById("remoteAudio-"+event.currentTarget.pmId).srcObject = event.streams[0];
 			$scope.$apply();
 		}
 		
@@ -146,7 +156,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		var start = function() 
 		{
 			stompClient = Stomp.over(new SockJS(appConst.WS.URL));
-			stompClient.connect("guest", "guest", {}, stompErrorCallBack);
+			stompClient.connect("guest", "guest", createPeerConnections, stompErrorCallBack);
 			stompClient.onclose = reconnect;
 		};
 		

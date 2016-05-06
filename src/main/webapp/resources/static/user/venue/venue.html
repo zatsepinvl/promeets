@@ -52,7 +52,12 @@
 							</md-list-item>
                         </md-list>
                     </div>
-                </div>
+					<div class="audioContainer" ng-controller="rtcController">
+						<div  ng-repeat="meetUser in meetUsers">
+							<audio ng-attr-id="{{ 'remoteAudio-' + $index }}" autoplay>
+						</div>
+					</div>
+				</div>
 
                 <!--Meet Tasks -->
                 <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-margin">

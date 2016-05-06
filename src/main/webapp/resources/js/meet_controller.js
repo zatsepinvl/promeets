@@ -140,7 +140,6 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
 		$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
             .success(function (data, status, headers, config) {
             })
-		//return ('bye bye');
 	}
 	
 });
