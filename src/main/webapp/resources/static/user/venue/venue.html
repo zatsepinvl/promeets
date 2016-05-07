@@ -29,7 +29,7 @@
 
                 <!--Users -->
                 <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-margin">
-                    <div class="mdl-card mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" ng-controller="rtcController">
                         <md-list>
                             <md-list-item class="no-hover primary" style="border: 0">
                                 <p style="margin-left: 20px">Users</p>
@@ -40,6 +40,8 @@
 									</span>
 									<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
 									{{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}
+									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="voiceEnable">mic</md-icon>
+									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="!voiceEnable">mic_off</md-icon>
 								</p>
 							</md-list-item>
 							<md-list-item ng-repeat="meetUser in meetUsers">
@@ -49,14 +51,12 @@
 									<img ng-src="{{meetUser.user.image.url}}" class="md-avatar"/>
 									{{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
 								</p>
+								<md-icon class="md-secondary" ng-if="!isMutedRemoteAudio($index) && meetUser.online" ng-click="toggleRemoteAudio($index)">mic</md-icon>
+								<md-icon class="md-secondary" ng-if="isMutedRemoteAudio($index)" ng-click="toggleRemoteAudio($index)">mic_off</md-icon>
+								<audio ng-attr-id="{{ 'remoteAudio-' + $index }}" autoplay>
 							</md-list-item>
                         </md-list>
                     </div>
-					<div class="audioContainer" ng-controller="rtcController">
-						<div  ng-repeat="meetUser in meetUsers">
-							<audio ng-attr-id="{{ 'remoteAudio-' + $index }}" autoplay>
-						</div>
-					</div>
 				</div>
 
                 <!--Meet Tasks -->

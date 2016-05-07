@@ -1,51 +1,52 @@
-app.controller("rtcController", function ($scope, Entity, $state, UserService, MeetService, appConst, EventHandler, $http) {
-		$scope.user = UserService.get();
+app.controller("rtcController", function ($scope, Entity, $state, UserService, MeetService, appConst, EventHandler, $http, $window) {
 		
+	//////////////////    WEB RTC CONFIG   //////////////////////////////////////
+
 		var PeerConnection = window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 		var IceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
 		var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
+		iceServers: [{
+        urls:['turn:1.2.3.4', 'turn:1.2.3.5'],
+        username:'foo',
+        credential:'1234'
+    }]
+		
+		var iceServers = [
+			{
+				urls:['stun:stun01.sipphone.com','stun:stun.ekiga.net','stun:stun.fwdnet.net','stun:stun.l.google.com:19302',
+				'stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302', 'stun:stun2.l.google.com:19302', 'stun:stun4.l.google.com:19302']
+			},
+			{
+				urls:['turn:192.158.29.39:3478?transport=udp', 'turn:192.158.29.39:3478?transport=tcp'],
+				username:'28224511:1379330808',
+				credential:'JZEOEt2V3Qb0y27GRntt2u2PAYA='
+			},
+			{
+				urls:['turn:numb.viagenie.ca'],
+				username:'muazkh',
+				credential:'webrtc@live.com'
+			}
+				
+		];
+
+	//////////////////    SCOPE   //////////////////////////////////////
+	
 		var peerConnections = [];
+		
 		$scope.meet = MeetService.get();
 		var meetId = $scope.meet.meetId;
 		
+		$scope.user = UserService.get();
 		$scope.meetUsers = [];
 		$scope.currentUserMeet = MeetService.getUserMeet();
+		$scope.voiceEnable;
 		
-		var createPeerConnections = function () 
-			{
-				console.log('CREATING PeerConnection');
-				$http.get('/api/meets/'+meetId+'/info')
-					.success(function (meetUsers) 
-					{
-						$scope.meetUsers=meetUsers;
-						var i = 0;
-						while (i<$scope.meetUsers.length)
-						{
-							var newPc = new PeerConnection(null);
-							newPc.duserId = $scope.meetUsers[i].user.userId;
-							newPc.pmId = i;
-							if (newPc.duserId!=$scope.user.userId)
-							{
-								peerConnections.push(newPc);
-								i++;
-							}
-							else 
-							{
-								meetUsers.splice (i, 1);
-							}
-						}
-						
-						navigator.getUserMedia(
-						  { audio: true, video: false}, 
-						  gotStream, 
-						  function(error) { console.log(error) }
-						);
-					});
-            };
-
-////    HELPERS   //////////////////////////////////////
+		var localStream;
+		
+		
+	//////////////////    HELPERS   //////////////////////////////////////
 			
 		function getPeerConnection(userId)
 		{
@@ -58,10 +59,63 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			return null;
 		}
 
-////    RTC   //////////////////////////////////////
+		$scope.toggleMic = function () {
+		  var audioTracks = localStream.getAudioTracks();
+		  for (var i = 0, l = audioTracks.length; i < l; i++) {
+			audioTracks[i].enabled = !audioTracks[i].enabled;
+			console.log(audioTracks[i].label + "enable = " + audioTracks[i].enabled);
+			$scope.voiceEnable = audioTracks[i].enabled;
+			$scope.apply;
+		  }
+		}
+		
+		$scope.toggleRemoteAudio = function (id) {
+			var audio = document.getElementById('remoteAudio-' + id);
+			audio.muted = !audio.muted;
+			console.log("Muted");
+		}
+		
+		$scope.isMutedRemoteAudio = function (id) {
+			var audio = document.getElementById('remoteAudio-' + id);
+			return audio.muted;
+		}
+		
+	//////////////////    RTC   //////////////////////////////////////
+		
+		var createPeerConnections = function () {
+			console.log('CREATING PeerConnection');
+			$http.get('/api/meets/'+meetId+'/info')
+				.success(function (meetUsers) 
+				{
+					$scope.meetUsers=meetUsers;
+					var i = 0;
+					while (i<$scope.meetUsers.length)
+					{
+						var newPc = new PeerConnection(iceServers);
+						newPc.duserId = $scope.meetUsers[i].user.userId;
+						newPc.pmId = i;
+						if (newPc.duserId!=$scope.user.userId)
+						{
+							peerConnections.push(newPc);
+							i++;
+						}
+						else 
+						{
+							meetUsers.splice (i, 1);
+						}
+					}
+					
+					navigator.getUserMedia(
+					  { audio: true, video: false}, 
+					  gotStream, 
+					  function(error) { console.log(error) }
+					);
+				});
+        };
 
 		function gotStream(stream) {
 			
+			localStream = stream;
 			var audioTracks = stream.getAudioTracks();
 				  if (audioTracks.length > 0) {
 					console.log('Using Audio device: ' + audioTracks[0].label);
@@ -78,6 +132,8 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 				};
 			}
 			
+			$scope.voiceEnable = true;
+			$scope.apply;
 			$scope.createOffer();
 		}
 
@@ -140,8 +196,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			$scope.$apply();
 		}
 		
-		////    CONNECTION   //////////////////////////////////////
-		
+	//////////////////    CONNECTION   //////////////////////////////////////
 		
 		function sendMessage(data, duserId)
 		{
@@ -198,6 +253,32 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			}
 		});
 
+			$scope.$on('meetinfo', function (event, message) 
+			{
+				if (message.action == appConst.ACTION.UPDATE) 
+				{
+					for (var i = 0; i < $scope.meetUsers.length; i++)
+					{
+						if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
+							$scope.meetUsers[i] = message.data;
+							$scope.$apply();
+							return;
+						}
+					}
+					
+					$scope.meetUsers.push(message.data);
+					$scope.$apply();
+				}
+				
+			});
+			
+			$window.onbeforeunload = function () {
+				$scope.userMeet.online = false;
+				$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
+					.success(function (data, status, headers, config) {
+					})
+			}	
+			
 			start();
 
     }

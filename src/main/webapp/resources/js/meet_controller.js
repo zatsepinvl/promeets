@@ -116,32 +116,6 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         }
     });
 	
-	$scope.$on('meetinfo', function (event, message) 
-	{
-        if (message.action == appConst.ACTION.UPDATE) 
-		{
-            for (var i = 0; i < $scope.meetUsers.length; i++)
-			{
-				if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
-                    $scope.meetUsers[i] = message.data;
-                    $scope.$apply();
-                    return;
-                }
-			}
-			
-			$scope.meetUsers.push(message.data);
-			$scope.$apply();
-        }
-		
-    });
-	
-	$window.onbeforeunload = function () {
-		$scope.userMeet.online = false;
-		$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
-            .success(function (data, status, headers, config) {
-            })
-	}
-	
 });
 
 app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, MeetService, UserMeetService) 
