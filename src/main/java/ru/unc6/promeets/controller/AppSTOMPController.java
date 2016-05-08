@@ -9,15 +9,12 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalMessage;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalService;
-import ru.unc6.promeets.security.CurrentUser;
 
 /**
  * @author MDay

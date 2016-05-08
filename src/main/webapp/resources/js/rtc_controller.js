@@ -6,12 +6,6 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		var IceCandidate = window.mozRTCIceCandidate || window.RTCIceCandidate;
 		var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-		iceServers: [{
-        urls:['turn:1.2.3.4', 'turn:1.2.3.5'],
-        username:'foo',
-        credential:'1234'
-    }]
 		
 		var iceServers = [
 			{
@@ -58,6 +52,38 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			
 			return null;
 		}
+		
+		function resetPeerConnection(userId)
+		{
+			for (var i=0; i<peerConnections.length; i++)
+			{
+				if (peerConnections[i].duserId==userId)
+				{
+					peerConnections[i].close();
+					peerConnections[i] = createPeerConnection(iceServers, i);
+					peerConnections[i].addStream(localStream);
+					return peerConnections[i];
+				}
+			}
+			
+			return null;
+		}
+		
+		function createPeerConnection (config, index)
+		{
+			pc = new PeerConnection(config);
+			pc.duserId = $scope.meetUsers[index].user.userId;
+			pc.pmId = index;
+			
+			pc.onicecandidate = gotIceCandidate;
+			pc.ontrack = gotRemoteStream;
+			pc.onremovestream = function(event) {
+				console.log('stream removed'); 
+				};
+			pc.oniceconnectionstatechange = function(ev) {};
+			
+			return pc;
+		}
 
 		$scope.toggleMic = function () {
 		  var audioTracks = localStream.getAudioTracks();
@@ -91,7 +117,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 					var i = 0;
 					while (i<$scope.meetUsers.length)
 					{
-						var newPc = new PeerConnection(iceServers);
+						var newPc = new createPeerConnection(iceServers, i);
 						newPc.duserId = $scope.meetUsers[i].user.userId;
 						newPc.pmId = i;
 						if (newPc.duserId!=$scope.user.userId)
@@ -123,13 +149,6 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			for (var i=0; i<peerConnections.length; i++)
 			{
 				peerConnections[i].addStream(stream);
-				peerConnections[i].onicecandidate = gotIceCandidate;
-				peerConnections[i].ontrack = gotRemoteStream;
-				peerConnections[i].onremovestream = function(event) {
-					console.log('stream removed'); 
-					};
-				peerConnections[i].oniceconnectionstatechange = function(ev) {
-				};
 			}
 			
 			$scope.voiceEnable = true;
@@ -252,11 +271,17 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 				pc.addIceCandidate(candidate);
 			}
 		});
-
+		
+	////////////////////////////////////
+	
 			$scope.$on('meetinfo', function (event, message) 
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
+					if (!message.data.online)
+					{
+						resetPeerConnection(message.data.user.userId);
+					}
 					if (message.data.user.userId == $scope.user.userId)
 						return;
 					for (var i = 0; i < $scope.meetUsers.length; i++)
