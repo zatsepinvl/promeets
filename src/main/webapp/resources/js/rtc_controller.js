@@ -257,6 +257,8 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
+					if (message.data.user.userId == $scope.user.userId)
+						return;
 					for (var i = 0; i < $scope.meetUsers.length; i++)
 					{
 						if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
