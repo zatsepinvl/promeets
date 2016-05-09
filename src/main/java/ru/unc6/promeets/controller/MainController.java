@@ -57,4 +57,9 @@ public class MainController {
     public String fileTest() {
         return INDEX_PATH;
     }
+
+    @RequestMapping(value = "/profile/*")
+    public String profile() {
+        return INDEX_PATH;
+    }
 }

@@ -44,7 +44,6 @@ public class User implements Serializable {
     }
 
 
-
     @Basic
     @Column(name = "password", nullable = false, length = -1)
     @JsonIgnore
@@ -78,7 +77,6 @@ public class User implements Serializable {
     }
 
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -107,6 +105,7 @@ public class User implements Serializable {
     public void setImage(File image) {
         this.image = image;
     }
+
     @Override
     public int hashCode() {
         int result = (int) (userId ^ (userId >>> 32));
@@ -120,4 +119,5 @@ public class User implements Serializable {
         result = 31 * result + (position != null ? position.hashCode() : 0);*/
         return result;
     }
+
 }

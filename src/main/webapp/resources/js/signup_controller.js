@@ -18,7 +18,7 @@ app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, Ev
         $scope.user.firstName = $location.search().firstName;
         $scope.user.lastName = $location.search().lastName;
         $scope.user.email = $location.search().email;
-        $scope.user.image = {url: $location.search().img};
+        $scope.user.image = {url: $location.search().img, originalUrl: $location.search().oimg};
 
         $scope.signUp = function () {
             if ($scope.signUpForm.$valid) {

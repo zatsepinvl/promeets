@@ -67,7 +67,7 @@ app.controller("cardsCtrl", function ($scope,
         Entity.save({entity: "cards", id: card.cardId, d_entity: "files"},
             function (newFile) {
                 card.files.push(newFile);
-            })
+            });
     };
 
     $scope.onCardFileDelete = function (file) {

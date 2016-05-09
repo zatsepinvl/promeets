@@ -1,20 +1,28 @@
-<md-dialog ng-cloak style="width: auto; height: auto; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
-    <md-dialog-content>
-        <div layout="column">
-            <md-content layout-padding>
-                <div class="mdl-card__title" ng-bind-html="title">
-                </div>
-                <div class="mdl-card__menu">
-                    <button type="button" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect"
-                            style="bottom: 14px"
-                            ng-click="cancel()">
-                        <i class="material-icons">close</i>
-                    </button>
-                </div>
-                <div layout="row">
-                    <img ng-src="{{url}}" style="margin: 0 auto 0 auto; width:  100%;"/>
-                </div>
-            </md-content>
-        </div>
-    </md-dialog-content>
+<md-dialog ng-cloak xmlns="http://java.sun.com/jsf/html"
+           id="container">
+    <md-icon style="position: absolute; top:10px; right: 10px; color:black; cursor: pointer"
+
+             ng-click="cancel()">
+        close
+    </md-icon>
+    <img src="{{url}}" id="image" style="max-width: 100%; max-height: 100%;"/>
 </md-dialog>
+<script>
+    var container = $('#dialogContent_container');
+    var image = $('#image');
+    var win = $(window);
+    win.resize(function () {
+        fitImage();
+    });
+
+    image.on('load', function () {
+        fitImage();
+    });
+
+    var fitImage = function () {
+        container.css({
+            height: image.height() > win.height() * 0.8 ?
+            win.height() * 0.8 : image.height()
+        });
+    }
+</script>

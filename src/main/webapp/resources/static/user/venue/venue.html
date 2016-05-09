@@ -156,6 +156,7 @@
                                                  white-space-text="Card main image"
                                                  max-size="5MB"
                                                  format="image/*"
+                                                 small-size="1600"
                                                  on-delete="onCardImageDelete"
                                                  url="/api/files">
                                 </upload-file-box>
@@ -165,7 +166,9 @@
                                                  white-space-text="Image or file"
                                                  max-size="5MB"
                                                  format="*"
+                                                 small-size="800"
                                                  on-delete="onCardFileDelete"
+                                                 on-uploaded="onCardFileUploaded"
                                                  url="/api/files">
                                 </upload-file-box>
                             </div>
@@ -235,8 +238,10 @@
                     <div class="mdl-grid" style="padding: 0;margin:0"
                          ng-if="(card.image.url || card.files.length && card.files[0].url) && !card.editing">
                         <div class="mdl-cell mdl-cell--12-col">
-                            <img ng-src="{{card.image.url}}" class="md-card-image"
-                                 ng-if="card.image.url">
+                            <file-box file="card.image"
+                                      class="md-card-image"
+                                      ng-if="card.image.url">
+                            </file-box>
                         </div>
                         <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone"
                              ng-repeat="file in card.files"
@@ -252,6 +257,7 @@
                                 <upload-file-box file="card.image"
                                                  white-space-text="Card main image"
                                                  max-size="5MB"
+                                                 small-size="1600"
                                                  format="image/*"
                                                  on-delete="onCardImageDelete"
                                                  url="/api/files">
@@ -263,6 +269,7 @@
                                                  white-space-text="Image or file"
                                                  max-size="5MB"
                                                  format="*"
+                                                 small-size="800"
                                                  on-delete="onCardFileDelete"
                                                  on-uploaded="onCardFileUploaded"
                                                  url="/api/files">

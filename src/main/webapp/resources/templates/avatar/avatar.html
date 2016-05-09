@@ -1,0 +1,7 @@
+<a ng-click="go(user.userId)" href="">
+    <img ng-src="{{user.image.url}}" class="md-avatar"
+         ng-class="{min:min}"/>
+    <md-tooltip md-direction="bottom">
+        {{user.firstName+' '+user.lastName}}
+    </md-tooltip>
+</a>

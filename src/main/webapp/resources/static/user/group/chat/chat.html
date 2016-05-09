@@ -16,7 +16,7 @@
                       style="min-height: 0;"
                       ng-class="{ 'new' : (!message.viewed) && (message.sender) }"
                       ng-mouseover="">
-            <img ng-src="{{message.message.user.image.url}}" class="md-avatar min"/>
+            <avatar user="message.message.user" min="true"></avatar>
             <div class="md-list-item-text" layout="column">
                 <h3 style="color:#2e7d32; font-size: 12px" ng-bind-html="message.message.user.firstName"></h3>
                 <p style="color:#424242; font-weight: 400; font-size: 12px; width: 90%; overflow: hidden; text-overflow: ellipsis;"

@@ -37,6 +37,7 @@ public class GoogleController {
     private static final String LAST_NAME = "lastName";
     private static final String EMAIL = "email";
     private static final String IMG = "img";
+    private static final String ORIGINAL_IMG = "oimg";
 
     @Autowired
     private GoogleService googleService;
@@ -65,7 +66,9 @@ public class GoogleController {
             redirectView.addStaticAttribute(FIRST_NAME, person.getName().getGivenName());
             redirectView.addStaticAttribute(LAST_NAME, person.getName().getFamilyName());
             redirectView.addStaticAttribute(EMAIL, person.getEmails().get(0).getValue());
-            redirectView.addStaticAttribute(IMG, person.getImage().getUrl());
+            String imageUrl = person.getImage().getUrl();
+            redirectView.addStaticAttribute(IMG, imageUrl);
+            redirectView.addStaticAttribute(ORIGINAL_IMG, imageUrl.substring(0, imageUrl.indexOf('?')));
             return redirectView;
         } else {
             log.error(error);

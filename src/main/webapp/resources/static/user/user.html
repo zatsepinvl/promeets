@@ -6,7 +6,7 @@
             <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
                  style="cursor: pointer;"/>
             <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title">Promeets</span>
+                <span class="mdl-layout-title mdl-layout--large-screen-only">Promeets</span>
                 <div class="mdl-layout-spacer">
                 </div>
                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
@@ -27,11 +27,11 @@
             <header>
                 <img ng-src="{{user.image.url}}"
                      class="md-avatar"/>
-                <div class="username">{{user.firstName+' '+user.lastName}}</div>
-                <div class="email">{{user.email}}</div>
+                <div class="username" ng-bind-html="fio(user)"></div>
+                <div class="email" ng-bind-html="user.email"></div>
             </header>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/profile"> <i class="material-icons">face</i>Profile</a>
+                <a class="mdl-navigation__link" href="" ui-sref="user.profile({userId:user.userId})" > <i class="material-icons">face</i>Profile</a>
                 <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
                 <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
             <span class="mdl-badge"

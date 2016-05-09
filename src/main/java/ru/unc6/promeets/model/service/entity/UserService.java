@@ -13,4 +13,6 @@ public interface UserService extends BaseService<User, Long> {
     List<User> getUsersByChatId(long chatId);
 
     User getCurrentAuthenticatedUser();
+
+    void updateCurrentAuthenticatedUser(User currentUser);
 }

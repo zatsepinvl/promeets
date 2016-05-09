@@ -21,4 +21,10 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
     public User getUser() {
         return user;
     }
+
+    public void setUser(User user) {
+        if (this.user.getUserId() == user.getUserId()) {
+            this.user = user;
+        }
+    }
 }

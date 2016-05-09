@@ -2,36 +2,52 @@
     .box {
         width: 100%;
         height: auto;
-        line-height: 100px;
-        font-size: 12px;
+        min-width: 100px;
         vertical-align: middle;
         text-align: center;
-        min-width: 100px;
-        min-height: 100px
     }
 
     .box img {
         width: 100%;
-        margin: auto
+        margin: auto;
     }
 
     .box a {
         width: 90%;
-        display: block;
+        font-size: 12px;
+        min-width: 100px;
+        height: 60px;
+        line-height: 30px;
+        display: inline-block;
         text-overflow: ellipsis;
+        vertical-align: middle;
         overflow: hidden;
-        margin: auto;
+        margin: 2px;
+    }
+
+    .box a i {
+        vertical-align: middle;
+        display: block;
+        text-decoration: none;
     }
 </style>
-<div class="box">
-    <img ng-src="{{file.url}}"
-         ng-if="file.url && isImage(file.name)"
+<div class="box" ng-if="file.url">
+    <img ng-src="{{url}}"
+         ng-if="isImage(file.name)"
          ng-click="!disabled && viewImage(file,$event)"/>
-    <a ng-href="{{file.url}}" target="_self" ng-if="file.url && !isImage(file.name) && !disabled"
-       download="{{file.name}}">
-        {{file.name}}
-    </a>
-    <a ng-if="file.url && !isImage(file.name) && disabled">
-        {{file.name}}
-    </a>
+    <div ng-if="file.url && !isImage(file.name)">
+        <a ng-href="{{file.url}}" target="_self"
+           ng-if="!disabled">
+            <i class="material-icons">insert_drive_file</i>
+            {{file.name}}
+            <md-tooltip md-direction="bottom">
+                {{file.name}}
+            </md-tooltip>
+        </a>
+        <a ng-if="disabled">
+            <i class="material-icons">insert_drive_file</i>
+            {{file.name}}
+        </a>
+    </div>
 </div>
+

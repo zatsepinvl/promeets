@@ -40,13 +40,13 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
     var onMessageReceive = function (data) {
         if (data.action == appConst.ACTION.CREATE) {
             //if ($state.current.name != 'user.group.chat') {
-                $scope.newMessages.push(data.id);
-                var sender = data.data.message.user;
-              //  EventHandler.message('New message by ' + sender.firstName + ' ' + sender.lastName, sender.image.url);
+            $scope.newMessages.push(data.id);
+            var sender = data.data.message.user;
+            //  EventHandler.message('New message by ' + sender.firstName + ' ' + sender.lastName, sender.image.url);
             //}
         }
         else if (data.action == appConst.ACTION.UPDATE) {
             $scope.newMessages.splice($scope.newMessages.indexOf(data.id), 1);
         }
-    }
+    };
 });

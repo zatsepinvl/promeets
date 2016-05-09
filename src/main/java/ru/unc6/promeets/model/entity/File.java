@@ -10,10 +10,12 @@ import java.io.Serializable;
 @Entity
 @Table(name = "files")
 @XmlRootElement
-public class File implements Serializable {
+public class File implements Serializable, Cloneable {
     private long fileId;
     private String url;
+    private String originalUrl;
     private String name;
+
 
     @Id
     @Column(name = "file_id", nullable = false)
@@ -60,4 +62,24 @@ public class File implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Basic
+    @Column(name = "original_url")
+    public String getOriginalUrl() {
+        return originalUrl;
+    }
+
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
+    }
+
+    public File clone() {
+        File file = new File();
+        file.setUrl(this.url);
+        file.setOriginalUrl(this.originalUrl);
+        file.setName(this.name);
+        return file;
+    }
+
+
 }

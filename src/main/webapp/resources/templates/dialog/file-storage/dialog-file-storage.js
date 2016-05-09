@@ -1,6 +1,6 @@
 //Textarea dialog service
 app.service('FileStorageDialog', function (DialogService) {
-    this.show = function (user, file, format, maxSize, url, event, success, cancel) {
+    this.show = function (user, file, format, maxSize, url, smallSize, event, success, cancel) {
         DialogService.show(
             FileStorageDialogCtrl,
             'templates/dialog/file-storage/dialog-file-storage.html',
@@ -10,7 +10,8 @@ app.service('FileStorageDialog', function (DialogService) {
                 user: user,
                 format: format,
                 maxSize: maxSize,
-                url: url
+                url: url,
+                smallSize
             },
             event,
             success,
@@ -18,7 +19,7 @@ app.service('FileStorageDialog', function (DialogService) {
     };
 });
 
-function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, Entity, $mdDialog, Upload, EventHandler) {
+function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, smallSize, Entity, $mdDialog, Upload, EventHandler) {
     $scope.user = user;
     $scope.format = format;
     $scope.maxSize = maxSize;
@@ -32,6 +33,7 @@ function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, Entity,
 
     $scope.onClicked = function (selected) {
         $scope.file.url = selected.url;
+        $scope.file.originalUrl = selected.originalUrl;
         $scope.file.name = selected.name;
         Entity.update({entity: "files", id: $scope.file.fileId}, $scope.file);
         $scope.save();
@@ -66,11 +68,14 @@ function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, Entity,
             url: url,
             data: {
                 file: uploadFile,
-                id: $scope.file.fileId
+                id: $scope.file.fileId,
+                size: smallSize
             }
         }).then(function (resp) {
             //success
-            $scope.file = resp.data;
+            $scope.file.url = resp.data.url;
+            $scope.file.originalUrl = resp.data.originalUrl;
+            $scope.file.name = resp.data.name;
             $scope.loading = false;
             $scope.loaded = true;
             $scope.progress = 0;

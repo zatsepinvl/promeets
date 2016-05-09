@@ -6,7 +6,7 @@ import ru.unc6.promeets.model.service.entity.BaseService;
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class BaseServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
+public class BaseServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
 
 
     private CrudRepository<T, V> repository;

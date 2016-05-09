@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.controller.exception.NotFoundException;
 import ru.unc6.promeets.controller.exception.NotFoundResponseErrorMessage;
 import ru.unc6.promeets.model.entity.Card;
-import ru.unc6.promeets.model.entity.CardFile;
 import ru.unc6.promeets.model.entity.File;
 import ru.unc6.promeets.model.service.entity.CardFileService;
 import ru.unc6.promeets.model.service.entity.CardService;
@@ -31,7 +30,7 @@ public class CardController extends BaseRestController<Card, Long> {
 
     @RequestMapping(value = "/{id}/files", method = RequestMethod.POST)
     public File createFileByCardId(@PathVariable("id") long cardId) {
-        checkAndGetById(cardId);
+        getAndCheckIsNotFoundById(cardId);
         return cardFileService.createFileByCardId(cardId);
     }
 

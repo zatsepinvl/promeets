@@ -62,7 +62,7 @@ public class GroupController extends BaseRestController<Group, Long> {
 
     @RequestMapping(value = "/{id}/chat", method = RequestMethod.GET)
     public Chat getChatByGroupId(@PathVariable("id") long groupId) {
-        return checkAndGetById(groupId).getChat();
+        return getAndCheckIsNotFoundById(groupId).getChat();
     }
 
 }

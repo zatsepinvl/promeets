@@ -8,8 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.File;
 import ru.unc6.promeets.model.entity.User;
+import ru.unc6.promeets.model.entity.UserInfo;
 import ru.unc6.promeets.model.repository.UserRepository;
 import ru.unc6.promeets.model.service.entity.FileService;
+import ru.unc6.promeets.model.service.entity.UserInfoService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CustomUserDetails;
 
@@ -26,6 +28,9 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     @Value("${default-user-image-url}")
     private String defaultUserImageUrl;
 
+    @Value("${default-user-image-min-url}")
+    private String defaultUserImageMinUrl;
+
     @Value("${default-user-image-name}")
     private String defaultUserImageName;
 
@@ -33,6 +38,9 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
 
     @Autowired
     private FileService fileService;
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     @Autowired
     public UserServiceImp(UserRepository repository) {
@@ -60,6 +68,14 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
     }
 
     @Override
+    public void updateCurrentAuthenticatedUser(User currentUser) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            ((CustomUserDetails) authentication.getPrincipal()).setUser(currentUser);
+        }
+    }
+
+    @Override
     public User create(User entity) {
         //Encoding password
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -69,11 +85,21 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
         if (entity.getImage() == null || entity.getImage().getUrl() == null) {
             File image = new File();
             image.setName(defaultUserImageName);
-            image.setUrl(defaultUserImageUrl);
+            image.setUrl(defaultUserImageMinUrl);
+            image.setOriginalUrl(defaultUserImageUrl);
             entity.setImage(image);
-        }
 
+
+        }
         fileService.create(entity.getImage());
-        return userRepository.save(entity);
+        entity = userRepository.save(entity);
+
+        //Create UserInfo
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUser(entity);
+        userInfo.setUserId(entity.getUserId());
+        userInfoService.create(userInfo);
+
+        return entity;
     }
 }

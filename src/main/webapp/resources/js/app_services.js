@@ -44,6 +44,10 @@ app.service('AppService', function (appConst) {
 
     this.toTime = function (time) {
         return moment(time).local().format(appConst.TIME_FORMAT.TIME);
+    };
+
+    this.fio = function (user) {
+        return user.firstName + ' ' + user.lastName;
     }
 });
 
@@ -79,8 +83,6 @@ app.service('UserService', function ($http) {
         };
         this.load(success, error);
     };
-
-
 });
 
 app.service('UserMeetService', function ($http) {
@@ -220,7 +222,7 @@ app.service('GroupMeetsService', function ($http) {
         $http.get("/api/groups/" + groupId + "/meets/?start=" + start + "&end=" + end)
             .success(function (meets) {
                 data.length = 0;
-                clone(meets,data);
+                clone(meets, data);
             })
             .error(function (error) {
 
@@ -396,6 +398,26 @@ app.service('UploadService', function (EventHandler, Upload) {
         }, function (evt) {
             progress && progress(evt.loaded / evt.total * 100);
         });
+    }
+});
+
+app.service('UserInfoService', function (Entity) {
+    var userInfo = {};
+    var state = {loading: true};
+    this.resolve = function (userId) {
+        state.loading = true;
+        Entity.get({entity: 'users', id: userId, d_entity: 'info'},
+            function (data) {
+                clone(data, userInfo);
+                state.loading = false;
+            })
+    };
+    this.get = function () {
+        return userInfo;
+    };
+
+    this.getState = function () {
+        return state;
     }
 });
 

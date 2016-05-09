@@ -1,7 +1,5 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,6 +9,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_info")
 public class UserInfo implements Serializable {
+    private long userId;
     private User user;
     private boolean showEmail;
     private String address;
@@ -19,7 +18,16 @@ public class UserInfo implements Serializable {
     private String phone;
 
     @Id
-    @OneToOne(cascade = CascadeType.ALL)
+    @Column(name = "user_id", unique = true, nullable = false)
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     public User getUser() {
         return user;
@@ -29,9 +37,7 @@ public class UserInfo implements Serializable {
         this.user = user;
     }
 
-    @Basic
     @Column(name = "address", length = -1)
-    @JsonIgnore
     public String getAddress() {
         return address;
     }
@@ -40,9 +46,7 @@ public class UserInfo implements Serializable {
         this.address = address;
     }
 
-    @Basic
     @Column(name = "company", length = -1)
-    @JsonIgnore
     public String getCompany() {
         return company;
     }
@@ -51,9 +55,7 @@ public class UserInfo implements Serializable {
         this.company = company;
     }
 
-    @Basic
     @Column(name = "position", length = -1)
-    @JsonIgnore
     public String getPosition() {
         return position;
     }
@@ -76,9 +78,7 @@ public class UserInfo implements Serializable {
         return showEmail ? user.getEmail() : null;
     }
 
-    @Basic
-    @Column(name = "phone", length = -1)
-    @JsonIgnore
+    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -86,4 +86,6 @@ public class UserInfo implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+
 }
