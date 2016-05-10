@@ -11,5 +11,6 @@ import java.security.NoSuchAlgorithmException;
  * Created by Vladimir on 21.04.2016.
  */
 public interface FileService extends BaseService<File, Long> {
-    File updateByUploading(MultipartFile multipartFile, long fileId, int size, User user) throws IOException, NoSuchAlgorithmException;
+    File updateByUploading(MultipartFile multipartFile, long fileId, User user) throws IOException, NoSuchAlgorithmException;
+    File getDefaultUserImage();
 }

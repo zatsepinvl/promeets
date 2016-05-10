@@ -7,6 +7,10 @@ app.directive("avatar", function ($state) {
             min: '='
         },
         link: function ($scope) {
+            $scope.$watch('user.image.original', function () {
+                //$scope.$apply();
+                console.log('from avatar');
+            });
             $scope.go = function (userId) {
                 $state.transitionTo('user.profile', {userId: userId});
             }

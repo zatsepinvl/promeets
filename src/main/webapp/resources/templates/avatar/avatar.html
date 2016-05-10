@@ -1,6 +1,38 @@
+<style>
+
+    md-list-item .md-avatar.min {
+        width: 30px;
+        height: 30px;
+    }
+
+    .empty {
+        width: 40px;
+        height: 40px;
+        border: 1px solid white;
+        border-radius: 50%;
+        background-color: #2e7d32;
+        color: white;
+        font-size: 26px;
+        font-weight: 200;
+        text-align: center;
+        line-height: 40px;
+        vertical-align: middle;
+    }
+
+    .empty.min {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        line-height: 30px;
+    }
+</style>
 <a ng-click="go(user.userId)" href="">
-    <img ng-src="{{user.image.url}}" class="md-avatar"
-         ng-class="{min:min}"/>
+    <img ng-src="{{user.image.small}}" class="md-avatar"
+         ng-class="{min:min}" ng-if="user.image.original"/>
+    <div class="md-avatar empty"
+         ng-class="{min:min}"
+         ng-if="!user.image.original">{{user.firstName[0]}}
+    </div>
     <md-tooltip md-direction="bottom">
         {{user.firstName+' '+user.lastName}}
     </md-tooltip>

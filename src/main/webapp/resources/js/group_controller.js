@@ -25,7 +25,10 @@ app.controller('groupCtrl', function ($scope, $state, EventHandler, $stateParams
     };
 
     $scope.onGroupImageDelete = function (file) {
-        file.url = null;
+        file.original = null;
+        file.small = null;
+        file.large = null;
+        file.meduim = null;
         file.name = null;
         Entity.update({entity: "files", id: file.fileId}, file);
     }

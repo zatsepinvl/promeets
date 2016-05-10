@@ -23,12 +23,13 @@
                                   class="md-3-line"
                                   ng-class="{ 'new' : chat.newMessagesCount}"
                                   ng-click="go(chat)">
-                        <img ng-src="{{chat.chat.image.url}}" class="md-avatar"/>
+                        <img ng-src="{{chat.chat.image.small}}" class="md-avatar"/>
                         <div class="md-list-item-text" layout="column"
                              ng-class="{ 'new' : !chat.lastUserMessage.viewed && chat.lastUserMessage.sender}">
-                            <img ng-src="{{chat.lastUserMessage.message.user.image.url}}" class="md-avatar min"
-                                 style="position: absolute; top:35px;"
-                                 ng-if="chat.lastUserMessage"/>
+                            <avatar user="chat.lastUserMessage.message.user" min="true"
+                                    style="position: absolute; top:35px;"
+                                    ng-if="chat.lastUserMessage"></avatar>
+
                             <h3 ng-bind-html="chat.chat.title"></h3>
                             <h4 style="color:#2e7d32; font-size: 12px; margin-left: 40px"
                                 ng-bind-html="chat.lastUserMessage.message.user.firstName"

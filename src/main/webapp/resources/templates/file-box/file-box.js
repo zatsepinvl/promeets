@@ -5,13 +5,14 @@ app.directive("fileBox", function (ImageViewDialog) {
         scope: {
             file: '=',
             disabled: '=',
-            useOriginal: '='
+            size: '@'
         },
         link: function ($scope) {
-            $scope.url = $scope.useOriginal ? $scope.file.originalUrl : $scope.file.url;
-            $scope.$watch('file.url', function () {
-                $scope.url = $scope.useOriginal ? $scope.file.originalUrl : $scope.file.url;
+
+            $scope.$watch('file.original', function () {
+                $scope.url = getUrl();
             });
+
             $scope.isImage = function (fileName) {
                 if (!fileName) return true;
                 return !!(fileName.indexOf('.png') > -1
@@ -20,9 +21,23 @@ app.directive("fileBox", function (ImageViewDialog) {
             };
 
             $scope.viewImage = function (file, event) {
-                ImageViewDialog.show(file.name, file.originalUrl, event);
-            }
-
+                ImageViewDialog.show(file.name, file.original, event);
+            };
+            var getUrl = function () {
+                switch ($scope.size) {
+                    case 'small':
+                        return $scope.file.small;
+                    case 'medium':
+                        return $scope.file.medium;
+                    case 'large':
+                        return $scope.file.large;
+                    case 'original':
+                        return $scope.file.original;
+                    default:
+                        return $scope.file.original;
+                }
+            };
+            $scope.url = getUrl();
         }
     }
 });

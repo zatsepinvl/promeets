@@ -2,6 +2,6 @@
 app.controller('appCtrl', function ($scope, AppService) {
     $scope.toDayTime = AppService.toDayTime;
     $scope.toTime = AppService.toTime;
-    $scope.toShortDayTime = AppService.toShortDatTime;
+    $scope.toShortDayTime = AppService.toShortDayTime;
     $scope.fio = AppService.fio;
 });

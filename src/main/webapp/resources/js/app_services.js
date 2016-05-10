@@ -418,6 +418,17 @@ app.service('UserInfoService', function (Entity) {
 
     this.getState = function () {
         return state;
+    };
+
+    this.update = function (success, error) {
+        Entity.update({entity: 'users', id: userInfo.user.userId, d_entity: 'info'}, userInfo,
+            function (data) {
+                clone(data, userInfo);
+                success && success();
+            },
+            function (resp) {
+                error && error(resp.data.message);
+            });
     }
 });
 

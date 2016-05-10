@@ -26,31 +26,32 @@ public class FileController {
     private static final Logger log = Logger.getLogger(FileController.class);
 
     @Value("${file-upload-max-size}")
-    private long maxSize;
+    private long MAX_SIZE;
 
     @Value("${file-max-size-error-message}")
-    private String maxSizeExceptionMessage;
+    private String MAX_SIZE_EXCEPTION_MESSAGE;
 
     @Value("${file-upload-invalid-formats}")
-    private String invalidFileFormats;
+    private String INVALID_FILE_FORMATS;
 
     @Value("${file-upload-invalid-format-error-message}")
-    private String invalidFileFormatsErrorMessage;
+    private String INVALID_FILE_FORMATS_ERROR_MESSAGE;
 
-    @Value("${file-upload-default-image-size}")
-    private int defaultImageSize;
 
     @Autowired
     private FileService fileService;
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public File deleteFile(@PathVariable("id") long fileId) {
+    public void deleteFile(@PathVariable("id") long fileId) {
         File file = fileService.getById(fileId);
         if (file != null) {
-            file.setUrl(null);
+            file.setOriginal(null);
+            file.setSmall(null);
+            file.setMedium(null);
+            file.setLarge(null);
             file.setName(null);
-            return fileService.update(file);
+            fileService.update(file);
         } else {
             throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());
         }
@@ -69,11 +70,10 @@ public class FileController {
     @RequestMapping(method = RequestMethod.POST)
     public File uploadFile(@RequestParam("file") MultipartFile file,
                            @RequestParam("id") long fileId,
-                           @RequestParam(value = "size", required = false) Integer size,
                            @CurrentUser User user) {
         checkIsFileAvailable(file);
         try {
-            return fileService.updateByUploading(file, fileId, size == null ? defaultImageSize : size, user);
+            return fileService.updateByUploading(file, fileId, user);
         } catch (IOException | NoSuchAlgorithmException ex) {
             throw new BaseControllerException()
                     .setResponseErrorMessage(new ResponseErrorMessage(ex.getMessage()))
@@ -84,14 +84,14 @@ public class FileController {
     }
 
     private void checkIsFileAvailable(MultipartFile file) {
-        if (file.getSize() > maxSize) {
+        if (file.getSize() > MAX_SIZE) {
             throw new BadRequestException()
-                    .setResponseErrorMessage(new ResponseErrorMessage(maxSizeExceptionMessage));
+                    .setResponseErrorMessage(new ResponseErrorMessage(MAX_SIZE_EXCEPTION_MESSAGE));
         }
 
-        if (invalidFileFormats.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
+        if (INVALID_FILE_FORMATS.contains(FilenameUtils.getExtension(file.getOriginalFilename()))) {
             throw new BadRequestException()
-                    .setResponseErrorMessage(new ResponseErrorMessage(invalidFileFormatsErrorMessage));
+                    .setResponseErrorMessage(new ResponseErrorMessage(INVALID_FILE_FORMATS_ERROR_MESSAGE));
         }
     }
 

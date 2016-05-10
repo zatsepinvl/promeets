@@ -54,7 +54,8 @@ public class UserController extends BaseController<User, Long> {
 
     @RequestMapping(value = "/{id}/info", method = RequestMethod.PUT)
     public UserInfo updateUserInfoByUserId(@PathVariable("id") long userId, @RequestBody UserInfo userInfo) {
-        getAndCheckIsNotFoundById(userId);
+        checkIsNotFoundById(userId);
+        userService.update(userInfo.getUser());
         return userInfoService.update(userInfo);
     }
 

@@ -30,13 +30,18 @@
         display: block;
         text-decoration: none;
     }
+
+    .box a i:hover {
+        text-decoration: none;
+    }
+
 </style>
-<div class="box" ng-if="file.url">
+<div class="box" ng-if="url">
     <img ng-src="{{url}}"
          ng-if="isImage(file.name)"
          ng-click="!disabled && viewImage(file,$event)"/>
     <div ng-if="file.url && !isImage(file.name)">
-        <a ng-href="{{file.url}}" target="_self"
+        <a ng-href="{{url}}" target="_self"
            ng-if="!disabled">
             <i class="material-icons">insert_drive_file</i>
             {{file.name}}

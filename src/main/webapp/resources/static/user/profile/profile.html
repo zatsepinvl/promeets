@@ -1,36 +1,117 @@
 <md-card style="max-width: 460px; margin: auto"
-         ng-controller="profileCtrl">
-    <md-progress-circular md-mode="indeterminate"
-                          md-diameter="25"
-                          flex
-                          style="margin: 30px auto 30px auto"
-                          ng-if="state.loading">
-    </md-progress-circular>
-    <div ng-if="!state.loading">
-        <md-card-title>
-            <md-card-title-text>
-                <span class="md-headline" ng-bind-html="fio(userInfo.user)"></span>
-                <span class="md-subhead">Large</span>
-            </md-card-title-text>
-            <md-card-title-media>
-                <div class="md-media-lg card-media"
-                     style="margin-top:20px;">
-                    <file-box file="userInfo.user.image" ng-if="userInfo.user.userId != user.userId"></file-box>
-                    <upload-file-box file="userInfo.user.image"
-                                     white-space-text="User image"
-                                     max-size="5MB"
-                                     format="image/*"
-                                     url="/api/files"
-                                     user="user"
-                                     small-size="400"
-                                     ng-if="userInfo.user.userId == user.userId">
-                    </upload-file-box>
-                </div>
-            </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button>Action 1</md-button>
-            <md-button>Action 2</md-button>
-        </md-card-actions>
-    </div>
+         class="profile">
+    <form name="profileForm" ng-controller="profileCtrl" ng-submit="done()">
+        <md-progress-circular md-mode="indeterminate"
+                              md-diameter="25"
+                              flex
+                              style="margin: 30px auto 30px auto"
+                              ng-if="state.loading">
+        </md-progress-circular>
+        <div ng-if="!state.loading">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline fio" ng-bind-html="fio(userInfo.user)" ng-if="!editing"></span>
+                    <md-input-container class="md-block md-headline fio" md-no-float
+                                        ng-if="editing">
+                        <input ng-model="userInfo.user.firstName" type="text" placeholder="First name" name="firstName" required>
+                    </md-input-container>
+                    <md-input-container class="md-block md-headline fio" md-no-float
+                                        ng-if="editing">
+                        <input ng-model="userInfo.user.lastName" type="text" placeholder="Last name" name="lastName" required>
+                    </md-input-container>
+                    <md-divider></md-divider>
+                <span class="md-subhead">
+                     <table>
+                         <tbody>
+
+                         <!-- Email -->
+                         <tr ng-if="editing || userInfo.showEmail">
+                             <td class="label">E-mail:</td>
+                             <td class="value">
+                                 <span ng-bind-html="userInfo.email" ng-if="!editing"></span>
+                                 <md-switch ng-model="userInfo.showEmail" ng-if="editing">Show e-mail</md-switch>
+                             </td>
+                         </tr>
+
+
+                         <!-- Phone -->
+                         <tr ng-if="editing || userInfo.phone">
+                             <td class="label">Phone:</td>
+                             <td class="value">
+                                 <span ng-bind-html="userInfo.phone" ng-if="!editing"></span>
+                                 <md-input-container class="md-block" md-no-float
+                                                     ng-if="editing">
+                                     <input ng-model="userInfo.phone" type="text" placeholder="Phone">
+                                 </md-input-container>
+                             </td>
+                         </tr>
+
+                         <!-- Company -->
+                         <tr ng-if="editing || userInfo.company">
+                             <td class="label">Company:</td>
+                             <td class="value">
+                                 <span ng-bind-html="userInfo.company" ng-if="!editing"></span>
+                                 <md-input-container class="md-block" md-no-float
+                                                     ng-if="editing">
+                                     <input ng-model="userInfo.company" placeholder="Company" name="company">
+                                 </md-input-container>
+                             </td>
+                         </tr>
+
+                         <!-- Position -->
+                         <tr ng-if="editing || userInfo.position">
+                             <td class="label">Position:</td>
+                             <td class="value">
+                                 <span ng-bind-html="userInfo.position" ng-if="!editing"></span>
+                                 <md-input-container class="md-block" md-no-float
+                                                     ng-if="editing">
+                                     <input ng-model="userInfo.position" placeholder="Position" name="position">
+                                 </md-input-container>
+                             </td>
+                         </tr>
+
+                         <!-- Address -->
+                         <tr ng-if="editing || userInfo.address">
+                             <td class="label">Address:</td>
+                             <td class="value">
+                                 <span ng-bind-html="userInfo.address" ng-if="!editing"></span>
+                                 <md-input-container class="md-block" md-no-float
+                                                     ng-if="editing">
+                                     <input ng-model="userInfo.address" placeholder="Address" name="address">
+                                 </md-input-container>
+                             </td>
+                         </tr>
+                         </tbody>
+                     </table>
+                </span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media"
+                         style="margin-top:20px; height: auto">
+                        <file-box file="userInfo.user.image" ng-if="userInfo.user.userId != user.userId"></file-box>
+                        <upload-file-box file="userInfo.user.image"
+                                         white-space-text="User image"
+                                         max-size="5MB"
+                                         size="large"
+                                         format="image/*"
+                                         on-delete="onImageDelete"
+                                         ng-if="userInfo.user.userId == user.userId">
+                        </upload-file-box>
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-icon-button"
+                           ng-click="edit()"
+                           ng-if="!editing && user.userId==userInfo.user.userId">
+                    <md-icon>edit</md-icon>
+                </md-button>
+                <md-button class="md-icon-button"
+                           type="submit"
+                           ng-if="editing">
+                    <md-icon>done</md-icon>
+                </md-button>
+            </md-card-actions>
+        </div>
+    </form>
 </md-card>

@@ -16,8 +16,7 @@
                              max-size="5MB"
                              format="image/*"
                              on-delete="onGroupImageDelete"
-                             small-size="1000"
-                             url="/api/files">
+                             size="medium">
             </upload-file-box>
 
         </div>
@@ -43,7 +42,7 @@
             </md-icon>
         </md-list-item>
         <md-list-item ng-repeat="user in users track by user.userId">
-            <img ng-src="{{user.image.url}}" class="md-avatar"/>
+            <avatar user="user"></avatar>
             <p> {{ user.firstName + ' ' + user.lastName}}</p>
         </md-list-item>
     </md-list>

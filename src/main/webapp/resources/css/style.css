@@ -186,10 +186,7 @@ md-list-item {
     transition: all linear 0.3s;
 }
 
-md-list-item .md-avatar.min {
-    width: 30px;
-    height: 30px;
-}
+
 
 .mdl-grid {
     margin: 0;
@@ -400,3 +397,23 @@ md-switch.md-checked ._md-bar {
     opacity: 0;
 }
 
+.profile .fio {
+    font-size: 18px;
+    color: #2e7d32;
+}
+
+.profile table {
+    margin-top: 10px;
+}
+
+.profile table td.label {
+    font-size: 12px;
+    text-align: left;
+}
+
+.profile table td.value {
+    width: 90%;
+    padding-left: 4px;
+    font-size: 14px;
+    color: #424242;
+}

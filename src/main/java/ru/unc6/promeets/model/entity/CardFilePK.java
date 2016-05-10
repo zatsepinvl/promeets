@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,7 +21,7 @@ public class CardFilePK implements Serializable {
         this.card = card;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "file_id", referencedColumnName = "file_id")
     public File getFile() {
         return file;

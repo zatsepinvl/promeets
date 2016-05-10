@@ -15,7 +15,6 @@ import ru.unc6.promeets.model.service.entity.UserInfoService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CustomUserDetails;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -25,14 +24,6 @@ import java.util.List;
 public class UserServiceImp extends BaseServiceImpl<User, Long>
         implements UserService {
 
-    @Value("${default-user-image-url}")
-    private String defaultUserImageUrl;
-
-    @Value("${default-user-image-min-url}")
-    private String defaultUserImageMinUrl;
-
-    @Value("${default-user-image-name}")
-    private String defaultUserImageName;
 
     private UserRepository userRepository;
 
@@ -82,14 +73,9 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
         entity.setPassword(bCryptPasswordEncoder.encode(entity.getPassword()));
 
         //Set default image if it's needed
-        if (entity.getImage() == null || entity.getImage().getUrl() == null) {
-            File image = new File();
-            image.setName(defaultUserImageName);
-            image.setUrl(defaultUserImageMinUrl);
-            image.setOriginalUrl(defaultUserImageUrl);
-            entity.setImage(image);
-
-
+        if (entity.getImage() == null || entity.getImage().getOriginal() == null) {
+            // entity.setImage(fileService.getDefaultUserImage());
+            entity.setImage(new File());
         }
         fileService.create(entity.getImage());
         entity = userRepository.save(entity);
@@ -101,5 +87,14 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
         userInfoService.create(userInfo);
 
         return entity;
+    }
+
+    @Override
+    public User update(User entity) {
+        User currentUser = getCurrentAuthenticatedUser();
+        entity.setPassword(currentUser.getPassword());
+        entity.setEmail(currentUser.getEmail());
+        updateCurrentAuthenticatedUser(entity);
+        return super.update(entity);
     }
 }

@@ -11,9 +11,18 @@ import java.io.Serializable;
 @Table(name = "files")
 @XmlRootElement
 public class File implements Serializable, Cloneable {
+    public enum ImageSize {
+        SMALL,
+        MEDIUM,
+        LARGE,
+        ORIGINAL
+    }
+
     private long fileId;
-    private String url;
-    private String originalUrl;
+    private String small;
+    private String medium;
+    private String large;
+    private String original;
     private String name;
 
 
@@ -26,16 +35,6 @@ public class File implements Serializable, Cloneable {
 
     public void setFileId(long fileId) {
         this.fileId = fileId;
-    }
-
-    @Basic
-    @Column(name = "url")
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     @Override
@@ -63,23 +62,77 @@ public class File implements Serializable, Cloneable {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "original_url")
-    public String getOriginalUrl() {
-        return originalUrl;
-    }
-
-    public void setOriginalUrl(String originalUrl) {
-        this.originalUrl = originalUrl;
-    }
 
     public File clone() {
         File file = new File();
-        file.setUrl(this.url);
-        file.setOriginalUrl(this.originalUrl);
+        file.setSmall(this.small);
+        file.setMedium(this.medium);
+        file.setLarge(this.large);
+        file.setOriginal(this.original);
         file.setName(this.name);
         return file;
     }
 
 
+    @Column(name = "small")
+    public String getSmall() {
+        return small;
+    }
+
+    public void setSmall(String small) {
+        this.small = small;
+    }
+
+    @Column(name = "medium")
+    public String getMedium() {
+        return medium;
+    }
+
+    public void setMedium(String medium) {
+        this.medium = medium;
+    }
+
+    @Column(name = "large")
+    public String getLarge() {
+        return large;
+    }
+
+    public void setLarge(String large) {
+        this.large = large;
+    }
+
+    @Column(name = "original")
+    public String getOriginal() {
+        return original;
+    }
+
+    public void setOriginal(String original) {
+        this.original = original;
+    }
+
+
+    public void setUrlByImageSize(ImageSize size, String url) {
+        switch (size) {
+            case SMALL:
+                setSmall(url);
+                break;
+            case MEDIUM:
+                setMedium(url);
+                break;
+            case LARGE:
+                setLarge(url);
+                break;
+            case ORIGINAL:
+                setOriginal(url);
+                break;
+            default:
+                setOriginal(url);
+        }
+    }
+
+    @Transient
+    public String getUrl()
+    {
+        return original;
+    }
 }

@@ -1,6 +1,9 @@
 <div class="upload-file-box">
 
-    <file-box file="file" ng-if="file.url" use-original="useOriginal"></file-box>
+    <file-box file="file"
+              ng-if="file.original"
+              size="{{size}}">
+    </file-box>
 
     <md-button class="upload md-fab md-mini md-primary"
                ng-click="upload($event)"
@@ -9,14 +12,14 @@
     </md-button>
 
     <md-icon class="delete" ng-click="delete(file)" style="color: #ef6c00;"
-             ng-if="file.url">cancel
+             ng-if="file.original">cancel
         <md-tooltip md-direction="right">
             Delete
         </md-tooltip>
     </md-icon>
 
     <div class="file-box drop-box-min"
-         ng-if="!file.url">
+         ng-if="!file.original">
         <div class="text">{{whiteSpaceText}}</div>
     </div>
 

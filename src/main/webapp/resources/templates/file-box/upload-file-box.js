@@ -7,16 +7,14 @@ app.directive("uploadFileBox", function (EventHandler, Upload, FileStorageDialog
             whiteSpaceText: '@',
             maxSize: '@',
             format: '@',
-            url: '@',
             onUploaded: '=',
             onDelete: '=',
-            user: '=',
-            smallSize: '@',
-            useOriginal: '='
+            size: '@'
         },
         link: function ($scope) {
+            $scope.url = '/api/files';
             $scope.upload = function (event) {
-                FileStorageDialog.show($scope.user, $scope.file, $scope.format, $scope.maxSize, $scope.url, $scope.smallSize, event,
+                FileStorageDialog.show($scope.file, $scope.format, $scope.maxSize, $scope.url, event,
                     function (file) {
                         $scope.file = file;
                         $scope.onUploaded && $scope.onUploaded(file);

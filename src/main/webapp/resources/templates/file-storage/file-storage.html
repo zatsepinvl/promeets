@@ -4,6 +4,9 @@
         border: 1px dashed #2e7d32;
         cursor: pointer;
         margin: 2px;
+        width: 100%;
+        height: 100px;
+        overflow: hidden;
     }
 
     .file-box :hover {
@@ -36,7 +39,9 @@
 
     <div class="phone mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone"
          ng-repeat="file in files | fileFormat:format">
-        <file-box file="file" class="file-box" disabled="true"
+        <file-box file="file" class="file-box"
+                  disabled="true"
+                  size="medium"
                   ng-click="clicked(file)"></file-box>
     </div>
     <div class="temp-box" ng-if="!files.length">

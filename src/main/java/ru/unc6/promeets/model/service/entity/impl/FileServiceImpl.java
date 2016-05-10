@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 /**
  * Created by Vladimir on 21.04.2016.
@@ -32,16 +34,34 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
     private static final Logger log = Logger.getLogger(FileService.class);
 
     @Value("${file-hash-algorithm}")
-    private String algorithm;
+    private String ALGORITHM;
 
     @Value("${file-upload-real-folder}")
-    private String uploadRealFolder;
+    private String UPLOAD_REAL_FOLDER;
 
     @Value("${file-upload-host-folder}")
-    private String uploadHostFolder;
+    private String UPLOAD_HOST_FOLDER;
 
     @Value("${file-upload-image-extensions}")
-    private String uploadImageExtensions;
+    private String UPLOAD_IMAGE_EXTENSIONS;
+
+    @Value("${file-upload-image-width-small}")
+    private int UPLOAD_IMAGE_SMALL_WIDTH;
+
+    @Value("${file-upload-image-width-medium}")
+    private int UPLOAD_IMAGE_MEDIUM_WIDTH;
+
+    @Value("${file-upload-image-width-large}")
+    private int UPLOAD_IMAGE_LARGE_WIDTH;
+
+    @Value("${default-user-image-url}")
+    private String DEFAULT_USER_IMAGE_URL;
+
+    @Value("${default-user-image-min-url}")
+    private String DEFAULT_USER_IMAGE_MIN_URL;
+
+    @Value("${default-user-image-name}")
+    private String DEFAULT_USER_IMAGE_NAME;
 
     @Autowired
     private ServletContext servletContext;
@@ -59,36 +79,42 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
 
     @Override
     public File update(File entity) {
-        entity = super.update(entity);
         User user = userService.getCurrentAuthenticatedUser();
         updateIfUserImage(entity, user);
-        return entity;
+        return super.update(entity);
     }
 
     @Override
-    public File updateByUploading(MultipartFile multipartFile, long fileId, int size, User user) throws IOException, NullPointerException, NoSuchAlgorithmException {
+    public File updateByUploading(MultipartFile multipartFile, long fileId, User user) throws IOException, NullPointerException, NoSuchAlgorithmException {
         ru.unc6.promeets.model.entity.File entityFile = getById(fileId);
         if (entityFile == null) {
             throw new NullPointerException();
         }
         //save original file
         String originalFileName = saveFile(multipartFile.getBytes());
-        entityFile.setOriginalUrl(uploadHostFolder + "/" + originalFileName);
+        entityFile.setOriginal(UPLOAD_HOST_FOLDER + "/" + originalFileName);
 
         //check is file Image and resize if it's true
         if (isImage(multipartFile.getOriginalFilename())) {
-            String resizedFileName = saveFile(
-                    resizeImage(
-                            multipartFile.getInputStream(),
-                            size,
-                            FilenameUtils.getExtension(
-                                    multipartFile.getOriginalFilename()
-                            )
-                    )
-            );
-            entityFile.setUrl(uploadHostFolder + "/" + resizedFileName);
+            String fileExtension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+            java.util.List<Thread> threads = new ArrayList<>();
+            threads.add(resizeImageAsync(entityFile, multipartFile, File.ImageSize.SMALL, UPLOAD_IMAGE_SMALL_WIDTH, fileExtension));
+            threads.add(resizeImageAsync(entityFile, multipartFile, File.ImageSize.MEDIUM, UPLOAD_IMAGE_MEDIUM_WIDTH, fileExtension));
+            threads.add(resizeImageAsync(entityFile, multipartFile, File.ImageSize.LARGE, UPLOAD_IMAGE_LARGE_WIDTH, fileExtension));
+            for (Thread thread : threads) {
+                thread.start();
+            }
+            for (Thread thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         } else {
-            entityFile.setUrl(entityFile.getOriginalUrl());
+            entityFile.setSmall(entityFile.getOriginal());
+            entityFile.setMedium(entityFile.getOriginal());
+            entityFile.setLarge(entityFile.getOriginal());
         }
         entityFile.setName(multipartFile.getOriginalFilename());
         File newFile = update(entityFile);
@@ -97,8 +123,27 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
         return newFile;
     }
 
+    @Override
+    public File getDefaultUserImage() {
+        File image = new File();
+        setDefaultUserImage(image);
+        return image;
+    }
+
+    private void setDefaultUserImage(File image) {
+        image.setName(DEFAULT_USER_IMAGE_NAME);
+        image.setSmall(DEFAULT_USER_IMAGE_MIN_URL);
+        image.setMedium(DEFAULT_USER_IMAGE_MIN_URL);
+        image.setLarge(DEFAULT_USER_IMAGE_URL);
+        image.setOriginal(DEFAULT_USER_IMAGE_URL);
+    }
+
+
     private void updateIfUserImage(File file, User user) {
         if (file.getFileId() == user.getImage().getFileId()) {
+           /* if (file.getOriginal() == null) {
+                setDefaultUserImage(file);
+            }*/
             user.setImage(file);
             userService.updateCurrentAuthenticatedUser(user);
         }
@@ -122,16 +167,39 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
         return stringBuffer.toString();
     }
 
-    private byte[] resizeImage(InputStream inputStream, int size, String fileExtension) throws IOException {
+    private Thread resizeImageAsync(File entityFile, MultipartFile multipartFile, File.ImageSize size, int sizeValue, String fileExtension) {
+        return new Thread(() -> {
+            String imageName = null;
+            try {
+                imageName = saveFile(
+                        resizeImage(
+                                multipartFile.getInputStream(),
+                                sizeValue,
+                                fileExtension
+                        )
+                );
+            } catch (NoSuchAlgorithmException | IOException e) {
+                log.error(e.getMessage(), e);
+            }
+            entityFile.setUrlByImageSize(size, UPLOAD_HOST_FOLDER + "/" + imageName);
+        });
+    }
+
+    private byte[] resizeImage(InputStream inputStream, int width, String fileExtension) throws IOException {
         ByteArrayOutputStream baos = null;
         byte[] imageInByte = null;
         try {
             BufferedImage originalImage = ImageIO.read(inputStream);
-            int width = size;
             int height = (int) ((double) originalImage.getHeight() * ((double) width / (double) originalImage.getWidth()));
             int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
             BufferedImage resizedImage = new BufferedImage(width, height, type);
             Graphics2D g = resizedImage.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            //below three lines are for RenderingHints for better image quality at cost of higher processing time
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
             g.drawImage(originalImage, 0, 0, width, height, null);
             g.dispose();
             baos = new ByteArrayOutputStream();
@@ -149,12 +217,13 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
             }
         }
         return imageInByte;
+
     }
 
     private String saveFile(byte[] bytes) throws NoSuchAlgorithmException, IOException {
-        MessageDigest digest = MessageDigest.getInstance(algorithm);
+        MessageDigest digest = MessageDigest.getInstance(ALGORITHM);
         String fileName = convertByteArrayToHexString(digest.digest(bytes));
-        java.io.File uploadedFile = new java.io.File(servletContext.getRealPath(uploadRealFolder) + "/" + fileName);
+        java.io.File uploadedFile = new java.io.File(servletContext.getRealPath(UPLOAD_REAL_FOLDER) + "/" + fileName);
         BufferedOutputStream stream = null;
         FileOutputStream fileOutputStream = null;
         try {
@@ -181,7 +250,8 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
     }
 
     private boolean isImage(String fileName) {
-        return uploadImageExtensions.contains(FilenameUtils.getExtension(fileName));
+        return UPLOAD_IMAGE_EXTENSIONS.contains(FilenameUtils.getExtension(fileName));
     }
+
 
 }

@@ -1,17 +1,15 @@
 //Textarea dialog service
 app.service('FileStorageDialog', function (DialogService) {
-    this.show = function (user, file, format, maxSize, url, smallSize, event, success, cancel) {
+    this.show = function (file, format, maxSize, url, event, success, cancel) {
         DialogService.show(
             FileStorageDialogCtrl,
             'templates/dialog/file-storage/dialog-file-storage.html',
             {
                 title: 'File storage',
                 file: file,
-                user: user,
                 format: format,
                 maxSize: maxSize,
-                url: url,
-                smallSize
+                url: url
             },
             event,
             success,
@@ -19,22 +17,25 @@ app.service('FileStorageDialog', function (DialogService) {
     };
 });
 
-function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, smallSize, Entity, $mdDialog, Upload, EventHandler) {
-    $scope.user = user;
+function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDialog, Upload, EventHandler) {
     $scope.format = format;
     $scope.maxSize = maxSize;
     $scope.file = file;
     var tempFile = file;
-
+    var cloneFiles = function (from, to) {
+        to.name = from.name;
+        to.original = from.original;
+        to.small = from.small;
+        to.medium = from.medium;
+        to.large = from.large;
+    };
     var rollBack = function () {
         Entity.update({entity: "files", id: tempFile.fileId}, tempFile);
         clone(tempFile, file);
     };
 
     $scope.onClicked = function (selected) {
-        $scope.file.url = selected.url;
-        $scope.file.originalUrl = selected.originalUrl;
-        $scope.file.name = selected.name;
+        cloneFiles(selected, $scope.file);
         Entity.update({entity: "files", id: $scope.file.fileId}, $scope.file);
         $scope.save();
     };
@@ -68,14 +69,11 @@ function FileStorageDialogCtrl($scope, file, user, format, maxSize, url, smallSi
             url: url,
             data: {
                 file: uploadFile,
-                id: $scope.file.fileId,
-                size: smallSize
+                id: $scope.file.fileId
             }
         }).then(function (resp) {
             //success
-            $scope.file.url = resp.data.url;
-            $scope.file.originalUrl = resp.data.originalUrl;
-            $scope.file.name = resp.data.name;
+            cloneFiles(resp.data, $scope.file);
             $scope.loading = false;
             $scope.loaded = true;
             $scope.progress = 0;

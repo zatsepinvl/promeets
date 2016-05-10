@@ -24,7 +24,6 @@ app.directive("fileStorage", function (UserEntity) {
         restrict: "E",
         templateUrl: "templates/file-storage/file-storage.html",
         scope: {
-            user: '=',
             onClicked: '=',
             format: '='
         },

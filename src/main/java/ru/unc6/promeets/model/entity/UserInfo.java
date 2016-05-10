@@ -27,7 +27,7 @@ public class UserInfo implements Serializable {
         this.userId = userId;
     }
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     public User getUser() {
         return user;
@@ -85,6 +85,11 @@ public class UserInfo implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Transient
+    public String getEmail() {
+        return showEmail ? user.getEmail() : null;
     }
 
 

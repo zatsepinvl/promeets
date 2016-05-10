@@ -156,9 +156,8 @@
                                                  white-space-text="Card main image"
                                                  max-size="5MB"
                                                  format="image/*"
-                                                 small-size="1600"
-                                                 on-delete="onCardImageDelete"
-                                                 url="/api/files">
+                                                 size="large"
+                                                 on-delete="onCardImageDelete">
                                 </upload-file-box>
                             </div>
                             <div class="mdl-cell mdl-cell--4-col" ng-repeat="file in newCard.files">
@@ -166,10 +165,9 @@
                                                  white-space-text="Image or file"
                                                  max-size="5MB"
                                                  format="*"
-                                                 small-size="800"
+                                                 size="medium"
                                                  on-delete="onCardFileDelete"
-                                                 on-uploaded="onCardFileUploaded"
-                                                 url="/api/files">
+                                                 on-uploaded="onCardFileUploaded">
                                 </upload-file-box>
                             </div>
                         </div>
@@ -236,17 +234,19 @@
 
                     <!-- Files -->
                     <div class="mdl-grid" style="padding: 0;margin:0"
-                         ng-if="(card.image.url || card.files.length && card.files[0].url) && !card.editing">
+                         ng-if="(card.image.original || card.files.length && card.files[0].original) && !card.editing">
                         <div class="mdl-cell mdl-cell--12-col">
                             <file-box file="card.image"
                                       class="md-card-image"
-                                      ng-if="card.image.url">
+                                      size="large"
+                                      ng-if="card.image.original">
                             </file-box>
                         </div>
                         <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone"
                              ng-repeat="file in card.files"
-                             ng-if="card.files.length && card.files[0].url">
-                            <file-box file="file"></file-box>
+                             ng-if="card.files.length && card.files[0].original">
+                            <file-box file="file"
+                                      size="medium"></file-box>
                         </div>
                     </div>
 
@@ -257,10 +257,9 @@
                                 <upload-file-box file="card.image"
                                                  white-space-text="Card main image"
                                                  max-size="5MB"
-                                                 small-size="1600"
+                                                 size="large"
                                                  format="image/*"
-                                                 on-delete="onCardImageDelete"
-                                                 url="/api/files">
+                                                 on-delete="onCardImageDelete">
                                 </upload-file-box>
                             </div>
                             <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone"
@@ -269,10 +268,9 @@
                                                  white-space-text="Image or file"
                                                  max-size="5MB"
                                                  format="*"
-                                                 small-size="800"
+                                                 size="medium"
                                                  on-delete="onCardFileDelete"
-                                                 on-uploaded="onCardFileUploaded"
-                                                 url="/api/files">
+                                                 on-uploaded="onCardFileUploaded">
                                 </upload-file-box>
                             </div>
                         </div>

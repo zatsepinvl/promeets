@@ -25,13 +25,13 @@
         <!-- Navigation menu -->
         <div class="mdl-layout__drawer" ng-controller="drawerCtrl">
             <header>
-                <img ng-src="{{user.image.url}}"
-                     class="md-avatar"/>
+                <avatar user="user"></avatar>
                 <div class="username" ng-bind-html="fio(user)"></div>
                 <div class="email" ng-bind-html="user.email"></div>
             </header>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="" ui-sref="user.profile({userId:user.userId})" > <i class="material-icons">face</i>Profile</a>
+                <a class="mdl-navigation__link" href="" ui-sref="user.profile({userId:user.userId})"> <i
+                        class="material-icons">face</i>Profile</a>
                 <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
                 <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
             <span class="mdl-badge"
