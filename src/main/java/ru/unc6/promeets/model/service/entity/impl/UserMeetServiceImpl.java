@@ -47,6 +47,7 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
         meetInfo.setMeet(userMeet.getMeet());
         meetInfo.setUser(userMeet.getUser());
         meetInfo.setOnline(userMeet.isOnline());
+        meetInfo.setConnected(userMeet.isConnected());
         meetInfoService.update(meetInfo);
                 
         return super.update(userMeet);

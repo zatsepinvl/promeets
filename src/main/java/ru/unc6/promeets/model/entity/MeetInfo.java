@@ -25,6 +25,7 @@ public class MeetInfo implements Serializable {
     
     private UserMeetPK userMeetPK;
     private boolean online;
+    private boolean connected;
     private User user;
     private Meet meet;
 
@@ -70,4 +71,13 @@ public class MeetInfo implements Serializable {
         this.online = online;
     }
     
+    @Basic
+    @Column(name = "connected")
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
 }

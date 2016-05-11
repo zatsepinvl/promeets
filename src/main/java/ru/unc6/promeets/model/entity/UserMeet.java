@@ -15,6 +15,7 @@ public class UserMeet implements Serializable {
     private short editBoardPermission;
     private boolean viewed;
     private boolean online;
+    private boolean connected;
     private User user;
     private Meet meet;
 
@@ -79,5 +80,15 @@ public class UserMeet implements Serializable {
     public void setOnline(boolean online) {
         this.online = online;
     }
+
+    @Basic
+    @Column(name = "connected")
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    } 
 }
 

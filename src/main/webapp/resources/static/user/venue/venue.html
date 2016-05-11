@@ -40,8 +40,10 @@
 									</span>
 									<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
 									{{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}
-									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="voiceEnable">mic</md-icon>
-									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="!voiceEnable">mic_off</md-icon>
+									
+									<md-icon class="md-secondary" ng-click="connect()" ng-if="currentUserMeet.connected==false">call</md-icon>
+									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="voiceEnable && currentUserMeet.connected">mic</md-icon>
+									<md-icon class="md-secondary" ng-click="toggleMic()" ng-if="!voiceEnable && currentUserMeet.connected">mic_off</md-icon>
 								</p>
 							</md-list-item>
 							<md-list-item ng-repeat="meetUser in meetUsers">

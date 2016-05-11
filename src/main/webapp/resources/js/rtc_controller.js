@@ -1,4 +1,4 @@
-app.controller("rtcController", function ($scope, Entity, $state, UserService, MeetService, appConst, EventHandler, $http, $window) {
+app.controller("rtcController", function ($scope, UserEntity, UserService, MeetService, appConst, $http, $window) {
 		
 	//////////////////    WEB RTC CONFIG   //////////////////////////////////////
 
@@ -35,7 +35,9 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		$scope.user = UserService.get();
 		$scope.meetUsers = [];
 		$scope.currentUserMeet = MeetService.getUserMeet();
+		
 		$scope.voiceEnable;
+		$scope.connected;
 		
 		var localStream;
 		
@@ -91,7 +93,6 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			audioTracks[i].enabled = !audioTracks[i].enabled;
 			console.log(audioTracks[i].label + "enable = " + audioTracks[i].enabled);
 			$scope.voiceEnable = audioTracks[i].enabled;
-			$scope.apply;
 		  }
 		}
 		
@@ -104,6 +105,13 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 		$scope.isMutedRemoteAudio = function (id) {
 			var audio = document.getElementById('remoteAudio-' + id);
 			return audio.muted;
+		}
+		
+		$scope.connect = function () {
+			console.log("Connecting to Audio/Video");
+			$scope.currentUserMeet.connected = true;
+			UserEntity.update({entity: "meets", id: meetId}, $scope.currentUserMeet);
+			createOffer();
 		}
 		
 	//////////////////    RTC   //////////////////////////////////////
@@ -151,17 +159,18 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 				peerConnections[i].addStream(stream);
 			}
 			
-			$scope.voiceEnable = true;
-			$scope.apply;
-			$scope.createOffer();
+			alert("qd");
+			$scope.$apply();
 		}
 
-		$scope.createOffer = function() 
+		var createOffer = function() 
 		{
+			$scope.connected = true;
+
 			console.log('Start creating offer');
 			peerConnections.forEach(function(pc, i, arr)
 			{
-				if ($scope.meetUsers[pc.pmId].online) {
+				if ($scope.meetUsers[pc.pmId].connected) {
 					pc.createOffer(
 						gotLocalDescriptions, 
 						function(error) { console.log(error) }, 
@@ -278,7 +287,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
-					if (!message.data.online)
+					if (!message.data.online || !message.data.connected)
 					{
 						resetPeerConnection(message.data.user.userId);
 					}
@@ -301,6 +310,7 @@ app.controller("rtcController", function ($scope, Entity, $state, UserService, M
 			
 			$window.onbeforeunload = function () {
 				$scope.userMeet.online = false;
+				$scope.userMeet.connected = false;
 				$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
 					.success(function (data, status, headers, config) {
 					})

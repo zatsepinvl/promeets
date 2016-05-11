@@ -223,15 +223,6 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
 	this.getUserMeet = function () {
 		return currentUserMeet;
 	}
-	
-	this.toOffline = function () {
-		UserEntity.get({entity: "meets", id: meetId},
-        function (data) {
-            var userMeet = data;
-			userMeet.online = false;
-			UserEntity.update({entity: "meets", id: meetId}, userMeet);
-        });
-	}
 });
 
 app.service('GroupMeetsService', function ($http) {
