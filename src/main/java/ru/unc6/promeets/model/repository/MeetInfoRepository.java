@@ -10,22 +10,23 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetPK;
 
 /**
  *
  * @author Alex
  */
-public interface MeetInfoRepository extends CrudRepository<MeetInfo, Long>
+public interface MeetInfoRepository extends CrudRepository<UserMeetInfo, UserMeetPK>
 {
-    @Query("select meetInfo from MeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId)")
-    Iterable<MeetInfo> getByMeetId(@Param("meetId") Long id);
+    @Query("select meetInfo from UserMeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId)")
+    Iterable<UserMeetInfo> getByMeetId(@Param("meetId") Long id);
     
-    @Query("select meetInfo from MeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId) and meetInfo.online=true")
-    Iterable<MeetInfo> getOnlineByMeetId(@Param("meetId") Long id);
+    @Query("select meetInfo from UserMeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId) and meetInfo.online=true")
+    Iterable<UserMeetInfo> getOnlineByMeetId(@Param("meetId") Long id);
     
     @Modifying
     @Transactional
-    @Query("delete from MeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId)")
+    @Query("delete from UserMeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId)")
     void deleteByMeetId(@Param("meetId") long id);
 }

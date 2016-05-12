@@ -7,16 +7,20 @@ package ru.unc6.promeets.model.service.entity.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.entity.UserMeet;
+import ru.unc6.promeets.model.entity.UserMeetPK;
 import ru.unc6.promeets.model.repository.MeetInfoRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
+import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.MeetInfoNotificationService;
 
 /**
@@ -24,16 +28,16 @@ import ru.unc6.promeets.model.service.notification.MeetInfoNotificationService;
  */
 
 @Service
-public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<MeetInfo, Long>
-        implements MeetInfoService{
+public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<UserMeetInfo, UserMeetPK>
+        implements MeetInfoService {
     private static final Logger log = Logger.getLogger(MeetInfoServiceImpl.class);
 
     private MeetInfoRepository meetInfoRepository;
     private MeetInfoNotificationService meetInfoNotificationService;
 
     @Autowired
-    private UserMeetRepository userMeetRepository;
-    
+    private UserMeetService userMeetService;
+
     @Autowired
     public MeetInfoServiceImpl(MeetInfoRepository repository, MeetInfoNotificationService notificationService) {
         super(repository, notificationService);
@@ -42,18 +46,13 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<MeetInfo, Long>
     }
 
     @Override
-    public MeetInfo getById(Long id) {
-        return meetInfoRepository.findOne(id);
+    public List<UserMeetInfo> getByMeetId(Long meetId) {
+        return (List<UserMeetInfo>) meetInfoRepository.getByMeetId(meetId);
     }
 
     @Override
-    public List<MeetInfo> getByMeetId(Long meetId) {
-        return (List<MeetInfo>) meetInfoRepository.getByMeetId(meetId);
-    }
-
-    @Override
-    public List<MeetInfo> getOnlineByMeetId(Long meetId) {
-        return (List<MeetInfo>) meetInfoRepository.getOnlineByMeetId(meetId);
+    public List<UserMeetInfo> getOnlineByMeetId(Long meetId) {
+        return (List<UserMeetInfo>) meetInfoRepository.getOnlineByMeetId(meetId);
     }
 
     @Override
@@ -64,17 +63,17 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<MeetInfo, Long>
 
     @Override
     @Transactional
-    public List<MeetInfo> createByMeet(Meet meet) {
-        List<MeetInfo> meetInfos = new ArrayList<>();
-        for (UserMeet userMeet :userMeetRepository.getUserMeetsByMeetId(meet.getMeetId()))
-        {
-            MeetInfo meetInfo = new MeetInfo();
+    @Async
+    public List<UserMeetInfo> createByMeet(Meet meet) {
+        List<UserMeetInfo> meetInfos = new ArrayList<>();
+        for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(meet.getMeetId())) {
+            UserMeetInfo meetInfo = new UserMeetInfo();
             meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
             meetInfo.setMeet(userMeet.getMeet());
             meetInfo.setUser(userMeet.getUser());
+            meetInfo.setOnline(false);
             meetInfos.add(meetInfo);
         }
-        
-        return (List<MeetInfo>) meetInfoRepository.save(meetInfos);
+        return (List<UserMeetInfo>) meetInfoRepository.save(meetInfos);
     }
 }

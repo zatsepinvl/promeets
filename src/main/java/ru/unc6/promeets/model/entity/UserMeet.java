@@ -66,6 +66,5 @@ public class UserMeet implements Serializable {
     public void setViewed(boolean viewed) {
         this.viewed = viewed;
     }
-
 }
 

@@ -39,7 +39,7 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
         onMessageReceive(data);
     });
 	
-	$scope.$on('meetinfo', function (event, data) 
+	$scope.$on('usermeetinfo', function (event, data) 
 	{
 		console.log(data.entity + ':DRAWER CONTROLLER:FROM ROOT SCOPE:' + data.action);
         onMeetOnline(data);	

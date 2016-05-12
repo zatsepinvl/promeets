@@ -35,39 +35,50 @@
                             <md-list-item class="no-hover primary" style="border: 0">
                                 <p style="margin-left: 20px">Users</p>
                             </md-list-item>
-							<div>
-								<md-list-item>
-									<p>
-										<span class="venueUserListItem" ng-show="userMeet.online">
-										</span>
-										<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
-										{{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}
+                            <div>
+                                <md-list-item>
 
-										<md-icon class="md-secondary" ng-click="connect()" ng-if="currentUserMeet.connected==false">videocam</md-icon>
-									</p>
-								</md-list-item>
-								<div>
-								<video id="localVideo" class="chatVideo" autoplay muted></video>
-								</div>
-							</div>
-							<div ng-repeat="meetUser in meetUsers">
-								<md-list-item>
-									<p>
+										<span class="venueUserListItem" ng-show="currentMeetUser.online">
+										</span>
+                                    <avatar user="currentMeetUser.user"></avatar>
+                                    <p>
+                                        {{ currentMeetUser.user.firstName + ' ' + currentMeetUser.user.lastName}}
+                                    </p>
+                                    <md-icon class="md-secondary" ng-click="connect()"
+                                             ng-if="currentMeetUser.connected==false">videocam
+                                    </md-icon>
+
+                                </md-list-item>
+                                <div>
+                                    <video id="localVideo" class="chatVideo" autoplay muted></video>
+                                </div>
+                            </div>
+                            <div ng-repeat="meetUser in meetUsers">
+                                <md-list-item>
+
 										<span class="venueUserListItem" ng-show="meetUser.online">
 										</span>
-										<img ng-src="{{meetUser.user.image.url}}" class="md-avatar"/>
-										{{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
-									</p>
-									<md-icon class="md-secondary" ng-if="!isMutedRemoteVideo($index) && meetUser.connected" ng-click="muteRemoteVideo($index)">mic</md-icon>
-									<md-icon class="md-secondary" ng-if="isMutedRemoteVideo($index) && meetUser.connected" ng-click="muteRemoteVideo($index)">mic_off</md-icon>
-								</md-list-item>
-								<div ng-show="meetUser.connected">
-									<video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}" autoplay/>
-								</div>
-							</div>
+                                    <avatar user="meetUser.user"></avatar>
+                                    <p>
+                                        {{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
+                                    </p>
+                                    <md-icon class="md-secondary"
+                                             ng-if="!isMutedRemoteVideo($index) && meetUser.connected"
+                                             ng-click="muteRemoteVideo($index)">mic
+                                    </md-icon>
+                                    <md-icon class="md-secondary"
+                                             ng-if="isMutedRemoteVideo($index) && meetUser.connected"
+                                             ng-click="muteRemoteVideo($index)">mic_off
+                                    </md-icon>
+
+                                </md-list-item>
+                                <div ng-show="meetUser.connected">
+                                    <video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}" autoplay/>
+                                </div>
+                            </div>
                         </md-list>
                     </div>
-				</div>
+                </div>
 
                 <!--Meet Tasks -->
                 <div class="phone mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet mdl-cell--4-col-phone no-v-margin">
@@ -154,7 +165,7 @@
                         <!-- Header -->
                         <md-card-header>
                             <md-card-avatar>
-                                <img class="md-user-avatar" ng-src="{{newCard.user.image.url}}"/>
+                                <avatar user="newCard.user"></avatar>
                             </md-card-avatar>
                             <md-card-header-text>
                                 <span class="md-title"
@@ -223,7 +234,7 @@
                     <!-- Header -->
                     <md-card-header>
                         <md-card-avatar>
-                            <img class="md-user-avatar" ng-src="{{card.user.image.url}}"/>
+                            <avatar user="card.user"></avatar>
                         </md-card-avatar>
                         <md-card-header-text>
                                 <span class="md-title"

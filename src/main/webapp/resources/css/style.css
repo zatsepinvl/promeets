@@ -422,11 +422,11 @@ md-switch.md-checked ._md-bar {
 span.venueUserListItem 
 {
 	position: absolute;
-    margin-left: 40px;
-    margin-top: 40px;
-    width: 7px;
-    height: 7px;
-    background-color: #2e7d32;
+    top:40px;
+    left:44px;
+    width: 8px;
+    height: 8px;
+    background-color: #ef6c00;
     border-radius: 6px;
 }
 

@@ -34,7 +34,7 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: false,
             action: false,
-            user:user,
+            user: user,
             error: false
         };
         dialog.hideDelay = delay;
@@ -98,11 +98,11 @@ app.service('EventHandler', function ($mdToast) {
 });
 
 
-function ToastCtrl($scope, message, action, loading, error,user, $mdToast) {
+function ToastCtrl($scope, message, action, loading, error, user, $mdToast) {
     $scope.message = message;
     $scope.loading = loading;
     $scope.action = action;
-    $scope.user=user;
+    $scope.user = user;
     $scope.error = error;
     $scope.hide = function () {
         $mdToast.hide(action);

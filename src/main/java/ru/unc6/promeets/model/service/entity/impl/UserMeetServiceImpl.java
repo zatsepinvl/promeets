@@ -16,7 +16,8 @@ import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import ru.unc6.promeets.model.entity.MeetInfo;
+
+import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
 
 @Service
@@ -26,9 +27,10 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
 
     private UserMeetNotificationService notificationService;
     private UserMeetRepository userMeetRepository;
-    
+
     @Autowired
     private MeetInfoService meetInfoService;
+
 
     @Autowired
     private MeetService meetService;
@@ -50,6 +52,7 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
         }
         entity = userMeetRepository.save(entity);
         createUserMeetsByMeet(entity.getMeet());
+        meetInfoService.createByMeet(entity.getMeet());
         return entity;
     }
 
@@ -70,14 +73,7 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
 
     @Override
     @Transactional
-    public UserMeet update (UserMeet userMeet)
-    {
-        MeetInfo meetInfo = new MeetInfo();
-        meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
-        meetInfo.setMeet(userMeet.getMeet());
-        meetInfo.setUser(userMeet.getUser());
-        meetInfoService.update(meetInfo);
-                
+    public UserMeet update(UserMeet userMeet) {
         return super.update(userMeet);
     }
 
@@ -93,7 +89,7 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
 
     @Override
     public List<UserMeet> getUserMeetsByUserIdAndTime(long userId, long start, long end) {
-        return (List<UserMeet>) userMeetRepository.getUserMeetsByUserIdAndTimePeriod(userId,start,end);
+        return (List<UserMeet>) userMeetRepository.getUserMeetsByUserIdAndTimePeriod(userId, start, end);
     }
 
     @Override

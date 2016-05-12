@@ -1,10 +1,10 @@
-<beans
-        xmlns="http://www.springframework.org/schema/beans"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xmlns:tx="http://www.springframework.org/schema/tx"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-        xmlns:task="http://www.springframework.org/schema/task"
-        xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans.xsd
    http://www.springframework.org/schema/tx
    http://www.springframework.org/schema/tx/spring-tx.xsd
@@ -52,7 +52,7 @@
             entity-manager-factory-ref="entityManagerFactory"
             transaction-manager-ref="transactionManager"/>
 
-    <task:executor id="executor" pool-size="20"  />
+    <task:executor id="executor" pool-size="20"/>
     <task:annotation-driven executor="executor"/>
 
     <import resource="security.xml"/>

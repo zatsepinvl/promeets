@@ -20,14 +20,14 @@ import javax.persistence.Transient;
  */
 
 @Entity
-@Table(name = "meet_info", schema = "public", catalog = "promeets_db")
-public class MeetInfo implements Serializable {
+@Table(name = "user_meet_info", schema = "public", catalog = "promeets_db")
+public class UserMeetInfo implements Serializable {
     
     private UserMeetPK userMeetPK;
     private boolean online;
     private boolean connected;
 
-    public MeetInfo() {
+    public UserMeetInfo() {
         userMeetPK = new UserMeetPK();
     }
 

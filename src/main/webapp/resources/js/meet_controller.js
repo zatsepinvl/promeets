@@ -3,8 +3,6 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
     $scope.user = UserService.get();
     $scope.notes = MeetService.getNotes();
     $scope.tasks = MeetService.getTasks();
-	$scope.meetUsers = MeetService.getMeetUsers();
-	$scope.userMeet = MeetService.getUserMeet();
 
     $scope.goBack = function () {
         $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
@@ -135,25 +133,21 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
 
 });
 
-app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, MeetService, UserMeetService) 
-{
-	$scope.meet = MeetService.get();
+app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, UserMeetService) {
+    $scope.meet = MeetService.get();
     $scope.user = UserService.get();
-			
-	$scope.$on('userMeet', function (event, message) 
-	{
-        if (message.action == appConst.ACTION.UPDATE) 
-		{
-            for (var i = 0; i < $scope.userMeets.length; i++)
-			{
-				if ($scope.userMeets[i].meet.meetId === message.id) {
-                        $scope.userMeets[i] = message.data;
-                        $scope.$apply();
-                        return;
-                    }
-			}
+
+    $scope.$on('userMeet', function (event, message) {
+        if (message.action == appConst.ACTION.UPDATE) {
+            for (var i = 0; i < $scope.userMeets.length; i++) {
+                if ($scope.userMeets[i].meet.meetId === message.id) {
+                    $scope.userMeets[i] = message.data;
+                    $scope.$apply();
+                    return;
+                }
+            }
         }
-		
+
     });
 
 });

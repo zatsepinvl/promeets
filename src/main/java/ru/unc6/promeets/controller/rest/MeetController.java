@@ -76,14 +76,14 @@ public class MeetController extends BaseRestController<Meet, Long> {
     }
     
     @RequestMapping(value = "/{id}/info", method = RequestMethod.GET)
-    public List<MeetInfo> getInfoByMeetId(@PathVariable("id") long meetId) 
+    public List<UserMeetInfo> getInfoByMeetId(@PathVariable("id") long meetId) 
     {
         checkIsNotFoundById(meetId);
         return meetInfoService.getByMeetId(meetId);
     }
     
     @RequestMapping(value = "/{id}/info/online", method = RequestMethod.GET)
-    public List<MeetInfo> getOnlineByMeetId(@PathVariable("id") long meetId) 
+    public List<UserMeetInfo> getOnlineByMeetId(@PathVariable("id") long meetId) 
     {
         checkIsNotFoundById(meetId);
         return meetInfoService.getOnlineByMeetId(meetId);

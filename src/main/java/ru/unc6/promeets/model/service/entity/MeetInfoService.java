@@ -7,15 +7,17 @@ package ru.unc6.promeets.model.service.entity;
 
 import java.util.List;
 import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetPK;
 
 /**
  *
  * @author Alex
  */
-public interface MeetInfoService extends BaseService<MeetInfo, Long>{
-    List<MeetInfo> getByMeetId(Long meetId);
-    List<MeetInfo> getOnlineByMeetId(Long meetId);
+
+public interface MeetInfoService extends BaseService<UserMeetInfo, UserMeetPK>{
+    List<UserMeetInfo> getByMeetId(Long meetId);
+    List<UserMeetInfo> getOnlineByMeetId(Long meetId);
     void deleteByMeetId(Long meetId);
-    List<MeetInfo> createByMeet(Meet meet);
+    List<UserMeetInfo> createByMeet(Meet meet);
 }

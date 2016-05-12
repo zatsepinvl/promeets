@@ -148,7 +148,7 @@ app.service('GroupService', function (Entity) {
     };
 });
 
-app.service('MeetService', function (Entity, UserEntity, $http) {
+app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     var value;
     var notes = [];
     var tasks = [];
@@ -185,21 +185,8 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
             .success(function (data) {
                 clone(data, cards);
             });
-		UserEntity.get({entity: "meets", id: meetId},
-        function (data) {
-            var userMeet = data;
-			userMeet.online = true;
-			UserEntity.update({entity: "meets", id: meetId}, userMeet);
-			clone(userMeet, currentUserMeet);
-        });
 		$http.get('/api/meets/'+meetId+'/info')
 			.success(function (meets) {
-				for (var i=0; i<meets.length; i++) {
-					if (meets[i].user.userId == currentUserMeet.user.userId) {
-						meets.splice(i,1);
-						break;
-					}
-				}
 				clone(meets, meetUsers);
 			});
         return value;
@@ -225,9 +212,6 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
 		return meetUsers;
 	};
 	
-	this.getUserMeet = function () {
-		return currentUserMeet;
-	}
 });
 
 app.service('GroupMeetsService', function ($http) {
@@ -412,7 +396,7 @@ app.service('UserChatsService', function (UserEntity) {
 });
 
 
-app.service('UploadService', function (EventHandler, Upload) {
+app.service('UploadService', function (Upload) {
     this.upload = function (file, id, success, error, progress) {
         if (!file) {
             return;
