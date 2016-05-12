@@ -61,7 +61,11 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
 		var sender = data.data.user;
 		if (data.data.user.userId == $scope.user.userId)
 			return;
-		if (data.action == appConst.ACTION.UPDATE && data.data.online) 
+		if (data.action == appConst.ACTION.UPDATE && data.data.online && data.data.connected) 
+		{
+			EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join to chat', sender.image.url);
+		}
+		else if (data.action == appConst.ACTION.UPDATE && data.data.online && !data.data.connected) 
 		{
 			EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join', sender.image.url);
 		}
