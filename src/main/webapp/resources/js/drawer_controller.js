@@ -21,9 +21,11 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
     $scope.newMeets = UserMeetService.getNewMeets();
     $scope.newMessages = UserMessageService.getNewMessages();
 
-    $scope.$on('meet', function (event, data) {
-        if (data.action == appConst.ACTION.CREATE) {
-            $scope.newMeets.push(data.id);
+    $scope.$on('usermeet', function (event, message) {
+        if (message.action == appConst.ACTION.CREATE) {
+            var meet = message.data.meet;
+            EventHandler.message('New meet on ' + $scope.toDayTime(meet.time), meet.admin.image.small);
+            $scope.newMeets.push(message.id);
             $scope.$apply();
         }
     });

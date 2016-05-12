@@ -28,6 +28,11 @@ public class UserMeetController {
         return userMeetService.getUserMeetsByUserId(user.getUserId());
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    public UserMeet create(@CurrentUser User user, @RequestBody UserMeet userMeet) {
+        return userMeetService.create(userMeet);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserMeet getById(@PathVariable("id") long meetId, @CurrentUser User user) {
         return userMeetService.getUserMeetByUserIdAndMeetId(user.getUserId(), meetId);

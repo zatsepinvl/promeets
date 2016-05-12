@@ -13,16 +13,18 @@
                 add
             </md-icon>
         </md-list-item>
-        <md-list-item ng-repeat="meet in selected track by $index"
-                      ng-click="meetClicked(meet.meetId)"
+        <md-list-item ng-repeat="userMeet in selected track by $index"
+                      ng-click="meetClicked(userMeet.meet.meetId)"
+                      class="animation"
+                      ng-class="{new:!userMeet.viewed}"
                       ng-mouseover="mouseover=true"
                       ng-mouseleave="mouseover=false">
-            <img ng-src="{{meet.admin.image.url}}" class="md-avatar"/>
-            <p style="font-size: 16px;" flex ng-bind-html="meet.title"></p>
-            <p style="font-size: 16px;" flex ng-bind-html="toTime(meet.time)"></p>
+            <img ng-src="{{userMeet.meet.admin.image.url}}" class="md-avatar"/>
+            <p style="font-size: 16px;" flex ng-bind-html="userMeet.meet.title"></p>
+            <p style="font-size: 16px;" flex ng-bind-html="toTime(userMeet.meet.time)"></p>
             <md-icon class="md-secondary"
                      style="margin-bottom: 3px;"
-                     ng-click="deleteMeet(meet,$event)"
+                     ng-click="deleteMeet(userMeet,$event)"
                      ng-show="mouseover">delete
             </md-icon>
         </md-list-item>

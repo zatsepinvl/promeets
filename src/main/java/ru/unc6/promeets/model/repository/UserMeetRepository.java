@@ -21,8 +21,6 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId)")
     Iterable<UserMeet> getUserMeetsByMeetId(@Param("meetId") long id);
 
-    @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId) and userMeet.online=true")
-    Iterable<UserMeet> getOnlineUserMeetsByMeetId(@Param("meetId") long id);
 
     @Query("select userMeet from UserMeet userMeet where userMeet.userMeetPK.user.id=(:userId)")
     Iterable<UserMeet> getUserMeetsByUserId(@Param("userId") long userId);

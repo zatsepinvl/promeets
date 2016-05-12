@@ -219,11 +219,11 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
 
     this.getCards = function () {
         return cards;
-    }
+    };
 	
 	this.getMeetUsers = function () {
 		return meetUsers;
-	}
+	};
 	
 	this.getUserMeet = function () {
 		return currentUserMeet;
@@ -250,11 +250,11 @@ app.service('GroupMeetsService', function ($http) {
 
     this.load = function (groupId, start, end, data, success, error) {
         $http.get("/api/groups/" + groupId + "/usermeets/?start=" + start + "&end=" + end)
-            .success(function (meets) {
+            .success(function (userMeets) {
                 data.length = 0;
-                clone(meets, data);
+                clone(userMeets, data);
             })
-            .error(function (error) {
+            .error(function (err) {
 
             });
     };

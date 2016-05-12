@@ -1,5 +1,6 @@
 app.controller('groupCalendarCtrl', function ($scope,
                                               Entity,
+                                              UserEntity,
                                               $http,
                                               $stateParams,
                                               $state,
@@ -14,6 +15,7 @@ app.controller('groupCalendarCtrl', function ($scope,
     $scope.selected = [];
     $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
     $scope.selectedDay = moment();
+    $scope.user = UserService.get();
 
     $scope.events = GroupMeetsService.current();
 
@@ -38,19 +40,22 @@ app.controller('groupCalendarCtrl', function ($scope,
     };
 
     $scope.createMeet = function (event) {
-        var meet = {time: $scope.selectedDay, group: GroupService.get()};
+        var meet = {
+            time: $scope.selectedDay,
+            group: GroupService.get()
+        };
         MeetEditDialogService.show(meet, event,
             function (result) {
                 var meet = result;
+                var userMeet = {user: $scope.user, meet: meet, viewed: true};
                 meet.admin = UserService.get();
-                Entity.save({entity: "meets"}, meet,
+                UserEntity.save({entity: "meets"}, userMeet,
                     function (data) {
-                        meet = data;
-                        meet.time = moment(meet.time).local();
-                        $scope.events.push(meet);
-                        if($scope.selectedDay.isSame(meet.time,'day'))
-                        {
-                            $scope.selected.push(meet);
+                        userMeet = data;
+                        userMeet.meet.time = moment(userMeet.meet.time).local();
+                        $scope.events.push(userMeet);
+                        if ($scope.selectedDay.isSame(userMeet.meet.time, 'day')) {
+                            $scope.selected.push(userMeet);
                         }
                         EventHandler.message('Meeting has been created');
                     },
@@ -63,13 +68,14 @@ app.controller('groupCalendarCtrl', function ($scope,
         )
     };
 
-    $scope.deleteMeet = function (meet, event) {
+    $scope.deleteMeet = function (userMeet, event) {
+        var meet = userMeet.meet;
         ConfirmDialog.show('Delete meet?', 'Delete', 'Cancel', event,
             function () {
                 Entity.remove({entity: "meets", id: meet.meetId}, function () {
                         EventHandler.message('Meet has been deleted');
-                        $scope.events.splice($scope.events.indexOf(meet), 1);
-                        $scope.selected.splice($scope.selected.indexOf(meet), 1);
+                        $scope.events.splice($scope.events.indexOf(userMeet), 1);
+                        $scope.selected.splice($scope.selected.indexOf(userMeet), 1);
                     },
                     function (error) {
                         EventHandler.message('Something went wrong. Try again later.');
@@ -77,21 +83,19 @@ app.controller('groupCalendarCtrl', function ($scope,
             });
     };
 
-    $scope.$on('meet', function (event, data) {
-        if (data.action == appConst.ACTION.CREATE) {
-            Entity.get({entity: 'meets', id: data.id},
-                function (meet) {
-                    meet.time = moment(meet.time).local();
-                    EventHandler.action('New meet on ' + meet.time.format(appConst.TIME_FORMAT.DAY), 'CLOSE');
-                    if (meet.time.isSame($scope.selectedDay, 'month')) {
-                        $scope.events.push(meet);
-                    } else if (meet.time.isSame($scope.selectedDay.clone().add(1, 'month'), 'month')) {
-                        GroupMeetsService.getNext().push(meet);
-                    }
-                    else if (meet.time.isSame($scope.selectedDay.clone().add(-1, 'month'), 'month')) {
-                        GroupMeetsService.getPrev().push(meet);
-                    }
-                });
+    $scope.$on('usermeet', function (event, message) {
+        if (message.action == appConst.ACTION.CREATE) {
+            var meet = message.data.meet;
+            meet.time = moment(meet.time).local();
+            if (meet.time.isSame($scope.selectedDay, 'month')) {
+                $scope.events.push(message.data);
+            } else if (meet.time.isSame($scope.selectedDay.clone().add(1, 'month'), 'month')) {
+                GroupMeetsService.getNext().push(message.data);
+            }
+            else if (meet.time.isSame($scope.selectedDay.clone().add(-1, 'month'), 'month')) {
+                GroupMeetsService.getPrev().push(message.data);
+            }
+
         }
     });
 });

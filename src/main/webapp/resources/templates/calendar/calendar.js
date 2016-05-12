@@ -19,7 +19,8 @@ app.directive("calendar", function () {
                     week.days.forEach(function (day) {
                         day.events = [];
                         $scope.model.forEach(function (event) {
-                            if ((event.time) && (day.date.isSame(event.time, 'day'))) {
+                            console.log(event);
+                            if ((event.meet.time) && (day.date.isSame(event.meet.time, 'day'))) {
                                 day.events.push(event);
                             }
                         });

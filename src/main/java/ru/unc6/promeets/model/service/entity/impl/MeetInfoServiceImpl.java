@@ -72,8 +72,6 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<MeetInfo, Long>
             meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
             meetInfo.setMeet(userMeet.getMeet());
             meetInfo.setUser(userMeet.getUser());
-            meetInfo.setOnline(userMeet.isOnline());
-            
             meetInfos.add(meetInfo);
         }
         

@@ -3,8 +3,7 @@
              ng-if="error">
         error_outline
     </md-icon>
-    <img ng-src="{{image}}" style="border-radius: 50%; width:30px; height:30px;margin: 8px 2px 8px 8px"
-         class="md-avatar min" ng-if="image"/>
+    <avatar min="true" user="user" ng-if="user"></avatar>
     <md-progress-circular md-mode="indeterminate"
                           md-diameter="20"
                           ng-if="loading" flex></md-progress-circular>

@@ -370,16 +370,16 @@ md-switch.md-checked ._md-bar {
     background-color: #c8e6c9;
 }
 
-<<<<<<< HEAD
+
 .selected {
     border: 1px solid #ef6c00;
 }
 
 .animation {
-    -webkit-transition: 0.6s linear all;
-    -moz-transition: 0.6s linear all;
-    -o-transition: 0.6s linear all;
-    transition: 0.6s linear all;
+    -webkit-transition: 0.4s linear all;
+    -moz-transition: 0.4s linear all;
+    -o-transition: 0.4s linear all;
+    transition: 0.4s linear all;
 }
 
 .animation.ng-enter {
@@ -418,7 +418,7 @@ md-switch.md-checked ._md-bar {
     font-size: 14px;
     color: #424242;
 }
-=======
+
 span.venueUserListItem 
 {
 	position: absolute;
@@ -438,4 +438,4 @@ span.venueUserListItem
 	 border: 1px solid #333; 
 	 background: #000; 
 }
->>>>>>> origin/zam_dev
+

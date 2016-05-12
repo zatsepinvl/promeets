@@ -28,13 +28,13 @@ app.service('EventHandler', function ($mdToast) {
         $mdToast.show(dialog);
     };
 
-    this.message = function (message, image) {
+    this.message = function (message, user) {
         dialog.locals =
         {
             message: message,
             loading: false,
             action: false,
-            image: image,
+            user:user,
             error: false
         };
         dialog.hideDelay = delay;
@@ -47,7 +47,7 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: true,
             action: false,
-            image: undefined,
+            user: undefined,
             error: false
         };
         dialog.hideDelay = 10000;
@@ -60,7 +60,7 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: false,
             action: act,
-            image: undefined,
+            user: undefined,
             error: false
         };
         dialog.hideDelay = delay;
@@ -81,7 +81,7 @@ app.service('EventHandler', function ($mdToast) {
             message: message,
             loading: loading,
             action: action,
-            image: undefined,
+            user: undefined,
             error: false
         };
         dialog.hideDelay = duration;
@@ -98,11 +98,11 @@ app.service('EventHandler', function ($mdToast) {
 });
 
 
-function ToastCtrl($scope, message, action, loading, error, image, $mdToast) {
+function ToastCtrl($scope, message, action, loading, error,user, $mdToast) {
     $scope.message = message;
     $scope.loading = loading;
     $scope.action = action;
-    $scope.image = image;
+    $scope.user=user;
     $scope.error = error;
     $scope.hide = function () {
         $mdToast.hide(action);

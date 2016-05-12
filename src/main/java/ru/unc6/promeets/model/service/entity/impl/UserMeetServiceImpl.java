@@ -1,6 +1,7 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Meet;
@@ -41,7 +42,32 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
         this.userMeetRepository = repository;
         this.notificationService = notificationService;
     }
-    
+
+    @Override
+    public UserMeet create(UserMeet entity) {
+        if (meetService.getById(entity.getMeet().getMeetId()) == null) {
+            meetService.create(entity.getMeet());
+        }
+        entity = userMeetRepository.save(entity);
+        createUserMeetsByMeet(entity.getMeet());
+        return entity;
+    }
+
+    @Override
+    @Transactional
+    public void createUserMeetsByMeet(Meet meet) {
+        long adminId = meet.getAdmin().getUserId();
+        for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
+            UserMeet userMeet = new UserMeet();
+            userMeet.setUser(user);
+            userMeet.setMeet(meet);
+            userMeet.setViewed(user.getUserId() == adminId);
+            if (user.getUserId() != adminId) {
+                super.create(userMeet);
+            }
+        }
+    }
+
     @Override
     @Transactional
     public UserMeet update (UserMeet userMeet)
@@ -50,8 +76,6 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
         meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
         meetInfo.setMeet(userMeet.getMeet());
         meetInfo.setUser(userMeet.getUser());
-        meetInfo.setOnline(userMeet.isOnline());
-        meetInfo.setConnected(userMeet.isConnected());
         meetInfoService.update(meetInfo);
                 
         return super.update(userMeet);
@@ -87,30 +111,6 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
         return (List<UserMeet>) userMeetRepository.getUserMeetsByGroupIdAndUserIdAndTimePeriod(groupId, userId, start, end);
     }
 
-    @Override
-    public UserMeet create(UserMeet entity) {
-        if (meetService.getById(entity.getMeet().getMeetId()) == null) {
-            meetService.create(entity.getMeet());
-        }
-        entity = userMeetRepository.save(entity);
-        createUserMeetsByMeet(entity.getMeet());
-        return entity;
-    }
-
-    @Override
-    @Transactional
-    public void createUserMeetsByMeet(Meet meet) {
-        long adminId = meet.getAdmin().getUserId();
-        for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
-            UserMeet userMeet = new UserMeet();
-            userMeet.setUser(user);
-            userMeet.setMeet(meet);
-            userMeet.setViewed(user.getUserId() == adminId);
-            if (user.getUserId() != adminId) {
-                super.create(userMeet);
-            }
-        }
-    }
 
     @Override
     public void deleteUserMeetsByMeetId(long meetId) {

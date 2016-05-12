@@ -68,7 +68,7 @@ public class MeetInfo implements Serializable {
     public void setOnline(boolean online) {
         this.online = online;
     }
-    
+
     @Basic
     @Column(name = "connected")
     public boolean isConnected() {
