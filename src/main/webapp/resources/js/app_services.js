@@ -87,7 +87,8 @@ app.service('UserService', function ($http) {
 
 app.service('UserMeetService', function ($http) {
     var newMeets = [];
-    this.load = function () {
+	var userMeets = [];
+    this.load = function (meetId) {
         newMeets = [];
         $http.get('/api/users/meets/new')
             .success(function (meets) {
@@ -97,7 +98,10 @@ app.service('UserMeetService', function ($http) {
     };
     this.getNewMeets = function () {
         return newMeets;
-    }
+    };
+	this.get = function () {
+		return userMeets;
+	}
 });
 
 app.service('UserMessageService', function ($http) {
@@ -144,13 +148,17 @@ app.service('GroupService', function (Entity) {
     };
 });
 
-app.service('MeetService', function (Entity, $http) {
+app.service('MeetService', function (Entity, UserEntity, $http) {
     var value;
     var notes = [];
     var tasks = [];
     var cards = [];
+	
+	var meetUsers = [];
+	var currentUserMeet = {};
     var page = 0;
     var meet;
+	
     this.load = function (meetId, success, error) {
         value = {};
         notes.length = 0;
@@ -177,6 +185,23 @@ app.service('MeetService', function (Entity, $http) {
             .success(function (data) {
                 clone(data, cards);
             });
+		UserEntity.get({entity: "meets", id: meetId},
+        function (data) {
+            var userMeet = data;
+			userMeet.online = true;
+			UserEntity.update({entity: "meets", id: meetId}, userMeet);
+			clone(userMeet, currentUserMeet);
+        });
+		$http.get('/api/meets/'+meetId+'/info')
+			.success(function (meets) {
+				for (var i=0; i<meets.length; i++) {
+					if (meets[i].user.userId == currentUserMeet.user.userId) {
+						meets.splice(i,1);
+						break;
+					}
+				}
+				clone(meets, meetUsers);
+			});
         return value;
     };
 
@@ -192,12 +217,17 @@ app.service('MeetService', function (Entity, $http) {
         return tasks;
     };
 
-
     this.getCards = function () {
         return cards;
     }
-
-
+	
+	this.getMeetUsers = function () {
+		return meetUsers;
+	}
+	
+	this.getUserMeet = function () {
+		return currentUserMeet;
+	}
 });
 
 app.service('GroupMeetsService', function ($http) {
@@ -219,7 +249,7 @@ app.service('GroupMeetsService', function ($http) {
     };
 
     this.load = function (groupId, start, end, data, success, error) {
-        $http.get("/api/groups/" + groupId + "/meets/?start=" + start + "&end=" + end)
+        $http.get("/api/groups/" + groupId + "/usermeets/?start=" + start + "&end=" + end)
             .success(function (meets) {
                 data.length = 0;
                 clone(meets, data);

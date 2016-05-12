@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.repository.MeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetService;
+import ru.unc6.promeets.model.service.entity.UserMeetService;
 
 
 @Service
@@ -21,7 +22,8 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
 
     private MeetRepository meetRepository;
 
-
+    @Autowired
+    private UserMeetService userMeetService;
 
     @Autowired
     public MeetServiceImpl(MeetRepository repository) {
@@ -29,5 +31,9 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
         this.meetRepository = repository;
     }
 
-
+    @Override
+    public void delete(Long id) {
+        userMeetService.deleteUserMeetsByMeetId(id);
+        super.delete(id);
+    }
 }

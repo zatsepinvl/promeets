@@ -21,6 +21,9 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId)")
     Iterable<UserMeet> getUserMeetsByMeetId(@Param("meetId") long id);
 
+    @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId) and userMeet.online=true")
+    Iterable<UserMeet> getOnlineUserMeetsByMeetId(@Param("meetId") long id);
+
     @Query("select userMeet from UserMeet userMeet where userMeet.userMeetPK.user.id=(:userId)")
     Iterable<UserMeet> getUserMeetsByUserId(@Param("userId") long userId);
 
@@ -37,11 +40,13 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     UserMeet getUserMeetByUserIdAndMeetId(@Param("userId") long userId, @Param("meetId") long meetId);
 
     @Query("select userMeet from UserMeet userMeet where  userMeet.id.user.userId=(:userId) and userMeet.id.meet.group.groupId=(:groupId) and userMeet.id.meet.time>=(:start) and userMeet.id.meet.time<=(:end) order by userMeet.id.meet.time")
-    Iterable<Meet> getUserMeetsByGroupIdAndUserIdAndTimePeriod(@Param("groupId") long groupId, @Param("userId") long userId, @Param("start")long start, @Param("end")long end);
+    Iterable<UserMeet> getUserMeetsByGroupIdAndUserIdAndTimePeriod(@Param("groupId") long groupId, @Param("userId") long userId, @Param("start") long start, @Param("end") long end);
 
-            @Modifying
-            @Transactional
-            @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
+    @Query("select userMeet from UserMeet userMeet where  userMeet.id.user.userId=(:userId) and userMeet.id.meet.time>=(:start) and userMeet.id.meet.time<=(:end) order by userMeet.id.meet.time")
+    Iterable<UserMeet> getUserMeetsByUserIdAndTimePeriod(@Param("userId") long userId, @Param("start") long start, @Param("end") long end);
 
+    @Modifying
+    @Transactional
+    @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
     void deleteUserMeetsByMeetId(@Param("meetId") long id);
 }

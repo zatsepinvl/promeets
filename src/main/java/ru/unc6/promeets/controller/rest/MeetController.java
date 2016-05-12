@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import ru.unc6.promeets.model.service.entity.MeetInfoService;
+import ru.unc6.promeets.model.service.entity.UserMeetService;
+
 @RestController
 @RequestMapping("/api/meets")
 public class MeetController extends BaseRestController<Meet, Long> {
@@ -25,6 +28,9 @@ public class MeetController extends BaseRestController<Meet, Long> {
 
     @Autowired
     private BoardService boardService;
+    
+    @Autowired
+    private MeetInfoService meetInfoService;
 
     @Autowired
     private NoteService noteService;
@@ -67,6 +73,20 @@ public class MeetController extends BaseRestController<Meet, Long> {
     public List<Card> getCardsByMeetIdAndPage(@PathVariable("id") long meetId, @RequestParam("page") int page) {
         checkIsNotFoundById(meetId);
         return cardService.getCardsByMeetIdAndPage(meetId, page);
+    }
+    
+    @RequestMapping(value = "/{id}/info", method = RequestMethod.GET)
+    public List<MeetInfo> getInfoByMeetId(@PathVariable("id") long meetId) 
+    {
+        checkIsNotFoundById(meetId);
+        return meetInfoService.getByMeetId(meetId);
+    }
+    
+    @RequestMapping(value = "/{id}/info/online", method = RequestMethod.GET)
+    public List<MeetInfo> getOnlineByMeetId(@PathVariable("id") long meetId) 
+    {
+        checkIsNotFoundById(meetId);
+        return meetInfoService.getOnlineByMeetId(meetId);
     }
 
 }

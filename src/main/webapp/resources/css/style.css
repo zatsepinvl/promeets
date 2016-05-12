@@ -370,6 +370,7 @@ md-switch.md-checked ._md-bar {
     background-color: #c8e6c9;
 }
 
+<<<<<<< HEAD
 .selected {
     border: 1px solid #ef6c00;
 }
@@ -417,3 +418,24 @@ md-switch.md-checked ._md-bar {
     font-size: 14px;
     color: #424242;
 }
+=======
+span.venueUserListItem 
+{
+	position: absolute;
+    margin-left: 40px;
+    margin-top: 40px;
+    width: 7px;
+    height: 7px;
+    background-color: #2e7d32;
+    border-radius: 6px;
+}
+
+.chatVideo
+{
+	 width: 100%; 
+	 right: 1em; 
+	 bottom: 1em; 
+	 border: 1px solid #333; 
+	 background: #000; 
+}
+>>>>>>> origin/zam_dev

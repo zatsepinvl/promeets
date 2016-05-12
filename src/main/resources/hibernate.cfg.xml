@@ -18,6 +18,7 @@
         <mapping class="ru.unc6.promeets.model.entity.UserChat"/>
         <mapping class="ru.unc6.promeets.model.entity.UserGroup"/>
         <mapping class="ru.unc6.promeets.model.entity.Meet"/>
+        <mapping class="ru.unc6.promeets.model.entity.MeetInfo"/>
         <mapping class="ru.unc6.promeets.model.entity.Card"/>
         <mapping class="ru.unc6.promeets.model.entity.CardFile"/>
         <mapping class="ru.unc6.promeets.model.entity.CardFilePK"/>

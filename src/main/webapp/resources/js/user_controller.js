@@ -8,7 +8,16 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
             function () {
                 stompClient.subscribe(appConst.WS.TOPIC + user.userId, function (data) {
                     var message = JSON.parse(data.body);
-                    $scope.$broadcast(message.entity, message);
+					if (message.entity)
+					{
+						$scope.$broadcast(message.entity, message);
+					}
+					// TODO:
+					else if (message.type)
+					{
+						$scope.$broadcast('rtc/'+message.meetId, message);
+					}
+                    
                 });
             },
 

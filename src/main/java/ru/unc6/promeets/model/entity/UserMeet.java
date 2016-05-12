@@ -14,6 +14,10 @@ public class UserMeet implements Serializable {
     private UserMeetPK userMeetPK;
     private short editBoardPermission;
     private boolean viewed;
+    private boolean online;
+    private boolean connected;
+    private User user;
+    private Meet meet;
 
     public UserMeet() {
         userMeetPK = new UserMeetPK();
@@ -39,7 +43,6 @@ public class UserMeet implements Serializable {
         this.editBoardPermission = editBoardPermission;
     }
 
-
     @Transient
     public User getUser() {
         return userMeetPK.getUser();
@@ -58,7 +61,6 @@ public class UserMeet implements Serializable {
         userMeetPK.setMeet(meet);
     }
 
-
     @Basic
     @Column(name = "viewed")
     public boolean isViewed() {
@@ -68,4 +70,25 @@ public class UserMeet implements Serializable {
     public void setViewed(boolean viewed) {
         this.viewed = viewed;
     }
+
+    @Basic
+    @Column(name = "online")
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    @Basic
+    @Column(name = "connected")
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    } 
 }
+

@@ -8,5 +8,6 @@ import org.springframework.http.HttpStatus;
 public class BadRequestException extends BaseControllerException {
     public BadRequestException() {
         this.httpStatus = HttpStatus.BAD_REQUEST;
+        this.responseErrorMessage = new BadRequestResponseErrorMessage();
     }
 }

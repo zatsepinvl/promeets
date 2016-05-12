@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.unc6.promeets.controller.exception.BadRequestException;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.User;
@@ -49,14 +50,14 @@ public class GroupController extends BaseRestController<Group, Long> {
     }
 
 
-    @RequestMapping(value = "/{id}/user_meets", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/usermeets", method = RequestMethod.GET)
     @ResponseBody
     public List getUserMeetsByGroupIdAndTime(@PathVariable long id, @RequestParam(value = "start", required = false) Long start, @RequestParam(value = "end", required = false) Long end, @CurrentUser User user) {
         checkIsNotFoundById(id);
         if (start == null || end == null) {
-            return userMeetService.getUserMeetsByUserId(user.getUserId());
+            throw new BadRequestException();
         }
-        return (List) userMeetService.getUserMeetsByGroupIdAndTimePeriodAndUserId(id, user.getUserId(), start, end);
+        return userMeetService.getUserMeetsByGroupIdAndTimePeriodAndUserId(id, user.getUserId(), start, end);
     }
 
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
@@ -65,7 +66,7 @@ public class GroupController extends BaseRestController<Group, Long> {
         return groupService.getUsersByGroupId(id);
     }
 
-    @RequestMapping(value = "/{id}/user_groups", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/usergroups", method = RequestMethod.GET)
     public List getGroupUserGroupsById(@PathVariable long id) {
         checkIsNotFoundById(id);
         return groupService.getUserGroupsByGroupId(id);

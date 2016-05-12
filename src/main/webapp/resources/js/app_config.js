@@ -141,6 +141,11 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
+			.state('user.group.rtc',
+                {
+                    url: '/rtc',
+                    templateUrl: '/static/user/rtc.html',
+                })
             .state('user.messages',
                 {
                     url: '/messages',

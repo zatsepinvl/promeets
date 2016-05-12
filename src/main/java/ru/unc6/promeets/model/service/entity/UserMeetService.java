@@ -16,11 +16,13 @@ public interface UserMeetService extends BaseService<UserMeet, UserMeetPK> {
 
     List<UserMeet> getUserMeetsByUserId(long id);
 
+    List<UserMeet> getUserMeetsByUserIdAndTime(long id, long start, long end);
+
     List<UserMeet> getNotViewedMeetsByUserId(long id);
 
     UserMeet getUserMeetByUserIdAndMeetId(long userId, long meetId);
 
-    Iterable<Meet> getUserMeetsByGroupIdAndTimePeriodAndUserId(long groupId, long userId, long start, long end);
+    List<UserMeet> getUserMeetsByGroupIdAndTimePeriodAndUserId(long groupId, long userId, long start, long end);
 
     void createUserMeetsByMeet(Meet meet);
 
