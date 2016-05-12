@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.entity.UserMeet;
+import ru.unc6.promeets.model.entity.UserMeetPK;
 import ru.unc6.promeets.model.repository.MeetInfoRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
@@ -24,7 +25,7 @@ import ru.unc6.promeets.model.service.notification.MeetInfoNotificationService;
  */
 
 @Service
-public class MeetInfoServiceImpl extends BaseNotificatedServiceImpl<MeetInfo, Long> 
+public class MeetInfoServiceImpl extends BaseNotificatedServiceImpl<UserMeetInfo, UserMeetPK> 
         implements MeetInfoService{
     private static final Logger log = Logger.getLogger(MeetInfoServiceImpl.class);
 
@@ -42,18 +43,13 @@ public class MeetInfoServiceImpl extends BaseNotificatedServiceImpl<MeetInfo, Lo
     }
 
     @Override
-    public MeetInfo getById(Long id) {
-        return meetInfoRepository.findOne(id);
+    public List<UserMeetInfo> getByMeetId(Long meetId) {
+        return (List<UserMeetInfo>) meetInfoRepository.getByMeetId(meetId);
     }
 
     @Override
-    public List<MeetInfo> getByMeetId(Long meetId) {
-        return (List<MeetInfo>) meetInfoRepository.getByMeetId(meetId);
-    }
-
-    @Override
-    public List<MeetInfo> getOnlineByMeetId(Long meetId) {
-        return (List<MeetInfo>) meetInfoRepository.getOnlineByMeetId(meetId);
+    public List<UserMeetInfo> getOnlineByMeetId(Long meetId) {
+        return (List<UserMeetInfo>) meetInfoRepository.getOnlineByMeetId(meetId);
     }
 
     @Override
@@ -64,19 +60,19 @@ public class MeetInfoServiceImpl extends BaseNotificatedServiceImpl<MeetInfo, Lo
 
     @Override
     @Transactional
-    public List<MeetInfo> createByMeet(Meet meet) {
-        List<MeetInfo> meetInfos = new ArrayList<>();
+    public List<UserMeetInfo> createByMeet(Meet meet) {
+        List<UserMeetInfo> meetInfos = new ArrayList<>();
         for (UserMeet userMeet :userMeetRepository.getUserMeetsByMeetId(meet.getMeetId()))
         {
-            MeetInfo meetInfo = new MeetInfo();
+            UserMeetInfo meetInfo = new UserMeetInfo();
             meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
             meetInfo.setMeet(userMeet.getMeet());
             meetInfo.setUser(userMeet.getUser());
-            meetInfo.setOnline(userMeet.isOnline());
+            meetInfo.setOnline(false);
             
             meetInfos.add(meetInfo);
         }
         
-        return (List<MeetInfo>) meetInfoRepository.save(meetInfos);
+        return (List<UserMeetInfo>) meetInfoRepository.save(meetInfos);
     }
 }

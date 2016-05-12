@@ -14,7 +14,7 @@ import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
 
 @Service
@@ -42,14 +42,6 @@ public class UserMeetServiceImpl extends BaseNotificatedServiceImpl<UserMeet, Us
     @Transactional
     public UserMeet update (UserMeet userMeet)
     {
-        MeetInfo meetInfo = new MeetInfo();
-        meetInfo.setUserMeetPK(userMeet.getUserMeetPK());
-        meetInfo.setMeet(userMeet.getMeet());
-        meetInfo.setUser(userMeet.getUser());
-        meetInfo.setOnline(userMeet.isOnline());
-        meetInfo.setConnected(userMeet.isConnected());
-        meetInfoService.update(meetInfo);
-                
         return super.update(userMeet);
     }
 

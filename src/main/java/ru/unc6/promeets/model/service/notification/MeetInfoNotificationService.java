@@ -5,12 +5,12 @@
  */
 package ru.unc6.promeets.model.service.notification;
 
-import ru.unc6.promeets.model.entity.MeetInfo;
+import ru.unc6.promeets.model.entity.UserMeetInfo;
 
 /**
  *
  * @author Alex
  */
-public interface MeetInfoNotificationService extends BaseNotificationService<MeetInfo>{
+public interface MeetInfoNotificationService extends BaseNotificationService<UserMeetInfo>{
     
 }

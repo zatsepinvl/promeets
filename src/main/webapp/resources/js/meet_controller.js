@@ -4,9 +4,6 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
     $scope.notes = MeetService.getNotes();
     $scope.tasks = MeetService.getTasks();
 	
-	$scope.meetUsers = MeetService.getMeetUsers();
-	$scope.userMeet = MeetService.getUserMeet();
-	
     $scope.goBack = function () {
         $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
     };

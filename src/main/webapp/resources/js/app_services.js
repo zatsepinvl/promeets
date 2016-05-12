@@ -141,7 +141,7 @@ app.service('GroupService', function (Entity) {
     };
 });
 
-app.service('MeetService', function (Entity, UserEntity, $http) {
+app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     var value;
     var notes = [];
     var tasks = [];
@@ -149,7 +149,6 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
     var board = {};
 	
 	var meetUsers = [];
-	var currentUserMeet = {};
 	
     var page = 0;
     var meet;
@@ -180,21 +179,8 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
             .success(function (data) {
                 clone(data, cards);
             });
-		UserEntity.get({entity: "meets", id: meetId},
-        function (data) {
-            var userMeet = data;
-			userMeet.online = true;
-			UserEntity.update({entity: "meets", id: meetId}, userMeet);
-			clone(userMeet, currentUserMeet);
-        });
 		$http.get('/api/meets/'+meetId+'/info')
 			.success(function (meets) {
-				for (var i=0; i<meets.length; i++) {
-					if (meets[i].user.userId == currentUserMeet.user.userId) {
-						meets.splice(i,1);
-						break;
-					}
-				}
 				clone(meets, meetUsers);
 			});
         return value;
@@ -220,9 +206,6 @@ app.service('MeetService', function (Entity, UserEntity, $http) {
 		return meetUsers;
 	}
 	
-	this.getUserMeet = function () {
-		return currentUserMeet;
-	}
 });
 
 app.service('GroupMeetsService', function ($http) {

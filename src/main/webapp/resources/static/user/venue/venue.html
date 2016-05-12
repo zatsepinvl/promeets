@@ -37,12 +37,12 @@
 							<div>
 								<md-list-item>
 									<p>
-										<span class="venueUserListItem" ng-show="userMeet.online">
+										<span class="venueUserListItem" ng-show="currentMeetUser.online">
 										</span>
-										<img ng-src="{{userMeet.user.image.url}}" class="md-avatar"/>
-										{{ userMeet.user.firstName + ' ' + userMeet.user.lastName}}
+										<img ng-src="{{currentMeetUser.user.image.url}}" class="md-avatar"/>
+										{{ currentMeetUser.user.firstName + ' ' + currentMeetUser.user.lastName}}
 										
-										<md-icon class="md-secondary" ng-click="connect()" ng-if="currentUserMeet.connected==false">videocam</md-icon>
+										<md-icon class="md-secondary" ng-click="connect()" ng-if="currentMeetUser.connected==false">videocam</md-icon>
 									</p>
 								</md-list-item>
 								<div>

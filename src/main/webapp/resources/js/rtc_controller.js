@@ -69,8 +69,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		var meetId = $scope.meet.meetId;
 		
 		$scope.user = UserService.get();
+		
 		$scope.meetUsers = [];
-		$scope.currentUserMeet = MeetService.getUserMeet();
+		$scope.currentMeetUser = {};
 		
 		$scope.voiceEnable;
 		$scope.connected;
@@ -138,8 +139,8 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			
 		$scope.connect = function () {
 			console.log("Connecting to Audio/Video");
-			$scope.currentUserMeet.connected = true;
-			UserEntity.update({entity: "meets", id: meetId}, $scope.currentUserMeet);
+			$scope.currentMeetUser.connected = true;
+			updateUserMeetInfo();
 			createOffer();
 		}
 		
@@ -164,6 +165,10 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 						}
 						else 
 						{
+							$scope.currentMeetUser = meetUsers[i];
+							$scope.currentMeetUser.online = true;
+							updateUserMeetInfo();
+							
 							meetUsers.splice (i, 1);
 						}
 					}
@@ -312,9 +317,15 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			}
 		});
 		
+		var updateUserMeetInfo = function () {
+				$http.put('/api/users/meets/info/'+$scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
+					.success(function (data, status, headers, config) {
+					})
+		}
+		
 	////////////////////////////////////
 	
-			$scope.$on('meetinfo', function (event, message) 
+			$scope.$on('usermeetinfo', function (event, message) 
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
@@ -340,12 +351,12 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			});
 			
 			$window.onbeforeunload = function () {
-				$scope.userMeet.online = false;
-				$scope.userMeet.connected = false;
-				$http.put('/api/users/meets/'+$scope.userMeet.meet.meetId, $scope.userMeet)
-					.success(function (data, status, headers, config) {
-					})
-			}	
+				$scope.currentMeetUser.online = false;
+				$scope.currentMeetUser.connected = false;
+				updateUserMeetInfo();
+			}
+			
+
 			
 			start();
 
