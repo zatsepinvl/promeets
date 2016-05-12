@@ -7,23 +7,59 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		var SessionDescription = window.mozRTCSessionDescription || window.RTCSessionDescription;
 		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 		
-		var iceServers = [
-			{
-				urls:['stun:stun01.sipphone.com','stun:stun.ekiga.net','stun:stun.fwdnet.net','stun:stun.l.google.com:19302',
-				'stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302', 'stun:stun2.l.google.com:19302', 'stun:stun4.l.google.com:19302']
-			},
-			{
-				urls:['turn:192.158.29.39:3478?transport=udp', 'turn:192.158.29.39:3478?transport=tcp'],
-				username:'28224511:1379330808',
-				credential:'JZEOEt2V3Qb0y27GRntt2u2PAYA='
-			},
-			{
-				urls:['turn:numb.viagenie.ca'],
-				username:'muazkh',
-				credential:'webrtc@live.com'
-			}
-				
-		];
+		
+		var config = {
+			iceServers : [
+				{
+					urls:['stun:stun01.sipphone.com','stun:stun.ekiga.net','stun:stun.fwdnet.net','stun:stun.l.google.com:19302',
+					'stun:stun1.l.google.com:19302','stun:stun2.l.google.com:19302', 'stun:stun2.l.google.com:19302', 'stun:stun4.l.google.com:19302']
+				},
+				{
+					urls:['turn:192.158.29.39:3478?transport=udp', 'turn:192.158.29.39:3478?transport=tcp'],
+					username:'28224511:1379330808',
+					credential:'JZEOEt2V3Qb0y27GRntt2u2PAYA='
+				},
+				{
+					urls:['turn:numb.viagenie.ca'],
+					username:'muazkh',
+					credential:'webrtc@live.com'
+				}
+					
+			] || { iceServers:[{url:'stun:stun01.sipphone.com'},
+					{url:'stun:stun.ekiga.net'},
+					{url:'stun:stun.fwdnet.net'},
+					{url:'stun:stun.ideasip.com'},
+					{url:'stun:stun.iptel.org'},
+					{url:'stun:stun.rixtelecom.se'},
+					{url:'stun:stun.schlund.de'},
+					{url:'stun:stun.l.google.com:19302'},
+					{url:'stun:stun1.l.google.com:19302'},
+					{url:'stun:stun2.l.google.com:19302'},
+					{url:'stun:stun3.l.google.com:19302'},
+					{url:'stun:stun4.l.google.com:19302'},
+					{url:'stun:stunserver.org'},
+					{url:'stun:stun.softjoys.com'},
+					{url:'stun:stun.voiparound.com'},
+					{url:'stun:stun.voipbuster.com'},
+					{url:'stun:stun.voipstunt.com'},
+					{url:'stun:stun.voxgratia.org'},
+					{url:'stun:stun.xten.com'},
+					{
+						url: 'turn:numb.viagenie.ca',
+						credential: 'muazkh',
+						username: 'webrtc@live.com'
+					},
+					{
+						url: 'turn:192.158.29.39:3478?transport=udp',
+						credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+						username: '28224511:1379330808'
+					},
+					{
+						url: 'turn:192.158.29.39:3478?transport=tcp',
+						credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+						username: '28224511:1379330808'
+					}]}
+		};
 
 	//////////////////    SCOPE   //////////////////////////////////////
 	
@@ -62,7 +98,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				if (peerConnections[i].duserId==userId)
 				{
 					peerConnections[i].close();
-					peerConnections[i] = createPeerConnection(iceServers, i);
+					peerConnections[i] = createPeerConnection(config, i);
 					peerConnections[i].addStream(localStream);
 					return peerConnections[i];
 				}
@@ -87,26 +123,19 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			return pc;
 		}
 
-		$scope.toggleMic = function () {
-		  var audioTracks = localStream.getAudioTracks();
-		  for (var i = 0, l = audioTracks.length; i < l; i++) {
-			audioTracks[i].enabled = !audioTracks[i].enabled;
-			console.log(audioTracks[i].label + "enable = " + audioTracks[i].enabled);
-			$scope.voiceEnable = audioTracks[i].enabled;
-		  }
+		
+		$scope.muteRemoteVideo = function (index)
+		{
+			var video = document.getElementById('remoteVideo-' + index);
+			video.muted = !video.muted;
 		}
 		
-		$scope.toggleRemoteAudio = function (id) {
-			var audio = document.getElementById('remoteAudio-' + id);
-			audio.muted = !audio.muted;
-			console.log("Muted");
+		$scope.isMutedRemoteVideo = function (index) {
+			return false;
+			var video = document.getElementById('remoteVideo-' + index);
+			return video.muted;
 		}
-		
-		$scope.isMutedRemoteAudio = function (id) {
-			var audio = document.getElementById('remoteAudio-' + id);
-			return audio.muted;
-		}
-		
+			
 		$scope.connect = function () {
 			console.log("Connecting to Audio/Video");
 			$scope.currentUserMeet.connected = true;
@@ -125,7 +154,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 					var i = 0;
 					while (i<$scope.meetUsers.length)
 					{
-						var newPc = new createPeerConnection(iceServers, i);
+						var newPc = new createPeerConnection(config, i);
 						newPc.duserId = $scope.meetUsers[i].user.userId;
 						newPc.pmId = i;
 						if (newPc.duserId!=$scope.user.userId)
@@ -140,7 +169,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 					}
 					
 					navigator.getUserMedia(
-					  { audio: true, video: false}, 
+					  { audio: true, video: true}, 
 					  gotStream, 
 					  function(error) { console.log(error) }
 					);
@@ -150,6 +179,8 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		function gotStream(stream) {
 			
 			localStream = stream;
+			document.getElementById("localVideo").src = URL.createObjectURL(stream);
+			
 			var audioTracks = stream.getAudioTracks();
 				  if (audioTracks.length > 0) {
 					console.log('Using Audio device: ' + audioTracks[0].label);
@@ -159,7 +190,6 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				peerConnections[i].addStream(stream);
 			}
 			
-			alert("qd");
 			$scope.$apply();
 		}
 
@@ -174,7 +204,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 					pc.createOffer(
 						gotLocalDescriptions, 
 						function(error) { console.log(error) }, 
-						{ 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false }
+						{ 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true }
 					);
 					function gotLocalDescriptions(description)
 					{
@@ -195,7 +225,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 					gotLocalDescription(answer, userId); 
 				},
 				function(error) { console.log(error) }, 
-				{ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': false } }
+				{ 'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true } }
 		  );
 		}
 
@@ -220,7 +250,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 
 		function gotRemoteStream(event)
 		{
-			document.getElementById("remoteAudio-"+event.currentTarget.pmId).srcObject = event.streams[0];
+			document.getElementById("remoteVideo-"+event.currentTarget.pmId).srcObject = event.streams[0];
 			$scope.$apply();
 		}
 		
