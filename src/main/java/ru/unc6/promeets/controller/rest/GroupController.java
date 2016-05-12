@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Group;
+import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.GroupService;
+import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.security.CurrentUser;
 
 
 @RestController
@@ -26,6 +29,9 @@ public class GroupController extends BaseRestController<Group, Long> {
     private GroupService groupService;
 
     @Autowired
+    private UserMeetService userMeetService;
+
+    @Autowired
     public GroupController(GroupService service) {
         super(service);
         this.groupService = service;
@@ -34,7 +40,7 @@ public class GroupController extends BaseRestController<Group, Long> {
 
     @RequestMapping(value = "/{id}/meets", method = RequestMethod.GET)
     @ResponseBody
-    public List getGroupMeetsByGroupIdAndMonth(@PathVariable long id, @RequestParam(value = "start", required = false) Long start, @RequestParam(value = "end", required = false) Long end) {
+    public List getGroupMeetsByGroupIdAndTime(@PathVariable long id, @RequestParam(value = "start", required = false) Long start, @RequestParam(value = "end", required = false) Long end) {
         checkIsNotFoundById(id);
         if (start == null || end == null) {
             return groupService.getMeetsByGroupId(id);
@@ -42,6 +48,16 @@ public class GroupController extends BaseRestController<Group, Long> {
         return groupService.getMeetsByGroupIdAndTimePeriod(id, start, end);
     }
 
+
+    @RequestMapping(value = "/{id}/user_meets", method = RequestMethod.GET)
+    @ResponseBody
+    public List getUserMeetsByGroupIdAndTime(@PathVariable long id, @RequestParam(value = "start", required = false) Long start, @RequestParam(value = "end", required = false) Long end, @CurrentUser User user) {
+        checkIsNotFoundById(id);
+        if (start == null || end == null) {
+            return userMeetService.getUserMeetsByUserId(user.getUserId());
+        }
+        return (List) userMeetService.getUserMeetsByGroupIdAndTimePeriodAndUserId(id, user.getUserId(), start, end);
+    }
 
     @RequestMapping(value = "/{id}/users", method = RequestMethod.GET)
     public List getGroupUsersById(@PathVariable long id) {

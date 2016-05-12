@@ -20,6 +20,8 @@ public interface UserMeetService extends BaseService<UserMeet, UserMeetPK> {
 
     UserMeet getUserMeetByUserIdAndMeetId(long userId, long meetId);
 
+    Iterable<Meet> getUserMeetsByGroupIdAndTimePeriodAndUserId(long groupId, long userId, long start, long end);
+
     void createUserMeetsByMeet(Meet meet);
 
     void deleteUserMeetsByMeetId(long meetId);

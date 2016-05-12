@@ -9,6 +9,7 @@ import ru.unc6.promeets.model.entity.UserMeet;
 import ru.unc6.promeets.model.entity.UserMeetPK;
 import ru.unc6.promeets.model.repository.UserGroupRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
+import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
@@ -22,6 +23,8 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     private UserMeetNotificationService notificationService;
     private UserMeetRepository userMeetRepository;
 
+    @Autowired
+    private MeetService meetService;
     @Autowired
     private UserGroupRepository userGroupRepository;
 
@@ -54,18 +57,33 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     }
 
     @Override
+    public Iterable<Meet> getUserMeetsByGroupIdAndTimePeriodAndUserId(long groupId, long userId, long start, long end) {
+        return userMeetRepository.getUserMeetsByGroupIdAndUserIdAndTimePeriod(groupId, userId, start, end);
+    }
+
+    @Override
+    public UserMeet create(UserMeet entity) {
+        if (meetService.getById(entity.getMeet().getMeetId()) == null) {
+            meetService.create(entity.getMeet());
+        }
+        entity = userMeetRepository.save(entity);
+        createUserMeetsByMeet(entity.getMeet());
+        return entity;
+    }
+
+    @Override
     @Transactional
     public void createUserMeetsByMeet(Meet meet) {
-        List<UserMeet> userMeets = new ArrayList<>();
         long adminId = meet.getAdmin().getUserId();
         for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
             UserMeet userMeet = new UserMeet();
             userMeet.setUser(user);
             userMeet.setMeet(meet);
             userMeet.setViewed(user.getUserId() == adminId);
-            userMeets.add(userMeet);
+            if (user.getUserId() != adminId) {
+                super.create(userMeet);
+            }
         }
-        userMeetRepository.save(userMeets);
     }
 
     @Override

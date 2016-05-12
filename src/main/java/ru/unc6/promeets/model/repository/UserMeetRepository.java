@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
 import ru.unc6.promeets.model.entity.UserMeetPK;
@@ -32,12 +33,15 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Query("select userMeet from UserMeet userMeet where userMeet.userMeetPK.user.userId=(:userId) and userMeet.viewed=false")
     Iterable<UserMeet> getNotViewedMeetsByUserId(@Param("userId") long userId);
 
-    @Cacheable
     @Query("select userMeet from UserMeet userMeet where userMeet.id.user.userId=(:userId) and userMeet.id.meet.meetId = (:meetId)")
     UserMeet getUserMeetByUserIdAndMeetId(@Param("userId") long userId, @Param("meetId") long meetId);
 
-    @Modifying
-    @Transactional
-    @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
+    @Query("select userMeet from UserMeet userMeet where  userMeet.id.user.userId=(:userId) and userMeet.id.meet.group.groupId=(:groupId) and userMeet.id.meet.time>=(:start) and userMeet.id.meet.time<=(:end) order by userMeet.id.meet.time")
+    Iterable<Meet> getUserMeetsByGroupIdAndUserIdAndTimePeriod(@Param("groupId") long groupId, @Param("userId") long userId, @Param("start")long start, @Param("end")long end);
+
+            @Modifying
+            @Transactional
+            @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
+
     void deleteUserMeetsByMeetId(@Param("meetId") long id);
 }

@@ -13,7 +13,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
     <!-- UTF-8 encoding filter -->
@@ -28,6 +28,7 @@
             <param-name>forceEncoding</param-name>
             <param-value>true</param-value>
         </init-param>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
@@ -43,6 +44,7 @@
             <param-name>async-supported</param-name>
             <param-value>true</param-value>
         </init-param>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>

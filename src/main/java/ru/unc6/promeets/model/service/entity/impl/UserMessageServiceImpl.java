@@ -49,7 +49,9 @@ public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage,
 
     @Override
     public UserMessage create(UserMessage entity) {
-        messageService.create(entity.getMessage());
+        if (messageService.getById(entity.getMessage().getMessageId()) == null) {
+            messageService.create(entity.getMessage());
+        }
         entity = userMessageRepository.save(entity);
         onMessageCreated(entity);
         return entity;
@@ -65,7 +67,7 @@ public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage,
             userMessage.setMessage(entity.getMessage());
             userMessage.setViewed(user.getUserId() == message.getUser().getUserId());
             if (message.getUser().getUserId() != user.getUserId()) {
-                notificationService.onCreate(userMessageRepository.save(userMessage));
+                super.create(userMessage);
             }
         }
     }

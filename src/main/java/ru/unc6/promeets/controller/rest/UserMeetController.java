@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/users/meets")
-public class UserMeetsController {
+public class UserMeetController {
 
     @Autowired
     private UserMeetService userMeetService;

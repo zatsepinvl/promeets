@@ -11,7 +11,4 @@ import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.entity.MeetTask;
 
 public interface MeetService extends BaseService<Meet, Long> {
-    List<MeetNote> getMeetNotes(long id);
-
-    List<MeetTask> getMeetAims(long id);
 }
