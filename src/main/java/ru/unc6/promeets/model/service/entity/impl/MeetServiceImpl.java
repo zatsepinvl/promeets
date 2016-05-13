@@ -71,10 +71,13 @@ public class MeetServiceImpl extends BaseNotificatedServiceImpl<Meet, Long>
     public Meet create(Meet entity) {
         entity = meetRepository.save(entity);
         userMeetService.createUserMeetsByMeet(entity);
+        meetInfoService.createByMeet(entity);
         notificationService.onCreate(entity);
         Board board = new Board();
         board.setMeet(entity);
         boardService.create(board);
+        
+        
         return entity;
     }
 

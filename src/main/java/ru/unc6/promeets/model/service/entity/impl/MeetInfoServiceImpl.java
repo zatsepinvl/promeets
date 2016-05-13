@@ -69,7 +69,7 @@ public class MeetInfoServiceImpl extends BaseNotificatedServiceImpl<UserMeetInfo
             meetInfo.setMeet(userMeet.getMeet());
             meetInfo.setUser(userMeet.getUser());
             meetInfo.setOnline(false);
-            
+            meetInfo.setConnected(false);
             meetInfos.add(meetInfo);
         }
         
