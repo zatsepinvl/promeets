@@ -131,9 +131,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		}
 		
 		$scope.isMutedRemoteVideo = function (index) {
+			var video = document.getElementById('remoteVideo-' + index);
 			if (!video)
 				return false;
-			var video = document.getElementById('remoteVideo-' + index);
 			return video.muted;
 		}
 			
@@ -252,9 +252,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 
 		function gotRemoteStream(event)
 		{
-			video = document.getElementById("remoteVideo-"+event.currentTarget.pmId);
+			video = document.getElementById("remoteVideo-"+event.currentTarget.pmId);	
 			video.srcObject = event.streams[0];
-			console.log('Stream:' + event.streams[0].id + ' added');
+			video.load();
 		}
 		
 	//////////////////    CONNECTION   //////////////////////////////////////
@@ -266,28 +266,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			message.type = data.type;
 			message.duserId = duserId;
 			message.meetId = meetId
-			stompClient.send(appConst.WS.BROKER+"rtc/"+meetId, {}, JSON.stringify(message));
+			$scope.$emit('rtc', {	meetId:meetId, 
+									message:JSON.stringify(message)});
 		}
-
-		var start = function() 
-		{
-			stompClient = Stomp.over(new SockJS(appConst.WS.URL));
-			stompClient.connect("guest", "guest", createPeerConnections, stompErrorCallBack);
-			stompClient.onclose = reconnect;
-		};
-		
-		var stompErrorCallBack = function (error)
-		{
-			console.log('STOMP: ' + error);
-			console.log('STOMP: Reconecting in '+appConst.RECONNECT_TIMEOUT/1000 +' seconds');
-			reconnect();
-		};
-		
-		var reconnect = function() 
-		{
-		  setTimeout(start, appConst.WS.RECONNECT_TIMEOUT);
-		};
-	
 
 		$scope.$on('rtc/'+meetId, function (event, data) 
 		{
@@ -355,7 +336,6 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			
 
 			
-			start();
-
+			createPeerConnections();
     }
 );

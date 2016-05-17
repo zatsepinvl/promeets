@@ -1,7 +1,9 @@
 app.controller('userCtrl', function (UserService, appConst, $scope) {
-    var startListen = function () {
+    
+	var stompClient = Stomp.over(new SockJS(appConst.WS.URL));
+	
+	var startListen = function () {
         var user = UserService.get();
-        var stompClient = Stomp.over(new SockJS(appConst.WS.URL));
         stompClient.connect({},
 
             //on success -> subscribe on topic
@@ -29,5 +31,9 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
         stompClient.onClose = function () {
         }
     };
+	$scope.$on('rtc', function (event, data) {
+	  stompClient.send(appConst.WS.BROKER+"rtc/"+data.meetId, {}, data.message);
+	});
+	
     startListen();
 });
