@@ -1,0 +1,73 @@
+<div ng-controller="groupsCtrl" ng-cloak>
+    <div class="mdl-card mdl-card mdl-shadow--2dp" style="max-width: 500px; margin: auto;">
+        <!-- Invites -->
+        <md-list>
+            <md-list-item class="no-hover primary">
+                <p style="margin-left: 20px">Invites</p>
+            </md-list-item>
+            <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
+                 ng-if="state.loading">
+                <md-progress-circular md-mode="indeterminate"
+                                      md-diameter="25"
+                                      flex></md-progress-circular>
+                <p ng-if="!userGroups.length && !state.loading" style="text-align: center;" flex>No groups.</p>
+
+            </div>
+            <md-list-item ng-repeat="invite in groupInvites"
+                          class="md-2-line animation">
+                <img ng-src="{{invite.group.image.small}}" class="md-avatar"/>
+                <div class="md-list-item-text" layout="column">
+                    <h3><strong>{{invite.group.title}}</strong></h3>
+                    <p>from <strong>{{fio(invite.inviter)}}</strong></p>
+                </div>
+                <md-icon class="md-secondary"
+                         ng-click="accept(invite)"
+                         ng-if="!invite.loading">
+                    done
+                </md-icon>
+                <md-icon class="md-secondary"
+                         ng-click="cancel(invite)"
+                         ng-if="!invite.loading">
+                    clear
+                </md-icon>
+                <md-progress-circular md-mode="indeterminate"
+                                      style="margin-right: 30px"
+                                      ng-if="invite.loading"
+                                      class="animation md-secondary"
+                                      md-diameter="20">
+                </md-progress-circular>
+            </md-list-item>
+        </md-list>
+    </div>
+    <br>
+    <div class="mdl-card mdl-card mdl-shadow--2dp" style="max-width: 500px; margin: auto;">
+        <!-- Groups -->
+        <md-list>
+            <md-list-item class="no-hover primary animation">
+                <p style="margin-left: 20px">Groups</p>
+                <md-icon class="md-secondary accent"
+                         ng-click="create()">
+                    add
+                </md-icon>
+            </md-list-item>
+            <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
+                 ng-if="state.loading">
+                <md-progress-circular md-mode="indeterminate"
+                                      md-diameter="25"
+                                      flex></md-progress-circular>
+                <p ng-if="!userGroups.length && !state.loading" style="text-align: center;" flex>No groups.</p>
+
+            </div>
+            <md-list-item ng-repeat="userGroup in userGroups"
+                          class="md-2-line"
+                          ng-click="go(userGroup)">
+                <img ng-src="{{userGroup.group.image.small}}" class="md-avatar"/>
+                <div class="md-list-item-text" layout="column">
+                    <h3 ng-bind-html="userGroup.group.title"></h3>
+                    <p></p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </div>
+
+</div>

@@ -28,4 +28,9 @@ public class UserFileServiceImpl extends BaseServiceImpl<UserFile, UserFilePK>
     public List<File> getFilesByUserId(long userId) {
         return (List<File>) userFileRepository.getFilesByUserId(userId);
     }
+
+    @Override
+    public void deleteUserFileByUserIdAndFileId(long userId, long fileId) {
+        userFileRepository.deleteUserFileByUserIdAndFileId(userId, fileId);
+    }
 }

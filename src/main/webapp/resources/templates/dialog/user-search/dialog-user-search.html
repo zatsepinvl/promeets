@@ -1,0 +1,66 @@
+<md-dialog ng-cloak style="width: 360px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
+    <md-toolbar style="background-color: #ffffff; color:#424242; height:160px">
+        <div layout="column">
+            <div class="mdl-card__title">
+                Invite users
+            </div>
+            <div class="mdl-card__menu">
+                <md-icon style="bottom: 10px; color:black; cursor: pointer"
+                         ng-click="cancel()">
+                    close
+                </md-icon>
+            </div>
+            <md-list>
+                <md-list-item class="no-hover primary">
+                    <md-input-container class="md-block" md-no-float style="width: 100%">
+                        <input ng-model="searchQuery"
+                               type="text"
+                               placeholder="First name + last name or email"
+                               pressed-enter="search()"
+                               md-autofocus>
+                    </md-input-container>
+                    <md-icon class="md-secondary animation"
+                             style="color: #ef6c00;"
+                             ng-click="search()"
+                             ng-if="!loading">
+                        search
+                    </md-icon>
+                    <md-progress-circular md-mode="indeterminate"
+                                          ng-if="loading"
+                                          class="animation md-secondary"
+                                          md-diameter="15">
+                    </md-progress-circular>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <md-list ng-if="users.length" class="animation">
+            <md-list-item ng-repeat="user in users track by user.userId"
+                          class="animation">
+                <avatar user="user"></avatar>
+                <p ng-bind-html="user.firstName + ' ' + user.lastName"></p>
+                <md-button ng-disabled="user.disabled"
+                           class="md-secondary primary"
+                           ng-click="invite(user)"
+                           ng-if="!user.loading">
+                    {{user.status}}
+                </md-button>
+                <md-progress-circular md-mode="indeterminate"
+                                      style="margin-right: 36px"
+                                      ng-if="user.loading"
+                                      class="animation md-secondary"
+                                      md-diameter="15">
+                </md-progress-circular>
+            </md-list-item>
+        </md-list>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <md-button style="background-color: #f5f5f5; margin: 0 8px 0 0" flex
+                   ng-click="cancel()">
+            Back
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

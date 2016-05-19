@@ -18,11 +18,12 @@
         <mapping class="ru.unc6.promeets.model.entity.UserChat"/>
         <mapping class="ru.unc6.promeets.model.entity.UserGroup"/>
         <mapping class="ru.unc6.promeets.model.entity.Meet"/>
-        <mapping class="ru.unc6.promeets.model.entity.MeetInfo"/>
+        <mapping class="ru.unc6.promeets.model.entity.UserMeetInfo"/>
         <mapping class="ru.unc6.promeets.model.entity.Card"/>
         <mapping class="ru.unc6.promeets.model.entity.CardFile"/>
         <mapping class="ru.unc6.promeets.model.entity.CardFilePK"/>
         <mapping class="ru.unc6.promeets.model.entity.Group"/>
+        <mapping class="ru.unc6.promeets.model.entity.UserGroupInvite"/>
         <mapping class="ru.unc6.promeets.model.entity.File"/>
         <mapping class="ru.unc6.promeets.model.entity.MeetTask"/>
         <mapping class="ru.unc6.promeets.model.entity.MeetNote"/>

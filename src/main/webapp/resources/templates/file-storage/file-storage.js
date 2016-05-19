@@ -37,7 +37,16 @@ app.directive("fileStorage", function (UserEntity) {
                 });
             $scope.clicked = function (file) {
                 $scope.onClicked && $scope.onClicked(file);
-            }
+            };
+
+            $scope.delete = function (file) {
+                UserEntity.delete({entity: "files", id: file.fileId});
+                $scope.files.splice($scope.files.indexOf(file), 1);
+            };
+
+            $scope.toDayTime = function (time) {
+                return moment(time).local().format('DD MMMM YYYY');
+            };
         }
     }
 });

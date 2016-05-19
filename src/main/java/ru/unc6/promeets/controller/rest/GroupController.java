@@ -17,6 +17,8 @@ import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.GroupService;
+import ru.unc6.promeets.model.service.entity.UserGroupInviteService;
+import ru.unc6.promeets.model.service.entity.UserGroupService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.security.CurrentUser;
 
@@ -31,6 +33,9 @@ public class GroupController extends BaseRestController<Group, Long> {
 
     @Autowired
     private UserMeetService userMeetService;
+
+    @Autowired
+    private UserGroupInviteService userGroupInviteService;
 
     @Autowired
     public GroupController(GroupService service) {
@@ -80,6 +85,11 @@ public class GroupController extends BaseRestController<Group, Long> {
     @RequestMapping(value = "/{id}/chat", method = RequestMethod.GET)
     public Chat getChatByGroupId(@PathVariable("id") long groupId) {
         return getAndCheckIsNotFoundById(groupId).getChat();
+    }
+
+    @RequestMapping(value = "/{id}/invites", method = RequestMethod.GET)
+    public List getInvitedUsersByGroupId(@PathVariable("id") long groupId, @CurrentUser User user) {
+        return userGroupInviteService.getInvitedUsersByGroupId(groupId);
     }
 
 }

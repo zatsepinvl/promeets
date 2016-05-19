@@ -2,7 +2,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.AppSTOMPController;
+import ru.unc6.promeets.controller.NotificationController;
 import ru.unc6.promeets.model.entity.Board;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
@@ -18,7 +18,7 @@ import ru.unc6.promeets.model.service.notification.Notification;
 public class BoardNotificationServiceImpl extends BaseNotificationServiceImpl<Board> implements BoardNotificationService {
 
     @Autowired
-    private AppSTOMPController appSTOMPController;
+    private NotificationController notificationController;
 
     @Autowired
     private UserMeetRepository userMeetRepository;
@@ -37,7 +37,7 @@ public class BoardNotificationServiceImpl extends BaseNotificationServiceImpl<Bo
         for (UserMeet userMeet : userMeetRepository.getUserMeetsByMeetId(entity.getMeet().getMeetId())) {
             if (currentUser != null && userService.getCurrentAuthenticatedUser().getUserId() == userMeet.getUser().getUserId()) {
             } else {
-                appSTOMPController.sendNotificationToUser(notification, userMeet.getUser());
+                notificationController.sendNotificationToUser(notification, userMeet.getUser());
             }
         }
     }

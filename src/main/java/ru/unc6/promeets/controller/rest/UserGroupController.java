@@ -7,9 +7,12 @@ import ru.unc6.promeets.controller.exception.ForbiddenRequestException;
 import ru.unc6.promeets.controller.exception.ForbiddenResponseErrorMessage;
 import ru.unc6.promeets.controller.exception.NotFoundException;
 import ru.unc6.promeets.controller.exception.NotFoundResponseErrorMessage;
+import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroup;
+import ru.unc6.promeets.model.entity.UserGroupPK;
 import ru.unc6.promeets.model.service.entity.GroupService;
+import ru.unc6.promeets.model.service.entity.UserGroupInviteService;
 import ru.unc6.promeets.model.service.entity.UserGroupService;
 import ru.unc6.promeets.security.CurrentUser;
 
@@ -17,13 +20,21 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users/groups")
-public class UserGroupController {
+public class UserGroupController extends BaseUserRestController<UserGroup, UserGroupPK, Group> {
 
     @Autowired
+    private UserGroupInviteService userGroupInviteService;
+
     private UserGroupService userGroupService;
 
-    @Autowired
     private GroupService groupService;
+
+    @Autowired
+    public UserGroupController(GroupService entityService, UserGroupService userEntityService) {
+        super(entityService, userEntityService);
+        this.groupService = entityService;
+        this.userGroupService = userEntityService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List get(@CurrentUser User user) {
@@ -37,10 +48,8 @@ public class UserGroupController {
         return userGroupService.update(userGroup);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
-    public UserGroup create(@PathVariable("id") long id, @RequestBody UserGroup userGroup, @CurrentUser User user) {
-        checkIsNotFound(id);
-        checkHasAccess(userGroup, user);
+    @RequestMapping(method = RequestMethod.POST)
+    public UserGroup create(@RequestBody UserGroup userGroup, @CurrentUser User user) {
         return userGroupService.create(userGroup);
     }
 
@@ -53,7 +62,13 @@ public class UserGroupController {
         userGroupService.delete(userGroup.getUserGroupPK());
     }
 
-    private void checkHasAccess(UserGroup userGroup, User user) {
+    @RequestMapping(value = "/{id}/invites", method = RequestMethod.GET)
+    public List getUserInvitesByGroupId(@PathVariable("id") long groupId, @CurrentUser User user) {
+        return userGroupInviteService.getUserInvitesByGroupId(groupId);
+    }
+
+    @Override
+    protected void checkHasAccess(UserGroup userGroup, User user) {
         if (userGroup.getUser().equals(user)) {
             return;
         }
@@ -62,7 +77,8 @@ public class UserGroupController {
         }
     }
 
-    private void checkHasOwnerAccess(UserGroup userGroup, User user) {
+    @Override
+    protected void checkHasOwnerAccess(UserGroup userGroup, User user) {
         if (!userGroup.getUser().equals(user)) {
             throw new ForbiddenRequestException().setResponseErrorMessage(new ForbiddenResponseErrorMessage());
         }

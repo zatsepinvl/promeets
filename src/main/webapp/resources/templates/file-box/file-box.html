@@ -36,12 +36,16 @@
     }
 
 </style>
-<div class="box" ng-if="url">
+<div class="box" ng-if="file.original">
+ <!--   <md-tooltip md-direction="bottom">
+        {{file.name}}
+    </md-tooltip>-->
     <img ng-src="{{url}}"
          ng-if="isImage(file.name)"
-         ng-click="!disabled && viewImage(file,$event)"/>
-    <div ng-if="file.url && !isImage(file.name)">
-        <a ng-href="{{url}}" target="_self"
+         ng-click="!disabled && viewImage(file,$event)">
+    <div ng-if="file.original && !isImage(file.name)">
+        <a ng-href="{{file.original}}" target="_self"
+           download="{{file.name}}"
            ng-if="!disabled">
             <i class="material-icons">insert_drive_file</i>
             {{file.name}}
@@ -49,9 +53,13 @@
                 {{file.name}}
             </md-tooltip>
         </a>
-        <a ng-if="disabled">
+        <a href=""
+           ng-if="disabled">
             <i class="material-icons">insert_drive_file</i>
             {{file.name}}
+            <md-tooltip md-direction="bottom">
+                {{file.name}}
+            </md-tooltip>
         </a>
     </div>
 </div>

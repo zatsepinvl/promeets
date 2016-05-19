@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.UserMeetInfo;
-import ru.unc6.promeets.model.entity.UserMeet;
-import ru.unc6.promeets.model.entity.UserMeetPK;
+import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.MeetInfoRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
@@ -75,5 +72,13 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<UserMeetInfo, U
             meetInfos.add(meetInfo);
         }
         return (List<UserMeetInfo>) meetInfoRepository.save(meetInfos);
+    }
+
+    @Override
+    public void createMeetInfoByUserAndMeet(User user, Meet meet) {
+        UserMeetInfo userMeetInfo = new UserMeetInfo();
+        userMeetInfo.setUser(user);
+        userMeetInfo.setMeet(meet);
+        meetInfoRepository.save(userMeetInfo);
     }
 }

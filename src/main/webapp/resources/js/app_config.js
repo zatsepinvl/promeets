@@ -84,6 +84,9 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         },
                         newMessages: function (UserMessageService) {
                             return UserMessageService.load();
+                        },
+                        invites: function (UserGroupsService) {
+                            return UserGroupsService.resolveInvites();
                         }
                     }
                 })
@@ -98,6 +101,20 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                     resolve: {
                         userInfo: function (UserInfoService, $stateParams) {
                             return UserInfoService.resolve($stateParams.userId);
+                        }
+                    }
+                })
+            .state('user.calendar',
+                {
+                    url: '/calendar',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/calendar/user_calendar.html'
+                        }
+                    },
+                    resolve: {
+                        userInfo: function (UserCalendarService) {
+                            return UserCalendarService.resolve();
                         }
                     }
                 })
@@ -123,11 +140,19 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                 })
             .state('user.group.calendar',
                 {
-                    url: '/calendar',
+                    url: '/calendar?selected',
+                    params: {
+                        selected: {
+                            squash: false
+                        }
+                    },
                     templateUrl: '/static/user/group/meets/calendar.html',
                     resolve: {
                         meets: function (GroupMeetsService, $stateParams) {
-                            return GroupMeetsService.resolve($stateParams.groupId);
+                            return GroupMeetsService.resolve(
+                                $stateParams.groupId,
+                                $stateParams.selected ? parseInt($stateParams.selected) : undefined
+                            );
                         }
                     }
                 })
@@ -141,10 +166,28 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
-			.state('user.group.rtc',
+            .state('user.webrtc',
                 {
-                    url: '/rtc',
-                    templateUrl: '/static/user/rtc.html',
+                    url: '/webrtc',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/webrtc.html'
+                        }
+                    }
+                })
+            .state('user.groups',
+                {
+                    url: '/groups',
+                    views: {
+                        'body': {
+                            templateUrl: '/static/user/groups/groups.html'
+                        }
+                    },
+                    resolve: {
+                        groups: function (UserGroupsService) {
+                            return UserGroupsService.resolve();
+                        }
+                    }
                 })
             .state('user.messages',
                 {

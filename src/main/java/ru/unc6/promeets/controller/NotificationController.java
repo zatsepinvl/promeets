@@ -21,7 +21,7 @@ import ru.unc6.promeets.model.service.webrtc.WebRtcSignalService;
  */
 
 @Controller
-public class AppSTOMPController 
+public class NotificationController
 {
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;

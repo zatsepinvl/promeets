@@ -79,7 +79,7 @@ calendar > div.week > span.day {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     font-size: 0.84em;
-    font-weight:400;
+    font-weight: 400;
     text-align: center;
     height: 34px;
     line-height: 34px !important;
@@ -128,4 +128,8 @@ calendar > div.week > span.day.event {
 
 calendar > div.week.names > span {
     color: #2e7d32;
+}
+
+calendar > div.week > span.day.not-viewed {
+    background-color: #c8e6c9;
 }

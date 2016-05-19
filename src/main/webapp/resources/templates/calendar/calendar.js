@@ -19,18 +19,20 @@ app.directive("calendar", function () {
                     week.days.forEach(function (day) {
                         day.events = [];
                         $scope.model.forEach(function (event) {
-                            console.log(event);
                             if ((event.meet.time) && (day.date.isSame(event.meet.time, 'day'))) {
                                 day.events.push(event);
+                                if (!event.viewed) {
+                                    day.notViewed = true;
+                                }
                             }
                         });
-                        !$scope.load && day.isToday && $scope.select(day);
+                        !$scope.load && day.date.isSame($scope.selected, 'day') && $scope.select(day);
                     });
                 });
                 $scope.load = true;
             }, true);
 
-            $scope.selected = moment().hour(0).minute(0).second(0).millisecond(0);
+            $scope.selected = $scope.selected ? $scope.selected.hour(0).minute(0).second(0).millisecond(0) : moment().hour(0).minute(0).second(0).millisecond(0);
             $scope.month = $scope.selected.clone();
 
             var start = $scope.selected.clone();

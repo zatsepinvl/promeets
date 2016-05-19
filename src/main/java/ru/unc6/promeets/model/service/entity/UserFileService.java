@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface UserFileService extends BaseService<UserFile, UserFilePK> {
     List<File> getFilesByUserId(long userId);
+
+    void deleteUserFileByUserIdAndFileId(long userId, long fileId);
 }

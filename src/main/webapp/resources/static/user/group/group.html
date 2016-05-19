@@ -1,63 +1,55 @@
 <div ng-controller="groupCtrl" ng-cloak>
-    <div class="mdl-grid" style="padding: 0">
-        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--4-col-phone">
-        </div>
-        <div class="phone mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="margin-top: 0">
+    <div class="mdl-card mdl-card mdl-shadow--2dp" style="min-height: 0; margin: auto; max-width: 500px; height: 100%">
+        <md-toolbar style="background-color: #2e7d32;">
+            <div class="md-toolbar-tools">
+                <span>{{group.title}}</span>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="editGroup($event)">
+                    <i class="material-icons icon">
+                        edit
+                    </i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Settings">
+                    <i class="material-icons icon">
+                        exit_to_app</i>
+                </md-button>
+            </div>
+        </md-toolbar>
 
-
-            <div class="mdl-card mdl-card mdl-shadow--2dp" style="min-height: 0; height: 100%">
-                <md-toolbar style="background-color: #2e7d32;">
-                    <div class="md-toolbar-tools">
-                        <span>{{group.title}}</span>
-                        <span flex></span>
-                        <md-button class="md-icon-button" ng-click="editGroup()">
-                            <i class="material-icons icon">
-                                edit
-                            </i>
-                        </md-button>
-                        <md-button class="md-icon-button" aria-label="Settings">
-                            <i class="material-icons icon">
-                                exit_to_app</i>
-                        </md-button>
-                    </div>
-                </md-toolbar>
-
-                <!-- Group elements menu-->
-                <div class="mdl-grid" style="width: 100%;padding: 0; margin: 0">
-                    <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                        <a href="" ng-click="transitionTo('user.group.main')"
-                           style="text-decoration: none; padding: 0; margin-top: 0; margin-bottom: 0">
-                            <md-button>
-                                Group
-                            </md-button>
-                        </a>
-                    </div>
-                    <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                        <a href="" ng-click="transitionTo('user.group.calendar')" style="text-decoration: none;">
-                            <md-button>
-                                Calendar
-                            </md-button>
-                        </a>
-                    </div>
-                    <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                        <a ui-sref=".files" style="text-decoration: none;">
-                            <md-button>
-                                Storage
-                            </md-button>
-                        </a>
-                    </div>
-                    <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
-                        <a href="" ng-click="transitionTo('user.group.chat')" style="text-decoration: none;">
-                            <md-button>
-                                Chat
-                                    <span ng-if="state.messages" class="accent"> ({{state.messages}})</span>
-                            </md-button>
-                        </a>
-                    </div>
-                </div>
-                <md-divider></md-divider>
-                <div ui-view></div>
+        <!-- Group elements menu-->
+        <div class="mdl-grid" style="width: 100%;padding: 0; margin: 0">
+            <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                <a href="" ng-click="transitionTo('user.group.main')"
+                   style="text-decoration: none; padding: 0; margin-top: 0; margin-bottom: 0">
+                    <md-button>
+                        Group
+                    </md-button>
+                </a>
+            </div>
+            <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                <a href="" ng-click="transitionTo('user.group.calendar')" style="text-decoration: none;">
+                    <md-button>
+                        Calendar
+                    </md-button>
+                </a>
+            </div>
+            <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                <a ui-sref=".files" style="text-decoration: none;">
+                    <md-button>
+                        Storage
+                    </md-button>
+                </a>
+            </div>
+            <div class="no-v-margin mdl-cell mdl-cell--3-col mdl-cell--2-col-tablet mdl-cell--2-col-phone">
+                <a href="" ng-click="transitionTo('user.group.chat')" style="text-decoration: none;">
+                    <md-button>
+                        Chat
+                        <span ng-if="state.messages" class="accent"> ({{state.messages}})</span>
+                    </md-button>
+                </a>
             </div>
         </div>
+        <md-divider></md-divider>
+        <div ui-view></div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package ru.unc6.promeets.model.service.entity;
 
+import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserChat;
 import ru.unc6.promeets.model.entity.UserChatPK;
@@ -15,4 +16,6 @@ public interface UserChatService extends BaseService<UserChat, UserChatPK> {
     List<UserChat> getUserChatsByUserId(long userId);
 
     UserChat getUserChatByUserIdAndChatId(long userId, long chatId);
+
+    void createUserChatByUserAndChat(User user, Chat chat);
 }

@@ -46,4 +46,9 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Transactional
     @Query("delete from UserMeet userMeet where userMeet.userMeetPK.meet.meetId=(:meetId)")
     void deleteUserMeetsByMeetId(@Param("meetId") long id);
+
+    @Modifying
+    @Transactional
+    @Query("delete from UserMeet userMeet where userMeet.id.user.userId=(:userId) and userMeet.id.meet.meetId=(:meetId)")
+    void deleteUserMeetByUserIdAndMeetId(@Param("userId") long userId, @Param("meetId") long meetId);
 }

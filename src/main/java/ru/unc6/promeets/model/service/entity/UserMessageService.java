@@ -1,8 +1,6 @@
 package ru.unc6.promeets.model.service.entity;
 
-import ru.unc6.promeets.model.entity.Message;
-import ru.unc6.promeets.model.entity.UserMessage;
-import ru.unc6.promeets.model.entity.UserMessagePK;
+import ru.unc6.promeets.model.entity.*;
 
 import java.util.List;
 
@@ -22,4 +20,6 @@ public interface UserMessageService extends BaseService<UserMessage, UserMessage
     void deleteUserMessagesByChatId(long chatId);
 
     UserMessage getLastUserMessageByUserIdAndChatId(long userId, long chatId);
+
+    void createUserMessagesByUserAndChat(User user, Chat chat);
 }

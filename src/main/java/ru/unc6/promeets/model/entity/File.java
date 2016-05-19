@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "files")
 @XmlRootElement
 public class File implements Serializable, Cloneable {
+
     public enum ImageSize {
         SMALL,
         MEDIUM,
@@ -24,6 +25,7 @@ public class File implements Serializable, Cloneable {
     private String large;
     private String original;
     private String name;
+    private long time;
 
 
     @Id
@@ -70,6 +72,7 @@ public class File implements Serializable, Cloneable {
         file.setLarge(this.large);
         file.setOriginal(this.original);
         file.setName(this.name);
+        file.setTime(this.getTime());
         return file;
     }
 
@@ -110,7 +113,6 @@ public class File implements Serializable, Cloneable {
         this.original = original;
     }
 
-
     public void setUrlByImageSize(ImageSize size, String url) {
         switch (size) {
             case SMALL:
@@ -130,9 +132,17 @@ public class File implements Serializable, Cloneable {
         }
     }
 
+    @Column(name = "time")
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
     @Transient
-    public String getUrl()
-    {
+    public String getUrl() {
         return original;
     }
 }

@@ -15,4 +15,8 @@ public interface UserService extends BaseService<User, Long> {
     User getCurrentAuthenticatedUser();
 
     void updateCurrentAuthenticatedUser(User currentUser);
+
+    List<User> searchByFistNameAndLastName(String firstName, String lastName);
+
+    List<User> searchByEmail(String email);
 }

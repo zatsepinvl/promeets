@@ -11,6 +11,8 @@ import ru.unc6.promeets.model.service.entity.UserInfoService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CurrentUser;
 
+import java.util.List;
+
 /**
  * Created by Vladimir on 19.02.2016.
  */
@@ -23,7 +25,6 @@ public class UserController extends BaseController<User, Long> {
 
     @Autowired
     private UserInfoService userInfoService;
-
 
     private UserService userService;
 
@@ -51,7 +52,6 @@ public class UserController extends BaseController<User, Long> {
         return userInfoService.getById(getAndCheckIsNotFoundById(userId).getUserId());
     }
 
-
     @RequestMapping(value = "/{id}/info", method = RequestMethod.PUT)
     public UserInfo updateUserInfoByUserId(@PathVariable("id") long userId, @RequestBody UserInfo userInfo) {
         checkIsNotFoundById(userId);
@@ -59,4 +59,15 @@ public class UserController extends BaseController<User, Long> {
         return userInfoService.update(userInfo);
     }
 
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public List searchUsers(@RequestParam(value = "firstName", required = false, defaultValue = "") String firstName, @RequestParam(value = "lastName", required = false, defaultValue = "") String lastName, @RequestParam(value = "email", required = false) String email, @CurrentUser User user) {
+        if (email != null) {
+            return userService.searchByEmail(email);
+        } else {
+            return userService.searchByFistNameAndLastName(firstName, lastName);
+        }
+    }
 }
+
+
+

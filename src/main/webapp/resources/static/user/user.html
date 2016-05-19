@@ -30,21 +30,39 @@
                 <div class="email" ng-bind-html="user.email"></div>
             </header>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="" ui-sref="user.profile({userId:user.userId})"> <i
-                        class="material-icons">face</i>Profile</a>
-                <a class="mdl-navigation__link" href="/group"> <i class="material-icons icon">group_work</i>Groups</a>
-                <a class="mdl-navigation__link" href="/calendar"> <i class="material-icons icon">date_range</i>Calendar
-            <span class="mdl-badge"
-                  data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span></a>
-                <a class="mdl-navigation__link" href="" ng-click="go('user.messages')"> <i
-                        class="material-icons icon">
-                    message</i>
+
+                <!--Profile -->
+                <a class="mdl-navigation__link" href="" ng-click="go('user.profile',{userId:user.userId})">
+                    <i class="material-icons">face</i>
+                    Profile
+                </a>
+
+                <!--Groups -->
+                <a class="mdl-navigation__link" href="" ng-click="go('user.groups')">
+                    <i class="material-icons icon">group_work</i>
+                    Groups
+                    <span class="mdl-badge" data-badge="{{invites.length}}" ng-if="invites.length"></span>
+                </a>
+
+                <!--Calendar -->
+                <a class="mdl-navigation__link" href="" ng-click="go('user.calendar')">
+                    <i class="material-icons icon">date_range</i>
+                    Calendar
+                    <span class="mdl-badge" data-badge="{{newMeets.length}}" ng-if="newMeets.length"></span>
+                </a>
+
+                <!--Messages -->
+                <a class="mdl-navigation__link" href="" ng-click="go('user.messages')">
+                    <i class="material-icons icon">message</i>
                     Messages
-                <span class="mdl-badge"
-                      data-badge="{{newMessages.length}}" ng-if="newMessages.length"></span></a>
-                <a class="mdl-navigation__link " href="/settings"> <i class="material-icons">settings</i>Settings</a>
-                <a class="mdl-navigation__link " href="" ng-click="logout()"> <i class="material-icons">exit_to_app</i>Log
-                    out</a>
+                    <span class="mdl-badge" data-badge="{{newMessages.length}}" ng-if="newMessages.length"></span>
+                </a>
+
+                <!--Logout -->
+                <a class="mdl-navigation__link " href="" ng-click="logout()">
+                    <i class="material-icons">exit_to_app</i>
+                    Logout
+                </a>
             </nav>
         </div>
 

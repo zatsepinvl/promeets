@@ -1,8 +1,6 @@
 package ru.unc6.promeets.model.service.entity;
 
-import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.UserMeet;
-import ru.unc6.promeets.model.entity.UserMeetPK;
+import ru.unc6.promeets.model.entity.*;
 
 import java.util.List;
 
@@ -28,5 +26,8 @@ public interface UserMeetService extends BaseService<UserMeet, UserMeetPK> {
 
     void deleteUserMeetsByMeetId(long meetId);
 
+    void deleteUserMeetByUserIdAndMeetId(long userId, long meetId);
+
+    void createUserMeetsByUserAndGroup(User user, Group group);
 
 }

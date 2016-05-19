@@ -6,12 +6,11 @@
 package ru.unc6.promeets.model.service.webrtc;
 
 import java.security.Principal;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.AppSTOMPController;
+import ru.unc6.promeets.controller.NotificationController;
 import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.UserService;
 
 /**
@@ -25,7 +24,7 @@ public class WebRtcSignalServiceImpl implements WebRtcSignalService
     UserService userService;
     
     @Autowired
-    AppSTOMPController appSTOMPController;
+    NotificationController notificationController;
     
     @Override
     public void signalRTCByMeetId(WebRtcSignalMessage message, Principal principal)
@@ -33,6 +32,6 @@ public class WebRtcSignalServiceImpl implements WebRtcSignalService
         User currentUser = userService.getUserByEmail(principal.getName());
         message.setSuserId(currentUser.getUserId());
         
-        appSTOMPController.sendRtcSignalMessage(message);
+        notificationController.sendRtcSignalMessage(message);
     }
 }

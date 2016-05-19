@@ -13,8 +13,11 @@
     <span class="day">Sat</span>
 </div>
 <div class="week" ng-repeat="week in weeks">
-    <span class="day"
-          ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected)}"
+    <span class="day animation"
+          ng-class="{ 'today': day.isToday,
+                      'different-month': !day.isCurrentMonth,
+                      'selected': day.date.isSame(selected),
+                      'not-viewed': day.notViewed}"
           ng-click="select(day)" ng-repeat="day in week.days">
         <span class="event"
               ng-if="day.events.length>0"></span>

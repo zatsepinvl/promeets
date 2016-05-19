@@ -32,7 +32,6 @@ app.controller('chatController', function ($document, $scope,$rootScope, appCons
 
 
     $scope.$on('usermessage', function (event, message) {
-        console.log('FROM CHAT CONTROLLER');
         if (message.action == appConst.ACTION.CREATE && message.data.message.chat.chatId == $scope.chat.chatId) {
             $scope.messages.push(message.data);
             GroupChatService.update(message.data);

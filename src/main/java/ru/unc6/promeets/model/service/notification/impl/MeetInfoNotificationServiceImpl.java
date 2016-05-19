@@ -8,11 +8,9 @@ package ru.unc6.promeets.model.service.notification.impl;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.AppSTOMPController;
+import ru.unc6.promeets.controller.NotificationController;
 import ru.unc6.promeets.model.entity.UserMeetInfo;
-import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.MeetInfoRepository;
-import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.notification.MeetInfoNotificationService;
 import ru.unc6.promeets.model.service.notification.Notification;
 
@@ -25,7 +23,7 @@ import ru.unc6.promeets.model.service.notification.Notification;
 public class MeetInfoNotificationServiceImpl extends BaseNotificationServiceImpl<UserMeetInfo> implements MeetInfoNotificationService
 {
     @Autowired
-    AppSTOMPController appSTOMPController;
+    NotificationController notificationController;
     @Autowired
     MeetInfoRepository meetInfoRepository;
     
@@ -37,7 +35,7 @@ public class MeetInfoNotificationServiceImpl extends BaseNotificationServiceImpl
             Notification notification = new Notification(entity.getClass(), action, 
                     entity.getMeet().getMeetId());
             notification.setData(entity);
-            appSTOMPController.sendNotificationToUser(notification, meetInfo.getUser());
+            notificationController.sendNotificationToUser(notification, meetInfo.getUser());
         }
     }
 }

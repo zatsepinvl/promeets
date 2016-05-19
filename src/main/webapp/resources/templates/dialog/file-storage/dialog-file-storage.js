@@ -21,17 +21,22 @@ function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDi
     $scope.format = format;
     $scope.maxSize = maxSize;
     $scope.file = file;
-    var tempFile = file;
+
     var cloneFiles = function (from, to) {
         to.name = from.name;
         to.original = from.original;
         to.small = from.small;
         to.medium = from.medium;
         to.large = from.large;
+        to.time = from.time;
     };
+
+    cloneFiles(file, $scope.tempFile = {});
+    $scope.tempFile.fileId = file.fileId;
+
     var rollBack = function () {
-        Entity.update({entity: "files", id: tempFile.fileId}, tempFile);
-        clone(tempFile, file);
+        Entity.update({entity: "files", id: $scope.tempFile.fileId}, $scope.tempFile);
+        cloneFiles($scope.tempFile, $scope.file);
     };
 
     $scope.onClicked = function (selected) {
@@ -53,14 +58,13 @@ function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDi
         if (!$scope.file) {
             return;
         }
-        if ($scope.cleared) {
-            $scope.cleared = false;
-            return;
-        }
         $scope.cleared = true;
         $scope.loaded = false;
-        if (!uploadFile && invalidFiles) {
-            EventHandler.error('Invalid file format or too big size (max ' + maxSize + ' )');
+        if (!uploadFile && invalidFiles.length) {
+            EventHandler.error('Invalid file format or size (max ' + $scope.maxSize + ' )');
+            return;
+        }
+        else if (!uploadFile) {
             return;
         }
         $scope.progress = 0;

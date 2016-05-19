@@ -1,48 +1,20 @@
-<style>
-    .file-box {
-        display: block;
-        border: 1px dashed #2e7d32;
-        cursor: pointer;
-        margin: 2px;
-        width: 100%;
-        height: 100px;
-        overflow: hidden;
-    }
-
-    .file-box :hover {
-        border-color: #ef6c00;
-    }
-
-    .temp-box {
-        display: block;
-        width: 100%;
-        height: 300px;
-        line-height: 300px;
-        vertical-align: middle;
-        text-align: center;
-    }
-
-    .temp-box span {
-        line-height: 14px;
-        vertical-align: middle;
-        display: inline-block;
-    }
-
-    .loading {
-        position: absolute;
-        bottom: calc(50% - 15px);
-        left: calc(50% - 15px);
-    }
-
-</style>
 <div class="mdl-grid">
-
     <div class="phone mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone"
-         ng-repeat="file in files | fileFormat:format">
-        <file-box file="file" class="file-box"
-                  disabled="true"
-                  size="medium"
-                  ng-click="clicked(file)"></file-box>
+         ng-repeat="file in files | orderBy: file.time : true | fileFormat:format">
+        <div class="s-box">
+            <file-box file="file"
+                      disabled="true"
+                      size="medium"
+                      ng-click="clicked(file)">
+            </file-box>
+            <md-icon class="delete" ng-click="delete(file)">
+                cancel
+             <!--   <md-tooltip md-direction="right">
+                    Delete
+                </md-tooltip>-->
+            </md-icon>
+        </div>
+        <p class="s-time" ng-bind-html="toDayTime(file.time)"></p>
     </div>
     <div class="temp-box" ng-if="!files.length">
         <md-progress-circular md-mode="indeterminate"

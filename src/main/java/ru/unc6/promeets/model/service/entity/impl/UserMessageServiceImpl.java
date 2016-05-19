@@ -1,21 +1,20 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.model.entity.Message;
-import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.entity.UserMessage;
-import ru.unc6.promeets.model.entity.UserMessagePK;
+import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.UserMessageRepository;
 import ru.unc6.promeets.model.service.entity.MessageService;
 import ru.unc6.promeets.model.service.entity.UserMessageService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.model.service.notification.impl.UserMessageNotificationService;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -25,7 +24,10 @@ import java.util.List;
 public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage, UserMessagePK>
         implements UserMessageService {
 
-    private static final int PAGE_SIZE = 50;
+    @Value("${messages-page-size}")
+    private int PAGE_SIZE;
+
+    private static final long TIME_OFFSET = 7776000000L; //90 days
     private static final Sort PAGE_SORT = new Sort(Sort.Direction.DESC, "time");
     private static final PageRequest LAST_MESSAGE_PAGE_REQUEST = new PageRequest(0, 1);
     private UserMessageRepository userMessageRepository;
@@ -123,6 +125,17 @@ public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage,
     public UserMessage getLastUserMessageByUserIdAndChatId(long userId, long chatId) {
         Page<UserMessage> messages = userMessageRepository.getLastMessageByUserIdAndChatId(userId, chatId, LAST_MESSAGE_PAGE_REQUEST);
         return messages.getTotalElements() > 0 ? messages.getContent().get(0) : null;
+    }
+
+    @Override
+    public void createUserMessagesByUserAndChat(User user, Chat chat) {
+        for (Message message : messageService.getMessagesByChatIdAfter(chat.getChatId(), System.currentTimeMillis() - TIME_OFFSET)) {
+            UserMessage userMessage = new UserMessage();
+            userMessage.setUser(user);
+            userMessage.setViewed(true);
+            userMessage.setMessage(message);
+            userMessageRepository.save(userMessage);
+        }
     }
 
 

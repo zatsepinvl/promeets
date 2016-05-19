@@ -71,6 +71,7 @@ app.controller("cardsCtrl", function ($scope,
     };
 
     $scope.onCardFileDelete = function (file) {
+        file.original=null;
         var card = $scope.editingCard;
         Entity.remove({entity: "cards", id: card.cardId, d_entity: "files", d_id: file.fileId},
             function () {
@@ -79,7 +80,7 @@ app.controller("cardsCtrl", function ($scope,
     };
 
     $scope.onCardImageDelete = function (file) {
-        file.url = null;
+        file.original = null;
         file.name = null;
         Entity.update({entity: "files", id: file.fileId}, file);
     };

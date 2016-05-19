@@ -1,5 +1,6 @@
 <div ng-controller="groupCalendarCtrl">
     <calendar model="events"
+              selected="selectedDay"
               next-month="nextMonth"
               prev-month="prevMonth"
               day-click="dayClicked">
@@ -15,13 +16,17 @@
         </md-list-item>
         <md-list-item ng-repeat="userMeet in selected track by $index"
                       ng-click="meetClicked(userMeet.meet.meetId)"
-                      class="animation"
-                      ng-class="{new:!userMeet.viewed}"
+                      class="animation md-2-line"
+                      ng-class="{new:!userMeet.viewed || userMeet.isNew}"
                       ng-mouseover="mouseover=true"
                       ng-mouseleave="mouseover=false">
-            <img ng-src="{{userMeet.meet.admin.image.url}}" class="md-avatar"/>
-            <p style="font-size: 16px;" flex ng-bind-html="userMeet.meet.title"></p>
-            <p style="font-size: 16px;" flex ng-bind-html="toTime(userMeet.meet.time)"></p>
+            <avatar user="userMeet.meet.admin"></avatar>
+            <div class="md-list-item-text">
+                <h3 ng-bind-html="userMeet.meet.title"></h3>
+                <p  ng-bind-html="fio(userMeet.meet.admin)"></p>
+            </div>
+
+            <p style="font-size: 16px; text-align: right;" flex ng-bind-html="toTime(userMeet.meet.time)"></p>
             <md-icon class="md-secondary"
                      style="margin-bottom: 3px;"
                      ng-click="deleteMeet(userMeet,$event)"

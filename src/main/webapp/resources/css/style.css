@@ -186,8 +186,6 @@ md-list-item {
     transition: all linear 0.3s;
 }
 
-
-
 .mdl-grid {
     margin: 0;
     padding: 0;
@@ -370,7 +368,6 @@ md-switch.md-checked ._md-bar {
     background-color: #c8e6c9;
 }
 
-
 .selected {
     border: 1px solid #ef6c00;
 }
@@ -419,23 +416,20 @@ md-switch.md-checked ._md-bar {
     color: #424242;
 }
 
-span.venueUserListItem 
-{
-	position: absolute;
-    top:40px;
-    left:44px;
+span.venueUserListItem {
+    position: absolute;
+    top: 40px;
+    left: 44px;
     width: 8px;
     height: 8px;
     background-color: #ef6c00;
     border-radius: 6px;
 }
 
-.chatVideo
-{
-	 width: 100%; 
-	 right: 1em; 
-	 bottom: 1em; 
-	 border: 1px solid #333; 
-	 background: #000; 
+.chatVideo {
+    width: 100%;
+    right: 1em;
+    bottom: 1em;
+    border: 1px solid #333;
+    background: #000;
 }
-

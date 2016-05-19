@@ -1,55 +1,49 @@
 <div ng-controller="messagesCtrl" ng-cloak>
-    <div class="mdl-grid" style="padding: 0">
-        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--4-col-phone"></div>
 
-        <div class="phone mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet mdl-cell--4-col-phone" style="margin-top: 0">
-
-            <div class="mdl-card mdl-card mdl-shadow--2dp">
-                <!-- Chats -->
-                <md-list>
-                    <md-list-item class="no-hover primary">
-                        <p style="margin-left: 20px">Messages</p>
-                    </md-list-item>
-                    <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
-                         ng-if="state.loading">
-                        <md-progress-circular md-mode="indeterminate"
-                                              md-diameter="25"
-
-                                              flex></md-progress-circular>
-                        <p ng-if="!chats.length && !state.loading" style="text-align: center;" flex>No chats.</p>
-
-                    </div>
-                    <md-list-item ng-repeat="chat in chats track by chat.chat.chatId"
-                                  class="md-3-line"
-                                  ng-class="{ 'new' : chat.newMessagesCount}"
-                                  ng-click="go(chat)">
-                        <img ng-src="{{chat.chat.image.small}}" class="md-avatar"/>
-                        <div class="md-list-item-text" layout="column"
-                             ng-class="{ 'new' : !chat.lastUserMessage.viewed && chat.lastUserMessage.sender}">
-                            <avatar user="chat.lastUserMessage.message.user" min="true"
-                                    style="position: absolute; top:35px;"
-                                    ng-if="chat.lastUserMessage"></avatar>
-
-                            <h3 ng-bind-html="chat.chat.title"></h3>
-                            <h4 style="color:#2e7d32; font-size: 12px; margin-left: 40px"
-                                ng-bind-html="chat.lastUserMessage.message.user.firstName"
-                                ng-if="chat.lastUserMessage"></h4>
-                            <h4 style="color:#424242; margin-left: 40px; width: 70%"
-                                ng-bind-html="multiLine(chat.lastUserMessage.message.text)"
-                                ng-if="chat.lastUserMessage"></h4>
-                            <h4 style="color:#424242; margin-left: 40px; width: 70%" ng-if="!chat.lastUserMessage">No
-                                messages</h4>
-                            <h3 style="color:#ef6c00; position: absolute; right:20px; top:20px;"
-                                ng-bind-html="'+'+chat.newMessagesCount" ng-if="chat.newMessagesCount"></h3>
-                            <h4 style="color:#757575; font-size: 10px; position: absolute; right:20px; top:40px;"
-                                ng-bind-html="toShortDayTime(chat.lastUserMessage.message.time)"
-                                ng-if="chat.lastUserMessage"></h4>
-                        </div>
-                    </md-list-item>
-
-                </md-list>
+    <div class="mdl-card mdl-card mdl-shadow--2dp " style="max-width: 500px; margin: auto">
+        <!-- Chats -->
+        <md-list>
+            <md-list-item class="no-hover primary">
+                <p style="margin-left: 20px">Messages</p>
+            </md-list-item>
+            <div layout="row" style="margin: 20px auto 20px auto; width:40px;"
+                 ng-if="state.loading">
+                <md-progress-circular md-mode="indeterminate"
+                                      md-diameter="25"
+                                      flex></md-progress-circular>
             </div>
+            <p ng-if="!chats.length && !state.loading" style="text-align: center;" flex>No chats.</p>
+            <md-list-item ng-repeat="chat in chats track by chat.chat.chatId"
+                          class="md-3-line"
+                          ng-class="{ 'new' : chat.newMessagesCount}"
+                          ng-click="go(chat)">
+                <img ng-src="{{chat.chat.image.small}}" class="md-avatar"/>
+                <div class="md-list-item-text" layout="column"
+                     ng-class="{ 'new' : !chat.lastUserMessage.viewed && chat.lastUserMessage.sender}">
+                    <avatar user="chat.lastUserMessage.message.user" min="true"
+                            style="position: absolute; top:35px;"
+                            ng-if="chat.lastUserMessage"></avatar>
 
-        </div>
+                    <h3 ng-bind-html="chat.chat.title"></h3>
+                    <h4 style="color:#2e7d32; font-size: 12px; margin-left: 40px"
+                        ng-bind-html="chat.lastUserMessage.message.user.firstName"
+                        ng-if="chat.lastUserMessage"></h4>
+                    <h4 style="color:#424242; margin-left: 40px; width: 70%"
+                        ng-bind-html="multiLine(chat.lastUserMessage.message.text)"
+                        ng-if="chat.lastUserMessage"></h4>
+                    <h4 style="color:#424242; margin-left: 40px; width: 70%" ng-if="!chat.lastUserMessage">No
+                        messages</h4>
+                    <h3 style="color:#ef6c00; position: absolute; right:20px; top:20px;"
+                        ng-bind-html="'+'+chat.newMessagesCount" ng-if="chat.newMessagesCount"></h3>
+                    <h4 style="color:#757575; font-size: 10px; position: absolute; right:20px; top:40px;"
+                        ng-bind-html="toShortDayTime(chat.lastUserMessage.message.time)"
+                        ng-if="chat.lastUserMessage"></h4>
+                </div>
+            </md-list-item>
+
+        </md-list>
     </div>
+
+</div>
+</div>
 </div>

@@ -1,15 +1,23 @@
 <style>
 
-    md-list-item .md-avatar.min {
+    .avatar
+    {
+        width: 40px;
+        height: 40px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+        margin-right: 16px;
+        border-radius: 50%;
+        box-sizing: content-box;
+    }
+
+    .avatar.min {
         width: 30px;
         height: 30px;
     }
 
-    .empty {
-        width: 40px;
-        height: 40px;
+    .avatar.empty {
         border: 1px solid white;
-        border-radius: 50%;
         background-color: #2e7d32;
         color: white;
         font-size: 26px;
@@ -26,10 +34,10 @@
         line-height: 30px;
     }
 </style>
-<a ng-click="go(user.userId)" href="">
-    <img ng-src="{{user.image.small}}" class="md-avatar"
+<a ng-click="go(user.userId)" href="" ng-cloak>
+    <img ng-src="{{user.image.small}}" class="avatar"
          ng-class="{min:min}" ng-if="user.image.original"/>
-    <div class="md-avatar empty"
+    <div class="avatar empty"
          ng-class="{min:min}"
          ng-if="!user.image.original">{{user.firstName[0]}}
     </div>

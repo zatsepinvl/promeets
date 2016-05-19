@@ -15,4 +15,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("select userChat.userChatPK.user from UserChat userChat where  userChat.userChatPK.chat.chatId=(:chatId)")
     Iterable<User> getUsersByChatId(@Param("chatId") Long id);
+
+    @Query(value = "select user from User user where " +
+            "lower(user.firstName) like concat(:firstName,'%') " +
+            "and lower(user.lastName) like concat(:lastName,'%') order by user.firstName, user.lastName")
+    Iterable<User> findByFirstNameAndLastName(@Param("firstName") String fistName, @Param("lastName") String lastName);
+
+    User findByEmailOrderByEmail(String email);
 }

@@ -19,8 +19,6 @@ public interface GroupService extends BaseService<Group, Long> {
 
     List<Meet> getMeetsByGroupId(long id);
 
-    List<Meet> getMeetsByGroupIdAndDay(long id, long date);
-
     List<Meet> getMeetsByGroupIdAndTimePeriod(long id, long start, long end);
 
     List<GroupType> getGroupTypes();

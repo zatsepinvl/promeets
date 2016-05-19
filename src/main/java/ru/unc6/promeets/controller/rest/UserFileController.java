@@ -1,6 +1,7 @@
 package ru.unc6.promeets.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,11 @@ public class UserFileController extends BaseUserRestController<UserFile, UserFil
     @RequestMapping(method = RequestMethod.GET)
     public List<File> getAllFilesByUser(@CurrentUser User user) {
         return userFileService.getFilesByUserId(user.getUserId());
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteUserFileByFileId(@PathVariable("id") long fileId, @CurrentUser User user) {
+        userFileService.deleteUserFileByUserIdAndFileId(user.getUserId(), fileId);
     }
 
     @Override

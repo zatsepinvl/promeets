@@ -1,4 +1,5 @@
 app.controller('groupCalendarCtrl', function ($scope,
+                                              $rootScope,
                                               Entity,
                                               UserEntity,
                                               $http,
@@ -14,7 +15,7 @@ app.controller('groupCalendarCtrl', function ($scope,
     $scope.events = [];
     $scope.selected = [];
     $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
-    $scope.selectedDay = moment();
+    $scope.selectedDay = $stateParams.selected ? moment(parseInt($stateParams.selected)).local() : moment().local();
     $scope.user = UserService.get();
 
     $scope.events = GroupMeetsService.current();
@@ -33,6 +34,27 @@ app.controller('groupCalendarCtrl', function ($scope,
         $scope.selectedDay = day.date;
         $scope.meet.time = day.date;
         $scope.selected = day.events;
+        day.events.forEach(function (value) {
+            if (!value.viewed) {
+                var temp = {};
+                clone(value, temp);
+                temp.viewed = true;
+                UserEntity.update({entity: "meets", id: value.meet.meetId}, temp,
+                    function () {
+                        value.viewed = true;
+                        day.notViewed = false;
+                        $rootScope.$emit('usermeetLocal', {
+                            action: appConst.ACTION.UPDATE,
+                            data: value,
+                            id: value.meet.meetId,
+                            entity: 'usermeet'
+                        });
+                    },
+                    function (error) {
+                        EventHandler.error(error.data.message);
+                    });
+            }
+        });
     };
 
     $scope.meetClicked = function (meetId) {
@@ -72,7 +94,7 @@ app.controller('groupCalendarCtrl', function ($scope,
         var meet = userMeet.meet;
         ConfirmDialog.show('Delete meet?', 'Delete', 'Cancel', event,
             function () {
-                Entity.remove({entity: "meets", id: meet.meetId}, function () {
+                UserEntity.remove({entity: "meets", id: meet.meetId}, function () {
                         EventHandler.message('Meet has been deleted');
                         $scope.events.splice($scope.events.indexOf(userMeet), 1);
                         $scope.selected.splice($scope.selected.indexOf(userMeet), 1);
@@ -98,6 +120,13 @@ app.controller('groupCalendarCtrl', function ($scope,
 
         }
     });
+
+    $rootScope.$on('$stateChangeStart',
+        function () {
+            GroupMeetsService.current().length = 0;
+            GroupMeetsService.getNext().length = 0;
+            GroupMeetsService.getPrev().length = 0;
+        })
 });
 
 

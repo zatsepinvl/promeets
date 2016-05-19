@@ -2,7 +2,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.AppSTOMPController;
+import ru.unc6.promeets.controller.NotificationController;
 import ru.unc6.promeets.model.entity.UserChat;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.notification.UserChatNotificationService;
@@ -15,11 +15,11 @@ public class UserChatNotificationServiceImpl extends BaseNotificationServiceImpl
         implements UserChatNotificationService {
 
     @Autowired
-    private AppSTOMPController appSTOMPController;
+    private NotificationController notificationController;
 
     @Override
     protected void onAction(UserChat entity, Notification.Action action) {
-        appSTOMPController.sendNotificationToUser(new Notification()
+        notificationController.sendNotificationToUser(new Notification()
                         .setData(entity)
                         .setEntity(entity.getClass().getSimpleName().toLowerCase())
                         .setId(entity.getChat().getChatId())

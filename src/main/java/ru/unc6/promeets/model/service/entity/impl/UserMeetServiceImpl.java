@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.unc6.promeets.model.entity.Meet;
-import ru.unc6.promeets.model.entity.User;
-import ru.unc6.promeets.model.entity.UserMeet;
-import ru.unc6.promeets.model.entity.UserMeetPK;
+import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.UserGroupRepository;
 import ru.unc6.promeets.model.repository.UserMeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetService;
@@ -17,7 +14,6 @@ import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
 
 @Service
@@ -27,6 +23,7 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
 
     private UserMeetNotificationService notificationService;
     private UserMeetRepository userMeetRepository;
+
 
     @Autowired
     private MeetInfoService meetInfoService;
@@ -111,5 +108,27 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     @Override
     public void deleteUserMeetsByMeetId(long meetId) {
         userMeetRepository.deleteUserMeetsByMeetId(meetId);
+    }
+
+    @Override
+    public void deleteUserMeetByUserIdAndMeetId(long userId, long meetId) {
+        userMeetRepository.deleteUserMeetByUserIdAndMeetId(userId, meetId);
+    }
+
+    @Override
+    public void createUserMeetsByUserAndGroup(User user, Group group) {
+        long today = System.currentTimeMillis();
+        for (Meet meet : meetService.getMeetsByGroupId(group.getGroupId())) {
+            UserMeet userMeet = new UserMeet();
+            userMeet.setMeet(meet);
+            userMeet.setUser(user);
+            if (meet.getTime() < today) {
+                userMeet.setViewed(true);
+            } else {
+                userMeet.setViewed(false);
+            }
+            userMeetRepository.save(userMeet);
+            meetInfoService.createMeetInfoByUserAndMeet(user, meet);
+        }
     }
 }

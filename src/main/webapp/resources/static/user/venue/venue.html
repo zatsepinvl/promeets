@@ -123,7 +123,7 @@
                                 <p style="margin-left: 20px">Notes</p>
                                 <md-icon class="md-secondary accent"
                                          ng-click="createNote($event)">
-                                    add
+                                    note_add
                                 </md-icon>
                             </md-list-item>
 
@@ -132,7 +132,7 @@
                                           ng-mouseleave="mouseover=false"
                                           class="animation"
                                           ng-class="{new:note.isNew}">
-                                <img ng-src="{{note.user.image.url}}" class="md-avatar min">
+                                <avatar user="note.user">
                                 <p ng-bind-html="multiLine(note.value)"></p>
                                 <md-icon class="md-secondary" ng-click="removeNote(note)"
                                          ng-show="mouseover">
@@ -260,7 +260,7 @@
 
                     <!-- Content -->
                     <md-card-content ng-if="!card.editing && card.content.length">
-                        <p ng-bind-html="card.content"></p>
+                        <p ng-bind-html="multiLine(card.content)"></p>
                     </md-card-content>
 
                     <md-card-content ng-if="card.editing">

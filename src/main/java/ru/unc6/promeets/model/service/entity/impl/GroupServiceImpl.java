@@ -56,7 +56,7 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
     @Override
     public void delete(Long id) {
         userGroupService.deleteUserGroupsByGroupId(id);
-        List<Meet> meets = (List<Meet>) groupRepository.getMeetsByGroupId(id);
+        List<Meet> meets = meetService.getMeetsByGroupId(id);
         for (Meet meet : meets) {
             meetService.delete(meet.getMeetId());
         }
@@ -80,24 +80,9 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
     @Override
     public List<Meet> getMeetsByGroupId(long id) {
-        return (List<Meet>) groupRepository.getMeetsByGroupId(id);
+        return meetService.getMeetsByGroupId(id);
     }
 
-    @Override
-    public List<Meet> getMeetsByGroupIdAndDay(long id, long date) {
-        List<Meet> meets = getMeetsByGroupId(id);
-        List<Meet> temp = new ArrayList<>();
-        Calendar meetTime = Calendar.getInstance();
-        Calendar monthTime = Calendar.getInstance();
-        monthTime.setTimeInMillis(date);
-        for (Meet meet : meets) {
-            meetTime.setTimeInMillis(meet.getTime());
-            if (meetTime.get(Calendar.DAY_OF_MONTH) == monthTime.get(Calendar.DAY_OF_MONTH)) {
-                temp.add(meet);
-            }
-        }
-        return temp;
-    }
 
     @Override
     public List<Meet> getMeetsByGroupIdAndTimePeriod(long id, long start, long end) {

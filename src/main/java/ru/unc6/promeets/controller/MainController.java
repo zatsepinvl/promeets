@@ -62,4 +62,9 @@ public class MainController {
     public String profile() {
         return INDEX_PATH;
     }
+
+    @RequestMapping(value = "/webrtc")
+    public String webRTC() {
+        return INDEX_PATH;
+    }
 }

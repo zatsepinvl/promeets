@@ -13,12 +13,12 @@
 
     <md-icon class="delete" ng-click="delete(file)" style="color: #ef6c00;"
              ng-if="file.original">cancel
-        <md-tooltip md-direction="right">
+     <!--   <md-tooltip md-direction="right">
             Delete
-        </md-tooltip>
+        </md-tooltip>-->
     </md-icon>
 
-    <div class="file-box drop-box-min"
+    <div class="box drop-box-min"
          ng-if="!file.original">
         <div class="text">{{whiteSpaceText}}</div>
     </div>

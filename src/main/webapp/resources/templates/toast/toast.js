@@ -1,17 +1,18 @@
 //services
 app.service('EventHandler', function ($mdToast) {
 
-    var delay = 7000;
+    var delay = 30000;
     var dialog = {
         position: 'right bottom',
         controller: ToastCtrl,
         templateUrl: 'templates/toast/toast.html'
     };
 
-    this.setNew = function (item) {
+    this.setNew = function (item, timeOut) {
         item.isNew = true;
         setTimeout(function () {
             item.isNew = false;
+            timeOut && timeOut();
         }, 1000);
     };
 
@@ -22,20 +23,23 @@ app.service('EventHandler', function ($mdToast) {
             loading: false,
             action: false,
             image: undefined,
-            error: true
+            error: true,
+            url: undefined,
+            user: undefined
         };
         dialog.hideDelay = delay;
         $mdToast.show(dialog);
     };
 
-    this.message = function (message, user) {
+    this.message = function (message, user, url) {
         dialog.locals =
         {
             message: message,
             loading: false,
             action: false,
             user: user,
-            error: false
+            error: false,
+            url: url
         };
         dialog.hideDelay = delay;
         $mdToast.show(dialog);
@@ -48,7 +52,8 @@ app.service('EventHandler', function ($mdToast) {
             loading: true,
             action: false,
             user: undefined,
-            error: false
+            error: false,
+            url: undefined
         };
         dialog.hideDelay = 10000;
         $mdToast.show(dialog);
@@ -61,7 +66,8 @@ app.service('EventHandler', function ($mdToast) {
             loading: false,
             action: act,
             user: undefined,
-            error: false
+            error: false,
+            url: undefined
         };
         dialog.hideDelay = delay;
         $mdToast.show(dialog)
@@ -75,36 +81,34 @@ app.service('EventHandler', function ($mdToast) {
             });
     };
 
-    this.show = function (message, loading, action, duration, act, none) {
-        dialog.locals =
-        {
-            message: message,
-            loading: loading,
-            action: action,
-            user: undefined,
-            error: false
-        };
-        dialog.hideDelay = duration;
+    this.show = function (locals) {
+        dialog.locals = locals;
+        dialog.hideDelay = locals.delay ? locals.delay : delay;
         $mdToast.show(dialog)
             .then(function (response) {
                 if (response) {
-                    act && act()
+                    locals.action && locals.action()
                 }
                 else {
-                    none && none();
+                    locals.cancel && locals.cancel();
                 }
             });
     }
 });
 
 
-function ToastCtrl($scope, message, action, loading, error, user, $mdToast) {
+function ToastCtrl($scope, message, action, loading, url, error, user, $mdToast, $state) {
     $scope.message = message;
     $scope.loading = loading;
     $scope.action = action;
     $scope.user = user;
     $scope.error = error;
+    $scope.url = url;
     $scope.hide = function () {
         $mdToast.hide(action);
+    };
+
+    $scope.go = function () {
+        $state.transitionTo(url.state, url.params);
     }
 }

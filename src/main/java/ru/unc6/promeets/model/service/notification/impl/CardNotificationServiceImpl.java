@@ -2,7 +2,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.AppSTOMPController;
+import ru.unc6.promeets.controller.NotificationController;
 import ru.unc6.promeets.model.entity.Card;
 import ru.unc6.promeets.model.entity.UserMeet;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
@@ -14,7 +14,7 @@ public class CardNotificationServiceImpl extends BaseNotificationServiceImpl<Car
         implements CardNotificationService {
 
     @Autowired
-    private AppSTOMPController appSTOMPController;
+    private NotificationController notificationController;
 
     @Autowired
     private UserMeetService userMeetService;
@@ -28,7 +28,7 @@ public class CardNotificationServiceImpl extends BaseNotificationServiceImpl<Car
                 .setEntity(entity.getClass().getSimpleName().toLowerCase());
         for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(entity.getMeet().getMeetId())) {
             if (userMeet.getUser().getUserId() != entity.getUser().getUserId()) {
-                appSTOMPController.sendNotificationToUser(notification, userMeet.getUser());
+                notificationController.sendNotificationToUser(notification, userMeet.getUser());
             }
         }
     }

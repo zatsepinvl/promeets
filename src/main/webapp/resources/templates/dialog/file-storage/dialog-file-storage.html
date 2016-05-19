@@ -61,8 +61,10 @@
         <md-button style="background-color: #2e7d32; color:#fafafa; width: 100%;
                        margin: 0 8px 0 0"
                    ngf-select="upload($file,$invalidFiles)"
+                   ngf-drop="upload($file,$invalidFiles)"
                    ng-model="uploadFile" name="file"
                    ngf-accept="'{{format}}'"
+                   ngf-pattern="'{{format}}'"
                    ngf-max-size="maxSize"
                    ng-hide="loading || loaded">
             Upload new

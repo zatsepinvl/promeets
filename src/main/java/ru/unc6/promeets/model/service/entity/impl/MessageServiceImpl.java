@@ -13,6 +13,8 @@ import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.repository.MessageRepository;
 import ru.unc6.promeets.model.service.entity.MessageService;
 
+import java.util.List;
+
 @Service
 public class MessageServiceImpl extends BaseServiceImpl<Message, Long>
         implements MessageService {
@@ -25,4 +27,13 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Long>
         this.messageRepository = repository;
     }
 
+    @Override
+    public List<Message> getMessagesByChatId(long chatId) {
+        return (List<Message>) messageRepository.getMessagesByChatId(chatId);
+    }
+
+    @Override
+    public List<Message> getMessagesByChatIdAfter(long chatId, long time) {
+        return (List<Message>) messageRepository.getMessagesByChatIdAfter(chatId, time);
+    }
 }

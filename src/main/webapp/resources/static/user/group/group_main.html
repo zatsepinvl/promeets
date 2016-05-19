@@ -35,15 +35,41 @@
     <!-- Members -->
     <md-list>
         <md-list-item class="no-hover primary">
-            <p style="margin-left: 20px">Members</p>
+            <p style="margin-left: 20px">Members ({{users.length}})</p>
             <md-icon class="md-secondary accent"
-                     ng-click="createTask()">
+                     ng-click="invite()">
                 person_add
             </md-icon>
         </md-list-item>
         <md-list-item ng-repeat="user in users track by user.userId">
             <avatar user="user"></avatar>
-            <p> {{ user.firstName + ' ' + user.lastName}}</p>
+            <p ng-bind-html="fio(user)"></p>
+        </md-list-item>
+    </md-list>
+
+    <!-- Invited users -->
+    <md-list ng-if="invited.length">
+        <md-list-item class="no-hover primary">
+            <p style="margin-left: 20px">Invited users ({{invited.length}})</p>
+            <md-icon class="md-secondary accent"
+                     ng-click="showInvited()"
+                     ng-if="!show">
+                arrow_drop_down
+            </md-icon>
+            <md-icon class="md-secondary accent"
+                     ng-click="showInvited()"
+                     ng-if="show">
+                arrow_drop_up
+            </md-icon>
+        </md-list-item>
+        <md-list-item ng-repeat="invite in invited track by invite.user.userId"
+                      ng-if="show"
+                      class="md-2-line animate">
+            <avatar user="invite.user"></avatar>
+            <div class="md-list-item-text" layout="column">
+                <h3>{{fio(invite.user)}}</h3>
+                <p>by {{fio(invite.inviter)}}</p>
+            </div>
         </md-list-item>
     </md-list>
 </div>

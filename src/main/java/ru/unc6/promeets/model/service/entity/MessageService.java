@@ -7,6 +7,10 @@ package ru.unc6.promeets.model.service.entity;
 
 import ru.unc6.promeets.model.entity.Message;
 
-public interface MessageService extends BaseService<Message, Long> {
+import java.util.List;
 
+public interface MessageService extends BaseService<Message, Long> {
+    List<Message> getMessagesByChatId(long chatId);
+
+    List<Message> getMessagesByChatIdAfter(long chatId, long time);
 }

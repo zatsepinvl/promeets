@@ -13,6 +13,8 @@ import ru.unc6.promeets.model.repository.MeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 
+import java.util.List;
+
 
 @Service
 public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
@@ -35,5 +37,10 @@ public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
     public void delete(Long id) {
         userMeetService.deleteUserMeetsByMeetId(id);
         super.delete(id);
+    }
+
+    @Override
+    public List<Meet> getMeetsByGroupId(long groupId) {
+        return (List<Meet>) meetRepository.getMeetsByGroupId(groupId);
     }
 }

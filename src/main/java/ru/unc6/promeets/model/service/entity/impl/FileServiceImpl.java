@@ -1,6 +1,5 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,14 @@ import javax.servlet.ServletContext;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Vladimir on 21.04.2016.
@@ -117,6 +121,7 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
             entityFile.setLarge(entityFile.getOriginal());
         }
         entityFile.setName(multipartFile.getOriginalFilename());
+        entityFile.setTime(System.currentTimeMillis());
         File newFile = update(entityFile);
         saveUserFile(newFile, user);
         updateIfUserImage(newFile, user);
@@ -223,6 +228,13 @@ public class FileServiceImpl extends BaseServiceImpl<File, Long>
     private String saveFile(byte[] bytes) throws NoSuchAlgorithmException, IOException {
         MessageDigest digest = MessageDigest.getInstance(ALGORITHM);
         String fileName = convertByteArrayToHexString(digest.digest(bytes));
+
+        //Check does UPLOAD_REAL_FOLDER exist and create if it doesn't
+        Path path = Paths.get(servletContext.getRealPath(UPLOAD_REAL_FOLDER));
+        if (Files.notExists(path)) {
+            Files.createDirectories(path);
+        }
+
         java.io.File uploadedFile = new java.io.File(servletContext.getRealPath(UPLOAD_REAL_FOLDER) + "/" + fileName);
         BufferedOutputStream stream = null;
         FileOutputStream fileOutputStream = null;

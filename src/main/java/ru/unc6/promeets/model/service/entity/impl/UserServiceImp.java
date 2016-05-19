@@ -1,7 +1,6 @@
 package ru.unc6.promeets.model.service.entity.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +14,7 @@ import ru.unc6.promeets.model.service.entity.UserInfoService;
 import ru.unc6.promeets.model.service.entity.UserService;
 import ru.unc6.promeets.security.CustomUserDetails;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -64,6 +64,16 @@ public class UserServiceImp extends BaseServiceImpl<User, Long>
         if (authentication != null) {
             ((CustomUserDetails) authentication.getPrincipal()).setUser(currentUser);
         }
+    }
+
+    @Override
+    public List<User> searchByFistNameAndLastName(String firstName, String lastName) {
+        return (List<User>) userRepository.findByFirstNameAndLastName(firstName.toLowerCase(), lastName.toLowerCase());
+    }
+
+    @Override
+    public List<User> searchByEmail(String email) {
+        return Collections.singletonList(userRepository.findByEmailOrderByEmail(email));
     }
 
     @Override

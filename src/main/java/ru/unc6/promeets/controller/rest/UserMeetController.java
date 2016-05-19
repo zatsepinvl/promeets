@@ -23,10 +23,6 @@ public class UserMeetController {
     @Autowired
     private MeetService meetService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List getAll(@CurrentUser User user) {
-        return userMeetService.getUserMeetsByUserId(user.getUserId());
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     public UserMeet create(@CurrentUser User user, @RequestBody UserMeet userMeet) {
@@ -36,6 +32,16 @@ public class UserMeetController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserMeet getById(@PathVariable("id") long meetId, @CurrentUser User user) {
         return userMeetService.getUserMeetByUserIdAndMeetId(user.getUserId(), meetId);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public void deleteById(@PathVariable("id") long meetId, @CurrentUser User user) {
+        userMeetService.deleteUserMeetByUserIdAndMeetId(user.getUserId(), meetId);
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public List<UserMeet> getAllByUserIdAndTimePeriod(@RequestParam("start") long start, @RequestParam("end") long end, @CurrentUser User user) {
+        return userMeetService.getUserMeetsByUserIdAndTime(user.getUserId(), start, end);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

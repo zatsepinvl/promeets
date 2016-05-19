@@ -8,13 +8,14 @@
             <md-progress-circular md-mode="indeterminate"
                                   md-diameter="25"
                                   ng-if="status.loading"
+                                  class="animation"
                                   style="margin: auto"></md-progress-circular>
             <p ng-if="!messages.length && !status.loading" style="text-align: center;" flex>No messages yet.</p>
         </div>
         <md-list-item class="no-hover md-3-line"
                       ng-repeat="message in messages | orderBy : 'message.time' : false  track by $index"
                       style="min-height: 0;"
-                      ng-class="{ 'new' : (!message.viewed) && (message.sender) }"
+                      ng-class="{ 'new' : (!message.viewed) && (message.sender)}"
                       ng-mouseover="">
             <avatar user="message.message.user" min="true"></avatar>
             <div class="md-list-item-text" layout="column">
@@ -29,7 +30,7 @@
     <md-divider></md-divider>
     <md-list>
         <md-list-item class="no-hover primary">
-            <img ng-src="{{user.image.url}}" class="md-avatar min"/>
+            <avatar user="user" min="true"></avatar>
             <md-input-container class="md-block" md-no-float style="width: 100%">
                 <textarea ng-model="text" type="text" placeholder="Text"
                           style="font-size: 13px"
