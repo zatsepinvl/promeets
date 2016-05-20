@@ -138,11 +138,21 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		}
 			
 		$scope.connect = function () {
-			console.log("Connecting to Audio/Video");
-			$scope.currentMeetUser.connected = true;
-			updateUserMeetInfo();
-			createOffer();
+			
 		}
+		
+		$scope.$on('rtcConnection', function (event, message) {
+			if (message=='connect') {
+				console.log("Connecting to Audio/Video");
+				$scope.currentMeetUser.connected = true;
+				updateUserMeetInfo();
+				navigator.getUserMedia(
+					  { audio: true, video: true}, 
+					  gotStream, 
+					  function(error) { console.log(error) }
+					);	
+			}
+		});
 		
 	//////////////////    RTC   //////////////////////////////////////
 		
@@ -173,11 +183,8 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 						}
 					}
 					
-					navigator.getUserMedia(
-					  { audio: true, video: true}, 
-					  gotStream, 
-					  function(error) { console.log(error) }
-					);
+					$scope.$emit ('rtcConnection','ready');
+					
 				});
         };
 
@@ -191,6 +198,8 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			{
 				peerConnections[i].addStream(stream);
 			}
+			
+			createOffer();
 			
 			$scope.$apply();
 		}
@@ -334,8 +343,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				updateUserMeetInfo();
 			}
 			
-
-			
 			createPeerConnections();
+
     }
 );

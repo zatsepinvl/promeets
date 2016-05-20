@@ -382,7 +382,9 @@ span.venueUserListItem
 
 .chatVideo
 {
-	 width: 100%; 
+	 width: 240px; 
+	 height:180px;
+
 	 right: 1em; 
 	 bottom: 1em; 
 	 border: 1px solid #333; 

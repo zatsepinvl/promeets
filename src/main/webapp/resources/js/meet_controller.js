@@ -113,28 +113,53 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
         }
     });
 	
+	$scope.readyToConnect = false;
+	
+	$scope.$on('rtcConnection', function (event, message) {
+		if (message=='ready')
+			$scope.readyToConnect = true;
+	});
+	
+	$scope.connect = function () {
+		$scope.readyToConnect = false;
+		$scope.$broadcast('rtcConnection','connect');
+	};
+	
+
 });
 
-app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, MeetService, UserMeetService) 
+app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $window, appConst, $http) 
 {
-	$scope.meet = MeetService.get();
-    $scope.user = UserService.get();
+	$scope.meetUsers = MeetService.getMeetUsers();
+	$scope.currentMeetUser = MeetService.getCurrentMeetUser();
 			
-	$scope.$on('userMeet', function (event, message) 
-	{
-        if (message.action == appConst.ACTION.UPDATE) 
+	$scope.$on('usermeetinfo', function (event, message) {
+		if (message.action == appConst.ACTION.UPDATE) 
 		{
-            for (var i = 0; i < $scope.userMeets.length; i++)
+			if (message.data.user.userId == $scope.user.userId)
+				return;
+			for (var i = 0; i < $scope.meetUsers.length; i++)
 			{
-				if ($scope.userMeets[i].meet.meetId === message.id) {
-                        $scope.userMeets[i] = message.data;
-                        $scope.$apply();
-                        return;
-                    }
+				if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
+					$scope.meetUsers[i] = message.data;
+					$scope.$apply();
+					return;
+				}
 			}
-        }
+			
+			$scope.meetUsers.push(message.data);
+			$scope.$apply();
+		}
 		
-    });
+	});
+			
+	$window.onbeforeunload = function () {
+		$scope.currentMeetUser.online = false;
+		$scope.currentMeetUser.connected = false;
+		$http.put('/api/users/meets/info/'+$scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
+					.success(function (data, status, headers, config) {
+					})
+	}
 
 });
 
