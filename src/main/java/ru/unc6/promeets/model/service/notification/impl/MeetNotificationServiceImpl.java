@@ -25,12 +25,24 @@ public class MeetNotificationServiceImpl extends BaseNotificationServiceImpl<Mee
     UserMeetRepository userMeetRepository;
 
     @Override
+    public void onCreate(Meet entity) {
+        //
+    }
+
+    @Override
+    public void onDelete(Meet entity) {
+        //
+    }
+
+    @Override
     protected void onAction(Meet entity, Notification.Action action) {
-        Notification notification = new Notification(entity.getClass(), action, entity.getMeetId());
+        Notification notification = new Notification()
+                .setEntity(entity.getClass().getSimpleName().toLowerCase())
+                .setId(entity.getMeetId())
+                .setAction(action)
+                .setData(entity);
         for (User user : userMeetRepository.getUsersByMeetId(entity.getMeetId())) {
-            if (entity.getAdmin().getUserId() != user.getUserId()) {
-                notificationController.sendNotificationToUser(notification, user);
-            }
+            notificationController.sendNotificationToUser(notification, user);
         }
     }
 

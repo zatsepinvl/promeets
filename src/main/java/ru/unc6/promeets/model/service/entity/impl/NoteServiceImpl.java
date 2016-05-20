@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.unc6.promeets.model.entity.MeetNote;
 import ru.unc6.promeets.model.repository.NoteRepository;
 import ru.unc6.promeets.model.service.entity.NoteService;
+import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 import ru.unc6.promeets.model.service.notification.NoteNotificationService;
 
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.List;
 public class NoteServiceImpl extends BaseNotifiedServiceImpl<MeetNote, Long>
         implements NoteService {
     private NoteRepository noteRepository;
+
+    @Autowired
+    private MeetNotificationService meetNotificationService;
 
     @Autowired
     public NoteServiceImpl(NoteRepository repository, NoteNotificationService notificationService) {
@@ -31,5 +35,19 @@ public class NoteServiceImpl extends BaseNotifiedServiceImpl<MeetNote, Long>
     @Override
     public void deleteNotesByMeetId(long meetId) {
         noteRepository.deleteNotesByMeetId(meetId);
+    }
+
+    @Override
+    public MeetNote create(MeetNote entity) {
+        entity = super.create(entity);
+        meetNotificationService.onUpdate(entity.getMeet());
+        return entity;
+    }
+
+    @Override
+    public MeetNote update(MeetNote entity) {
+        entity = super.update(entity);
+        meetNotificationService.onUpdate(entity.getMeet());
+        return entity;
     }
 }

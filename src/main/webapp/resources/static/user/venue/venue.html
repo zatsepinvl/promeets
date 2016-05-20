@@ -101,7 +101,7 @@
                                           ng-class="{new:task.isNew}">
                                 <p ng-bind-html="(tasks.indexOf(task)+1)+'.'"
                                    style="width: 28px; flex: none; text-align: center"></p>
-                                <p ng-bind-html="multiLine(task.value)" style="font-size: 14px"></p>
+                                <p ng-bind-html="multiLine(task.value)" style="font-size: 12px"></p>
                                 <md-checkbox class="md-secondary accent min"
                                              ng-model="task.checked"
                                              ng-click="updateTask(task)"></md-checkbox>
@@ -123,7 +123,7 @@
                                 <p style="margin-left: 20px">Notes</p>
                                 <md-icon class="md-secondary accent"
                                          ng-click="createNote($event)">
-                                    note_add
+                                    add
                                 </md-icon>
                             </md-list-item>
 
@@ -132,8 +132,8 @@
                                           ng-mouseleave="mouseover=false"
                                           class="animation"
                                           ng-class="{new:note.isNew}">
-                                <avatar user="note.user">
-                                <p ng-bind-html="multiLine(note.value)"></p>
+                                <avatar user="note.user"></avatar>
+                                <p ng-bind-html="multiLine(note.value)"  style="font-size: 12px"></p>
                                 <md-icon class="md-secondary" ng-click="removeNote(note)"
                                          ng-show="mouseover">
                                     delete

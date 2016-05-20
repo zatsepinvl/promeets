@@ -3,7 +3,6 @@ app.controller('userCtrl', function (UserService, appConst, $scope) {
         var user = UserService.get();
         var stompClient = Stomp.over(new SockJS(appConst.WS.URL));
         stompClient.connect({},
-
             //on success -> subscribe on topic
             function () {
                 stompClient.subscribe(appConst.WS.TOPIC + user.userId, function (data) {

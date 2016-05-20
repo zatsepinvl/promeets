@@ -12,24 +12,26 @@ import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.repository.MeetRepository;
 import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 
 import java.util.List;
 
 
 @Service
-public class MeetServiceImpl extends BaseServiceImpl<Meet, Long>
+public class MeetServiceImpl extends BaseNotifiedServiceImpl<Meet, Long>
         implements MeetService {
 
     private static final Logger log = Logger.getLogger(MeetServiceImpl.class);
 
     private MeetRepository meetRepository;
 
+
     @Autowired
     private UserMeetService userMeetService;
 
     @Autowired
-    public MeetServiceImpl(MeetRepository repository) {
-        super(repository);
+    public MeetServiceImpl(MeetRepository repository, MeetNotificationService notificationService) {
+        super(repository,notificationService);
         this.meetRepository = repository;
     }
 

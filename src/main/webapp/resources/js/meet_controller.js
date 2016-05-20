@@ -13,7 +13,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
             var note = {
                 value: result,
                 user: $scope.user,
-                meet: {meetId: $scope.meet.meetId}
+                meet: $scope.meet
             };
             Entity.save({entity: "notes"}, note,
                 function (data) {
@@ -32,7 +32,7 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
                 value: result,
                 checked: false,
                 user: $scope.user,
-                meet: {meetId: $scope.meet.meetId}
+                meet: $scope.meet
             };
             Entity.save({entity: "tasks"}, task,
                 function (data) {

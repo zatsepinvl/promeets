@@ -1,7 +1,7 @@
 /**
  * Created by Vladimir on 15.03.2016.
  */
-app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventHandler, UserService, UserMeetService, UserMessageService, UserGroupsService, $state, appConst) {
+app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope, $http, EventHandler, UserService, UserMeetService, UserMessageService, UserGroupsService, $state, appConst) {
     $scope.user = UserService.get();
     var layout = document.querySelector('.mdl-layout');
 
@@ -25,10 +25,29 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
     $scope.newMessages = UserMessageService.getNewMessages();
     $scope.invites = UserGroupsService.getInvites();
 
+    $scope.$on('meet', function (event, message) {
+        if (message.action == appConst.ACTION.UPDATE) {
+            var meet = message.data;
+            if ($state.current.name == 'user.venue' && $stateParams.meetId == meet.meetId) {
+                return;
+            }
+            EventHandler.message(
+                'Meet \'' + meet.title + '\' has been updated',
+                undefined,
+                {
+                    state: 'user.group.calendar',
+                    params: {
+                        groupId: meet.group.groupId,
+                        selected: meet.time
+                    }
+                }
+            );
+        }
+    });
+
     $scope.$on('usermeet', function (event, message) {
         if (message.action == appConst.ACTION.CREATE) {
             var meet = message.data.meet;
-            console.log(meet.time);
             EventHandler.message(
                 'New meet on ' + $scope.toDayTime(meet.time),
                 meet.admin,
@@ -49,6 +68,7 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
         onMessageReceive(data);
         $scope.$apply();
     });
+
 
     $scope.$on('usergroupinvite', function (event, message) {
         if (message.action == appConst.ACTION.CREATE) {
@@ -103,16 +123,18 @@ app.controller('drawerCtrl', function ($scope, $state, $rootScope, $http, EventH
         onMeetOnline(data);
     });
 
-    var onMessageReceive = function (data) {
-        if (data.action == appConst.ACTION.CREATE) {
-            //if ($state.current.name != 'user.group.chat') {
-            $scope.newMessages.push(data.id);
-            var sender = data.data.message.user;
-            //  EventHandler.message('New message by ' + sender.firstName + ' ' + sender.lastName, sender.image.url);
-            //}
+    var onMessageReceive = function (message) {
+        if (message.action == appConst.ACTION.CREATE) {
+            $scope.newMessages.push(message.id);
+            if ($state.current.name != 'user.group.chat') {
+                var sender = message.data.message.user;
+                EventHandler.message(
+                    'New message by ' + sender.firstName + ' ' + sender.lastName,
+                    sender);
+            }
         }
-        else if (data.action == appConst.ACTION.UPDATE) {
-            $scope.newMessages.splice($scope.newMessages.indexOf(data.id), 1);
+        else if (message.action == appConst.ACTION.UPDATE) {
+            $scope.newMessages.splice($scope.newMessages.indexOf(message.id), 1);
         }
     };
 

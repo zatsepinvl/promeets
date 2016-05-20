@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.MeetTask;
 import ru.unc6.promeets.model.repository.TaskRepository;
 import ru.unc6.promeets.model.service.entity.TaskService;
+import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 import ru.unc6.promeets.model.service.notification.TaskNotificationService;
 
 import java.util.List;
@@ -15,6 +16,9 @@ import java.util.List;
 @Service
 public class TaskServiceImpl extends BaseNotifiedServiceImpl<MeetTask, Long> implements TaskService {
     private TaskRepository taskRepository;
+
+    @Autowired
+    private MeetNotificationService meetNotificationService;
 
     @Autowired
     public TaskServiceImpl(TaskRepository repository, TaskNotificationService notificationService) {
@@ -30,5 +34,19 @@ public class TaskServiceImpl extends BaseNotifiedServiceImpl<MeetTask, Long> imp
     @Override
     public void deleteTasksByMeetId(long meetId) {
         taskRepository.deleteTasksByMeetId(meetId);
+    }
+
+    @Override
+    public MeetTask create(MeetTask entity) {
+        entity = super.create(entity);
+        meetNotificationService.onCreate(entity.getMeet());
+        return entity;
+    }
+
+    @Override
+    public MeetTask update(MeetTask entity) {
+        entity = super.update(entity);
+        meetNotificationService.onCreate(entity.getMeet());
+        return entity;
     }
 }

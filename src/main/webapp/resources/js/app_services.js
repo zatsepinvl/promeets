@@ -48,7 +48,7 @@ app.service('AppService', function (appConst) {
 
     this.fio = function (user) {
         return user.firstName + ' ' + user.lastName;
-    }
+    };
 });
 
 //services
@@ -420,7 +420,6 @@ app.service('UserGroupsService', function (UserEntity) {
 
     this.resolve = function () {
         groups = [];
-        invites = [];
         var gl = true;
         var il = true;
         state.loading = true;
@@ -428,21 +427,11 @@ app.service('UserGroupsService', function (UserEntity) {
             function (data) {
                 clone(data, groups);
                 gl = false;
-                state.loading = gl || il;
+                state.loading = false;
             }, function (error) {
                 gl = false;
                 state.error = error.data;
-                state.loading = gl || il;
-            });
-        UserEntity.query({entity: 'group_invites'},
-            function (data) {
-                clone(data, invites);
-                il = false;
-                state.loading = gl || il;
-            }, function (error) {
-                il = false;
-                state.error = error.data;
-                state.loading = gl || il;
+                state.loading = false;
             });
     };
 

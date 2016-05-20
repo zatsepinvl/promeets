@@ -61,6 +61,11 @@ public class FileController {
     public File updateFile(@PathVariable("id") long fileId, @RequestBody File file) {
         File temp = fileService.getById(fileId);
         if (temp != null) {
+            if (file.getOriginal() == null) {
+                file.setSmall(null);
+                file.setMedium(null);
+                file.setLarge(null);
+            }
             return fileService.update(file);
         } else {
             throw new NotFoundException().setResponseErrorMessage(new NotFoundResponseErrorMessage());

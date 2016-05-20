@@ -11,6 +11,7 @@ import ru.unc6.promeets.model.service.entity.CardFileService;
 import ru.unc6.promeets.model.service.entity.CardService;
 import ru.unc6.promeets.model.service.entity.FileService;
 import ru.unc6.promeets.model.service.notification.CardNotificationService;
+import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -24,6 +25,10 @@ public class CardServiceImpl extends BaseNotifiedServiceImpl<Card, Long>
     private static final int PAGE_SIZE = 20;
     private CardRepository cardRepository;
     private CardNotificationService cardNotificationService;
+
+
+    @Autowired
+    private MeetNotificationService meetNotificationService;
 
     @Autowired
     private CardFileService cardFileService;
@@ -56,6 +61,13 @@ public class CardServiceImpl extends BaseNotifiedServiceImpl<Card, Long>
         cardFileService.create(cardFile);
         entity.setFiles(Collections.singletonList(file));
 
+        return entity;
+    }
+
+    @Override
+    public Card update(Card entity) {
+        entity = super.update(entity);
+        meetNotificationService.onUpdate(entity.getMeet());
         return entity;
     }
 }
