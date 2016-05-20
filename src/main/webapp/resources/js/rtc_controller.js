@@ -76,7 +76,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		$scope.voiceEnable;
 		$scope.connected;
 		
-		$scope.localStream;
+		var localStream;
 		
 		
 	//////////////////    HELPERS   //////////////////////////////////////
@@ -100,7 +100,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				{
 					peerConnections[i].close();
 					peerConnections[i] = createPeerConnection(config, i);
-					peerConnections[i].addStream($scope.localStream);
+					peerConnections[i].addStream(localStream);
 					return peerConnections[i];
 				}
 			}
@@ -135,10 +135,6 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			if (!video)
 				return false;
 			return video.muted;
-		}
-			
-		$scope.connect = function () {
-			
 		}
 		
 		$scope.$on('rtcConnection', function (event, message) {
@@ -190,7 +186,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 
 		function gotStream(stream) {
 			
-			$scope.localStream = stream;
+			localStream = stream;
 			$scope.$apply();
 			document.getElementById("localVideo").src = URL.createObjectURL(stream);
 			
@@ -316,7 +312,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
-					if ((!message.data.online || !message.data.connected) && $scope.localStream)
+					if ((!message.data.online || !message.data.connected) && localStream)
 					{
 						resetPeerConnection(message.data.user.userId);
 					}

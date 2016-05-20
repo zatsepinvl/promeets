@@ -74,12 +74,7 @@
 										<img ng-src="{{meetUser.user.image.url}}" class="md-avatar"/>
 										{{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
 									</p>
-									<md-icon class="md-secondary" ng-if="!isMutedRemoteVideo($index) && meetUser.connected && currentMeetUser.connected" ng-click="muteRemoteVideo($index)">mic</md-icon>
-									<md-icon class="md-secondary" ng-if="isMutedRemoteVideo($index) && meetUser.connected && currentMeetUser.connected" ng-click="muteRemoteVideo($index)">mic_off</md-icon>
 								</md-list-item>
-								<div ng-show="meetUser.connected && currentMeetUser.connected">
-									<video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}" autoplay preload="none"/>
-								</div>
 							</div>
                         </md-list>
                     </div>
