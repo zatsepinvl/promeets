@@ -28,6 +28,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(value = BaseControllerException.class)
     @ResponseBody
     public ResponseEntity<ResponseErrorMessage> handleControllerException(BaseControllerException ex) {
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(ex.getResponseErrorMessage(), ex.getHttpStatus());
     }
 

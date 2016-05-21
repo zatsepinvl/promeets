@@ -27,11 +27,9 @@ public class WebRtcSignalServiceImpl implements WebRtcSignalService
     NotificationController notificationController;
     
     @Override
-    public void signalRTCByMeetId(WebRtcSignalMessage message, Principal principal)
+    public void signalRTCByMeetId(WebRtcSignalMessage message, User currentUser)
     {
-        User currentUser = userService.getUserByEmail(principal.getName());
         message.setSuserId(currentUser.getUserId());
-        
         notificationController.sendRtcSignalMessage(message);
     }
 }

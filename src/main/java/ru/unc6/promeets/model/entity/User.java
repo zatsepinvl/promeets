@@ -81,10 +81,8 @@ public class User implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         User user = (User) o;
-
-        if (userId != user.userId) return false;
+        return userId == user.userId;
       /*  if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
@@ -93,7 +91,6 @@ public class User implements Serializable {
         if (address != null ? !address.equals(user.address) : user.address != null) return false;
         if (company != null ? !company.equals(user.company) : user.company != null) return false;
         if (position != null ? !position.equals(user.position) : user.position != null) return false;*/
-        return true;
     }
 
     @ManyToOne
@@ -108,8 +105,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = (int) (userId ^ (userId >>> 32));
-       /* result = 31 * result + (email != null ? email.hashCode() : 0);
+        /* result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
@@ -117,7 +113,7 @@ public class User implements Serializable {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (company != null ? company.hashCode() : 0);
         result = 31 * result + (position != null ? position.hashCode() : 0);*/
-        return result;
+        return (int) (userId ^ (userId >>> 32));
     }
 
 }

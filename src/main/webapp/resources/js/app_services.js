@@ -165,10 +165,10 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     var tasks = [];
     var cards = [];
     var board = {};
-	
-	var meetUsers = [];
-	var currentMeetUser = {};
-	var user = UserService.get();
+
+    var meetUsers = [];
+    var currentMeetUser = {};
+    var user = UserService.get();
 
     var page = 0;
     var meet;
@@ -179,6 +179,7 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
         tasks.length = 0;
         cards.length = 0;
         meet = meetId;
+
         Entity.get({entity: "meets", id: meetId},
             function (meet) {
                 clone(meet, value);
@@ -187,34 +188,37 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
             function (err) {
                 error && error(err);
             });
+
         Entity.query({entity: "meets", id: meetId, d_entity: "notes"},
             function (data) {
                 clone(data, notes);
             });
+
         Entity.query({entity: "meets", id: meetId, d_entity: "tasks"},
             function (data) {
                 clone(data, tasks)
             });
+
         $http.get('/api/meets/' + meetId + '/cards?page=' + page)
             .success(function (data) {
                 clone(data, cards);
             });
-		$http.get('/api/meets/'+meetId+'/info')
-			.success(function (data) {
-					for (var i=0;i<data.length; i++)
-					{
-						if (data[i].user.userId==user.userId) {
-							data[i].online = true;
-							updateUserMeetInfo(data[i]);
-							clone(data[i], currentMeetUser);
-							data.splice(i,1);
-							success && success(data);
-						}
-							
-					}
-				clone(data, meetUsers);
-				success && success(data);
-			});
+
+        meetUsers.length = 0;
+        $http.get('/api/meets/' + meetId + '/info')
+            .success(function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].user.userId == user.userId) {
+                        data[i].online = true;
+                        updateUserMeetInfo(data[i]);
+                        clone(data[i], currentMeetUser);
+                        success && success(data);
+                    }
+                    else {
+                        meetUsers.push(data[i]);
+                    }
+                }
+            });
         return value;
     };
 
@@ -233,24 +237,24 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     this.getCards = function () {
         return cards;
     };
-	
-	this.getMeetUsers = function () {
-		return meetUsers;
-	};
-	
-	this.getCurrentMeetUser = function () {
-		return currentMeetUser;
-	};
-	
-	this.updateUserMeetInfo = function () {
-		updateUserMeetInfo();
-	};
-	
-	updateUserMeetInfo = function (meetUser) {
-		$http.put('/api/users/meets/info/'+meetUser.meet.meetId, meetUser)
-			.success(function (data, status, headers, config) {
-		});
-	}
+
+    this.getMeetUsers = function () {
+        return meetUsers;
+    };
+
+    this.getCurrentMeetUser = function () {
+        return currentMeetUser;
+    };
+
+    this.updateUserMeetInfo = function () {
+        updateUserMeetInfo();
+    };
+
+    var updateUserMeetInfo = function (meetUser) {
+        $http.put('/api/users/meets/info/' + meetUser.meet.meetId, meetUser)
+            .success(function (data, status, headers, config) {
+            });
+    }
 
 });
 

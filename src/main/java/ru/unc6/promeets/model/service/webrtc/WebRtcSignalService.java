@@ -14,5 +14,5 @@ import ru.unc6.promeets.model.entity.User;
  */
 public interface WebRtcSignalService 
 {
-    public void signalRTCByMeetId(WebRtcSignalMessage message, Principal principal);
+    void signalRTCByMeetId(WebRtcSignalMessage message, User user);
 }

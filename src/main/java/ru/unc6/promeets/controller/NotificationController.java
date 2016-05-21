@@ -15,6 +15,7 @@ import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalMessage;
 import ru.unc6.promeets.model.service.webrtc.WebRtcSignalService;
+import ru.unc6.promeets.security.CurrentUser;
 
 /**
  * @author MDay
@@ -25,8 +26,7 @@ public class NotificationController
 {
     @Autowired 
     private SimpMessagingTemplate simpMessagingTemplate;
-    
-    
+
     @Autowired
     private WebRtcSignalService rtcSignalService;
 
@@ -37,9 +37,9 @@ public class NotificationController
     }
     
     @MessageMapping("/rtc/{id}")
-    public void rtc(WebRtcSignalMessage message, Principal principal) 
+    public void rtc(WebRtcSignalMessage message, @CurrentUser User user)
     {
-        rtcSignalService.signalRTCByMeetId(message, principal);
+        rtcSignalService.signalRTCByMeetId(message, user);
     }
     
     public void sendNotificationToUser (Notification notification, User user)
