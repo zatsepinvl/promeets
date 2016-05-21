@@ -17,17 +17,12 @@ app.service('EditGroupDialogService', function (DialogService) {
 
 
 function EditGroupDialogCtrl($scope, group, Entity, $mdDialog) {
-    $scope.group = {};
-    clone(group, $scope.group);
+    clone(group, $scope.group = {});
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
 
     $scope.save = function () {
-        group.title = $scope.group.title;
-        group.status = $scope.group.status;
-        group.type = {typeId: $scope.group.type.typeId, name: $scope.group.type.name};
-        Entity.update({entity: "groups", id: group.groupId}, group);
-        $mdDialog.hide();
+        $mdDialog.hide($scope.group);
     };
 }

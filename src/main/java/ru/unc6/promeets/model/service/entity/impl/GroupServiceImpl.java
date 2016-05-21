@@ -5,25 +5,32 @@
  */
 package ru.unc6.promeets.model.service.entity.impl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.*;
 import ru.unc6.promeets.model.repository.GroupRepository;
-import ru.unc6.promeets.model.service.entity.ChatService;
-import ru.unc6.promeets.model.service.entity.GroupService;
-import ru.unc6.promeets.model.service.entity.MeetService;
-import ru.unc6.promeets.model.service.entity.UserGroupService;
+import ru.unc6.promeets.model.service.entity.*;
 
 @Service
 @Transactional
 public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
         implements GroupService {
+
+    @Value("${default-group-image-original}")
+    private String defaultGroupImageOriginal;
+    @Value("${default-group-image-large}")
+    private String defaultGroupImageLarge;
+    @Value("${default-group-image-medium}")
+    private String defaultGroupImageMedium;
+    @Value("${default-group-image-small}")
+    private String defaultGroupImageSmall;
+    @Value("${default-group-image-name}")
+    private String defaultGroupImageName;
 
     private static final long day = 1000 * 60 * 60 * 24;
     private static final long month = day * 30;
@@ -39,7 +46,14 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
     private MeetService meetService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private FileService fileService;
+
 
     @Autowired
     public GroupServiceImpl(GroupRepository repository) {
@@ -50,7 +64,22 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
     @Override
     public Group create(Group group) {
+        group.setChat(chatService.create(new Chat()));
+        group.setTime(System.currentTimeMillis());
+        group.setAdmin(userService.getCurrentAuthenticatedUser());
+        group.setImage(getDefaultImage());
         return groupRepository.save(group);
+    }
+
+    private File getDefaultImage() {
+        File file = new File();
+        file.setOriginal(defaultGroupImageOriginal);
+        file.setLarge(defaultGroupImageLarge);
+        file.setMedium(defaultGroupImageMedium);
+        file.setSmall(defaultGroupImageSmall);
+        file.setName(defaultGroupImageName);
+        file.setTime(System.currentTimeMillis());
+        return fileService.create(file);
     }
 
     @Override

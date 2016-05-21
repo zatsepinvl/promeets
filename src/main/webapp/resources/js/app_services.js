@@ -146,6 +146,7 @@ app.service('GroupService', function (Entity, UserEntity) {
 
         return value;
     };
+
     this.get = function () {
         return value;
     };

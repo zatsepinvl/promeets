@@ -1,13 +1,7 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Vladimir on 30.01.2016.
@@ -18,10 +12,8 @@ public class Group implements Serializable {
     private long groupId;
     private String title;
     private String status;
-    private Timestamp createdTime;
+    private long time;
     private Chat chat;
-    private List<UserGroup> users;
-    private GroupType type;
     private File image;
     private User admin;
 
@@ -57,13 +49,13 @@ public class Group implements Serializable {
     }
 
     @Basic
-    @Column(name = "created_time", nullable = false)
-    public Timestamp getCreatedTime() {
-        return createdTime;
+    @Column(name = "time", nullable = false)
+    public long getTime() {
+        return time;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
-        this.createdTime = createdTime;
+    public void setTime(long createdTime) {
+        this.time = createdTime;
     }
 
     @Override
@@ -74,9 +66,9 @@ public class Group implements Serializable {
         Group group = (Group) o;
 
         if (groupId != group.groupId) return false;
+        if (time != group.time) return false;
         if (title != null ? !title.equals(group.title) : group.title != null) return false;
         if (status != null ? !status.equals(group.status) : group.status != null) return false;
-        if (createdTime != null ? !createdTime.equals(group.createdTime) : group.createdTime != null) return false;
 
         return true;
     }
@@ -86,32 +78,14 @@ public class Group implements Serializable {
         int result = (int) (groupId ^ (groupId >>> 32));
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (createdTime != null ? createdTime.hashCode() : 0);
+        result = 31 * result + (int) (time ^ (time >>> 32));
         return result;
     }
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "userGroupPK.group")
-    public List<UserGroup> getUsers() {
-        return users;
-    }
 
-    public void setUsers(List<UserGroup> users) {
-        this.users = users;
-    }
 
     @ManyToOne
-    @JoinColumn(name = "type_id", referencedColumnName = "type_id", nullable = false)
-    public GroupType getType() {
-        return type;
-    }
-
-    public void setType(GroupType type) {
-        this.type = type;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "image_id", referencedColumnName = "file_id", nullable = false)
+    @JoinColumn(name = "image_id", referencedColumnName = "file_id")
     public File getImage() {
         return image;
     }

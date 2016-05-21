@@ -1,7 +1,8 @@
-app.controller('groupsCtrl', function ($scope, $state, UserService, UserGroupsService, UserEntity) {
+app.controller('groupsCtrl', function ($scope, $state, UserService, EditGroupDialogService, UserGroupsService, UserEntity, EventHandler) {
     $scope.userGroups = UserGroupsService.getGroups();
     $scope.groupInvites = UserGroupsService.getInvites();
     $scope.state = UserGroupsService.getState();
+    $scope.user=UserService.get();
 
     $scope.accept = function (invite) {
         invite.loading = true;
@@ -30,5 +31,17 @@ app.controller('groupsCtrl', function ($scope, $state, UserService, UserGroupsSe
 
     $scope.go = function (userGroup) {
         $state.transitionTo('user.group.main', {groupId: userGroup.group.groupId});
-    }
+    };
+
+    $scope.create = function (event) {
+        EditGroupDialogService.show($scope.group, event,
+            function (group) {
+                var userGroup = {user: $scope.user, group: group};
+                UserEntity.save({entity: 'groups'}, userGroup,
+                    function () {
+                        EventHandler.message('Group has been created');
+                        $scope.userGroups.push(userGroup);
+                    });
+            });
+    };
 });
