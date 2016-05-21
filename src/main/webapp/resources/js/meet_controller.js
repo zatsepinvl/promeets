@@ -133,22 +133,40 @@ app.controller("meetCtrl", function ($scope, appConst, Entity, $state, UserServi
 
 });
 
-app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $http, UserService, UserMeetService) {
-    $scope.meet = MeetService.get();
-    $scope.user = UserService.get();
 
-    $scope.$on('userMeet', function (event, message) {
-        if (message.action == appConst.ACTION.UPDATE) {
-            for (var i = 0; i < $scope.userMeets.length; i++) {
-                if ($scope.userMeets[i].meet.meetId === message.id) {
-                    $scope.userMeets[i] = message.data;
-                    $scope.$apply();
-                    return;
-                }
-            }
-        }
 
-    });
+app.controller("meetUsersCtrl", function ($scope, UserEntity, MeetService, $window, appConst, $http) 
+{
+	$scope.meetUsers = MeetService.getMeetUsers();
+	$scope.currentMeetUser = MeetService.getCurrentMeetUser();
+			
+	$scope.$on('usermeetinfo', function (event, message) {
+		if (message.action == appConst.ACTION.UPDATE) 
+		{
+			if (message.data.user.userId == $scope.user.userId)
+				return;
+			for (var i = 0; i < $scope.meetUsers.length; i++)
+			{
+				if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
+					$scope.meetUsers[i] = message.data;
+					$scope.$apply();
+					return;
+				}
+			}
+			
+			$scope.meetUsers.push(message.data);
+			$scope.$apply();
+		}
+		
+	});
+			
+	$window.onbeforeunload = function () {
+		$scope.currentMeetUser.online = false;
+		$scope.currentMeetUser.connected = false;
+		$http.put('/api/users/meets/info/'+$scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
+					.success(function (data, status, headers, config) {
+					})
+	}
 
 });
 

@@ -426,6 +426,7 @@ span.venueUserListItem {
     border-radius: 6px;
 }
 
+<<<<<<< HEAD
 .chatVideo {
     width: 100%;
     right: 1em;
@@ -433,3 +434,15 @@ span.venueUserListItem {
     border: 1px solid #333;
     background: #000;
 }
+=======
+.chatVideo
+{
+	 width: 240px; 
+	 height:180px;
+
+	 right: 1em; 
+	 bottom: 1em; 
+	 border: 1px solid #333; 
+	 background: #000; 
+}
+>>>>>>> origin/zam_dev

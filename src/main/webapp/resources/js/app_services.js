@@ -164,9 +164,12 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     var notes = [];
     var tasks = [];
     var cards = [];
+    var board = {};
+	
+	var meetUsers = [];
+	var currentMeetUser = {};
+	var user = UserService.get();
 
-    var meetUsers = [];
-    var currentUserMeet = {};
     var page = 0;
     var meet;
 
@@ -196,10 +199,22 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
             .success(function (data) {
                 clone(data, cards);
             });
-        $http.get('/api/meets/' + meetId + '/info')
-            .success(function (meets) {
-                clone(meets, meetUsers);
-            });
+		$http.get('/api/meets/'+meetId+'/info')
+			.success(function (data) {
+					for (var i=0;i<data.length; i++)
+					{
+						if (data[i].user.userId==user.userId) {
+							data[i].online = true;
+							updateUserMeetInfo(data[i]);
+							clone(data[i], currentMeetUser);
+							data.splice(i,1);
+							success && success(data);
+						}
+							
+					}
+				clone(data, meetUsers);
+				success && success(data);
+			});
         return value;
     };
 
@@ -218,10 +233,24 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
     this.getCards = function () {
         return cards;
     };
-
-    this.getMeetUsers = function () {
-        return meetUsers;
-    };
+	
+	this.getMeetUsers = function () {
+		return meetUsers;
+	};
+	
+	this.getCurrentMeetUser = function () {
+		return currentMeetUser;
+	};
+	
+	this.updateUserMeetInfo = function () {
+		updateUserMeetInfo();
+	};
+	
+	updateUserMeetInfo = function (meetUser) {
+		$http.put('/api/users/meets/info/'+meetUser.meet.meetId, meetUser)
+			.success(function (data, status, headers, config) {
+		});
+	}
 
 });
 

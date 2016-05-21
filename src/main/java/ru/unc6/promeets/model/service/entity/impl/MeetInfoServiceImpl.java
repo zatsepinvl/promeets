@@ -60,7 +60,6 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<UserMeetInfo, U
 
     @Override
     @Transactional
-    @Async
     public List<UserMeetInfo> createByMeet(Meet meet) {
         List<UserMeetInfo> meetInfos = new ArrayList<>();
         for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(meet.getMeetId())) {
@@ -69,6 +68,7 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<UserMeetInfo, U
             meetInfo.setMeet(userMeet.getMeet());
             meetInfo.setUser(userMeet.getUser());
             meetInfo.setOnline(false);
+            meetInfo.setConnected(false);
             meetInfos.add(meetInfo);
         }
         return (List<UserMeetInfo>) meetInfoRepository.save(meetInfos);
@@ -79,6 +79,8 @@ public class MeetInfoServiceImpl extends BaseNotifiedServiceImpl<UserMeetInfo, U
         UserMeetInfo userMeetInfo = new UserMeetInfo();
         userMeetInfo.setUser(user);
         userMeetInfo.setMeet(meet);
+        userMeetInfo.setOnline(false);
+        userMeetInfo.setConnected(false);
         meetInfoRepository.save(userMeetInfo);
     }
 }

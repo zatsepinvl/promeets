@@ -25,56 +25,63 @@
             </div>
         </div>
 
-        <div class="phone left-meet-column mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone ">
-            <div class="mdl-grid" style="padding: 0; margin: 0">
-                <!--Users -->
-                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-v-margin">
-                    <div class="mdl-card mdl-card mdl-shadow--2dp" ng-controller="rtcController">
+        <!-- WEB RTC -->
+        <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone"
+             ng-controller="rtcController">
+            <div class="mdl-grid">
+                <div style="padding: 5px" ng-show="currentMeetUser.connected">
+                    <div class="mdl-card mdl-card">
+                        <video id="localVideo" class="chatVideo" autoplay muted></video>
+                        <p align="center">{{ currentMeetUser.user.firstName + ' ' + currentMeetUser.user.lastName}}</p>
+                    </div>
+                </div>
+				<span ng-repeat="meetUser in meetUsers" style="padding: 5px">
+					<div ng-show="meetUser.connected && currentMeetUser.connected" class="mdl-card mdl-card">
+                        <video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}" autoplay preload="none"/>
+                        <p align="center">{{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
+                            <md-icon class="md-secondary"
+                                     ng-if="!isMutedRemoteVideo($index) && meetUser.connected && currentMeetUser.connected"
+                                     ng-click="muteRemoteVideo($index)">mic
+                            </md-icon>
+                            <md-icon class="md-secondary"
+                                     ng-if="isMutedRemoteVideo($index) && meetUser.connected && currentMeetUser.connected"
+                                     ng-click="muteRemoteVideo($index)">mic_off
+                            </md-icon>
+                        </p>
+                    </div>
+				</span>
+            </div>
+        </div>
 
+        <div class="phone mdl-cell mdl-cell--5-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+
+            <div class="mdl-grid" style="padding: 0">
+
+                <!--Users -->
+                <div class="phone mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone no-margin">
+                    <div class="mdl-card mdl-card mdl-shadow--2dp" ng-controller="meetUsersCtrl">
                         <md-list>
                             <md-list-item class="no-hover primary" style="border: 0">
                                 <p style="margin-left: 20px">Users</p>
                             </md-list-item>
-                            <div>
-                                <md-list-item>
-
+                            <md-list-item>
 										<span class="venueUserListItem" ng-show="currentMeetUser.online">
 										</span>
-                                    <avatar user="currentMeetUser.user"></avatar>
-                                    <p>
-                                        {{ currentMeetUser.user.firstName + ' ' + currentMeetUser.user.lastName}}
-                                    </p>
-                                    <md-icon class="md-secondary" ng-click="connect()"
-                                             ng-if="currentMeetUser.connected==false">videocam
-                                    </md-icon>
-
-                                </md-list-item>
-                                <div>
-                                    <video id="localVideo" class="chatVideo" autoplay muted></video>
-                                </div>
-                            </div>
+                                <img ng-src="{{currentMeetUser.user.image.url}}" class="md-avatar"/>
+                                <p>{{ currentMeetUser.user.firstName + ' ' + currentMeetUser.user.lastName}}</p>
+                                <md-icon class="md-secondary" ng-click="connect()"
+                                         ng-if="currentMeetUser.connected==false && readyToConnect">videocam
+                                </md-icon>
+                            </md-list-item>
                             <div ng-repeat="meetUser in meetUsers">
                                 <md-list-item>
-
 										<span class="venueUserListItem" ng-show="meetUser.online">
 										</span>
-                                    <avatar user="meetUser.user"></avatar>
+                                    <img ng-src="{{meetUser.user.image.url}}" class="md-avatar"/>
                                     <p>
                                         {{ meetUser.user.firstName + ' ' + meetUser.user.lastName}}
                                     </p>
-                                    <md-icon class="md-secondary"
-                                             ng-if="!isMutedRemoteVideo($index) && meetUser.connected"
-                                             ng-click="muteRemoteVideo($index)">mic
-                                    </md-icon>
-                                    <md-icon class="md-secondary"
-                                             ng-if="isMutedRemoteVideo($index) && meetUser.connected"
-                                             ng-click="muteRemoteVideo($index)">mic_off
-                                    </md-icon>
-
                                 </md-list-item>
-                                <div ng-show="meetUser.connected">
-                                    <video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}" autoplay/>
-                                </div>
                             </div>
                         </md-list>
                     </div>
@@ -133,7 +140,7 @@
                                           class="animation"
                                           ng-class="{new:note.isNew}">
                                 <avatar user="note.user"></avatar>
-                                <p ng-bind-html="multiLine(note.value)"  style="font-size: 12px"></p>
+                                <p ng-bind-html="multiLine(note.value)" style="font-size: 12px"></p>
                                 <md-icon class="md-secondary" ng-click="removeNote(note)"
                                          ng-show="mouseover">
                                     delete

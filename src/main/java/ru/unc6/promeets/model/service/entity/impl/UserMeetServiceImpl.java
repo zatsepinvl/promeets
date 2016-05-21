@@ -48,9 +48,14 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
             meetService.create(entity.getMeet());
         }
         entity = userMeetRepository.save(entity);
-        createUserMeetsByMeet(entity.getMeet());
+        onMeetCreated(entity.getMeet());
         meetInfoService.createByMeet(entity.getMeet());
         return entity;
+    }
+
+    @Async
+    private void onMeetCreated(Meet meet) {
+        createUserMeetsByMeet(meet);
     }
 
     @Override
@@ -58,13 +63,15 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     public void createUserMeetsByMeet(Meet meet) {
         long adminId = meet.getAdmin().getUserId();
         for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
+            if (user.getUserId() == adminId) {
+                return;
+            }
+            meetInfoService.createMeetInfoByUserAndMeet(user, meet);
             UserMeet userMeet = new UserMeet();
             userMeet.setUser(user);
             userMeet.setMeet(meet);
             userMeet.setViewed(user.getUserId() == adminId);
-            if (user.getUserId() != adminId) {
-                super.create(userMeet);
-            }
+            super.create(userMeet);
         }
     }
 

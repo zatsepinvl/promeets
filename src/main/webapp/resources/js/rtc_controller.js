@@ -21,8 +21,8 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				},
 				{
 					urls:['turn:numb.viagenie.ca'],
-					username:'muazkh',
-					credential:'webrtc@live.com'
+					credential: 'buhste1234',
+					username: 'mdayko@mail.ru'
 				}
 					
 			] || { iceServers:[{url:'stun:stun01.sipphone.com'},
@@ -46,11 +46,11 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 					{url:'stun:stun.xten.com'},
 					{
 						url: 'turn:numb.viagenie.ca',
-						credential: 'muazkh',
-						username: 'webrtc@live.com'
+						credential: 'buhste1234',
+						username: 'mdayko@mail.ru'
 					},
 					{
-						url: 'turn:192.158.29.39:3478?transport=udp',
+						url: 'turn:192.158.29.39:3478?transport=tcp',
 						credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
 						username: '28224511:1379330808'
 					},
@@ -124,7 +124,6 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			return pc;
 		}
 
-		
 		$scope.muteRemoteVideo = function (index)
 		{
 			var video = document.getElementById('remoteVideo-' + index);
@@ -132,17 +131,24 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 		};
 		
 		$scope.isMutedRemoteVideo = function (index) {
-			return false;
 			var video = document.getElementById('remoteVideo-' + index);
+			if (!video)
+				return false;
 			return video.muted;
 		};
-			
-		$scope.connect = function () {
-			console.log("Connecting to Audio/Video");
-			$scope.currentMeetUser.connected = true;
-			updateUserMeetInfo();
-			createOffer();
-		};
+		
+		$scope.$on('rtcConnection', function (event, message) {
+			if (message=='connect') {
+				console.log("Connecting to Audio/Video");
+				$scope.currentMeetUser.connected = true;
+				updateUserMeetInfo();
+				navigator.getUserMedia(
+					  { audio: true, video: true}, 
+					  gotStream, 
+					  function(error) { console.log(error) }
+					);	
+			}
+		});
 		
 	//////////////////    RTC   //////////////////////////////////////
 		
@@ -173,27 +179,23 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 						}
 					}
 					
-					navigator.getUserMedia(
-					  { audio: true, video: true}, 
-					  gotStream, 
-					  function(error) { console.log(error) }
-					);
+					$scope.$emit ('rtcConnection','ready');
+					
 				});
         };
 
 		function gotStream(stream) {
 			
 			localStream = stream;
+			$scope.$apply();
 			document.getElementById("localVideo").src = URL.createObjectURL(stream);
 			
-			var audioTracks = stream.getAudioTracks();
-				  if (audioTracks.length > 0) {
-					console.log('Using Audio device: ' + audioTracks[0].label);
-				  }
 			for (var i=0; i<peerConnections.length; i++)
 			{
 				peerConnections[i].addStream(stream);
 			}
+			
+			createOffer();
 			
 			$scope.$apply();
 		}
@@ -255,9 +257,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 
 		function gotRemoteStream(event)
 		{
-			document.getElementById("remoteVideo-"+event.currentTarget.pmId).srcObject = event.streams[0];
-			document.getElementById("remoteVideo-"+event.currentTarget.pmId).reload();
-			$scope.$apply();
+			video = document.getElementById("remoteVideo-"+event.currentTarget.pmId);	
+			video.srcObject = event.streams[0];
+			video.load();
 		}
 		
 	//////////////////    CONNECTION   //////////////////////////////////////
@@ -269,28 +271,9 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			message.type = data.type;
 			message.duserId = duserId;
 			message.meetId = meetId
-			stompClient.send(appConst.WS.BROKER+"rtc/"+meetId, {}, JSON.stringify(message));
+			$scope.$emit('rtc', {	meetId:meetId, 
+									message:JSON.stringify(message)});
 		}
-
-		var start = function() 
-		{
-			stompClient = Stomp.over(new SockJS(appConst.WS.URL));
-			stompClient.connect("guest", "guest", createPeerConnections, stompErrorCallBack);
-			stompClient.onclose = reconnect;
-		};
-		
-		var stompErrorCallBack = function (error)
-		{
-			console.log('STOMP: ' + error);
-			console.log('STOMP: Reconecting in '+appConst.RECONNECT_TIMEOUT/1000 +' seconds');
-			reconnect();
-		};
-		
-		var reconnect = function() 
-		{
-		  setTimeout(start, appConst.WS.RECONNECT_TIMEOUT);
-		};
-	
 
 		$scope.$on('rtc/'+meetId, function (event, data) 
 		{
@@ -329,7 +312,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 			{
 				if (message.action == appConst.ACTION.UPDATE) 
 				{
-					if (!message.data.online || !message.data.connected)
+					if ((!message.data.online || !message.data.connected) && localStream)
 					{
 						resetPeerConnection(message.data.user.userId);
 					}
@@ -356,9 +339,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 				updateUserMeetInfo();
 			}
 			
-
-			
-			start();
+			createPeerConnections();
 
     }
 );

@@ -151,6 +151,18 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
         else if (data.action == appConst.ACTION.UPDATE && !data.data.online) {
             EventHandler.message(sender.firstName + ' ' + sender.lastName + ' leave meet', sender.image.url);
         }
-    }
+    };
+
+	
+	/*var onMeetOnline = function (data) {
+		var sender = data.data.user;
+		if (data.data.user.userId == $scope.user.userId)
+			return;
+		if (data.action == appConst.ACTION.UPDATE && data.data.online && data.data.connected) 
+		{
+			EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join to chat', sender.image.url);
+		}
+
+	}*/
 
 });
