@@ -4,7 +4,8 @@ app.directive("avatar", function ($state) {
         templateUrl: "templates/avatar/avatar.html",
         scope: {
             user: '=',
-            min: '='
+            min: '=',
+            online: '='
         },
         link: function ($scope) {
             $scope.$watch('user.image.original', function () {

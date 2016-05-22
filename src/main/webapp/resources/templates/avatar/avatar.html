@@ -1,7 +1,6 @@
 <style>
 
-    .avatar
-    {
+    .avatar {
         width: 40px;
         height: 40px;
         margin-top: 8px;
@@ -33,14 +32,30 @@
         font-size: 20px;
         line-height: 30px;
     }
+
+    .online {
+        position: absolute;
+        top: 70%;
+        left: 60%;
+        background-color: #ef6c00;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .online.min {
+        top: 70%;
+        left: 50%;
+    }
 </style>
-<a ng-click="go(user.userId)" href="" ng-cloak>
+<a ng-click="go(user.userId)" href="" ng-cloak style="position: relative; display: block;">
     <img ng-src="{{user.image.small}}" class="avatar"
          ng-class="{min:min}" ng-if="user.image.original"/>
     <div class="avatar empty"
          ng-class="{min:min}"
          ng-if="!user.image.original">{{user.firstName[0]}}
     </div>
+    <div class="online" ng-if="online" ng-click="{min:min}"></div>
     <md-tooltip md-direction="bottom">
         {{user.firstName+' '+user.lastName}}
     </md-tooltip>

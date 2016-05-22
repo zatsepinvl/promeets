@@ -213,7 +213,6 @@ app.service('MeetService', function (Entity, UserEntity, $http, UserService) {
                         data[i].online = true;
                         updateUserMeetInfo(data[i]);
                         clone(data[i], currentMeetUser);
-                        success && success(data);
                     }
                     else {
                         meetUsers.push(data[i]);

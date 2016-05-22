@@ -14,21 +14,19 @@ import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.UserService;
 
 /**
- *
  * @author MDay
  */
 @Service
-public class WebRtcSignalServiceImpl implements WebRtcSignalService
-{
+public class WebRtcSignalServiceImpl implements WebRtcSignalService {
     @Autowired
     UserService userService;
-    
+
     @Autowired
     NotificationController notificationController;
-    
+
     @Override
-    public void signalRTCByMeetId(WebRtcSignalMessage message, User currentUser)
-    {
+    public void signalRTCByMeetId(WebRtcSignalMessage message, Principal principal) {
+        User currentUser = userService.getUserByEmail(principal.getName());
         message.setSuserId(currentUser.getUserId());
         notificationController.sendRtcSignalMessage(message);
     }

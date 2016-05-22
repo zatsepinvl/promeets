@@ -37,9 +37,9 @@ public class NotificationController
     }
     
     @MessageMapping("/rtc/{id}")
-    public void rtc(WebRtcSignalMessage message, @CurrentUser User user)
+    public void rtc(WebRtcSignalMessage message, Principal principal)
     {
-        rtcSignalService.signalRTCByMeetId(message, user);
+        rtcSignalService.signalRTCByMeetId(message, principal);
     }
     
     public void sendNotificationToUser (Notification notification, User user)
