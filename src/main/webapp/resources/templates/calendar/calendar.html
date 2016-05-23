@@ -1,6 +1,12 @@
 <div class="header">
     <i class="fa fa-angle-left material-icons" ng-click="previous()">keyboard_arrow_left</i>
     <span>{{month.format("MMMM  YYYY")}}</span>
+    <md-progress-circular md-mode="indeterminate"
+                          class="animation md-secondary"
+                          ng-if="loading"
+                          md-diameter="15"
+                          style="position: absolute; left: 78%; top:13px;">
+    </md-progress-circular>
     <i class="fa fa-angle-right material-icons" ng-click="next()">keyboard_arrow_right</i>
 </div>
 <div class="week names">

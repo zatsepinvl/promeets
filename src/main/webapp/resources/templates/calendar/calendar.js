@@ -7,7 +7,8 @@ app.directive("calendar", function () {
             model: "=",
             dayClick: "=",
             nextMonth: "=",
-            prevMonth: '='
+            prevMonth: '=',
+            loading: '='
         },
         link: function ($scope) {
             $scope.load = false;

@@ -37,8 +37,12 @@
                             <avatar user="currentMeetUser.user" min="true" online="true"></avatar>
                             <p ng-bind-html="fio(currentMeetUser.user)"></p>
                             <md-icon class="md-secondary" ng-click="connect()"
-                                     ng-if="!currentMeetUser.connected">
+                                     ng-if="!currentMeetUser.connected && readyReceive && readyConnect">
                                 videocam
+                            </md-icon>
+                            <md-icon class="md-secondary" ng-click="close()"
+                                     ng-if="currentMeetUser.connected && readyReceive && readyConnect">
+                                videocam_off
                             </md-icon>
                         </md-list-item>
                     </div>
@@ -153,7 +157,7 @@
                                           ng-mouseleave="mouseover=false"
                                           class="animation"
                                           ng-class="{new:note.isNew}">
-                                <avatar user="note.user"></avatar>
+                                <avatar user="note.user" min="true"></avatar>
                                 <p ng-bind-html="multiLine(note.value)" style="font-size: 12px"></p>
                                 <md-icon class="md-secondary" ng-click="removeNote(note)"
                                          ng-show="mouseover">

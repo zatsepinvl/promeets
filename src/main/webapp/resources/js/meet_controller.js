@@ -136,17 +136,17 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window,appConst
         if (message.action == appConst.ACTION.UPDATE) {
             var sender = message.data.user;
             if (message.data.online && message.data.connected) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join connect to conference', sender);
+                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join connect to the conference', sender);
             }
             else if (message.data.online && !message.data.connected) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join meeting', sender);
+                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join the meeting', sender);
             }
             else if (!message.data.online) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' leave meet', sender);
+                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' leave the meeting', sender);
             }
             for (var i = 0; i < $scope.meetUsers.length; i++) {
                 if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
-                    clone(message.data, $scope.meetUsers[i]);
+                    $scope.meetUsers[i]=message.data;
                     $scope.$apply();
                     return;
                 }
@@ -154,27 +154,10 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window,appConst
         }
     });
 
-    var stopWatch = $rootScope.$on('$stateChangeStart',
-        function (event, toState, toParams, fromState, fromParams) {
-            console.log('changing state');
-            $scope.currentMeetUser.online = false;
-            $scope.currentMeetUser.connected = false;
-            $http.put('/api/users/meets/info/' + $scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
-                .success(function (data, status, headers, config) {
-                });
-            stopWatch();
-        });
+
 
     $scope.meetUsers = MeetService.getMeetUsers();
     $scope.currentMeetUser = MeetService.getCurrentMeetUser();
-
-    $window.onbeforeunload = function () {
-        $scope.currentMeetUser.online = false;
-        $scope.currentMeetUser.connected = false;
-        $http.put('/api/users/meets/info/' + $scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
-            .success(function (data, status, headers, config) {
-            })
-    };
 
 });
 

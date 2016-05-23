@@ -88,6 +88,7 @@ app.service('UserService', function ($http) {
 app.service('UserMeetService', function ($http) {
     var newMeets = [];
     var userMeets = [];
+
     this.load = function () {
         newMeets = [];
         $http.get('/api/users/meets/new')
@@ -265,12 +266,17 @@ app.service('GroupMeetsService', function ($http) {
     var next = [];
     var currentTime;
     var groupId;
+    var state = {loading: true};
+    var stopLoading = function () {
+        state.loading = false;
+    };
     this.resolve = function (id, selected) {
+        state.loading = true;
         groupId = id;
         currentTime = selected ? moment(selected) : moment();
         var prevM = currentTime.clone().add(-1, 'month');
         var nextM = currentTime.clone().add(1, 'month');
-        this.load(groupId, startOfMonth(currentTime), endOfMonth(currentTime), current);
+        this.load(groupId, startOfMonth(currentTime), endOfMonth(currentTime), current, stopLoading);
         this.load(groupId, startOfMonth(prevM), endOfMonth(prevM), pre);
         this.load(groupId, startOfMonth(nextM), endOfMonth(nextM), next);
         return current;
@@ -281,6 +287,7 @@ app.service('GroupMeetsService', function ($http) {
             .success(function (userMeets) {
                 data.length = 0;
                 clone(userMeets, data);
+                success && success();
             })
             .error(function (err) {
 
@@ -300,26 +307,32 @@ app.service('GroupMeetsService', function ($http) {
     };
 
     this.next = function () {
+        state.loading = true;
         pre.length = 0;
         clone(current, pre);
         current.length = 0;
         clone(next, current);
         currentTime.add(1, 'month');
         var temp = currentTime.clone().add(1, 'month');
-        this.load(groupId, startOfMonth(temp), endOfMonth(temp), next);
+        this.load(groupId, startOfMonth(temp), endOfMonth(temp), next, stopLoading);
         return current;
     };
 
     this.previous = function () {
+        state.loading = true;
         next.length = 0;
         clone(current, next);
         current.length = 0;
         clone(pre, current);
         currentTime.add(-1, 'month');
         var temp = currentTime.clone().add(-1, 'month');
-        this.load(groupId, startOfMonth(temp), endOfMonth(temp), pre);
+        this.load(groupId, startOfMonth(temp), endOfMonth(temp), pre, stopLoading);
         return current;
     };
+
+    this.getState = function () {
+        return state;
+    }
 });
 
 function endOfMonth(date) {
@@ -537,12 +550,17 @@ app.service('UserCalendarService', function ($http, UserEntity) {
     var pre = [];
     var current = [];
     var next = [];
+    var state = {loading: true};
+    var stopLoading = function () {
+        state.loading = false;
+    };
     var currentTime;
     this.resolve = function () {
+        state.loading = true;
         currentTime = moment();
         var prevM = currentTime.clone().add(-1, 'month');
         var nextM = currentTime.clone().add(1, 'month');
-        this.load(startOfMonth(currentTime), endOfMonth(currentTime), current);
+        this.load(startOfMonth(currentTime), endOfMonth(currentTime), current, stopLoading);
         this.load(startOfMonth(prevM), endOfMonth(prevM), pre);
         this.load(startOfMonth(nextM), endOfMonth(nextM), next);
         return current;
@@ -553,6 +571,7 @@ app.service('UserCalendarService', function ($http, UserEntity) {
             .success(function (userMeets) {
                 data.length = 0;
                 clone(userMeets, data);
+                success && success();
             })
             .error(function (err) {
 
@@ -572,25 +591,30 @@ app.service('UserCalendarService', function ($http, UserEntity) {
     };
 
     this.next = function () {
+        state.loading = true;
         pre.length = 0;
         clone(current, pre);
         current.length = 0;
         clone(next, current);
         currentTime.add(1, 'month');
         var temp = currentTime.clone().add(1, 'month');
-        this.load(startOfMonth(temp), endOfMonth(temp), next);
+        this.load(startOfMonth(temp), endOfMonth(temp), next, stopLoading);
         return current;
     };
 
     this.previous = function () {
+        state.loading = true;
         next.length = 0;
         clone(current, next);
         current.length = 0;
         clone(pre, current);
         currentTime.add(-1, 'month');
         var temp = currentTime.clone().add(-1, 'month');
-        this.load(startOfMonth(temp), endOfMonth(temp), pre);
+        this.load(startOfMonth(temp), endOfMonth(temp), pre, stopLoading);
         return current;
     };
+    this.getState = function () {
+        return state;
+    }
 });
 

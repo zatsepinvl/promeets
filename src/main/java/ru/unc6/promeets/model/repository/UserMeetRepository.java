@@ -17,7 +17,7 @@ import ru.unc6.promeets.model.entity.UserMeetPK;
 
 
 public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK> {
-    @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId)")
+    @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId) order by userMeet.id.user.userId")
     Iterable<UserMeet> getUserMeetsByMeetId(@Param("meetId") long id);
 
 

@@ -10,7 +10,7 @@ app.controller('signUpCtrl', function ($scope, $location) {
     };
 });
 
-app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, EventHandler) {
+app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, EventHandler, $http) {
         $scope.loading = false;
         $scope.error = {};
         $scope.provider = $location.search().provider;
@@ -28,16 +28,18 @@ app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, Ev
         $scope.signUp = function () {
             if ($scope.signUpForm.$valid) {
                 $scope.loading = true;
-                Entity.save({entity: "users"}, $scope.user, function () {
+                $http.post('/signup', $scope.user)
+                    .success(function () {
                         $scope.loading = false;
                         EventHandler.message('Account has been created.');
                         $state.transitionTo('home.login');
-                    },
-                    function (response) {
-                        $scope.loading = false;
-                        $scope.error.show = true;
-                        $scope.error.value = response.data.message;
-                    });
+                    })
+                    .error(
+                        function (response) {
+                            $scope.loading = false;
+                            $scope.error.show = true;
+                            $scope.error.value = response.data.message;
+                        });
             }
 
         };

@@ -1,4 +1,4 @@
-app.controller("rtcController", function ($scope, UserEntity, UserService, MeetService, appConst, $http, $window) {
+app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserService, MeetService, appConst, $http, $window) {
 
     //////////////////    WEB RTC CONFIG   //////////////////////////////////////
 
@@ -67,21 +67,68 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
 
     var peerConnections = [];
 
+    var startReceiving = function () {
+        if (!$scope.readyReceive) {
+            $scope.readyReceive = true;
+            console.log('START RECEIVING');
+            $scope.$on('rtc/' + $scope.meet.meetId, function (event, data) {
+                var message = JSON.parse(data.data);
+                console.log('receive');
+                var pc;
+                if (message.type === 'offer') {
+                    pc = getPeerConnection(data.suserId);
+                    pc.setRemoteDescription(new SessionDescription(message));
+                    createAnswer(data.suserId)
+                }
+                else if (message.type === 'answer') {
+                    pc = getPeerConnection(data.suserId);
+                    pc.setRemoteDescription(new SessionDescription(message));
+                }
+                else if (message.type === 'candidate') {
+                    pc = getPeerConnection(data.suserId);
+                    var candidate = new IceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
+                    pc.addIceCandidate(candidate);
+                }
+            });
+        }
+    };
+
     $scope.meet = MeetService.get();
-    var meetId = $scope.meet.meetId;
+
+    if ($scope.meet.meetId) {
+        startReceiving();
+    }
+
+    var stopWatchingMeet = $scope.$watchCollection('meet', function () {
+        console.log('MEET WATCH');
+        console.log($scope.meet);
+        if ($scope.meet.meetId) {
+            startReceiving();
+            stopWatchingMeet();
+        }
+    });
+
 
     $scope.user = UserService.get();
-
     $scope.meetUsers = MeetService.getMeetUsers();
+    if ($scope.meetUsers.length > 0) {
+        $scope.readyConnect = true;
+    }
+    var stopWatching = $scope.$watchCollection('meetUsers', function (newVal) {
+        if ($scope.meetUsers.length > 0) {
+            $scope.readyConnect = true;
+            stopWatching();
+        }
+    });
+
     $scope.currentMeetUser = MeetService.getCurrentMeetUser();
 
     var localStream;
 
-    $scope.$watchCollection('meetUsers', function (newVal) {
-        if ($scope.meetUsers.length > 0) {
-            createPeerConnections();
-        }
-    });
+    $scope.readyReceive = false;
+    $scope.readyConnect = false;
+    $scope.ready = false;
+
 
     //////////////////    HELPERS   //////////////////////////////////////
 
@@ -136,10 +183,14 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
         };
 
         pc.onremovestream = function (event) {
-            console.log('stream removed');
+            console.log('STREAM REMOVED');
         };
         pc.oniceconnectionstatechange = function (ev) {
         };
+        pc.onclose = function () {
+            console.log('ON CLOSE');
+        };
+
 
         return pc;
     }
@@ -156,18 +207,13 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
         return video.muted;
     };
 
-    $scope.$on('rtcConnection', function (event, message) {
-        //noinspection JSValidateTypes
-        if (message == 'connect') {
-
-        }
-    });
 
     //////////////////    RTC   //////////////////////////////////////
 
     var createPeerConnections = function () {
         console.log('CREATING PEER CONNECTIONS');
         console.log($scope.meetUsers);
+        peerConnections = [];
         var i = 0;
         while (i < $scope.meetUsers.length) {
             var newPc = createPeerConnection(config, i);
@@ -182,7 +228,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
     };
 
     $scope.connect = function () {
-        $scope.currentMeetUser.connected = true;
+        createPeerConnections();
         updateUserMeetInfo();
         navigator.getUserMedia(
             {audio: true, video: true},
@@ -200,6 +246,7 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
                 console.log(error)
             }
         );
+        $scope.currentMeetUser.connected = true;
     };
 
     var createOffer = function () {
@@ -240,35 +287,18 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
     //////////////////    CONNECTION   //////////////////////////////////////
 
     function sendMessage(data, duserId) {
+        console.log('SEND');
         var message = {};
         message.data = JSON.stringify(data);
         message.type = data.type;
         message.duserId = duserId;
-        message.meetId = meetId;
+        message.meetId = $scope.meet.meetId;
         $scope.$emit('rtc', {
-            meetId: meetId,
+            meetId: $scope.meet.meetId,
             message: JSON.stringify(message)
         });
     }
 
-    $scope.$on('rtc/' + meetId, function (event, data) {
-        message = JSON.parse(data.data);
-        var pc;
-        if (message.type === 'offer') {
-            pc = getPeerConnection(data.suserId);
-            pc.setRemoteDescription(new SessionDescription(message));
-            createAnswer(data.suserId)
-        }
-        else if (message.type === 'answer') {
-            pc = getPeerConnection(data.suserId);
-            pc.setRemoteDescription(new SessionDescription(message));
-        }
-        else if (message.type === 'candidate') {
-            pc = getPeerConnection(data.suserId);
-            var candidate = new IceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
-            pc.addIceCandidate(candidate);
-        }
-    });
 
     var updateUserMeetInfo = function () {
         $http.put('/api/users/meets/info/' + $scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
@@ -299,9 +329,32 @@ app.controller("rtcController", function ($scope, UserEntity, UserService, MeetS
     $window.onbeforeunload = function () {
         $scope.currentMeetUser.online = false;
         $scope.currentMeetUser.connected = false;
-        $http.put('/api/users/meets/info/' + $scope.currentMeetUser.meet.meetId, $scope.currentMeetUser)
-            .success(function (data, status, headers, config) {
-            })
+        close();
+    };
+
+    var stopWatch = $rootScope.$on('$stateChangeStart',
+        function (event, toState, toParams, fromState, fromParams) {
+            $scope.currentMeetUser.online = false;
+            $scope.currentMeetUser.connected = false;
+            close();
+            stopWatch();
+        });
+
+    $scope.close = function () {
+        $scope.currentMeetUser.connected = false;
+        close();
+    };
+
+    var close = function () {
+        $http.put('/api/users/meets/info/' + $scope.currentMeetUser.meet.meetId, $scope.currentMeetUser);
+        if (localStream) {
+            localStream.getTracks()[0].stop();  // if only one media track
+            localStream.stop();
+            for (var i = 0; i < peerConnections.length; i++) {
+                //peerConnections[i].removeStream(localStream);
+                peerConnections[i].close();
+            }
+        }
     };
 
 

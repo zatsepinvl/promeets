@@ -14,7 +14,7 @@
         </div>
         <md-list-item class="no-hover md-3-line"
                       ng-repeat="message in messages | orderBy : 'message.time' : false  track by $index"
-                      style="min-height: 0;"
+                      style="min-height: 0; margin-bottom: 8px"
                       ng-class="{ 'new' : (!message.viewed) && (message.sender)}"
                       ng-mouseover="">
             <avatar user="message.message.user" min="true"></avatar>

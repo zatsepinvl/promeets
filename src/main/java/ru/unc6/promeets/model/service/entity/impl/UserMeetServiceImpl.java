@@ -63,15 +63,14 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     public void createUserMeetsByMeet(Meet meet) {
         long adminId = meet.getAdmin().getUserId();
         for (User user : userGroupRepository.getUsersByGroupId(meet.getGroup().getGroupId())) {
-            if (user.getUserId() == adminId) {
-                return;
+            if (user.getUserId() != adminId) {
+                meetInfoService.createMeetInfoByUserAndMeet(user, meet);
+                UserMeet userMeet = new UserMeet();
+                userMeet.setUser(user);
+                userMeet.setMeet(meet);
+                userMeet.setViewed(user.getUserId() == adminId);
+                super.create(userMeet);
             }
-            meetInfoService.createMeetInfoByUserAndMeet(user, meet);
-            UserMeet userMeet = new UserMeet();
-            userMeet.setUser(user);
-            userMeet.setMeet(meet);
-            userMeet.setViewed(user.getUserId() == adminId);
-            super.create(userMeet);
         }
     }
 

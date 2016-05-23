@@ -16,10 +16,10 @@ public interface UserGroupRepository extends CrudRepository<UserGroup, UserGroup
     @Query("select userGroup from UserGroup  userGroup where userGroup.id.user.id=(:userId) and userGroup.id.group.id=(:groupId)")
     UserGroup getUserGroupByUserIdAndGroupId(@Param("userId") long userId, @Param("groupId") long groupId);
 
-    @Query("select userGroupPK.user from UserGroup userGroup where  userGroup.id.group.groupId=(:groupId)")
+    @Query("select userGroupPK.user from UserGroup userGroup where  userGroup.id.group.groupId=(:groupId) order by userGroup.id.user.userId")
     Iterable<User> getUsersByGroupId(@Param("groupId") long id);
 
-    @Query("select userGroup from UserGroup userGroup where  userGroup.id.group.groupId=(:groupId)")
+    @Query("select userGroup from UserGroup userGroup where  userGroup.id.group.groupId=(:groupId) order by userGroup.id.user.userId")
     Iterable<UserGroup> getUserGroupsByGroupId(@Param("groupId") long id);
 
     @Query("select userGroupPK.group from UserGroup userGroup where  userGroup.id.user.userId=(:userId)")

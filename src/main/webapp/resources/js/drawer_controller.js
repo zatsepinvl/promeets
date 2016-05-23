@@ -4,6 +4,11 @@
 app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope, $http, EventHandler, UserService, UserMeetService, UserMessageService, UserGroupsService, $state, appConst) {
     $scope.user = UserService.get();
     var layout = document.querySelector('.mdl-layout');
+    var primary = '#2e7d32';
+    var accent = '#ef6c00';
+    var changeColor = function (color) {
+        $(".mdl-layout__drawer-button").children(".material-icons").css("color", color);
+    };
 
     $scope.logout = function () {
         $http.post('/logout')
@@ -24,6 +29,52 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
     $scope.newMeets = UserMeetService.getNewMeets();
     $scope.newMessages = UserMessageService.getNewMessages();
     $scope.invites = UserGroupsService.getInvites();
+
+
+    angular.element(document).ready(function () {
+        if ($scope.newMeets.length) {
+            setTimeout(function () {
+                changeColor(accent);
+            }, 400);
+        }
+        if ($scope.newMessages.length) {
+            setTimeout(function () {
+                changeColor(accent);
+            }, 400);
+        }
+        if ($scope.invites.length) {
+            setTimeout(function () {
+                changeColor(accent);
+            }, 400);
+        }
+    });
+
+    $scope.$watchCollection('newMeets', function () {
+        if ($scope.newMeets.length) {
+            changeColor(accent);
+        }
+        else if (!$scope.newMessages.length && !$scope.invites.length) {
+            changeColor(primary);
+        }
+    });
+
+    $scope.$watchCollection('newMessages', function () {
+        if ($scope.newMessages.length) {
+            changeColor(accent);
+        }
+        else if (!$scope.newMeets.length && !$scope.invites.length) {
+            changeColor(primary);
+        }
+    });
+
+    $scope.$watchCollection('invites', function () {
+        if ($scope.invites.length) {
+            changeColor(accent);
+        }
+        else if (!$scope.newMeets.length && !$scope.newMessages.length) {
+            changeColor(primary);
+        }
+    });
 
     $scope.$on('meet', function (event, message) {
         if (message.action == appConst.ACTION.UPDATE) {
@@ -119,7 +170,6 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
     });
 
 
-
     var onMessageReceive = function (message) {
         if (message.action == appConst.ACTION.CREATE) {
             $scope.newMessages.push(message.id);
@@ -136,17 +186,15 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
     };
 
 
+    /*var onMeetOnline = function (data) {
+     var sender = data.data.user;
+     if (data.data.user.userId == $scope.user.userId)
+     return;
+     if (data.action == appConst.ACTION.UPDATE && data.data.online && data.data.connected)
+     {
+     EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join to chat', sender.image.url);
+     }
 
-	
-	/*var onMeetOnline = function (data) {
-		var sender = data.data.user;
-		if (data.data.user.userId == $scope.user.userId)
-			return;
-		if (data.action == appConst.ACTION.UPDATE && data.data.online && data.data.connected) 
-		{
-			EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join to chat', sender.image.url);
-		}
-
-	}*/
+     }*/
 
 });

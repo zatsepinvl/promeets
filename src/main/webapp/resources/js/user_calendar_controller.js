@@ -1,6 +1,6 @@
 app.controller('userCalendarCtrl', function ($scope, $rootScope, appConst, Entity, ConfirmDialog, $state, UserCalendarService, UserEntity, EventHandler) {
     $scope.events = UserCalendarService.current();
-
+    $scope.state = UserCalendarService.getState();
     $scope.nextMonth = function () {
         $scope.events = UserCalendarService.next();
     };

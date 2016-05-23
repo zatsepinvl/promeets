@@ -14,11 +14,13 @@ app.controller('groupCalendarCtrl', function ($scope,
                                               appConst) {
     $scope.events = [];
     $scope.selected = [];
+
     $scope.meet = {group: {groupId: $stateParams.groupId}, time: moment().day(0).minute(0).millisecond(0)};
     $scope.selectedDay = $stateParams.selected ? moment(parseInt($stateParams.selected)).local() : moment().local();
     $scope.user = UserService.get();
 
     $scope.events = GroupMeetsService.current();
+    $scope.state = GroupMeetsService.getState();
 
 
     $scope.nextMonth = function () {
