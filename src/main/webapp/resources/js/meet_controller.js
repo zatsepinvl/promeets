@@ -1,4 +1,4 @@
-app.controller("meetCtrl", function ($scope, $rootScope, $http, $window,appConst, Entity, $state, UserService, MeetEditDialogService, MeetService, TextareaDialog, EventHandler) {
+app.controller("meetCtrl", function ($scope, $rootScope, $http, $window, appConst, Entity, $state, UserService, MeetEditDialogService, MeetService, TextareaDialog, EventHandler) {
     $scope.meet = MeetService.get();
     $scope.user = UserService.get();
     $scope.notes = MeetService.getNotes();
@@ -146,15 +146,16 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window,appConst
             }
             for (var i = 0; i < $scope.meetUsers.length; i++) {
                 if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
-                    $scope.meetUsers[i]=message.data;
-                    $scope.$apply();
+                    $scope.meetUsers[i] = message.data;
                     return;
                 }
             }
+            $scope.$apply();
         }
     });
-
-
+    $scope.valueFunction = function (userMeet) {
+        return userMeet.connected + userMeet.online;
+    };
 
     $scope.meetUsers = MeetService.getMeetUsers();
     $scope.currentMeetUser = MeetService.getCurrentMeetUser();

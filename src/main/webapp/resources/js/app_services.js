@@ -1,5 +1,3 @@
-//constants
-
 
 //factories
 app.factory('Entity', function ($resource) {

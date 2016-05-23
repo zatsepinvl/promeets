@@ -49,12 +49,12 @@
                 </div>
 
                 <div class="phone mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone"
-                     ng-repeat="meetUser in meetUsers">
+                     ng-repeat="meetUser in meetUsers | orderBy:valueFunction:true">
                     <div class="mdl-card mdl-shadow--2dp">
-                        <video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' + $index }}"
+                        <video class="chatVideo" ng-attr-id="{{ 'remoteVideo-' +  meetUsers.indexOf(meetUser)}}"
                                autoplay preload="none"
                                style="width: 100%"
-                               ng-if="meetUser.connected && currentMeetUser.connected"></video>
+                               ng-show="meetUser.connected && currentMeetUser.connected"></video>
                         <md-list-item>
                             <avatar user="meetUser.user" min="true" online="meetUser.online"></avatar>
                             <p ng-bind-html="fio(meetUser.user)"></p>
