@@ -5,7 +5,7 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window, appCons
     $scope.tasks = MeetService.getTasks();
 
     $scope.goBack = function () {
-        $state.transitionTo('user.group.main', {groupId: $scope.meet.group.groupId});
+        $state.transitionTo('user.group.calendar', {groupId: $scope.meet.group.groupId});
     };
 
     $scope.createNote = function (event) {
@@ -136,7 +136,7 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window, appCons
         if (message.action == appConst.ACTION.UPDATE) {
             var sender = message.data.user;
             if (message.data.online && message.data.connected) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join connect to the conference', sender);
+                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' connect to the conference', sender);
             }
             else if (message.data.online && !message.data.connected) {
                 EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join the meeting', sender);

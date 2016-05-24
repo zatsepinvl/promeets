@@ -13,7 +13,7 @@ app.service('EventHandler', function ($mdToast) {
         setTimeout(function () {
             item.isNew = false;
             timeOut && timeOut();
-        }, 1000);
+        }, 5000);
     };
 
     this.error = function (message) {

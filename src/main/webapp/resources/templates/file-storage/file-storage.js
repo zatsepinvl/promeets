@@ -1,4 +1,4 @@
-app.filter('fileFormat', function () {
+app.factory('fileFormat', function () {
     return function (files, format) {
         var filtered = [];
         var extensions = '';
@@ -19,7 +19,7 @@ app.filter('fileFormat', function () {
     }
 });
 
-app.directive("fileStorage", function (UserEntity) {
+app.directive("fileStorage", function (UserEntity, fileFormat) {
     return {
         restrict: "E",
         templateUrl: "templates/file-storage/file-storage.html",
@@ -32,7 +32,8 @@ app.directive("fileStorage", function (UserEntity) {
             $scope.loading = true;
             UserEntity.query({entity: "files"}
                 , function (data) {
-                    clone(data, $scope.files);
+                    $scope.files = fileFormat(data, $scope.format);
+                    //  clone(data, $scope.files);
                     $scope.loading = false;
                 });
             $scope.clicked = function (file) {

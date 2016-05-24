@@ -1,7 +1,7 @@
 <div ng-controller="groupsCtrl" ng-cloak>
-    <div class="mdl-card mdl-card mdl-shadow--2dp" style="max-width: 500px; margin: auto;">
+    <div class="mdl-card mdl-card mdl-shadow--2dp" style="max-width: 500px; margin: auto;" >
         <!-- Invites -->
-        <md-list>
+        <md-list >
             <md-list-item class="no-hover primary">
                 <p style="margin-left: 20px">Invites</p>
             </md-list-item>
@@ -10,8 +10,6 @@
                 <md-progress-circular md-mode="indeterminate"
                                       md-diameter="25"
                                       flex></md-progress-circular>
-                <p ng-if="!userGroups.length && !state.loading" style="text-align: center;" flex>No groups.</p>
-
             </div>
             <md-list-item ng-repeat="invite in groupInvites"
                           class="md-2-line animation">
@@ -39,6 +37,7 @@
             </md-list-item>
         </md-list>
     </div>
+
     <br>
     <div class="mdl-card mdl-card mdl-shadow--2dp" style="max-width: 500px; margin: auto;">
         <!-- Groups -->

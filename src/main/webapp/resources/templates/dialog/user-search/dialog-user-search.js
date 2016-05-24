@@ -57,6 +57,7 @@ function UserSearchDialogCtrl($scope, group, members, invited, $mdDialog, $http,
         }
         $http.get('/api/users/search' + query)
             .success(function (users) {
+                $scope.noResults = !users.length;
                 users.forEach(function (value) {
                     if ($scope.invited.map(
                             function (e) {

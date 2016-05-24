@@ -89,8 +89,10 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
                     var candidate = new IceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
                     pc.addIceCandidate(candidate);
                 }
+                $scope.$apply();
             });
         }
+
     };
 
     $scope.meet = MeetService.get();
@@ -175,11 +177,11 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
 
         pc.ontrack = function (event) {
             console.log(event);
-            $scope.$apply();
             var video = document.getElementById("remoteVideo-" + event.currentTarget.pmId);
             console.log(video);
             video.src = URL.createObjectURL(event.streams[0]);
             video.load();
+            $scope.$apply();
         };
 
         pc.onremovestream = function (event) {

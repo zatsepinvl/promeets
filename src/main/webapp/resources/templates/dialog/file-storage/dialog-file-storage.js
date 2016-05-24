@@ -19,7 +19,7 @@ app.service('FileStorageDialog', function (DialogService) {
 
 function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDialog, Upload, EventHandler) {
     $scope.format = format;
-    $scope.maxSize = maxSize;
+    $scope.maxSize = '10MB'//maxSize;
     $scope.file = file;
     $scope.files = [];
 

@@ -8,7 +8,7 @@ app.controller('loginCtrl', function ($scope, $http, $state, UserService) {
         UserService.login(user.email, user.password,
             function (user) {
                 $scope.$emit('closeDialog');
-                $state.transitionTo('user.group.main', {groupId: 1});
+                $state.transitionTo('user.calendar');
             }, function (error) {
                 $scope.loading = false;
                 $scope.error.show = user ? true : false;

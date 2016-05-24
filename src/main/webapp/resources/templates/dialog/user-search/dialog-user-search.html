@@ -1,5 +1,5 @@
 <md-dialog ng-cloak style="width: 360px; font-size:16px;" xmlns="http://java.sun.com/jsf/html">
-    <md-toolbar style="background-color: #ffffff; color:#424242; height:160px">
+    <md-toolbar style="background-color: #ffffff; color:#424242; height:auto">
         <div layout="column">
             <div class="mdl-card__title">
                 Invite users
@@ -36,6 +36,7 @@
     </md-toolbar>
 
     <md-dialog-content>
+        <p ng-if="noResults" style="width: 100%; text-align: center">No results.</p>
         <md-list ng-if="users.length" class="animation">
             <md-list-item ng-repeat="user in users track by user.userId"
                           class="animation">

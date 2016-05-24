@@ -64,7 +64,9 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
     @Override
     public Group create(Group group) {
-        group.setChat(chatService.create(new Chat()));
+        Chat chat = new Chat();
+        chat.setImage(getDefaultImage());
+        group.setChat(chatService.create(chat));
         group.setTime(System.currentTimeMillis());
         group.setAdmin(userService.getCurrentAuthenticatedUser());
         group.setImage(getDefaultImage());

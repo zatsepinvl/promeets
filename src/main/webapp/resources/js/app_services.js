@@ -1,4 +1,3 @@
-
 //factories
 app.factory('Entity', function ($resource) {
     return $resource('/api/:entity/:id/:d_entity/:d_id', {
@@ -45,6 +44,9 @@ app.service('AppService', function (appConst) {
     };
 
     this.fio = function (user) {
+        if (!user) {
+            return '';
+        }
         return user.firstName + ' ' + user.lastName;
     };
 });

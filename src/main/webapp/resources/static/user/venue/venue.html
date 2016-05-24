@@ -127,13 +127,14 @@
                                 <p ng-bind-html="(tasks.indexOf(task)+1)+'.'"
                                    style="width: 28px; flex: none; text-align: center"></p>
                                 <p ng-bind-html="multiLine(task.value)" style="font-size: 12px"></p>
-                                <md-checkbox class="md-secondary accent min"
-                                             ng-model="task.checked"
-                                             ng-click="updateTask(task)"></md-checkbox>
                                 <md-icon class="md-secondary" ng-click="removeTask(task)"
                                          ng-if="mouseover">
                                     delete
                                 </md-icon>
+                                <md-checkbox class="md-secondary accent min"
+                                             ng-model="task.checked"
+                                             >
+                                </md-checkbox>
                             </md-list-item>
                         </md-list>
                     </div>

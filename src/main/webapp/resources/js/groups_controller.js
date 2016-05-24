@@ -2,7 +2,7 @@ app.controller('groupsCtrl', function ($scope, $state, UserService, EditGroupDia
     $scope.userGroups = UserGroupsService.getGroups();
     $scope.groupInvites = UserGroupsService.getInvites();
     $scope.state = UserGroupsService.getState();
-    $scope.user=UserService.get();
+    $scope.user = UserService.get();
 
     $scope.accept = function (invite) {
         invite.loading = true;
@@ -22,10 +22,14 @@ app.controller('groupsCtrl', function ($scope, $state, UserService, EditGroupDia
 
     $scope.cancel = function (invite) {
         invite.loading = true;
-        UserEntity.delete({entity: "group_invites", id: invite.group.groupId},
+        invite.accepted = false;
+        UserEntity.update({entity: "group_invites", id: invite.group.groupId}, invite,
             function () {
-                invite.loading = false;
-                $scope.groupInvites.splice($scope.groupInvites.indexOf(invite));
+                UserEntity.delete({entity: "group_invites", id: invite.group.groupId},
+                    function () {
+                        invite.loading = false;
+                        $scope.groupInvites.splice($scope.groupInvites.indexOf(invite));
+                    });
             });
     };
 
@@ -38,9 +42,9 @@ app.controller('groupsCtrl', function ($scope, $state, UserService, EditGroupDia
             function (group) {
                 var userGroup = {user: $scope.user, group: group};
                 UserEntity.save({entity: 'groups'}, userGroup,
-                    function () {
+                    function (data) {
                         EventHandler.message('Group has been created');
-                        $scope.userGroups.push(userGroup);
+                        $scope.userGroups.push(data);
                     });
             });
     };

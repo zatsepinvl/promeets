@@ -86,10 +86,9 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
                 'Meet \'' + meet.title + '\' has been updated',
                 undefined,
                 {
-                    state: 'user.group.calendar',
+                    state: 'user.venue',
                     params: {
-                        groupId: meet.group.groupId,
-                        selected: meet.time
+                        meetId: meet.meetId
                     }
                 }
             );
@@ -139,7 +138,10 @@ app.controller('drawerCtrl', function ($scope, $state, $stateParams, $rootScope,
                 EventHandler.message('New invitation into '
                     + message.group.title
                     + ' by ' + $scope.fio(message.inviter),
-                    message.inviter);
+                    message.inviter,
+                    {
+                        state: 'user.groups'
+                    });
                 $scope.invites.push(message);
                 $scope.$apply();
             }

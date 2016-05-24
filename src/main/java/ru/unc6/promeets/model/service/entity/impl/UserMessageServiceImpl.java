@@ -134,7 +134,7 @@ public class UserMessageServiceImpl extends BaseNotifiedServiceImpl<UserMessage,
             userMessage.setUser(user);
             userMessage.setViewed(true);
             userMessage.setMessage(message);
-            userMessageRepository.save(userMessage);
+            onMessageUpdated(userMessageRepository.save(userMessage));
         }
     }
 

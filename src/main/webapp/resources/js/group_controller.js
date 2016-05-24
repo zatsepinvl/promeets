@@ -41,12 +41,15 @@ app.controller('groupMainCtrl', function ($scope, $state, appConst, $stateParams
     $scope.$on('usergroupinvite', function (event, message) {
         if (message.action == appConst.ACTION.UPDATE) {
             message = message.data;
-            if (message.user.userId != $scope.user.userId && message.accepted) {
-                $scope.users.push(message.user);
+            if (message.user.userId != $scope.user.userId) {
+                if (message.accepted) {
+                    $scope.users.push(message.user);
+                }
                 $scope.invited.splice($scope.invited.map(
                     function (e) {
                         return e.userId;
                     }).indexOf(message.user.userId), 1);
+                $scope.$apply();
             }
         }
     });

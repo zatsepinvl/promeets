@@ -1,6 +1,6 @@
 <div class="mdl-grid">
     <div class="phone mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone"
-         ng-repeat="file in files | orderBy: file.time : true | fileFormat:format">
+         ng-repeat="file in files | orderBy: file.time : true ">
         <div class="s-box">
             <file-box file="file"
                       disabled="true"
