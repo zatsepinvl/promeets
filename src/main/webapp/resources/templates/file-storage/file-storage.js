@@ -25,14 +25,14 @@ app.directive("fileStorage", function (UserEntity) {
         templateUrl: "templates/file-storage/file-storage.html",
         scope: {
             onClicked: '=',
-            format: '='
+            format: '=',
+            files: '='
         },
         link: function ($scope) {
             $scope.loading = true;
-            $scope.files = [];
             UserEntity.query({entity: "files"}
                 , function (data) {
-                    $scope.files = data;
+                    clone(data, $scope.files);
                     $scope.loading = false;
                 });
             $scope.clicked = function (file) {

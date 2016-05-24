@@ -6,24 +6,28 @@
             <img class="mdl-layout-icon" src="../image/promeets_icon.png" ui-sref="home.presentation"
                  style="cursor: pointer;"/>
             <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title mdl-layout--large-screen-only">Promeets</span>
+                <span class="mdl-layout-title" ng-if="!$mdMedia('xs')">
+                    <a href="" ui-sref="home.presentation">
+                        Promeets
+                    </a>
+                </span>
 
                 <div class="mdl-layout-spacer">
                 </div>
-               <!-- <nav class="mdl-navigation">
-                    <i class="material-icons" style="color: #ef6c00">notifications</i>
-                </nav>-->
-             <!--   <div class="mdl-textfield mdl-js-textfield mdl-textfield&#45;&#45;expandable
-                  mdl-textfield&#45;&#45;floating-label mdl-textfield&#45;&#45;align-right">
-                    <label class="mdl-button mdl-js-button mdl-button&#45;&#45;icon"
-                           for="fixed-header-drawer-exp">
+                <!-- <nav class="mdl-navigation">
+                     <i class="material-icons" style="color: #ef6c00">notifications</i>
+                 </nav>-->
+                <!--   <div class="mdl-textfield mdl-js-textfield mdl-textfield&#45;&#45;expandable
+                     mdl-textfield&#45;&#45;floating-label mdl-textfield&#45;&#45;align-right">
+                       <label class="mdl-button mdl-js-button mdl-button&#45;&#45;icon"
+                              for="fixed-header-drawer-exp">
 
-                    </label>
-                    <div class="mdl-textfield__expandable-holder">
-                        <input class="mdl-textfield__input" type="text" name="sample"
-                               id="fixed-header-drawer-exp">
-                    </div>
-                </div>-->
+                       </label>
+                       <div class="mdl-textfield__expandable-holder">
+                           <input class="mdl-textfield__input" type="text" name="sample"
+                                  id="fixed-header-drawer-exp">
+                       </div>
+                   </div>-->
             </div>
         </header>
         <!-- Navigation menu -->

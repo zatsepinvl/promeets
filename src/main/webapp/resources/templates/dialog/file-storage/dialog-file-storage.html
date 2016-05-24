@@ -40,7 +40,14 @@
     <md-dialog-content>
         <div layout="column" ng-hide="loading || loaded">
             <md-content>
-                <file-storage user="user" on-clicked="onClicked" format="format"></file-storage>
+                <file-storage user="user" on-clicked="onClicked" format="format"
+                              files="files"
+                              ngf-drop="upload($file,$invalidFiles)"
+                              ng-model="uploadFile" name="file"
+                              ngf-accept="'{{format}}'"
+                              ngf-pattern="'{{format}}'"
+                              ngf-max-size="maxSize">
+                </file-storage>
             </md-content>
         </div>
 

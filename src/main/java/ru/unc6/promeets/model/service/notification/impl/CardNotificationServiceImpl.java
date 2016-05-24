@@ -27,7 +27,7 @@ public class CardNotificationServiceImpl extends BaseNotificationServiceImpl<Car
                 .setAction(action)
                 .setEntity(entity.getClass().getSimpleName().toLowerCase());
         for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(entity.getMeet().getMeetId())) {
-            if (userMeet.getUser().getUserId() != entity.getUser().getUserId()) {
+            if (!userMeet.getUser().equals(entity.getUser())) {
                 notificationController.sendNotificationToUser(notification, userMeet.getUser());
             }
         }

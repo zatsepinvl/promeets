@@ -21,6 +21,7 @@ function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDi
     $scope.format = format;
     $scope.maxSize = maxSize;
     $scope.file = file;
+    $scope.files = [];
 
     var cloneFiles = function (from, to) {
         to.name = from.name;
@@ -78,6 +79,7 @@ function FileStorageDialogCtrl($scope, file, format, maxSize, url, Entity, $mdDi
         }).then(function (resp) {
             //success
             cloneFiles(resp.data, $scope.file);
+            $scope.files.push(resp.data);
             $scope.loading = false;
             $scope.loaded = true;
             $scope.progress = 0;

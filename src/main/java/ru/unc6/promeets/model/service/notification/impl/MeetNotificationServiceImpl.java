@@ -47,10 +47,9 @@ public class MeetNotificationServiceImpl extends BaseNotificationServiceImpl<Mee
                 .setAction(action)
                 .setData(entity);
         for (User user : userMeetRepository.getUsersByMeetId(entity.getMeetId())) {
-            if (currentUser.equals(user)) {
-                return;
+            if (!currentUser.equals(user)) {
+                notificationController.sendNotificationToUser(notification, user);
             }
-            notificationController.sendNotificationToUser(notification, user);
         }
     }
 
