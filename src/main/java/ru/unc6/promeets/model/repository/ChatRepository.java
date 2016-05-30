@@ -11,11 +11,6 @@ import org.springframework.data.repository.query.Param;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
-
-/**
- *
- * @author MDay
- */
 public interface ChatRepository extends CrudRepository<Chat, Long>
 {
     @Query("select message from Message message where message.chat.chatId=(:chatId) order by message.time DESC")
@@ -23,9 +18,5 @@ public interface ChatRepository extends CrudRepository<Chat, Long>
     
     @Query("select message from Message message where message.chat.chatId=(:chatId) order by message.time DESC")
     Iterable<Message> getAllMessagesByChatId(@Param("chatId") Long id);
-
-    @Modifying
-    @Query("delete from Message message where message.chat.chatId=(:chatId)")
-    void deleteAllMessagesByChatId(@Param("chatId") Long id);
 }
 

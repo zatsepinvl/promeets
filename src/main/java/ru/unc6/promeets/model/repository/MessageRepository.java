@@ -5,6 +5,7 @@
  */
 package ru.unc6.promeets.model.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,8 @@ public interface MessageRepository extends PagingAndSortingRepository<Message, L
 
     @Query(value = "select message from Message message where message.chat.chatId=(:chatId) and message.time>=(:time)")
     Iterable<Message> getMessagesByChatIdAfter(@Param("chatId") long chatId, @Param("time") long time);
+
+    @Modifying
+    @Query("delete from Message message where message.chat.chatId=(:chatId)")
+    void deleteMessagesByChatId(@Param("chatId") Long id);
 }

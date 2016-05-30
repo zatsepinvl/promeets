@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.Meet;
 import ru.unc6.promeets.model.repository.MeetRepository;
-import ru.unc6.promeets.model.service.entity.MeetService;
-import ru.unc6.promeets.model.service.entity.UserMeetService;
+import ru.unc6.promeets.model.service.entity.*;
 import ru.unc6.promeets.model.service.notification.MeetNotificationService;
 
 import java.util.List;
@@ -25,24 +24,41 @@ public class MeetServiceImpl extends BaseNotifiedServiceImpl<Meet, Long>
 
     private MeetRepository meetRepository;
 
-
     @Autowired
     private UserMeetService userMeetService;
 
     @Autowired
+    private CardService cardService;
+
+    @Autowired
+    private NoteService noteService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
     public MeetServiceImpl(MeetRepository repository, MeetNotificationService notificationService) {
-        super(repository,notificationService);
+        super(repository, notificationService);
         this.meetRepository = repository;
     }
 
     @Override
     public void delete(Long id) {
         userMeetService.deleteUserMeetsByMeetId(id);
+        cardService.deleteCardByMeetId(id);
+        noteService.deleteNotesByMeetId(id);
+        taskService.deleteTasksByMeetId(id);
         super.delete(id);
     }
 
     @Override
     public List<Meet> getMeetsByGroupId(long groupId) {
         return (List<Meet>) meetRepository.getMeetsByGroupId(groupId);
+    }
+
+    @Override
+    public void deleteMeetsByGroupId(long groupId) {
+        userMeetService.deleteUserMeetByGroupId(groupId);
+        meetRepository.deleteMeetsByGroupId(groupId);
     }
 }

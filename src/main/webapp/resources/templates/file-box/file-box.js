@@ -17,6 +17,7 @@ app.directive("fileBox", function (ImageViewDialog) {
                 if (!fileName) return true;
                 return !!(fileName.indexOf('.png') > -1
                 || fileName.indexOf('.jpg') > -1
+                || fileName.indexOf('.jpeg') > -1
                 || fileName.indexOf('.gif') > -1);
             };
 

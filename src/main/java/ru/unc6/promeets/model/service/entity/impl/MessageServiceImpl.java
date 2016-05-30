@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.repository.MessageRepository;
 import ru.unc6.promeets.model.service.entity.MessageService;
+import ru.unc6.promeets.model.service.entity.UserMessageService;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Long>
         implements MessageService {
 
     private MessageRepository messageRepository;
+
+    @Autowired
+    private UserMessageService userMessageService;
 
     @Autowired
     public MessageServiceImpl(MessageRepository repository) {
@@ -35,5 +39,11 @@ public class MessageServiceImpl extends BaseServiceImpl<Message, Long>
     @Override
     public List<Message> getMessagesByChatIdAfter(long chatId, long time) {
         return (List<Message>) messageRepository.getMessagesByChatIdAfter(chatId, time);
+    }
+
+    @Override
+    public void deleteMessagesByChatId(long chatId) {
+        userMessageService.deleteUserMessagesByChatId(chatId);
+        messageRepository.deleteMessagesByChatId(chatId);
     }
 }

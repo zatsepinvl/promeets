@@ -9,7 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.Chat;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.UserRepository;
@@ -25,7 +25,7 @@ import ru.unc6.promeets.model.service.notification.Notification;
 public class ChatNotificationServiceImpl implements ChatNotificationService
 {
     @Autowired
-    NotificationController notificationController;
+    StompNotificationController notificationController;
     @Autowired
     UserRepository userRepository;
 
@@ -55,7 +55,7 @@ public class ChatNotificationServiceImpl implements ChatNotificationService
         List<User> users = (List<User>) userRepository.getUsersByChatId(chat.getChatId());
         Notification notification = new Notification(chat.getClass(), action, chat.getChatId());
         for(User user : users){
-            notificationController.sendNotificationToUser(notification, user);
+            notificationController.notifyUser(notification, user);
         }
     }
     

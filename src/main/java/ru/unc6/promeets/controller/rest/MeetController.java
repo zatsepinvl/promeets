@@ -27,9 +27,6 @@ public class MeetController extends BaseRestController<Meet, Long> {
     private UserMeetService userMeetService;
 
     @Autowired
-    private BoardService boardService;
-    
-    @Autowired
     private MeetInfoService meetInfoService;
 
     @Autowired
@@ -63,30 +60,15 @@ public class MeetController extends BaseRestController<Meet, Long> {
         return taskService.getTasksByMeetId(id);
     }
 
-    @RequestMapping(value = "/{id}/boards", method = RequestMethod.GET)
-    public Board getBoard(@PathVariable("id") long meetId, @RequestParam("page") int page) {
-        checkIsNotFoundById(meetId);
-        return boardService.getBoardByMeetId(meetId, page);
-    }
-
     @RequestMapping(value = "/{id}/cards", method = RequestMethod.GET)
     public List<Card> getCardsByMeetIdAndPage(@PathVariable("id") long meetId, @RequestParam("page") int page) {
         checkIsNotFoundById(meetId);
         return cardService.getCardsByMeetIdAndPage(meetId, page);
     }
-    
+
     @RequestMapping(value = "/{id}/info", method = RequestMethod.GET)
-    public List<UserMeetInfo> getInfoByMeetId(@PathVariable("id") long meetId) 
-    {
+    public List<UserMeetInfo> getInfoByMeetId(@PathVariable("id") long meetId) {
         checkIsNotFoundById(meetId);
         return meetInfoService.getByMeetId(meetId);
     }
-    
-    @RequestMapping(value = "/{id}/info/online", method = RequestMethod.GET)
-    public List<UserMeetInfo> getOnlineByMeetId(@PathVariable("id") long meetId) 
-    {
-        checkIsNotFoundById(meetId);
-        return meetInfoService.getOnlineByMeetId(meetId);
-    }
-
 }

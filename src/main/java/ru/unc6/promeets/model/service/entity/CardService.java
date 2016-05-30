@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface CardService extends BaseService<Card, Long> {
     List<Card> getCardsByMeetIdAndPage(long meetId, int page);
+
+    void deleteCardByMeetId(long meetId);
 }

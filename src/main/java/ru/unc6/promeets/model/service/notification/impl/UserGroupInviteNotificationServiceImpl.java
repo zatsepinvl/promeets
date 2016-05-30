@@ -2,7 +2,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserGroupInvite;
 import ru.unc6.promeets.model.service.entity.GroupService;
@@ -17,7 +17,7 @@ public class UserGroupInviteNotificationServiceImpl extends BaseNotificationServ
         implements UserGroupInviteNotificationService {
 
     @Autowired
-    private NotificationController notificationController;
+    private StompNotificationController notificationController;
 
     @Autowired
     private GroupService groupService;
@@ -35,7 +35,7 @@ public class UserGroupInviteNotificationServiceImpl extends BaseNotificationServ
                 .setEntity(entity.getClass().getSimpleName().toLowerCase())
                 .setId(entity.getGroup().getGroupId());
         for (User user : groupService.getUsersByGroupId(entity.getGroup().getGroupId())) {
-            notificationController.sendNotificationToUser(notification, user);
+            notificationController.notifyUser(notification, user);
         }
     }
 
@@ -48,9 +48,9 @@ public class UserGroupInviteNotificationServiceImpl extends BaseNotificationServ
                 .setId(entity.getGroup().getGroupId());
         for (User user : groupService.getUsersByGroupId(entity.getGroup().getGroupId())) {
             if (!user.equals(entity.getInviter())) {
-                notificationController.sendNotificationToUser(notification, user);
+                notificationController.notifyUser(notification, user);
             }
         }
-        notificationController.sendNotificationToUser(notification, entity.getUser());
+        notificationController.notifyUser(notification, entity.getUser());
     }
 }

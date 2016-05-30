@@ -7,7 +7,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.Message;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.UserService;
@@ -18,7 +18,7 @@ import ru.unc6.promeets.model.service.notification.Notification;
 public class MessageNotificationServiceImpl extends BaseNotificationServiceImpl<Message> implements MessageNotificationService {
 
     @Autowired
-    private NotificationController notificationController;
+    private StompNotificationController notificationController;
 
     @Autowired
     private UserService userService;
@@ -32,7 +32,7 @@ public class MessageNotificationServiceImpl extends BaseNotificationServiceImpl<
                 .setId(message.getMessageId());
         for (User user : userService.getUsersByChatId(message.getChat().getChatId())) {
             if (user.getUserId() != message.getUser().getUserId() || action == Notification.Action.UPDATE) {
-                notificationController.sendNotificationToUser(notification, user);
+                notificationController.notifyUser(notification, user);
             }
         }
     }

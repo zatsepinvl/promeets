@@ -61,20 +61,21 @@ public class UserGroupServiceImpl extends BaseServiceImpl<UserGroup, UserGroupPK
     }
 
     @Override
-    @Transactional
+
     public void deleteUserGroupsByGroupId(long id) {
         userGroupRepository.deleteUserGroupsByGroupId(id);
     }
 
     @Override
+    @Transactional
     public UserGroup create(UserGroup entity) {
         if (groupService.getById(entity.getGroup().getGroupId()) == null) {
-            groupService.create(entity.getGroup());
+            entity.setGroup(groupService.create(entity.getGroup()));
         } else {
-            createUserChat(entity.getUser(), entity.getGroup());
             createUserMessages(entity.getUser(), entity.getGroup());
             createUserMeets(entity.getUser(), entity.getGroup());
         }
+        createUserChat(entity.getUser(), entity.getGroup());
         return super.create(entity);
     }
 

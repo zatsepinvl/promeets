@@ -2,7 +2,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.UserMeet;
 import ru.unc6.promeets.model.service.notification.Notification;
 import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
@@ -15,7 +15,7 @@ public class UserMeetNotificationServiceImpl extends BaseNotificationServiceImpl
         implements UserMeetNotificationService {
 
     @Autowired
-    private NotificationController stompController;
+    private StompNotificationController stompController;
 
     @Override
     public void onUpdate(UserMeet entity) {
@@ -29,6 +29,6 @@ public class UserMeetNotificationServiceImpl extends BaseNotificationServiceImpl
                 .setAction(action)
                 .setId(entity.getMeet().getMeetId())
                 .setData(entity);
-        stompController.sendNotificationToUser(notification, entity.getUser());
+        stompController.notifyUser(notification, entity.getUser());
     }
 }

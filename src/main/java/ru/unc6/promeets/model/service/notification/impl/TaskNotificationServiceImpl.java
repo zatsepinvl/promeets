@@ -7,7 +7,7 @@ package ru.unc6.promeets.model.service.notification.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.MeetTask;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserMeet;
@@ -22,7 +22,7 @@ import ru.unc6.promeets.model.service.notification.TaskNotificationService;
 @Service
 public class TaskNotificationServiceImpl extends BaseNotificationServiceImpl<MeetTask> implements TaskNotificationService {
     @Autowired
-    private NotificationController notificationController;
+    private StompNotificationController notificationController;
     @Autowired
     private UserMeetService userMeetService;
     @Autowired
@@ -38,7 +38,7 @@ public class TaskNotificationServiceImpl extends BaseNotificationServiceImpl<Mee
         User currentUser = userService.getCurrentAuthenticatedUser();
         for (UserMeet userMeet : userMeetService.getUserMeetsByMeetId(task.getMeet().getMeetId())) {
             if (currentUser.getUserId() != userMeet.getUser().getUserId()) {
-                notificationController.sendNotificationToUser(notification, userMeet.getUser());
+                notificationController.notifyUser(notification, userMeet.getUser());
             }
         }
     }

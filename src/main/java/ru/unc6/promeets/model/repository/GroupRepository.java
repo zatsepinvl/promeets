@@ -14,12 +14,8 @@ import ru.unc6.promeets.model.entity.Group;
 import ru.unc6.promeets.model.entity.GroupType;
 import ru.unc6.promeets.model.entity.Meet;
 
-/**
- * @author MDay
- */
 @Transactional
 public interface GroupRepository extends CrudRepository<Group, Long> {
-
 
     @Query("select meet from Meet meet where  meet.group.groupId=(:groupId) and meet.time>=(:start) and meet.time<=(:end) order by meet.time")
     Iterable<Meet> getMeetsByGroupIdAndTimePeriod(@Param("groupId") long groupId, @Param("start") long start, @Param("end") long end);

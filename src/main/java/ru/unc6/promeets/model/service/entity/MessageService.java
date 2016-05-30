@@ -13,4 +13,6 @@ public interface MessageService extends BaseService<Message, Long> {
     List<Message> getMessagesByChatId(long chatId);
 
     List<Message> getMessagesByChatIdAfter(long chatId, long time);
+
+    void deleteMessagesByChatId(long chatId);
 }

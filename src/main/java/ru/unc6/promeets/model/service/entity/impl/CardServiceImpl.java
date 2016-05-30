@@ -24,8 +24,6 @@ public class CardServiceImpl extends BaseNotifiedServiceImpl<Card, Long>
 
     private static final int PAGE_SIZE = 20;
     private CardRepository cardRepository;
-    private CardNotificationService cardNotificationService;
-
 
     @Autowired
     private MeetNotificationService meetNotificationService;
@@ -40,12 +38,17 @@ public class CardServiceImpl extends BaseNotifiedServiceImpl<Card, Long>
     public CardServiceImpl(CardRepository repository, CardNotificationService notificationService) {
         super(repository, notificationService);
         this.cardRepository = repository;
-        this.cardNotificationService = notificationService;
     }
 
     @Override
     public List<Card> getCardsByMeetIdAndPage(long meetId, int page) {
         return cardRepository.getCardByMeetId(meetId, new PageRequest(page, PAGE_SIZE)).getContent();
+    }
+
+    @Override
+    public void deleteCardByMeetId(long meetId) {
+        cardFileService.deleteCardFilesByMeetId(meetId);
+        cardRepository.deleteCardsByMeetId(meetId);
     }
 
     @Override

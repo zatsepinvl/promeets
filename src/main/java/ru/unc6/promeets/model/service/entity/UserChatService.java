@@ -18,4 +18,6 @@ public interface UserChatService extends BaseService<UserChat, UserChatPK> {
     UserChat getUserChatByUserIdAndChatId(long userId, long chatId);
 
     void createUserChatByUserAndChat(User user, Chat chat);
+
+    void deleteUserChatByChatId(long id);
 }

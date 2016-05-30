@@ -1,3 +1,38 @@
+.box {
+    width: 100%;
+    height: auto;
+    min-width: 100px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.box img {
+    width: 100%;
+    margin: auto;
+}
+
+.box a {
+    width: 90%;
+    font-size: 12px;
+    min-width: 100px;
+    height: 60px;
+    line-height: 30px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    overflow: hidden;
+    margin: 2px;
+}
+
+.box a i {
+    vertical-align: middle;
+    display: block;
+    text-decoration: none;
+}
+
+.box a i:hover {
+    text-decoration: none;
+}
 .upload-file-box {
     position: relative;
 }

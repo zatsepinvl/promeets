@@ -17,6 +17,7 @@ import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.repository.MessageRepository;
 import ru.unc6.promeets.model.repository.ChatRepository;
 import ru.unc6.promeets.model.service.entity.ChatService;
+import ru.unc6.promeets.model.service.entity.MessageService;
 import ru.unc6.promeets.model.service.entity.UserChatService;
 import ru.unc6.promeets.model.service.entity.UserService;
 
@@ -34,22 +35,17 @@ public class ChatServiceImpl extends BaseServiceImpl<Chat, Long>
     private UserChatService userChatService;
 
     @Autowired
+    private MessageService messageService;
+
+    @Autowired
     public ChatServiceImpl(ChatRepository repository) {
         super(repository);
         this.chatRepository = repository;
     }
 
-
-    @Override
-    public Chat create(Chat entity) {
-        entity = super.create(entity);
-        userChatService.createUserChatByUserAndChat(userService.getCurrentAuthenticatedUser(), entity);
-        return entity;
-    }
-
     @Override
     public void delete(Long id) {
-        chatRepository.deleteAllMessagesByChatId(id);
+        messageService.deleteMessagesByChatId(id);
         chatRepository.delete(id);
     }
 
@@ -58,10 +54,8 @@ public class ChatServiceImpl extends BaseServiceImpl<Chat, Long>
         return chatRepository.getMessagesPageByChatId(id, page).getContent();
     }
 
-
     @Override
     public List<Message> getAllMessagesByChatId(long id) {
         return (List<Message>) chatRepository.getAllMessagesByChatId(id);
     }
-
 }

@@ -12,4 +12,6 @@ import ru.unc6.promeets.model.entity.MeetTask;
 
 public interface MeetService extends BaseService<Meet, Long> {
     List<Meet> getMeetsByGroupId(long groupId);
+
+    void deleteMeetsByGroupId(long groupId);
 }

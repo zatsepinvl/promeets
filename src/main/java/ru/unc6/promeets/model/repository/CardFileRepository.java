@@ -26,4 +26,9 @@ public interface CardFileRepository extends PagingAndSortingRepository<CardFile,
     @Transactional
     @Query("delete from CardFile cardFile where cardFile.id.card.cardId=(:cardId) and cardFile.id.file.fileId=(:fileId)")
     void deleteFileCardByCardIdAndFileId(@Param("cardId") long cardId, @Param("fileId") long fileId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from CardFile cardFile where cardFile.id.card.meet.meetId=(:meetId)")
+    void deleteCardFilesByMeetId(@Param("meetId") long meetId);
 }

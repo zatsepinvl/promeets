@@ -9,7 +9,7 @@ import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.unc6.promeets.controller.NotificationController;
+import ru.unc6.promeets.controller.StompNotificationController;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.service.entity.UserService;
 
@@ -22,7 +22,7 @@ public class WebRtcSignalServiceImpl implements WebRtcSignalService {
     UserService userService;
 
     @Autowired
-    NotificationController notificationController;
+    StompNotificationController notificationController;
 
     @Override
     public void signalRTCByMeetId(WebRtcSignalMessage message, Principal principal) {

@@ -19,13 +19,11 @@ public class UserGroupInviteServiceImpl extends BaseNotifiedServiceImpl<UserGrou
         implements UserGroupInviteService {
 
     private UserGroupInviteRepository repository;
-    private UserGroupInviteNotificationService notificationService;
 
     @Autowired
     public UserGroupInviteServiceImpl(UserGroupInviteRepository repository, UserGroupInviteNotificationService notificationService) {
         super(repository, notificationService);
         this.repository = repository;
-        this.notificationService = notificationService;
     }
 
     @Override

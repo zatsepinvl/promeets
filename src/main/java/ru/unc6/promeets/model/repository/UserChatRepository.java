@@ -1,9 +1,11 @@
 package ru.unc6.promeets.model.repository;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.User;
 import ru.unc6.promeets.model.entity.UserChat;
 import ru.unc6.promeets.model.entity.UserChatPK;
@@ -24,4 +26,8 @@ public interface UserChatRepository extends CrudRepository<UserChat, UserChatPK>
     @Query("select userChat from UserChat userChat where userChat.id.chat.chatId=(:chatId) and userChat.id.user.userId=(:userId)")
     UserChat getUserChatByUserIdAndChatId(@Param("userId") long userId, @Param("chatId") long chatId);
 
+    @Transactional
+    @Modifying
+    @Query("delete from UserChat userChat where userChat.id.chat.chatId=(:chatId)")
+    void deleteUserChatsByChatId(@Param("chatId") long chatId);
 }

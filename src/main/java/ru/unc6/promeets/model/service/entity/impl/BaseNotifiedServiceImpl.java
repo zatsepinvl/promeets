@@ -10,19 +10,15 @@ import java.util.List;
 /**
  * Created by Vladimir on 19.04.2016.
  */
-public class BaseNotifiedServiceImpl<T, V extends Serializable> implements BaseService<T, V> {
+public class BaseNotifiedServiceImpl<T, V extends Serializable> extends BaseServiceImpl<T, V> {
 
     private CrudRepository<T, V> repository;
     private BaseNotificationService<T> notificationService;
 
     public BaseNotifiedServiceImpl(CrudRepository<T, V> repository, BaseNotificationService<T> notificationService) {
+        super(repository);
         this.repository = repository;
         this.notificationService = notificationService;
-    }
-
-    @Override
-    public T getById(V id) {
-        return repository.findOne(id);
     }
 
     @Override
@@ -44,10 +40,5 @@ public class BaseNotifiedServiceImpl<T, V extends Serializable> implements BaseS
         T entity = repository.findOne(id);
         repository.delete(id);
         notificationService.onDelete(entity);
-    }
-
-    @Override
-    public List<T> getAll() {
-        return (List<T>) repository.findAll();
     }
 }

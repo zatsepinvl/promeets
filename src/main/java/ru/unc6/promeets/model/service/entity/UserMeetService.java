@@ -28,6 +28,8 @@ public interface UserMeetService extends BaseService<UserMeet, UserMeetPK> {
 
     void deleteUserMeetByUserIdAndMeetId(long userId, long meetId);
 
+    void deleteUserMeetByGroupId(long groupId);
+
     void createUserMeetsByUserAndGroup(User user, Group group);
 
 }

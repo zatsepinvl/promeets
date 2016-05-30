@@ -1,8 +1,5 @@
 package ru.unc6.promeets.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,9 +13,6 @@ public class Meet implements Serializable {
     private String title;
     private long time;
     private User admin;
-    private String location;
-    private String description;
-    private MeetType type;
     private Group group;
 
     @Id
@@ -83,36 +77,6 @@ public class Meet implements Serializable {
         this.admin = admin;
     }
 
-
-    @Basic
-    @Column(name = "location")
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    @Basic
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "type_id", referencedColumnName = "type_id")
-    public MeetType getType() {
-        return type;
-    }
-
-    public void setType(MeetType type) {
-        this.type = type;
-    }
 
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "group_id")

@@ -19,4 +19,6 @@ public interface CardFileService extends BaseService<CardFile, CardFilePK> {
     void deleteCardFileByCardIdAndFileId(long cardId, long fileId);
 
     File createFileByCardId(long cardId);
+
+    void deleteCardFilesByMeetId(long meetId);
 }

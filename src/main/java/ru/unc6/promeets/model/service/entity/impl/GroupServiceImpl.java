@@ -66,6 +66,7 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
     public Group create(Group group) {
         Chat chat = new Chat();
         chat.setImage(getDefaultImage());
+        chat.setTitle(group.getTitle());
         group.setChat(chatService.create(chat));
         group.setTime(System.currentTimeMillis());
         group.setAdmin(userService.getCurrentAuthenticatedUser());
@@ -86,11 +87,10 @@ public class GroupServiceImpl extends BaseServiceImpl<Group, Long>
 
     @Override
     public void delete(Long id) {
+        Group group = groupRepository.findOne(id);
+        meetService.deleteMeetsByGroupId(id);
+        chatService.delete(group.getGroupId());
         userGroupService.deleteUserGroupsByGroupId(id);
-        List<Meet> meets = meetService.getMeetsByGroupId(id);
-        for (Meet meet : meets) {
-            meetService.delete(meet.getMeetId());
-        }
         groupRepository.delete(id);
     }
 

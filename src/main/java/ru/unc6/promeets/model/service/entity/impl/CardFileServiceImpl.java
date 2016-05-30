@@ -29,7 +29,7 @@ public class CardFileServiceImpl extends BaseServiceImpl<CardFile, CardFilePK>
     @Autowired
     public CardFileServiceImpl(CardFileRepository repository) {
         super(repository);
-        this.cardFileRepository=repository;
+        this.cardFileRepository = repository;
     }
 
     @Override
@@ -56,5 +56,10 @@ public class CardFileServiceImpl extends BaseServiceImpl<CardFile, CardFilePK>
         cardFile.setCard(card);
         create(cardFile);
         return file;
+    }
+
+    @Override
+    public void deleteCardFilesByMeetId(long meetId) {
+        cardFileRepository.deleteCardFilesByMeetId(meetId);
     }
 }

@@ -11,7 +11,6 @@ import ru.unc6.promeets.model.service.entity.MeetService;
 import ru.unc6.promeets.model.service.entity.UserMeetService;
 import ru.unc6.promeets.model.service.notification.UserMeetNotificationService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.unc6.promeets.model.service.entity.MeetInfoService;
@@ -119,6 +118,11 @@ public class UserMeetServiceImpl extends BaseNotifiedServiceImpl<UserMeet, UserM
     @Override
     public void deleteUserMeetByUserIdAndMeetId(long userId, long meetId) {
         userMeetRepository.deleteUserMeetByUserIdAndMeetId(userId, meetId);
+    }
+
+    @Override
+    public void deleteUserMeetByGroupId(long groupId) {
+        userMeetRepository.deleteUserMeetsByGroupId(groupId);
     }
 
     @Override

@@ -20,7 +20,6 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Query("select userMeet from UserMeet userMeet where  userMeet.userMeetPK.meet.meetId=(:meetId) order by userMeet.id.user.userId")
     Iterable<UserMeet> getUserMeetsByMeetId(@Param("meetId") long id);
 
-
     @Query("select userMeet from UserMeet userMeet where userMeet.userMeetPK.user.id=(:userId)")
     Iterable<UserMeet> getUserMeetsByUserId(@Param("userId") long userId);
 
@@ -51,4 +50,9 @@ public interface UserMeetRepository extends CrudRepository<UserMeet, UserMeetPK>
     @Transactional
     @Query("delete from UserMeet userMeet where userMeet.id.user.userId=(:userId) and userMeet.id.meet.meetId=(:meetId)")
     void deleteUserMeetByUserIdAndMeetId(@Param("userId") long userId, @Param("meetId") long meetId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from UserMeet userMeet where userMeet.id.meet.group.groupId=(:groupId)")
+    void deleteUserMeetsByGroupId(@Param("groupId") long groupId);
 }

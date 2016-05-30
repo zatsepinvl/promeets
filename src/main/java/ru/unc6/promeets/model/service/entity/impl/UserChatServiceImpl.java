@@ -65,4 +65,9 @@ public class UserChatServiceImpl extends BaseServiceImpl<UserChat, UserChatPK>
         userChat.setChat(chat);
         userChatRepository.save(userChat);
     }
+
+    @Override
+    public void deleteUserChatByChatId(long id) {
+        userChatRepository.getUsersByChatId(id);
+    }
 }

@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.unc6.promeets.model.entity.UserMeetInfo;
 import ru.unc6.promeets.model.entity.UserMeetPK;
 
-/**
- * @author Alex
- */
 public interface MeetInfoRepository extends CrudRepository<UserMeetInfo, UserMeetPK> {
     @Query("select meetInfo from UserMeetInfo meetInfo where meetInfo.userMeetPK.meet.meetId=(:meetId) order by meetInfo.id.user.userId")
     Iterable<UserMeetInfo> getByMeetId(@Param("meetId") Long id);

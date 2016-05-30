@@ -38,7 +38,7 @@ app.controller('signUpFormCtrl', function ($scope, $state, Entity, $location, Ev
                         function (response) {
                             $scope.loading = false;
                             $scope.error.show = true;
-                            $scope.error.value = response.data.message;
+                            $scope.error.value = response.message;
                         });
             }
 

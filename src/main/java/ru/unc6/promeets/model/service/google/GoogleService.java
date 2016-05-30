@@ -31,7 +31,7 @@ public class GoogleService {
     private static final Logger log = Logger.getLogger(GoogleService.class);
 
     //@Value(value = "#{appProperties.googleOAuth2Info}")
-    private String clientSecretFilePath = "client_secret.json";
+    private static final String clientSecretFilePath = "client_secret.json";
 
     private static final String APPLICATION_NAME = "Promeets";
 
@@ -68,7 +68,7 @@ public class GoogleService {
     public GoogleTokenResponse exchangeCodeToToken(String code) throws IOException {
         JsonFactory jsonFactory = new JacksonFactory();
         HttpTransport httpTransport = new NetHttpTransport();
-        GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
+        return new GoogleAuthorizationCodeTokenRequest(
                 httpTransport,
                 jsonFactory,
                 oAuthInfo.getClient_id(),
@@ -76,7 +76,6 @@ public class GoogleService {
                 code,
                 oAuthInfo.getRedirect_uris()[0]
         ).execute();
-        return tokenResponse;
     }
 
     public String getOauth2AuthenticationUrl() {
