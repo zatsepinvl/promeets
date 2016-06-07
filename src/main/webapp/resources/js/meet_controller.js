@@ -135,19 +135,29 @@ app.controller("meetCtrl", function ($scope, $rootScope, $http, $window, appCons
     $scope.$on('usermeetinfo', function (event, message) {
         if (message.action == appConst.ACTION.UPDATE) {
             var sender = message.data.user;
-            if (message.data.online && message.data.connected) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' connect to the conference', sender);
-            }
-            else if (message.data.online && !message.data.connected) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' join the meeting', sender);
-            }
-            else if (!message.data.online) {
-                EventHandler.message(sender.firstName + ' ' + sender.lastName + ' leave the meeting', sender);
-            }
+            var prevInfoState = {};
             for (var i = 0; i < $scope.meetUsers.length; i++) {
                 if ($scope.meetUsers[i].user.userId === message.data.user.userId) {
+                    clone($scope.meetUsers[i], prevInfoState);
                     $scope.meetUsers[i] = message.data;
-                    return;
+                    break;
+                }
+            }
+            if (message.data.online && message.data.connected) {
+                EventHandler.message($scope.fio(sender) + ' joined the conference', sender);
+            }
+            else if (message.data.online && !message.data.connected) {
+                if (prevInfoState.connected) {
+                    EventHandler.message($scope.fio(sender) + ' left the conference', sender);
+                }
+                else if(!prevInfoState.online)
+                {
+                    EventHandler.message($scope.fio(sender) + ' joined the meeting', sender);
+                }
+            }
+            else if (!message.data.online && !message.data.connected) {
+                if (prevInfoState.online) {
+                    EventHandler.message($scope.fio(sender) + ' left the meeting', sender);
                 }
             }
             $scope.$apply();

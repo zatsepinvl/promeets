@@ -62,7 +62,6 @@ app.directive("calendar", function () {
                 $scope.prevMonth && $scope.prevMonth($scope.month);
             };
 
-
         }
     };
 
@@ -81,14 +80,17 @@ app.directive("calendar", function () {
         }
     }
 
+
+
     function _buildWeek(date, month) {
         var days = [];
         for (var i = 0; i < 7; i++) {
             days.push({
                 name: date.format("dd").substring(0, 1),
                 number: date.date(),
+                isBefore: date.isBefore(moment(), "day"),
                 isCurrentMonth: date.month() === month.month(),
-                isToday: date.isSame(new Date(), "day"),
+                isToday: date.isSame(moment(), "day"),
                 date: date,
                 events: []
             });

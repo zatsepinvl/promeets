@@ -67,29 +67,31 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
 
     var peerConnections = [];
 
+    function logError(error) {
+        //console.error('ERROR');
+        //console.error(error.name + ': ' + error.message);
+        console.log('ERROR');
+    }
+
     var startReceiving = function () {
         if (!$scope.readyReceive) {
             $scope.readyReceive = true;
             console.log('START RECEIVING');
-            $scope.$on('rtc/' + $scope.meet.meetId, function (event, data) {
-                var message = JSON.parse(data.data);
-                console.log('receive');
-                var pc;
-                if (message.type === 'offer') {
-                    pc = getPeerConnection(data.suserId);
-                    pc.setRemoteDescription(new SessionDescription(message));
-                    createAnswer(data.suserId)
+            $scope.$on('rtc/' + $scope.meet.meetId, function (event, message) {
+                console.log('receive: ' + message.type);
+                message.data = JSON.parse(message.data);
+                var pc = getPeerConnection(message.suserId);
+                if (message.type == 'offer') {
+                    pc.setRemoteDescription(new RTCSessionDescription(message.data));
+                    createAnswer(message.suserId)
                 }
-                else if (message.type === 'answer') {
-                    pc = getPeerConnection(data.suserId);
-                    pc.setRemoteDescription(new SessionDescription(message));
+                else if (message.type == 'answer') {
+                    pc.setRemoteDescription(new RTCSessionDescription(message.data));
                 }
-                else if (message.type === 'candidate') {
-                    pc = getPeerConnection(data.suserId);
-                    var candidate = new IceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
-                    pc.addIceCandidate(candidate);
+                else if (message.type == 'candidate') {
+                    pc.addIceCandidate(new RTCIceCandidate(message.data.candidate));
                 }
-                $scope.$apply();
+                //$scope.$apply();
             });
         }
 
@@ -161,13 +163,13 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
         pc.pmId = index;
 
         pc.onicecandidate = function (event) {
+            console.log('ON ICE CANDIDATE');
+            console.log(event);
             if (event.candidate) {
                 sendMessage(
                     {
                         type: 'candidate',
-                        label: event.candidate.sdpMLineIndex,
-                        id: event.candidate.sdpMid,
-                        candidate: event.candidate.candidate
+                        candidate: event.candidate
                     },
                     event.currentTarget.duserId
                 );
@@ -244,11 +246,14 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
                 }
                 createOffer();
             },
-            function (error) {
-                console.log(error)
-            }
+            logError
         );
         $scope.currentMeetUser.connected = true;
+    };
+
+    var mandatory =
+    {
+        mandatory: {'OfferToReceiveVideo': true, 'OfferToReceiveAudio': true}
     };
 
     var createOffer = function () {
@@ -257,31 +262,34 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
             if ($scope.meetUsers[pc.pmId].connected) {
                 pc.createOffer(
                     function (description) {
-                        pc.setLocalDescription(description);
-                        sendMessage(description, pc.duserId);
+                        pc.setLocalDescription(
+                            description,
+                            function () {
+                                sendMessage(pc.localDescription, pc.duserId);
+                            },
+                            logError
+                        );
                     },
-                    function (error) {
-                        console.log(error)
-                    },
-                    {'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true}
+                    logError
+                    // mandatory
                 );
-
             }
         });
     };
 
     function createAnswer(userId) {
-        currentPc = getPeerConnection(userId);
-        currDuserId = userId;
+        var currentPc = getPeerConnection(userId);
         currentPc.createAnswer(
-            function (answer) {
-                currentPc.setLocalDescription(answer);
-                sendMessage(answer, userId);
+            function (description) {
+                currentPc.setLocalDescription(description,
+                    function () {
+                        sendMessage(currentPc.localDescription, userId);
+                    },
+                    logError
+                );
             },
-            function (error) {
-                console.log(error)
-            },
-            {'mandatory': {'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true}}
+            logError
+            // mandatory
         );
     }
 
@@ -289,12 +297,12 @@ app.controller("rtcController", function ($scope, $rootScope, UserEntity, UserSe
     //////////////////    CONNECTION   //////////////////////////////////////
 
     function sendMessage(data, duserId) {
-        console.log('SEND');
-        var message = {};
-        message.data = JSON.stringify(data);
-        message.type = data.type;
-        message.duserId = duserId;
-        message.meetId = $scope.meet.meetId;
+        var message = {
+            data: JSON.stringify(data),
+            type: data.type,
+            duserId: duserId,
+            meetId: $scope.meet.meetId
+        };
         $scope.$emit('rtc', {
             meetId: $scope.meet.meetId,
             message: JSON.stringify(message)

@@ -109,14 +109,13 @@ app.controller('groupCalendarCtrl', function ($scope,
 
     $scope.$on('usermeet', function (event, message) {
         if (message.action == appConst.ACTION.CREATE) {
-            var meet = message.data.meet;
-            meet.time = moment(meet.time).local();
-            if (meet.time.isSame($scope.selectedDay, 'month')) {
+            var meetTime  = moment(message.data.meet.time);
+            if (meetTime.isSame($scope.selectedDay, 'month')) {
                 $scope.events.push(message.data);
-            } else if (meet.time.isSame($scope.selectedDay.clone().add(1, 'month'), 'month')) {
+            } else if (meetTime.isSame($scope.selectedDay.clone().add(1, 'month'), 'month')) {
                 GroupMeetsService.getNext().push(message.data);
             }
-            else if (meet.time.isSame($scope.selectedDay.clone().add(-1, 'month'), 'month')) {
+            else if (meetTime.isSame($scope.selectedDay.clone().add(-1, 'month'), 'month')) {
                 GroupMeetsService.getPrev().push(message.data);
             }
 

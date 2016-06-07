@@ -100,6 +100,10 @@ calendar > div.week > span.day > span.event {
     border-radius: 6px;
 }
 
+calendar > div.week > span.day.before > span.event {
+    background-color: grey;
+}
+
 calendar > div.week > span.day:hover {
     background-color: #eeeeee;
 }

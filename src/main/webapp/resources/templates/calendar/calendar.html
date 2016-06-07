@@ -23,6 +23,7 @@
           ng-class="{ 'today': day.isToday,
                       'different-month': !day.isCurrentMonth,
                       'selected': day.date.isSame(selected),
+                      'before': day.isBefore,
                       'not-viewed': day.notViewed}"
           ng-click="select(day)" ng-repeat="day in week.days">
         <span class="event"
