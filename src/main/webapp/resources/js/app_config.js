@@ -53,8 +53,7 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
-            .
-            state('home.login',
+            .state('home.login',
                 {
                     url: '/login',
                     views: {
@@ -220,10 +219,10 @@ app.config(function ($locationProvider, $httpProvider, $stateProvider, $urlRoute
                         }
                     }
                 })
-            .state('files',
+            .state('new',
                 {
-                    url: '/files',
-                    templateUrl: '/static/file.html'
+                    url: '/new',
+                    templateUrl: '/static/new/new.html'
                 });
 
         $locationProvider.html5Mode(true);

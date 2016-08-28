@@ -62,4 +62,9 @@ public class MainController {
     public String profile() {
         return INDEX_PATH;
     }
+
+    @RequestMapping(value = "/new")
+    public String profiles() {
+        return INDEX_PATH;
+    }
 }
