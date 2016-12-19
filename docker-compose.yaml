@@ -1,0 +1,20 @@
+version: '2'
+
+volumes:
+  database:
+
+services:
+
+  database:
+    build: ./database
+    image: promeets_old/database:latest
+    volumes:
+      - database:/var/lib/postgresql/data
+
+  server:
+    build: .
+    image: promeets_old/server:latest
+    links:
+      - database
+    ports:
+      - "80:8080"
