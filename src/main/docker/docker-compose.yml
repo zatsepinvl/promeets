@@ -1,0 +1,30 @@
+version: '2'
+
+volumes:
+  promeets-db:
+
+services:
+
+  promeets-db:
+    extends:
+        file: env/docker-compose.yml
+        service: promeets-db
+    image: promeets/database:${project.version}
+    volumes:
+      - promeets-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  promeets:
+    build: ./
+    image: promeets:${project.version}
+    container_name: promeets
+    links:
+      - promeets-db
+    env_file:
+      - env/database/database.env
+    environment:
+      - POSTGRES_URL=promeets-db:5432
+    ports:
+      - 8080:8080
+
