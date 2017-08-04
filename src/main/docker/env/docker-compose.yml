@@ -1,0 +1,17 @@
+version: '2'
+
+volumes:
+  promeets-db:
+
+services:
+
+  promeets-db:
+    container_name: promeets-db
+    build: database
+    image: promeets/database
+    env_file:
+      - database/database.env
+    volumes:
+      - promeets-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
