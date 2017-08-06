@@ -2,6 +2,8 @@
 
 **Service for organizing meetings. Service to make you for effective.**
 
+![Promeets image](architecture/general/promeets_main.png)
+
 ## Get started
 
 [Presentation](architecture/general/Promeets_presentation_1.pptx)
