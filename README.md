@@ -4,6 +4,8 @@
 
 ## Get started
 
+[Presentation](architecture/general/Promeets_presentation_1.pptx)
+
 ### Build and run
 
 * git clone https://github.com/zatsepinvl/promeets
