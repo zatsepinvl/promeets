@@ -14,7 +14,7 @@
 * mvn clean install
 * cd src/main/docker/env
 * docker-compose up --build
-* run promeets-<VERSION>.war on server with the following parameters:
+* run promeets-*VERSION*.war on server with the following parameters:
     * POSTGRES_DB - default: `promeets_db`
     * POSTGRES_URL - ex. `192.168.99.100:5432`
     * POSTGRES_USER - defualt: `pmadmin`
